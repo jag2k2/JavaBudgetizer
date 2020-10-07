@@ -35,9 +35,9 @@ public class CategoryManager {
         clearAmountButton = new JButton("Clear");
         excludeCategoryButton = new JButton("Exclude");
 
-        categoryList.add(new Category("Test", 100));
-        categoryList.add(new Category("Test2", 200));
-        categoryList.add(new Category("Test3", 300));
+        //categoryList.add(new Category("Test", 100));
+        //categoryList.add(new Category("Test2", 200));
+        //categoryList.add(new Category("Test3", 300));
     }
 
     private void buildGui() {
