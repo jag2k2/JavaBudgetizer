@@ -5,8 +5,8 @@ public class CategoryStorage {
 
     private final Database database;
 
-    public CategoryStorage(String databaseName) {
-        database = new Database(databaseName);
+    public CategoryStorage(Database database) {
+        this.database = database;
     }
 
     public void addCategory(String name) {

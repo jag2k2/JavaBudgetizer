@@ -3,16 +3,19 @@ import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class CategoryStorageTest {
-
     private final static String testTable = "categories";
     private final static String databaseName = "test";
     private CategoryStorage categoryStorage;
     private Database database;
+    ArrayList<Category> expected;
+    ArrayList<Category> actual;
 
     @BeforeEach
     void init(){
-        categoryStorage = new CategoryStorage(databaseName);
+        expected = new ArrayList<>();
+        actual = new ArrayList<>();
         database = new Database(databaseName);
+        categoryStorage = new CategoryStorage(database);
 
         String update = "CREATE TABLE test." + testTable +
                 " ( `id` INT NOT NULL AUTO_INCREMENT, " +
@@ -33,131 +36,110 @@ class CategoryStorageTest {
     @Test
     void addCategory() {
         Category categoryToAdd = new Category("Name4", Float.NaN, false);
-        ArrayList<Category> expected = new ArrayList<>();
         expected.add(categoryToAdd);
 
         categoryStorage.addCategory("Name4");
-        ArrayList<Category> actual = categoryStorage.getCategories("Name4");
 
+        actual = categoryStorage.getCategories("Name4");
         assertEquals(expected, actual);
     }
 
     @Test
     void deleteCategory() {
-        ArrayList<Category> expected = new ArrayList<>();
         expected.add(new Category("Name2", 200, true));
         expected.add(new Category("Name3", 300, false));
 
         categoryStorage.deleteCategory("Name1");
 
-        ArrayList<Category> actual = categoryStorage.getCategories("Name");
-
+        actual = categoryStorage.getCategories("Name");
         assertEquals(expected, actual);
     }
 
     @Test
     void categoryExist() {
-
         Boolean found = categoryStorage.categoryExist("Name1");
         assertTrue(found);
 
-        found = categoryStorage.categoryExist("NameNotExist");
+        found = categoryStorage.categoryExist("NameNeverExist");
         assertFalse(found);
     }
 
     @Test
     void getCategoriesNoMatch() {
-        ArrayList<Category> expectedCategories = new ArrayList<>();
-
-        ArrayList<Category> categories = categoryStorage.getCategories("NameNotExist");
-        assertEquals(expectedCategories, categories);
+        actual = categoryStorage.getCategories("NameNotExist");
+        assertEquals(expected, actual);
     }
 
     @Test
     void getCategoriesExactMatch() {
-        ArrayList<Category> expectedCategories = new ArrayList<>();
-        expectedCategories.add(new Category("Name1", 100, false));
+        expected.add(new Category("Name1", 100, false));
 
-        ArrayList<Category> categories = categoryStorage.getCategories("Name1");
+        ArrayList<Category> actual = categoryStorage.getCategories("Name1");
 
-        assertEquals(expectedCategories, categories);
+        assertEquals(expected, actual);
     }
 
     @Test
     void getCategoriesMultipleMatch() {
-        ArrayList<Category> expectedCategories = new ArrayList<>();
-        expectedCategories.add(new Category("Name1", 100, false));
-        expectedCategories.add(new Category("Name2", 200, true));
-        expectedCategories.add(new Category("Name3", 300, false));
+        expected.add(new Category("Name1", 100, false));
+        expected.add(new Category("Name2", 200, true));
+        expected.add(new Category("Name3", 300, false));
 
-        ArrayList<Category> categories = categoryStorage.getCategories("Name");
+        actual = categoryStorage.getCategories("Name");
 
-        assertEquals(expectedCategories, categories);
+        assertEquals(expected, actual);
     }
 
     @Test
     void getAllCategories() {
-        ArrayList<Category> expectedCategories = new ArrayList<>();
-        expectedCategories.add(new Category("Name1", 100, false));
-        expectedCategories.add(new Category("Name2", 200, true));
-        expectedCategories.add(new Category("Name3", 300, false));
-        expectedCategories.add(new Category("Test1", Float.NaN, false));
+        expected.add(new Category("Name1", 100, false));
+        expected.add(new Category("Name2", 200, true));
+        expected.add(new Category("Name3", 300, false));
+        expected.add(new Category("Test1", Float.NaN, false));
 
-        ArrayList<Category> categories = categoryStorage.getCategories("");
+        actual = categoryStorage.getCategories("");
 
-        assertEquals(expectedCategories, categories);
+        assertEquals(expected, actual);
     }
 
     @Test
     void updateCategoryAmount() {
-        Category expected = new Category("Name2", 100, true);
-        ArrayList<Category> expectedResults = new ArrayList<>();
-        expectedResults.add(expected);
+        expected.add(new Category("Name2", 100, true));
 
         categoryStorage.updateAmount("Name2", 100);
 
-        ArrayList<Category> actualResults = categoryStorage.getCategories("Name2");
-
-        assertEquals(expectedResults, actualResults);
+        actual = categoryStorage.getCategories("Name2");
+        assertEquals(expected, actual);
     }
 
     @Test
     void clearCategoryAmount() {
-        Category expected = new Category("Name2", Float.NaN, true);
-        ArrayList<Category> expectedResults = new ArrayList<>();
-        expectedResults.add(expected);
+        expected.add(new Category("Name2", Float.NaN, true));
 
         categoryStorage.updateAmount("Name2", Float.NaN);
 
-        ArrayList<Category> actualResults = categoryStorage.getCategories("Name2");
-
-        assertEquals(expectedResults, actualResults);
+        actual = categoryStorage.getCategories("Name2");
+        assertEquals(expected, actual);
     }
 
     @Test
     void toggleExclusion() {
-        Category expected = new Category("Name2", 200, false);
-        ArrayList<Category> expectedResults = new ArrayList<>();
-        expectedResults.add(expected);
+        expected.add(new Category("Name2", 200, false));
 
         categoryStorage.toggleExclusion("Name2");
 
-        ArrayList<Category> actualResults = categoryStorage.getCategories("Name2");
-
-        assertEquals(expectedResults, actualResults);
+        actual = categoryStorage.getCategories("Name2");
+        assertEquals(expected, actual);
     }
 
     @Test
     void renameCategory() {
-        Category expected = new Category("Name5", 200, true);
-        ArrayList<Category> expectedResults = new ArrayList<>();
-        expectedResults.add(expected);
+        expected.add(new Category("Name5", 200, true));
 
         categoryStorage.renameCategory("Name2", "Name5");
 
-        ArrayList<Category> actualResults = categoryStorage.getCategories("Name5");
-
-        assertEquals(expectedResults, actualResults);
+        actual = categoryStorage.getCategories("Name5");
+        assertEquals(expected, actual);
     }
 
     @AfterEach

@@ -3,6 +3,7 @@ import java.awt.*;
 import java.util.*;
 
 public class CategoryManager {
+    Database database;
     CategoryStorage categoryStorage;
     JTextField nameFilterField;
     CategoryManagerTableModel tableModel;
@@ -24,7 +25,8 @@ public class CategoryManager {
     }
 
     public CategoryManager() {
-        categoryStorage = new CategoryStorage("gringotts");
+        database = new Database("gringotts");
+        categoryStorage = new CategoryStorage(database);
         categoryList = categoryStorage.getCategories("");
         nameFilterField = new JTextField();
         tableModel = new CategoryManagerTableModel(categoryList);
