@@ -96,6 +96,19 @@ class CategoryStorageTest {
     }
 
     @Test
+    void getAllCategories() {
+        ArrayList<Category> expectedCategories = new ArrayList<>();
+        expectedCategories.add(new Category("Name1", 100, false));
+        expectedCategories.add(new Category("Name2", 200, true));
+        expectedCategories.add(new Category("Name3", 300, false));
+        expectedCategories.add(new Category("Test1", Float.NaN, false));
+
+        ArrayList<Category> categories = categoryStorage.getCategories("");
+
+        assertEquals(expectedCategories, categories);
+    }
+
+    @Test
     void updateCategoryAmount() {
         Category expected = new Category("Name2", 100, true);
         ArrayList<Category> expectedResults = new ArrayList<>();

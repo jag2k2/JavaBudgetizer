@@ -25,8 +25,8 @@ public class CategoryManager {
 
     public CategoryManager() {
         categoryStorage = new CategoryStorage("gringotts");
+        categoryList = categoryStorage.getCategories("");
         nameFilterField = new JTextField();
-        categoryList = new ArrayList<>();
         tableModel = new CategoryManagerTableModel(categoryList);
         categoryDisplayTable = new JTable(tableModel);
         addCategoryButton = new JButton("Add");
@@ -35,8 +35,6 @@ public class CategoryManager {
         editAmountButton = new JButton("Edit");
         clearAmountButton = new JButton("Clear");
         excludeCategoryButton = new JButton("Exclude");
-
-        categoryList = categoryStorage.getCategories("");
     }
 
     private void buildGui() {
