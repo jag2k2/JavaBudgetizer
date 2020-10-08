@@ -3,51 +3,33 @@ import java.sql.*;
 
 public class CategoryStorage {
 
-    private Connection connection;
-
-    public static void main(String[] args) {
-        CategoryStorage categoryStorage = new CategoryStorage();
-        System.out.println(categoryStorage.getCategories(""));
-        System.out.println(categoryStorage.categoryExist("Clothes"));
-    }
+    private final DatabaseConnection databaseConnection;
 
     public CategoryStorage() {
-        String url = "jdbc:mysql://localhost/gringotts";
-        String user = "jag2k2";
-        String password = "jeff1229";
+        databaseConnection = new DatabaseConnection("gringotts");
+    }
 
-        try {
-            connection = DriverManager.getConnection(url, user, password);
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
+    public CategoryStorage(String databaseName) {
+        databaseConnection = new DatabaseConnection(databaseName);
     }
 
     public ArrayList<Category> getCategories(String nameFilter) {
-        String query = "SELECT name, default_goal_amt, exclude\n" +
-                "FROM categories\n" +
-                "$condition\n" +
+        String query = "SELECT name, default_goal_amt, exclude " +
+                "FROM categories " +
+                "$condition " +
                 "ORDER BY name";
 
-        String condition = "WHERE name LIKE '$name'";
+        String condition = "WHERE name LIKE '%$name%'";
         if (nameFilter.equals("")) { condition = ""; }
         else { condition = condition.replace("$name", nameFilter); }
-
         query = query.replace("$condition", condition);
 
-        ArrayList<Category> categories = new ArrayList<>();
-        try {
-            Statement statementExecutor = connection.createStatement();
-            ResultSet results = statementExecutor.executeQuery(query);
-            categories = castResultSet(results);
+        ResultSet results = databaseConnection.executeQuery(query);
 
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-        return categories;
+        return castResultsToCategories(results);
     }
 
-    private ArrayList<Category> castResultSet(ResultSet results) {
+    private ArrayList<Category> castResultsToCategories(ResultSet results) {
         ArrayList<Category> categories = new ArrayList<>();
         try {
             while (results.next()) {
@@ -65,20 +47,14 @@ public class CategoryStorage {
     }
 
     public Boolean categoryExist(String name) {
-        String query = "SELECT *\n" +
-                "FROM categories\n" +
+        String query = "SELECT * " +
+                "FROM categories " +
                 "WHERE name = '$name'";
         query = query.replace("$name", name);
 
-        ArrayList<Category> categories = new ArrayList<>();
-        try {
-            Statement statementExecutor = connection.createStatement();
-            ResultSet results = statementExecutor.executeQuery(query);
-            categories = castResultSet(results);
+        ResultSet results = databaseConnection.executeQuery(query);
+        ArrayList<Category> categories = castResultsToCategories(results);
 
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
         return !categories.isEmpty();
     }
 }
