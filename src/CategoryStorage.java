@@ -73,4 +73,17 @@ public class CategoryStorage {
 
         databaseConnection.executeUpdate(update);
     }
+
+    public void toggleExclusion(String name) {
+        String update = "UPDATE categories SET exclude = !exclude WHERE name = '$name'";
+        update = update.replace("$name", name);
+        databaseConnection.executeUpdate(update);
+    }
+
+    public void renameCategory(String oldName, String newName) {
+        String update = "UPDATE categories SET name = '$newName' WHERE name = '$oldName'";
+        update = update.replace("$newName", newName);
+        update = update.replace("$oldName", oldName);
+        databaseConnection.executeUpdate(update);
+    }
 }

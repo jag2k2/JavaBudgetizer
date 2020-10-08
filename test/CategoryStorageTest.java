@@ -22,8 +22,11 @@ class CategoryStorageTest {
                 "PRIMARY KEY (`id`)) ENGINE = InnoDB";
         connection.executeUpdate(update);
 
-        update = "INSERT INTO " + testTable + " (name, default_goal_amt, exclude) " +
-                "VALUES ('Name1', '100', '0'), ('Name2', '200', 1), ('Name3', '300', '0')";
+        update = "INSERT INTO " + testTable + " (name, default_goal_amt, exclude) VALUES " +
+                "('Name1', '100', FALSE), " +
+                "('Name2', '200', TRUE), " +
+                "('Name3', '300', FALSE), " +
+                "('Test1', NULL, FALSE)";
         connection.executeUpdate(update);
     }
 
@@ -114,6 +117,32 @@ class CategoryStorageTest {
         categoryStorage.updateAmount("Name2", Float.NaN);
 
         ArrayList<Category> actualResults = categoryStorage.getCategories("Name2");
+
+        assertEquals(expectedResults, actualResults);
+    }
+
+    @Test
+    void toggleExclusion() {
+        Category expected = new Category("Name2", 200, false);
+        ArrayList<Category> expectedResults = new ArrayList<>();
+        expectedResults.add(expected);
+
+        categoryStorage.toggleExclusion("Name2");
+
+        ArrayList<Category> actualResults = categoryStorage.getCategories("Name2");
+
+        assertEquals(expectedResults, actualResults);
+    }
+
+    @Test
+    void renameCategory() {
+        Category expected = new Category("Name5", 200, true);
+        ArrayList<Category> expectedResults = new ArrayList<>();
+        expectedResults.add(expected);
+
+        categoryStorage.renameCategory("Name2", "Name5");
+
+        ArrayList<Category> actualResults = categoryStorage.getCategories("Name5");
 
         assertEquals(expectedResults, actualResults);
     }
