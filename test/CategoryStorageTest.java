@@ -7,11 +7,13 @@ class CategoryStorageTest {
     private final static String testTable = "categories";
     private final static String databaseName = "test";
     private CategoryStorage categoryStorage;
+    private DatabaseConnection connection;
 
+    @BeforeEach
+    void init(){
+        categoryStorage = new CategoryStorage(databaseName);
+        connection = new DatabaseConnection(databaseName);
 
-    @BeforeAll
-    static void initTable() {
-        DatabaseConnection connection = new DatabaseConnection(databaseName);
         String update = "CREATE TABLE test." + testTable +
                 " ( `id` INT NOT NULL AUTO_INCREMENT, " +
                 "`name` VARCHAR(255) NOT NULL , " +
@@ -23,12 +25,31 @@ class CategoryStorageTest {
         update = "INSERT INTO " + testTable + " (name, default_goal_amt, exclude) " +
                 "VALUES ('Name1', '100', '0'), ('Name2', '200', 1), ('Name3', '300', '0')";
         connection.executeUpdate(update);
-        connection.close();
     }
 
-    @BeforeEach
-    void initClass(){
-        categoryStorage = new CategoryStorage(databaseName);
+    @Test
+    void addCategory() {
+        Category categoryToAdd = new Category("Name4", Float.NaN, false);
+        ArrayList<Category> expected = new ArrayList<>();
+        expected.add(categoryToAdd);
+
+        categoryStorage.addCategory(categoryToAdd);
+        ArrayList<Category> actual = categoryStorage.getCategories("Name4");
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void deleteCategory() {
+        ArrayList<Category> expected = new ArrayList<>();
+        expected.add(new Category("Name2", 200, true));
+        expected.add(new Category("Name3", 300, false));
+
+        categoryStorage.deleteCategory("Name1");
+
+        ArrayList<Category> actual = categoryStorage.getCategories("Name");
+
+        assertEquals(expected, actual);
     }
 
     @Test
@@ -37,7 +58,7 @@ class CategoryStorageTest {
         Boolean found = categoryStorage.categoryExist("Name1");
         assertTrue(found);
 
-        found = categoryStorage.categoryExist("TestFail");
+        found = categoryStorage.categoryExist("NameNotExist");
         assertFalse(found);
     }
 
@@ -71,9 +92,8 @@ class CategoryStorageTest {
         assertEquals(expectedCategories, categories);
     }
 
-    @AfterAll
-    static void dropTable() {
-        DatabaseConnection connection = new DatabaseConnection(databaseName);
+    @AfterEach
+    void dropTable() {
         connection.executeUpdate("DROP TABLE " + testTable);
         connection.close();
     }

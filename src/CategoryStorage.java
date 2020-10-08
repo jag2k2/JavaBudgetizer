@@ -5,12 +5,36 @@ public class CategoryStorage {
 
     private final DatabaseConnection databaseConnection;
 
-    public CategoryStorage() {
-        databaseConnection = new DatabaseConnection("gringotts");
-    }
-
     public CategoryStorage(String databaseName) {
         databaseConnection = new DatabaseConnection(databaseName);
+    }
+
+    public void addCategory(Category category) {
+        String update = "INSERT INTO categories (name, exclude) " +
+                "VALUES ('$name', $ex)";
+        update = update.replace("$name", category.getName());
+        update = update.replace("$ex", category.getExcludeAsString());
+
+        databaseConnection.executeUpdate(update);
+    }
+
+    public void deleteCategory(String name) {
+        String update = "DELETE FROM categories WHERE name = '$name'";
+        update = update.replace("$name", name);
+
+        databaseConnection.executeUpdate(update);
+    }
+
+    public Boolean categoryExist(String name) {
+        String query = "SELECT * " +
+                "FROM categories " +
+                "WHERE name = '$name'";
+        query = query.replace("$name", name);
+
+        ResultSet results = databaseConnection.executeQuery(query);
+        ArrayList<Category> categories = castResultsToCategories(results);
+
+        return !categories.isEmpty();
     }
 
     public ArrayList<Category> getCategories(String nameFilter) {
@@ -44,17 +68,5 @@ public class CategoryStorage {
             ex.printStackTrace();
         }
         return categories;
-    }
-
-    public Boolean categoryExist(String name) {
-        String query = "SELECT * " +
-                "FROM categories " +
-                "WHERE name = '$name'";
-        query = query.replace("$name", name);
-
-        ResultSet results = databaseConnection.executeQuery(query);
-        ArrayList<Category> categories = castResultsToCategories(results);
-
-        return !categories.isEmpty();
     }
 }

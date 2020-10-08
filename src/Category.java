@@ -10,12 +10,25 @@ public class Category {
         this.exclude = exclude;
     }
 
+    public String toString() {
+        return (name + " " + default_goal + " " + exclude);
+    }
+
     public String getName() {
         return name;
     }
 
     public float getDefaultGoal() {
         return default_goal;
+    }
+
+    public String getExcludeAsString() {
+        return exclude.toString().toUpperCase();
+    }
+
+    public String getDefaultGoalAsString() {
+        if (Float.isNaN(default_goal)) return "NULL";
+        else return String.format("%.2f", default_goal);
     }
 
     @Override
