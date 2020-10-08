@@ -3,7 +3,7 @@ import java.awt.*;
 import java.util.*;
 
 public class CategoryManager {
-
+    CategoryStorage categoryStorage;
     JTextField nameFilterField;
     CategoryManagerTableModel tableModel;
     ArrayList<Category> categoryList;
@@ -24,6 +24,7 @@ public class CategoryManager {
     }
 
     public CategoryManager() {
+        categoryStorage = new CategoryStorage("gringotts");
         nameFilterField = new JTextField();
         categoryList = new ArrayList<>();
         tableModel = new CategoryManagerTableModel(categoryList);
@@ -35,9 +36,7 @@ public class CategoryManager {
         clearAmountButton = new JButton("Clear");
         excludeCategoryButton = new JButton("Exclude");
 
-        //categoryList.add(new Category("Test", 100));
-        //categoryList.add(new Category("Test2", 200));
-        //categoryList.add(new Category("Test3", 300));
+        categoryList = categoryStorage.getCategories("");
     }
 
     private void buildGui() {
