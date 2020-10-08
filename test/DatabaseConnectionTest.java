@@ -6,7 +6,7 @@ class DatabaseConnectionTest {
 
     @Test
     void executeQuery() {
-        DatabaseConnection connection = new DatabaseConnection("test");
+        Database connection = new Database("test");
 
         ResultSet results = connection.executeQuery("SELECT DATABASE()");
 

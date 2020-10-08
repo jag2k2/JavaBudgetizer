@@ -1,13 +1,13 @@
 import java.sql.*;
 
-public class DatabaseConnection {
+public class Database {
 
     private Connection connection;
     String url = "jdbc:mysql://localhost/$name";
     String user = "jag2k2";
     String password = "jeff1229";
 
-    public DatabaseConnection(String databaseName) {
+    public Database(String databaseName) {
         url = url.replace("$name", databaseName);
         try {
             connection = DriverManager.getConnection(url, user, password);

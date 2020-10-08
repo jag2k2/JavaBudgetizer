@@ -22,15 +22,6 @@ public class Category {
         return default_goal;
     }
 
-    public String getExcludeAsString() {
-        return exclude.toString().toUpperCase();
-    }
-
-    public String getDefaultGoalAsString() {
-        if (Float.isNaN(default_goal)) return "NULL";
-        else return String.format("%.2f", default_goal);
-    }
-
     @Override
     public boolean equals(Object toCompare) {
         if (this == toCompare) return true;

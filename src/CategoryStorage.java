@@ -3,31 +3,31 @@ import java.sql.*;
 
 public class CategoryStorage {
 
-    private final DatabaseConnection databaseConnection;
+    private final Database database;
 
     public CategoryStorage(String databaseName) {
-        databaseConnection = new DatabaseConnection(databaseName);
+        database = new Database(databaseName);
     }
 
     public void addCategory(String name) {
         String update = "INSERT INTO categories (name, default_goal_amt, exclude) VALUES ('$name', NULL, FALSE)";
         update = update.replace("$name", name);
 
-        databaseConnection.executeUpdate(update);
+        database.executeUpdate(update);
     }
 
     public void deleteCategory(String name) {
         String update = "DELETE FROM categories WHERE name = '$name'";
         update = update.replace("$name", name);
 
-        databaseConnection.executeUpdate(update);
+        database.executeUpdate(update);
     }
 
     public Boolean categoryExist(String name) {
         String query = "SELECT * FROM categories WHERE name = '$name'";
         query = query.replace("$name", name);
 
-        ResultSet results = databaseConnection.executeQuery(query);
+        ResultSet results = database.executeQuery(query);
         ArrayList<Category> categories = castResultsToCategories(results);
 
         return !categories.isEmpty();
@@ -40,7 +40,7 @@ public class CategoryStorage {
         else { condition = condition.replace("$name", nameFilter); }
         query = query.replace("$condition", condition);
 
-        ResultSet results = databaseConnection.executeQuery(query);
+        ResultSet results = database.executeQuery(query);
 
         return castResultsToCategories(results);
     }
@@ -71,19 +71,19 @@ public class CategoryStorage {
         update = update.replace("$name", name);
         update = update.replace("$def_goal", amountString);
 
-        databaseConnection.executeUpdate(update);
+        database.executeUpdate(update);
     }
 
     public void toggleExclusion(String name) {
         String update = "UPDATE categories SET exclude = !exclude WHERE name = '$name'";
         update = update.replace("$name", name);
-        databaseConnection.executeUpdate(update);
+        database.executeUpdate(update);
     }
 
     public void renameCategory(String oldName, String newName) {
         String update = "UPDATE categories SET name = '$newName' WHERE name = '$oldName'";
         update = update.replace("$newName", newName);
         update = update.replace("$oldName", oldName);
-        databaseConnection.executeUpdate(update);
+        database.executeUpdate(update);
     }
 }
