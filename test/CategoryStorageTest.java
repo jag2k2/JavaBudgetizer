@@ -33,7 +33,7 @@ class CategoryStorageTest {
         ArrayList<Category> expected = new ArrayList<>();
         expected.add(categoryToAdd);
 
-        categoryStorage.addCategory(categoryToAdd);
+        categoryStorage.addCategory("Name4");
         ArrayList<Category> actual = categoryStorage.getCategories("Name4");
 
         assertEquals(expected, actual);
@@ -90,6 +90,32 @@ class CategoryStorageTest {
         ArrayList<Category> categories = categoryStorage.getCategories("Name");
 
         assertEquals(expectedCategories, categories);
+    }
+
+    @Test
+    void updateCategoryAmount() {
+        Category expected = new Category("Name2", 100, true);
+        ArrayList<Category> expectedResults = new ArrayList<>();
+        expectedResults.add(expected);
+
+        categoryStorage.updateAmount("Name2", 100);
+
+        ArrayList<Category> actualResults = categoryStorage.getCategories("Name2");
+
+        assertEquals(expectedResults, actualResults);
+    }
+
+    @Test
+    void clearCategoryAmount() {
+        Category expected = new Category("Name2", Float.NaN, true);
+        ArrayList<Category> expectedResults = new ArrayList<>();
+        expectedResults.add(expected);
+
+        categoryStorage.updateAmount("Name2", Float.NaN);
+
+        ArrayList<Category> actualResults = categoryStorage.getCategories("Name2");
+
+        assertEquals(expectedResults, actualResults);
     }
 
     @AfterEach

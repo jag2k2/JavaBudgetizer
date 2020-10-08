@@ -9,11 +9,9 @@ public class CategoryStorage {
         databaseConnection = new DatabaseConnection(databaseName);
     }
 
-    public void addCategory(Category category) {
-        String update = "INSERT INTO categories (name, exclude) " +
-                "VALUES ('$name', $ex)";
-        update = update.replace("$name", category.getName());
-        update = update.replace("$ex", category.getExcludeAsString());
+    public void addCategory(String name) {
+        String update = "INSERT INTO categories (name, default_goal_amt, exclude) VALUES ('$name', NULL, FALSE)";
+        update = update.replace("$name", name);
 
         databaseConnection.executeUpdate(update);
     }
@@ -26,9 +24,7 @@ public class CategoryStorage {
     }
 
     public Boolean categoryExist(String name) {
-        String query = "SELECT * " +
-                "FROM categories " +
-                "WHERE name = '$name'";
+        String query = "SELECT * FROM categories WHERE name = '$name'";
         query = query.replace("$name", name);
 
         ResultSet results = databaseConnection.executeQuery(query);
@@ -38,11 +34,7 @@ public class CategoryStorage {
     }
 
     public ArrayList<Category> getCategories(String nameFilter) {
-        String query = "SELECT name, default_goal_amt, exclude " +
-                "FROM categories " +
-                "$condition " +
-                "ORDER BY name";
-
+        String query = "SELECT name, default_goal_amt, exclude FROM categories $condition ORDER BY name";
         String condition = "WHERE name LIKE '%$name%'";
         if (nameFilter.equals("")) { condition = ""; }
         else { condition = condition.replace("$name", nameFilter); }
@@ -68,5 +60,17 @@ public class CategoryStorage {
             ex.printStackTrace();
         }
         return categories;
+    }
+
+    public void updateAmount(String name, float amount) {
+        String amountString;
+        if (Float.isNaN(amount)) amountString =  "NULL";
+        else amountString =  String.format("%.2f", amount);
+
+        String update = "UPDATE categories SET default_goal_amt = $def_goal WHERE name = '$name'";
+        update = update.replace("$name", name);
+        update = update.replace("$def_goal", amountString);
+
+        databaseConnection.executeUpdate(update);
     }
 }
