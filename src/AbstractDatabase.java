@@ -1,14 +1,17 @@
 import java.sql.*;
 
-public class Database {
+public abstract class AbstractDatabase implements StoreEditor {
 
     private Connection connection;
-    String url = "jdbc:mysql://localhost/$name";
-    String user = "jag2k2";
-    String password = "jeff1229";
+    private String url = "jdbc:mysql://localhost/$name";
+    private final String user = "jag2k2";
+    private final String password = "jeff1229";
 
-    public Database(String databaseName) {
+    public AbstractDatabase(String databaseName) {
         url = url.replace("$name", databaseName);
+    }
+
+    public void connect() {
         try {
             connection = DriverManager.getConnection(url, user, password);
         } catch (SQLException ex) {
@@ -16,6 +19,7 @@ public class Database {
         }
     }
 
+    @Override
     public ResultSet executeQuery(String query) {
         ResultSet results = null;
         try {
@@ -27,6 +31,7 @@ public class Database {
         return results;
     }
 
+    @Override
     public void executeUpdate(String update) {
         try {
             Statement statementExecutor = connection.createStatement();

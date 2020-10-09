@@ -1,13 +1,19 @@
 import javax.swing.table.*;
 import java.util.*;
 
-public class CategoryManagerTableModel extends AbstractTableModel {
+public class CategoryTableModel extends AbstractTableModel {
 
     private final String[] columnNames = {"Name", "Default Goal"};
-    private final ArrayList<Category> tableContents;
+    private ArrayList<Category> tableContents;
 
-    public CategoryManagerTableModel(ArrayList<Category> tableContents) {
+    public CategoryTableModel(ArrayList<Category> tableContents) {
         this.tableContents = tableContents;
+    }
+
+    public void setContents(ArrayList<Category> tableContents) {this.tableContents = tableContents;}
+
+    public String getRowName(int row) {
+        return tableContents.get(row).getName();
     }
 
     @Override
@@ -33,4 +39,5 @@ public class CategoryManagerTableModel extends AbstractTableModel {
     public String getColumnName(int column) {
         return columnNames[column];
     }
+
 }

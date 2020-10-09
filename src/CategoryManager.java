@@ -1,20 +1,22 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.*;
 
 public class CategoryManager {
-    Database database;
+    AbstractDatabase database;
     CategoryStorage categoryStorage;
     JTextField nameFilterField;
-    CategoryManagerTableModel tableModel;
+    CategoryTableModel tableModel;
     ArrayList<Category> categoryList;
     JTable categoryDisplayTable;
-    JButton addCategoryButton;
-    JButton deleteCategoryButton;
-    JButton renameCategoryButton;
+    JButton addButton;
+    JButton deleteButton;
+    JButton renameButton;
     JButton editAmountButton;
     JButton clearAmountButton;
-    JButton excludeCategoryButton;
+    JButton excludeButton;
 
     public static void main(String[] args) {
         try{
@@ -25,18 +27,19 @@ public class CategoryManager {
     }
 
     public CategoryManager() {
-        database = new Database("gringotts");
+        database = new TestDatabase();
+        database.connect();
         categoryStorage = new CategoryStorage(database);
         categoryList = categoryStorage.getCategories("");
         nameFilterField = new JTextField();
-        tableModel = new CategoryManagerTableModel(categoryList);
+        tableModel = new CategoryTableModel(categoryList);
         categoryDisplayTable = new JTable(tableModel);
-        addCategoryButton = new JButton("Add");
-        deleteCategoryButton = new JButton("Delete");
-        renameCategoryButton = new JButton("Rename");
+        addButton = new JButton("Add");
+        deleteButton = new JButton("Delete");
+        renameButton = new JButton("Rename");
         editAmountButton = new JButton("Edit");
         clearAmountButton = new JButton("Clear");
-        excludeCategoryButton = new JButton("Exclude");
+        excludeButton = new JButton("Exclude");
     }
 
     private void buildGui() {
@@ -59,13 +62,13 @@ public class CategoryManager {
         tableScroller.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
         northBox.add(nameFilterField);
-        northBox.add(addCategoryButton);
-        northBox.add(deleteCategoryButton);
+        northBox.add(addButton);
+        northBox.add(deleteButton);
 
-        southBox.add(renameCategoryButton);
+        southBox.add(renameButton);
         southBox.add(editAmountButton);
         southBox.add(clearAmountButton);
-        southBox.add(excludeCategoryButton);
+        southBox.add(excludeButton);
 
         panel.add(BorderLayout.NORTH, northBox);
         panel.add(BorderLayout.CENTER, tableScroller);

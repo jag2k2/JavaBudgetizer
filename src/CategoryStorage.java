@@ -3,34 +3,49 @@ import java.sql.*;
 
 public class CategoryStorage {
 
-    private final Database database;
+    private final StoreEditor storeEditor;
 
-    public CategoryStorage(Database database) {
-        this.database = database;
+    public CategoryStorage(StoreEditor storeEditor) {
+        this.storeEditor = storeEditor;
     }
 
     public void addCategory(String name) {
         String update = "INSERT INTO categories (name, default_goal_amt, exclude) VALUES ('$name', NULL, FALSE)";
         update = update.replace("$name", name);
 
-        database.executeUpdate(update);
+        storeEditor.executeUpdate(update);
     }
 
     public void deleteCategory(String name) {
         String update = "DELETE FROM categories WHERE name = '$name'";
         update = update.replace("$name", name);
 
-        database.executeUpdate(update);
+        storeEditor.executeUpdate(update);
     }
 
-    public Boolean categoryExist(String name) {
-        String query = "SELECT * FROM categories WHERE name = '$name'";
-        query = query.replace("$name", name);
+    public void updateAmount(String name, float amount) {
+        String amountString;
+        if (Float.isNaN(amount)) amountString =  "NULL";
+        else amountString =  String.format("%.2f", amount);
 
-        ResultSet results = database.executeQuery(query);
-        ArrayList<Category> categories = castResultsToCategories(results);
+        String update = "UPDATE categories SET default_goal_amt = $def_goal WHERE name = '$name'";
+        update = update.replace("$name", name);
+        update = update.replace("$def_goal", amountString);
 
-        return !categories.isEmpty();
+        storeEditor.executeUpdate(update);
+    }
+
+    public void toggleExclusion(String name) {
+        String update = "UPDATE categories SET exclude = !exclude WHERE name = '$name'";
+        update = update.replace("$name", name);
+        storeEditor.executeUpdate(update);
+    }
+
+    public void renameCategory(String oldName, String newName) {
+        String update = "UPDATE categories SET name = '$newName' WHERE name = '$oldName'";
+        update = update.replace("$newName", newName);
+        update = update.replace("$oldName", oldName);
+        storeEditor.executeUpdate(update);
     }
 
     public ArrayList<Category> getCategories(String nameFilter) {
@@ -40,7 +55,7 @@ public class CategoryStorage {
         else { condition = condition.replace("$name", nameFilter); }
         query = query.replace("$condition", condition);
 
-        ResultSet results = database.executeQuery(query);
+        ResultSet results = storeEditor.executeQuery(query);
 
         return castResultsToCategories(results);
     }
@@ -62,28 +77,13 @@ public class CategoryStorage {
         return categories;
     }
 
-    public void updateAmount(String name, float amount) {
-        String amountString;
-        if (Float.isNaN(amount)) amountString =  "NULL";
-        else amountString =  String.format("%.2f", amount);
+    public Boolean categoryExist(String name) {
+        String query = "SELECT * FROM categories WHERE name = '$name'";
+        query = query.replace("$name", name);
 
-        String update = "UPDATE categories SET default_goal_amt = $def_goal WHERE name = '$name'";
-        update = update.replace("$name", name);
-        update = update.replace("$def_goal", amountString);
+        ResultSet results = storeEditor.executeQuery(query);
+        ArrayList<Category> categories = castResultsToCategories(results);
 
-        database.executeUpdate(update);
-    }
-
-    public void toggleExclusion(String name) {
-        String update = "UPDATE categories SET exclude = !exclude WHERE name = '$name'";
-        update = update.replace("$name", name);
-        database.executeUpdate(update);
-    }
-
-    public void renameCategory(String oldName, String newName) {
-        String update = "UPDATE categories SET name = '$newName' WHERE name = '$oldName'";
-        update = update.replace("$newName", newName);
-        update = update.replace("$oldName", oldName);
-        database.executeUpdate(update);
+        return !categories.isEmpty();
     }
 }

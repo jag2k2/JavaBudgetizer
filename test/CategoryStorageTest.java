@@ -3,10 +3,8 @@ import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class CategoryStorageTest {
-    private final static String testTable = "categories";
-    private final static String databaseName = "test";
     private CategoryStorage categoryStorage;
-    private Database database;
+    private TestDatabase dataBase;
     ArrayList<Category> expected;
     ArrayList<Category> actual;
 
@@ -14,23 +12,10 @@ class CategoryStorageTest {
     void init(){
         expected = new ArrayList<>();
         actual = new ArrayList<>();
-        database = new Database(databaseName);
-        categoryStorage = new CategoryStorage(database);
 
-        String update = "CREATE TABLE test." + testTable +
-                " ( `id` INT NOT NULL AUTO_INCREMENT, " +
-                "`name` VARCHAR(255) NOT NULL , " +
-                "`default_goal_amt` FLOAT(9.2) NULL DEFAULT NULL , " +
-                "`exclude` BOOLEAN NOT NULL , " +
-                "PRIMARY KEY (`id`)) ENGINE = InnoDB";
-        database.executeUpdate(update);
-
-        update = "INSERT INTO " + testTable + " (name, default_goal_amt, exclude) VALUES " +
-                "('Name1', '100', FALSE), " +
-                "('Name2', '200', TRUE), " +
-                "('Name3', '300', FALSE), " +
-                "('Test1', NULL, FALSE)";
-        database.executeUpdate(update);
+        dataBase = new TestDatabase();
+        dataBase.connect();
+        categoryStorage = new CategoryStorage(dataBase);
     }
 
     @Test
@@ -143,8 +128,7 @@ class CategoryStorageTest {
     }
 
     @AfterEach
-    void dropTable() {
-        database.executeUpdate("DROP TABLE " + testTable);
-        database.close();
+    void close() {
+        dataBase.close();
     }
 }
