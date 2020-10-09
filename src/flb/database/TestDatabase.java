@@ -1,3 +1,5 @@
+package flb.database;
+
 import java.sql.*;
 
 public class TestDatabase extends AbstractDatabase {

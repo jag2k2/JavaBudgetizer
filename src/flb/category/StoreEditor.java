@@ -1,3 +1,5 @@
+package flb.category;
+
 import java.sql.ResultSet;
 
 public interface StoreEditor {

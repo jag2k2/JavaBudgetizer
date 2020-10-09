@@ -1,4 +1,8 @@
 import java.util.*;
+
+import flb.category.Category;
+import flb.category.CategoryStorage;
+import flb.database.TestDatabase;
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 

@@ -1,3 +1,5 @@
+package flb.category;
+
 public class Category {
 
     private final String name;

@@ -705,9 +705,9 @@
 					</ownedDiagram>
 				</modelExtension>
 			</xmi:Extension>
-			<packagedElement xmi:type='uml:Class' xmi:id='_19_0_3_132003ac_1602250786121_188395_42115' name='CategoryStorage'>
+			<packagedElement xmi:type='uml:Class' xmi:id='_19_0_3_132003ac_1602250786121_188395_42115' name='flb.category.CategoryStorage'>
 				<ownedAttribute xmi:type='uml:Property' xmi:id='_19_0_3_132003ac_1602250865959_835794_42152' name='database' visibility='private' type='_19_0_3_132003ac_1602250822243_631676_42119' association='_19_0_3_132003ac_1602250899558_977904_42199'/>
-				<ownedOperation xmi:type='uml:Operation' xmi:id='_19_0_3_132003ac_1602251438809_687495_42119' name='CategoryStorage' visibility='public'>
+				<ownedOperation xmi:type='uml:Operation' xmi:id='_19_0_3_132003ac_1602251438809_687495_42119' name='flb.category.CategoryStorage' visibility='public'>
 					<ownedParameter xmi:type='uml:Parameter' xmi:id='_19_0_3_132003ac_1602251450265_649522_42121' visibility='public' type='_19_0_3_132003ac_1602250822243_631676_42119'/>
 				</ownedOperation>
 				<ownedOperation xmi:type='uml:Operation' xmi:id='_19_0_3_132003ac_1602250952272_574337_42233' name='addCategory' visibility='public'>
@@ -834,7 +834,7 @@
 					</ownedParameter>
 				</ownedOperation>
 			</packagedElement>
-			<packagedElement xmi:type='uml:Interface' xmi:id='_19_0_3_132003ac_1602250822243_631676_42119' name='StoreEditor'>
+			<packagedElement xmi:type='uml:Interface' xmi:id='_19_0_3_132003ac_1602250822243_631676_42119' name='flb.category.StoreEditor'>
 				<ownedOperation xmi:type='uml:Operation' xmi:id='_19_0_3_132003ac_1602252027643_344254_42128' name='executeQuery' visibility='public'>
 					<ownedParameter xmi:type='uml:Parameter' xmi:id='_19_0_3_132003ac_1602252043357_215172_42130' visibility='public'>
 						<type href='http://www.omg.org/spec/SysML/20150709/SysML.xmi#_SysML_Libraries_PackageableElement-PrimitiveValueTypes_PackageableElement-String_PackageableElement'>
@@ -867,7 +867,7 @@
 				<memberEnd xmi:idref='_19_0_3_132003ac_1602250865959_835794_42152'/>
 				<ownedEnd xmi:type='uml:Property' xmi:id='_19_0_3_132003ac_1602250899559_925392_42200' visibility='private' type='_19_0_3_132003ac_1602250786121_188395_42115' association='_19_0_3_132003ac_1602250899558_977904_42199'/>
 			</packagedElement>
-			<packagedElement xmi:type='uml:Class' xmi:id='_19_0_3_132003ac_1602251055792_145189_42249' name='Category'>
+			<packagedElement xmi:type='uml:Class' xmi:id='_19_0_3_132003ac_1602251055792_145189_42249' name='flb.category.Category'>
 				<ownedAttribute xmi:type='uml:Property' xmi:id='_19_0_3_132003ac_1602251070271_567849_42252' name='name' visibility='private'>
 					<type href='http://www.omg.org/spec/SysML/20150709/SysML.xmi#_SysML_Libraries_PackageableElement-PrimitiveValueTypes_PackageableElement-String_PackageableElement'>
 						<xmi:Extension extender='MagicDraw UML 19.0'>
@@ -889,7 +889,7 @@
 						</xmi:Extension>
 					</type>
 				</ownedAttribute>
-				<ownedOperation xmi:type='uml:Operation' xmi:id='_19_0_3_132003ac_1602252285929_646818_42149' name='Category' visibility='public'>
+				<ownedOperation xmi:type='uml:Operation' xmi:id='_19_0_3_132003ac_1602252285929_646818_42149' name='flb.category.Category' visibility='public'>
 					<ownedParameter xmi:type='uml:Parameter' xmi:id='_19_0_3_132003ac_1602252300332_528845_42151' visibility='public'>
 						<type href='http://www.omg.org/spec/SysML/20150709/SysML.xmi#_SysML_Libraries_PackageableElement-PrimitiveValueTypes_PackageableElement-String_PackageableElement'>
 							<xmi:Extension extender='MagicDraw UML 19.0'>
@@ -945,7 +945,7 @@
 				<supplier xmi:idref='_19_0_3_132003ac_1602251055792_145189_42249'/>
 			</packagedElement>
 			<packagedElement xmi:type='uml:Class' xmi:id='_19_0_3_132003ac_1602252043413_226092_42132' name='ResultSet'/>
-			<packagedElement xmi:type='uml:Class' xmi:id='_19_0_3_132003ac_1602253156752_357162_42192' name='AbstractDatabase'>
+			<packagedElement xmi:type='uml:Class' xmi:id='_19_0_3_132003ac_1602253156752_357162_42192' name='flb.database.AbstractDatabase'>
 				<interfaceRealization xmi:type='uml:InterfaceRealization' xmi:id='_19_0_3_132003ac_1602253716174_859831_42238' contract='_19_0_3_132003ac_1602250822243_631676_42119'>
 					<client xmi:idref='_19_0_3_132003ac_1602253156752_357162_42192'/>
 					<supplier xmi:idref='_19_0_3_132003ac_1602250822243_631676_42119'/>
@@ -972,7 +972,7 @@
 						</xmi:Extension>
 					</type>
 				</ownedAttribute>
-				<ownedOperation xmi:type='uml:Operation' xmi:id='_19_0_3_132003ac_1602255287885_870577_42384' name='AbstractDatabase' visibility='public'>
+				<ownedOperation xmi:type='uml:Operation' xmi:id='_19_0_3_132003ac_1602255287885_870577_42384' name='flb.database.AbstractDatabase' visibility='public'>
 					<ownedParameter xmi:type='uml:Parameter' xmi:id='_19_0_3_132003ac_1602255294162_288253_42386' visibility='public'>
 						<type href='http://www.omg.org/spec/SysML/20150709/SysML.xmi#_SysML_Libraries_PackageableElement-PrimitiveValueTypes_PackageableElement-String_PackageableElement'>
 							<xmi:Extension extender='MagicDraw UML 19.0'>
@@ -1026,9 +1026,9 @@
 					<ownedParameter xmi:type='uml:Parameter' xmi:id='_19_0_3_132003ac_1602255123114_684230_42361' visibility='public' direction='return' type='_19_0_3_132003ac_1602252043413_226092_42132'/>
 				</ownedOperation>
 			</packagedElement>
-			<packagedElement xmi:type='uml:Class' xmi:id='_19_0_3_132003ac_1602254778846_407339_42243' name='TestDatabase'>
+			<packagedElement xmi:type='uml:Class' xmi:id='_19_0_3_132003ac_1602254778846_407339_42243' name='flb.database.TestDatabase'>
 				<generalization xmi:type='uml:Generalization' xmi:id='_19_0_3_132003ac_1602254815447_541877_42313' general='_19_0_3_132003ac_1602253156752_357162_42192'/>
-				<ownedOperation xmi:type='uml:Operation' xmi:id='_19_0_3_132003ac_1602254977941_865587_42317' name='TestDatabase' visibility='public'/>
+				<ownedOperation xmi:type='uml:Operation' xmi:id='_19_0_3_132003ac_1602254977941_865587_42317' name='flb.database.TestDatabase' visibility='public'/>
 				<ownedOperation xmi:type='uml:Operation' xmi:id='_19_0_3_132003ac_1602255167828_424382_42364' name='connect' visibility='public'>
 					<ownedParameter xmi:type='uml:Parameter' xmi:id='_19_0_3_132003ac_1602255257091_1126_42374' visibility='public' direction='return'>
 						<type href='UML_Standard_Profile.mdzip#eee_1045467100323_249638_60'>
@@ -1039,9 +1039,9 @@
 					</ownedParameter>
 				</ownedOperation>
 			</packagedElement>
-			<packagedElement xmi:type='uml:Class' xmi:id='_19_0_3_132003ac_1602254791091_628319_42285' name='ProductionDatabase'>
+			<packagedElement xmi:type='uml:Class' xmi:id='_19_0_3_132003ac_1602254791091_628319_42285' name='flb.database.ProductionDatabase'>
 				<generalization xmi:type='uml:Generalization' xmi:id='_19_0_3_132003ac_1602254818670_756102_42316' general='_19_0_3_132003ac_1602253156752_357162_42192'/>
-				<ownedOperation xmi:type='uml:Operation' xmi:id='_19_0_3_132003ac_1602255206957_10330_42370' name='ProductionDatabase' visibility='public'/>
+				<ownedOperation xmi:type='uml:Operation' xmi:id='_19_0_3_132003ac_1602255206957_10330_42370' name='flb.database.ProductionDatabase' visibility='public'/>
 			</packagedElement>
 			<packagedElement xmi:type='uml:Class' xmi:id='_19_0_3_132003ac_1602255006708_659482_42320' name='Connection'/>
 		</packagedElement>

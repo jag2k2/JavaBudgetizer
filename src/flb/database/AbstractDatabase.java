@@ -1,3 +1,7 @@
+package flb.database;
+
+import flb.category.StoreEditor;
+
 import java.sql.*;
 
 public abstract class AbstractDatabase implements StoreEditor {
