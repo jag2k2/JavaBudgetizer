@@ -61,6 +61,9 @@ public class CategoryManager {
         tableScroller.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         tableScroller.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
+        addButton.addActionListener(new UserAddsCategoryListener());
+        deleteButton.addActionListener(new UserDeletesCategoryListener());
+
         northBox.add(nameFilterField);
         northBox.add(addButton);
         northBox.add(deleteButton);
@@ -81,5 +84,25 @@ public class CategoryManager {
         frame.setMinimumSize(new Dimension(200, 300));
         frame.pack();
         frame.setVisible(true);
+    }
+
+    class UserAddsCategoryListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            categoryStorage.addCategory(nameFilterField.getText());
+            tableModel.setContents(categoryStorage.getCategories(""));
+            tableModel.fireTableDataChanged();
+        }
+    }
+
+    class UserDeletesCategoryListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            int selectedRow = categoryDisplayTable.getSelectedRow();
+            String categoryNameToDelete = tableModel.getRowName(selectedRow);
+            categoryStorage.deleteCategory(categoryNameToDelete);
+            tableModel.setContents(categoryStorage.getCategories(""));
+            tableModel.fireTableDataChanged();
+        }
     }
 }
