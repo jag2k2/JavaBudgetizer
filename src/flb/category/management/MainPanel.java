@@ -16,30 +16,15 @@ public class MainPanel {
 
     public void build(){
         CategoryTable categoryTable = new CategoryTable(categoryStorage.getCategories(""));
+        categoryTable.build();
+        NorthPanel northPanel = new NorthPanel(categoryStorage, categoryTable);
+        northPanel.build();
+        SouthPanel southPanel = new SouthPanel();
+        southPanel.build();
 
-        JTextField nameFilterField = new JTextField();
-        JButton addButton = new JButton("Add");
-        JButton deleteButton = new JButton("Delete");
-        addButton.addActionListener(new UserAddsCategoryListener(categoryStorage, nameFilterField, categoryTable));
-        deleteButton.addActionListener(new UserDeletesCategoryListener(categoryStorage, categoryTable));
-        Box northBox = new Box(BoxLayout.X_AXIS);
-        northBox.add(nameFilterField);
-        northBox.add(addButton);
-        northBox.add(deleteButton);
-
-        JButton renameButton = new JButton("Rename");
-        JButton editAmountButton = new JButton("Edit");
-        JButton clearAmountButton = new JButton("Clear");
-        JButton excludeButton = new JButton("Exclude");
-        Box southBox = new Box(BoxLayout.X_AXIS);
-        southBox.add(renameButton);
-        southBox.add(editAmountButton);
-        southBox.add(clearAmountButton);
-        southBox.add(excludeButton);
-
-        panel.add(BorderLayout.NORTH, northBox);
+        panel.add(BorderLayout.NORTH, northPanel.getPane());
         panel.add(BorderLayout.CENTER, categoryTable.getPane());
-        panel.add(BorderLayout.SOUTH, southBox);
+        panel.add(BorderLayout.SOUTH, southPanel.getPane());
         panel.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
     }
 
