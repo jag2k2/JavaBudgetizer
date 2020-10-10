@@ -9,21 +9,18 @@ import java.awt.event.ActionListener;
 class UserDeletesCategoryListener implements ActionListener {
 
     private final CategoryStorage categoryStorage;
-    private final CategoryTableModel tableModel;
-    private final JTable table;
+    private final CategoryTable categoryTable;
 
-    public UserDeletesCategoryListener(CategoryStorage categoryStorage, CategoryTableModel tableModel, JTable table){
+
+    public UserDeletesCategoryListener(CategoryStorage categoryStorage, CategoryTable categoryTable){
         this.categoryStorage = categoryStorage;
-        this.tableModel = tableModel;
-        this.table = table;
+        this.categoryTable = categoryTable;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        int selectedRow = table.getSelectedRow();
-        String categoryNameToDelete = tableModel.getRowName(selectedRow);
+        String categoryNameToDelete = categoryTable.getSelectedRowName();
         categoryStorage.deleteCategory(categoryNameToDelete);
-        tableModel.setContents(categoryStorage.getCategories(""));
-        tableModel.fireTableDataChanged();
+        categoryTable.refresh(categoryStorage.getCategories(""));
     }
 }

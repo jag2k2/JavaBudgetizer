@@ -22,9 +22,7 @@ public class CategoryManager {
         AbstractDatabase database = new TestDatabase();
         database.connect();
         CategoryStorage categoryStorage = new CategoryStorage(database);
-        MainPanel mainPanel = new MainPanel(categoryStorage);
-        mainPanel.build();
         MainGUI mainGui = new MainGUI();
-        mainGui.buildGUI(mainPanel);
+        mainGui.buildGUI(categoryStorage);
     }
 }
