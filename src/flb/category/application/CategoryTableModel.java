@@ -1,4 +1,4 @@
-package flb.category.management;
+package flb.category.application;
 
 import flb.category.Category;
 import javax.swing.table.*;

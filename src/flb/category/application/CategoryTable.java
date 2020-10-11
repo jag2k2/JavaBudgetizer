@@ -1,4 +1,4 @@
-package flb.category.management;
+package flb.category.application;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,9 +14,6 @@ public class CategoryTable {
         tableModel = new CategoryTableModel(categories);
         table = new JTable(tableModel);
         tableScroller = new JScrollPane(table);
-    }
-
-    public void build() {
         table.setFillsViewportHeight(true);
         table.getColumnModel().getColumn(0).setPreferredWidth(180);
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);

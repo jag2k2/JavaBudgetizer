@@ -1,6 +1,8 @@
-package flb.category.management;
+package flb.category.application.listeners;
 
 import flb.category.*;
+import flb.category.application.CategoryTable;
+
 import javax.swing.*;
 import javax.swing.event.*;
 import java.util.*;
@@ -31,9 +33,8 @@ public class UserFiltersCategoriesListener implements DocumentListener {
     }
 
     private void updateTableWithFilter() {
-        String nameFilter = this.nameFilter.getText();
-        ArrayList<Category> matchingCategories = categoryStorage.getCategories(nameFilter);
-        categoryTable.refresh(matchingCategories);
+        ArrayList<Category> categories = categoryStorage.getCategories(nameFilter.getText());
+        categoryTable.refresh(categories);
     }
 }
 
