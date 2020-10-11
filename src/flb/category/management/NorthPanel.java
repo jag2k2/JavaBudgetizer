@@ -1,7 +1,6 @@
 package flb.category.management;
 
 import flb.category.CategoryStorage;
-
 import javax.swing.*;
 
 
@@ -19,6 +18,7 @@ public class NorthPanel {
 
     public void build() {
         JTextField nameFilterField = new JTextField();
+        nameFilterField.getDocument().addDocumentListener(new UserFiltersCategoriesListener(categoryStorage, nameFilterField, categoryTable));
         panel.add(nameFilterField);
 
         JButton addButton = new JButton("Add");
@@ -26,7 +26,7 @@ public class NorthPanel {
         panel.add(addButton);
 
         JButton deleteButton = new JButton("Delete");
-        deleteButton.addActionListener(new UserDeletesCategoryListener(categoryStorage, categoryTable));
+        deleteButton.addActionListener(new UserDeletesCategoryListener(categoryStorage, nameFilterField, categoryTable));
         panel.add(deleteButton);
     }
 

@@ -1,14 +1,21 @@
 package flb.category.management;
 
 import flb.category.CategoryStorage;
-
 import javax.swing.*;
 import java.awt.*;
 
 public class MainGUI {
+    private final CategoryStorage categoryStorage;
 
-    public void buildGUI(CategoryStorage categoryStorage) {
-        MainPanel mainPanel = new MainPanel(categoryStorage);
+    public MainGUI(CategoryStorage categoryStorage){
+        this.categoryStorage = categoryStorage;
+    }
+
+    public void build() {
+        CategoryTable categoryTable = new CategoryTable(categoryStorage.getCategories(""));
+        NorthPanel northPanel = new NorthPanel(categoryStorage, categoryTable);
+        SouthPanel southPanel = new SouthPanel(categoryStorage, categoryTable);
+        MainPanel mainPanel = new MainPanel(northPanel, categoryTable, southPanel);
         mainPanel.build();
 
         JFrame frame = new JFrame();

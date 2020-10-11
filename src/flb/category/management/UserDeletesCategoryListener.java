@@ -1,19 +1,20 @@
 package flb.category.management;
 
-import flb.category.CategoryStorage;
-
+import flb.category.*;
+import java.awt.event.*;
+import java.util.*;
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 class UserDeletesCategoryListener implements ActionListener {
 
     private final CategoryStorage categoryStorage;
     private final CategoryTable categoryTable;
+    private final JTextField nameFilter;
 
 
-    public UserDeletesCategoryListener(CategoryStorage categoryStorage, CategoryTable categoryTable){
+    public UserDeletesCategoryListener(CategoryStorage categoryStorage, JTextField nameFilter, CategoryTable categoryTable){
         this.categoryStorage = categoryStorage;
+        this.nameFilter = nameFilter;
         this.categoryTable = categoryTable;
     }
 
@@ -21,6 +22,8 @@ class UserDeletesCategoryListener implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         String categoryNameToDelete = categoryTable.getSelectedRowName();
         categoryStorage.deleteCategory(categoryNameToDelete);
-        categoryTable.refresh(categoryStorage.getCategories(""));
+        ArrayList<Category> allCategories = categoryStorage.getCategories("");
+        categoryTable.refresh(allCategories);
+        nameFilter.setText("");
     }
 }
