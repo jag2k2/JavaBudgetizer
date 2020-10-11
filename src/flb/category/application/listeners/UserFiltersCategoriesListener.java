@@ -1,8 +1,7 @@
 package flb.category.application.listeners;
 
+import flb.category.application.*;
 import flb.category.*;
-import flb.category.application.CategoryTable;
-
 import javax.swing.*;
 import javax.swing.event.*;
 import java.util.*;

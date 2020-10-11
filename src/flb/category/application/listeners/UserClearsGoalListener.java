@@ -1,13 +1,10 @@
 package flb.category.application.listeners;
 
-import flb.category.Category;
-import flb.category.CategoryStorage;
-import flb.category.application.CategoryTable;
-
+import flb.category.application.*;
+import flb.category.*;
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
+import java.awt.event.*;
+import java.util.*;
 
 public class UserClearsGoalListener implements ActionListener {
     private final CategoryStorage categoryStorage;
