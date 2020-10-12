@@ -4,7 +4,7 @@ public class Category {
 
     private String name;
     private final Boolean exclude;
-    private final Float default_goal;
+    private Float default_goal;
 
     public Category(String name, float goal, Boolean exclude) {
         this.name = name;
@@ -28,6 +28,10 @@ public class Category {
 
     public void rename(String newName) {
         this.name = newName;
+    }
+
+    public void setDefaultGoal(Float newDefaultGoal) {
+        this.default_goal = Math.max(newDefaultGoal, 0);
     }
 
     @Override

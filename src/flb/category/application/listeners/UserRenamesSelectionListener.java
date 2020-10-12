@@ -26,10 +26,12 @@ public class UserRenamesSelectionListener implements PropertyChangeListener {
                 oldName = categoryTable.getSelectedRowName();
             }
             else {
-                String newName = categoryTable.getSelectedRowName();
-                categoryStorage.renameCategory(oldName, newName);
-                ArrayList<Category> categories = categoryStorage.getCategories(nameFilter.getText());
-                categoryTable.editRefresh(categories);
+                if (categoryTable.getEditingColumn() == 0) {
+                    String newName = categoryTable.getSelectedRowName();
+                    categoryStorage.renameCategory(oldName, newName);
+                    ArrayList<Category> categories = categoryStorage.getCategories(nameFilter.getText());
+                    categoryTable.editRefresh(categories);
+                }
             }
         }
     }

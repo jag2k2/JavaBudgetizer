@@ -45,9 +45,18 @@ public class CategoryTable {
         }
     }
 
+    public Float getSelectedDefaultGoal() {
+        int selectedRow = table.getSelectedRow();
+        return tableModel.getDefaultGoal(selectedRow);
+    }
+
     public boolean getRowSelectedExcludes() {
         int selectedRow = table.getSelectedRow();
         return tableModel.getExcludesAt(selectedRow);
+    }
+
+    public int getEditingColumn() {
+        return table.getEditingColumn();
     }
 
     public void addExcludeEditorListener(UserEditsExcludesListener editsExcludesListener) {
@@ -56,6 +65,10 @@ public class CategoryTable {
 
     public void addRenameEditorListener(UserRenamesSelectionListener renameListener) {
         table.addPropertyChangeListener(renameListener);
+    }
+
+    public void addGoalAmountEditorListener(UserEditsGoalAmountListener goalEditListener) {
+        table.getModel().addTableModelListener(goalEditListener);
     }
 
     public boolean isEditing() {

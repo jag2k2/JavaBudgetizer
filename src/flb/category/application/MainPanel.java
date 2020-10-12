@@ -10,7 +10,6 @@ public class MainPanel {
     private final JPanel mainPanel;
     private final JButton addButton;
     private final JButton deleteButton;
-    private final JButton editAmountButton;
     private final JButton clearAmountButton;
     private final JTextField nameFilter;
     private final CategoryTable categoryTable;
@@ -21,7 +20,6 @@ public class MainPanel {
         nameFilter = new JTextField();
         addButton = new JButton("Add");
         deleteButton = new JButton("Delete");
-        editAmountButton = new JButton("Edit");
         clearAmountButton = new JButton("Clear");
         categoryTable = new CategoryTable(categoryStorage.getCategories(""));
     }
@@ -31,13 +29,12 @@ public class MainPanel {
         northPanel.setLayout(new BoxLayout(northPanel, BoxLayout.X_AXIS));
         northPanel.add(nameFilter);
         northPanel.add(addButton);
-        northPanel.add(deleteButton);
+
 
         JPanel southPanel = new JPanel();
         southPanel.setLayout(new BoxLayout(southPanel, BoxLayout.X_AXIS));
-        southPanel.add(editAmountButton);
         southPanel.add(clearAmountButton);
-
+        southPanel.add(deleteButton);
 
         mainPanel.add(BorderLayout.NORTH, northPanel);
         mainPanel.add(BorderLayout.CENTER, categoryTable.getPane());
@@ -51,6 +48,7 @@ public class MainPanel {
         deleteButton.addActionListener(new UserDeletesCategoryListener(categoryStorage, nameFilter, categoryTable));
         clearAmountButton.addActionListener(new UserClearsGoalListener(categoryStorage, nameFilter, categoryTable));
         categoryTable.addRenameEditorListener(new UserRenamesSelectionListener(categoryStorage, nameFilter, categoryTable));
+        categoryTable.addGoalAmountEditorListener(new UserEditsGoalAmountListener(categoryStorage, nameFilter, categoryTable));
         categoryTable.addExcludeEditorListener(new UserEditsExcludesListener(categoryStorage, nameFilter, categoryTable));
     }
 

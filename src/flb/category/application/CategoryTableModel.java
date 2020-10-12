@@ -19,6 +19,10 @@ public class CategoryTableModel extends AbstractTableModel {
         return tableContents.get(row).getName();
     }
 
+    public Float getDefaultGoal(int row) {
+        return tableContents.get(row).getDefaultGoal();
+    }
+
     public Boolean getExcludesAt(int row) {
         return tableContents.get(row).getExclude();
     }
@@ -45,9 +49,13 @@ public class CategoryTableModel extends AbstractTableModel {
 
     @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+        System.out.println("setValueAt: " + aValue + " columns: " + columnIndex);
         if (columnIndex == 0) {
             tableContents.get(rowIndex).rename((String) aValue);
+        } else if (columnIndex == 1) {
+            tableContents.get(rowIndex).setDefaultGoal((Float) aValue);
         }
+        fireTableCellUpdated(rowIndex, columnIndex);
     }
 
     @Override
@@ -58,12 +66,10 @@ public class CategoryTableModel extends AbstractTableModel {
     @Override
     public boolean isCellEditable(int row, int col) {
         return true;
-        //return col == 2;
     }
 
     @Override
     public String getColumnName(int column) {
         return columnNames[column];
     }
-
 }
