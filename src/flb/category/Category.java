@@ -2,7 +2,7 @@ package flb.category;
 
 public class Category {
 
-    private final String name;
+    private String name;
     private final Boolean exclude;
     private final Float default_goal;
 
@@ -25,6 +25,10 @@ public class Category {
     }
 
     public boolean getExclude() { return exclude; }
+
+    public void rename(String newName) {
+        this.name = newName;
+    }
 
     @Override
     public boolean equals(Object toCompare) {

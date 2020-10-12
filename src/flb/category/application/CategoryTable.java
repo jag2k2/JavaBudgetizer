@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.*;
 import flb.category.*;
-import flb.category.application.listeners.UserEditsExcludesListener;
+import flb.category.application.listeners.*;
 
 public class CategoryTable {
     private final CategoryTableModel tableModel;
@@ -37,7 +37,12 @@ public class CategoryTable {
 
     public String getSelectedRowName() {
         int selectedRow = table.getSelectedRow();
-        return tableModel.getRowName(selectedRow);
+        if(selectedRow < 0){
+            return "";
+        }
+        else {
+            return tableModel.getRowName(selectedRow);
+        }
     }
 
     public boolean getRowSelectedExcludes() {
@@ -49,9 +54,12 @@ public class CategoryTable {
         table.getDefaultEditor(Boolean.class).addCellEditorListener(editsExcludesListener);
     }
 
-    public void editSelectedName() {
-        int selectedRow = table.getSelectedRow();
-        table.editCellAt(selectedRow, 0);
+    public void addRenameEditorListener(UserRenamesSelectionListener renameListener) {
+        table.addPropertyChangeListener(renameListener);
+    }
+
+    public boolean isEditing() {
+        return table.isEditing();
     }
 
     public JScrollPane getPane() {

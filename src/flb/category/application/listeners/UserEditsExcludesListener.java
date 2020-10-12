@@ -26,7 +26,6 @@ public class UserEditsExcludesListener implements CellEditorListener {
     @Override
     public void editingStopped(ChangeEvent e) {
         String selectedName = categoryTable.getSelectedRowName();
-        boolean excludes = categoryTable.getRowSelectedExcludes();
         categoryStorage.toggleExclusion(selectedName);
         ArrayList<Category> categories = categoryStorage.getCategories(nameFilter.getText());
         categoryTable.editRefresh(categories);

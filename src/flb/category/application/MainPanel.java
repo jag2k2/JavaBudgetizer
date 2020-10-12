@@ -10,7 +10,6 @@ public class MainPanel {
     private final JPanel mainPanel;
     private final JButton addButton;
     private final JButton deleteButton;
-    private final JButton renameButton;
     private final JButton editAmountButton;
     private final JButton clearAmountButton;
     private final JTextField nameFilter;
@@ -22,7 +21,6 @@ public class MainPanel {
         nameFilter = new JTextField();
         addButton = new JButton("Add");
         deleteButton = new JButton("Delete");
-        renameButton = new JButton("Rename");
         editAmountButton = new JButton("Edit");
         clearAmountButton = new JButton("Clear");
         categoryTable = new CategoryTable(categoryStorage.getCategories(""));
@@ -33,13 +31,13 @@ public class MainPanel {
         northPanel.setLayout(new BoxLayout(northPanel, BoxLayout.X_AXIS));
         northPanel.add(nameFilter);
         northPanel.add(addButton);
+        northPanel.add(deleteButton);
 
         JPanel southPanel = new JPanel();
         southPanel.setLayout(new BoxLayout(southPanel, BoxLayout.X_AXIS));
-        southPanel.add(renameButton);
         southPanel.add(editAmountButton);
         southPanel.add(clearAmountButton);
-        southPanel.add(deleteButton);
+
 
         mainPanel.add(BorderLayout.NORTH, northPanel);
         mainPanel.add(BorderLayout.CENTER, categoryTable.getPane());
@@ -50,9 +48,9 @@ public class MainPanel {
     public void addListeners() {
         nameFilter.getDocument().addDocumentListener(new UserFiltersCategoriesListener(categoryStorage, nameFilter, categoryTable));
         addButton.addActionListener(new UserAddsCategoryListener(categoryStorage, nameFilter, categoryTable));
-        renameButton.addActionListener(new UserRenamesSelectionListener(categoryStorage, nameFilter, categoryTable));
         deleteButton.addActionListener(new UserDeletesCategoryListener(categoryStorage, nameFilter, categoryTable));
-        clearAmountButton.addActionListener(new UserClearsGoalListener(categoryStorage, categoryTable, nameFilter));
+        clearAmountButton.addActionListener(new UserClearsGoalListener(categoryStorage, nameFilter, categoryTable));
+        categoryTable.addRenameEditorListener(new UserRenamesSelectionListener(categoryStorage, nameFilter, categoryTable));
         categoryTable.addExcludeEditorListener(new UserEditsExcludesListener(categoryStorage, nameFilter, categoryTable));
     }
 

@@ -3,22 +3,34 @@ package flb.category.application.listeners;
 import flb.category.application.*;
 import flb.category.*;
 import javax.swing.*;
-import java.awt.event.*;
+import java.beans.*;
+import java.util.*;
 
-public class UserRenamesSelectionListener implements ActionListener {
+public class UserRenamesSelectionListener implements PropertyChangeListener {
     private final CategoryStorage categoryStorage;
     private final CategoryTable categoryTable;
     private final JTextField nameFilter;
+    private String oldName;
 
     public UserRenamesSelectionListener(CategoryStorage categoryStorage, JTextField nameFilter, CategoryTable categoryTable){
         this.categoryStorage = categoryStorage;
         this.categoryTable = categoryTable;
         this.nameFilter = nameFilter;
+        this.oldName = "";
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-        System.out.println("trying to edit row");
-        categoryTable.editSelectedName();
+    public void propertyChange(PropertyChangeEvent evt) {
+        if(evt.getPropertyName().equals("tableCellEditor")){
+            if(categoryTable.isEditing()){
+                oldName = categoryTable.getSelectedRowName();
+            }
+            else {
+                String newName = categoryTable.getSelectedRowName();
+                categoryStorage.renameCategory(oldName, newName);
+                ArrayList<Category> categories = categoryStorage.getCategories(nameFilter.getText());
+                categoryTable.editRefresh(categories);
+            }
+        }
     }
 }

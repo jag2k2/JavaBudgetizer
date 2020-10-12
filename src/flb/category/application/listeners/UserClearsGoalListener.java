@@ -11,7 +11,7 @@ public class UserClearsGoalListener implements ActionListener {
     private final CategoryTable categoryTable;
     private final JTextField nameFilter;
 
-    public UserClearsGoalListener(CategoryStorage categoryStorage, CategoryTable categoryTable, JTextField nameFilter) {
+    public UserClearsGoalListener(CategoryStorage categoryStorage, JTextField nameFilter, CategoryTable categoryTable) {
         this.categoryStorage = categoryStorage;
         this.categoryTable = categoryTable;
         this.nameFilter = nameFilter;
