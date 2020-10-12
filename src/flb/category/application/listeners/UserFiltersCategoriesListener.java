@@ -33,7 +33,7 @@ public class UserFiltersCategoriesListener implements DocumentListener {
 
     private void updateTableWithFilter() {
         ArrayList<Category> categories = categoryStorage.getCategories(nameFilter.getText());
-        categoryTable.refresh(categories);
+        categoryTable.rowChangeRefresh(categories);
     }
 }
 

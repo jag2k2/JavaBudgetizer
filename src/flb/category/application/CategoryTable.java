@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.*;
 import flb.category.*;
+import flb.category.application.listeners.UserEditsExcludesListener;
 
 public class CategoryTable {
     private final CategoryTableModel tableModel;
@@ -22,7 +23,14 @@ public class CategoryTable {
         tableScroller.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
     }
 
-    public void refresh(ArrayList<Category> tableContents){
+    public void editRefresh(ArrayList<Category> tableContents){
+        int[] selections = table.getSelectionModel().getSelectedIndices();
+        tableModel.setContents(tableContents);
+        tableModel.fireTableDataChanged();
+        table.getSelectionModel().setSelectionInterval(selections[0], selections[0]);
+    }
+
+    public void rowChangeRefresh(ArrayList<Category> tableContents){
         tableModel.setContents(tableContents);
         tableModel.fireTableDataChanged();
     }
@@ -30,6 +38,20 @@ public class CategoryTable {
     public String getSelectedRowName() {
         int selectedRow = table.getSelectedRow();
         return tableModel.getRowName(selectedRow);
+    }
+
+    public boolean getRowSelectedExcludes() {
+        int selectedRow = table.getSelectedRow();
+        return tableModel.getExcludesAt(selectedRow);
+    }
+
+    public void addExcludeEditorListener(UserEditsExcludesListener editsExcludesListener) {
+        table.getDefaultEditor(Boolean.class).addCellEditorListener(editsExcludesListener);
+    }
+
+    public void editSelectedName() {
+        int selectedRow = table.getSelectedRow();
+        table.editCellAt(selectedRow, 0);
     }
 
     public JScrollPane getPane() {

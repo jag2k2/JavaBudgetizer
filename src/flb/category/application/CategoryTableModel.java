@@ -6,7 +6,7 @@ import java.util.*;
 
 public class CategoryTableModel extends AbstractTableModel {
 
-    private final String[] columnNames = {"Name", "Default Goal"};
+    private final String[] columnNames = {"Name", "Default Goal", "Exclude"};
     private ArrayList<Category> tableContents;
 
     public CategoryTableModel(ArrayList<Category> tableContents) {
@@ -17,6 +17,10 @@ public class CategoryTableModel extends AbstractTableModel {
 
     public String getRowName(int row) {
         return tableContents.get(row).getName();
+    }
+
+    public Boolean getExcludesAt(int row) {
+        return tableContents.get(row).getExclude();
     }
 
     @Override
@@ -34,8 +38,20 @@ public class CategoryTableModel extends AbstractTableModel {
         return switch (column) {
             case 0 -> tableContents.get(row).getName();
             case 1 -> tableContents.get(row).getDefaultGoal();
+            case 2 -> tableContents.get(row).getExclude();
             default -> null;
         };
+    }
+
+    @Override
+    public Class getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+    }
+
+    @Override
+    public boolean isCellEditable(int row, int col) {
+        return true;
+        //return col == 2;
     }
 
     @Override

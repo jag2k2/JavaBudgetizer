@@ -23,6 +23,6 @@ public class UserDeletesCategoryListener implements ActionListener {
         String categoryNameToDelete = categoryTable.getSelectedRowName();
         categoryStorage.deleteCategory(categoryNameToDelete);
         ArrayList<Category> categories = categoryStorage.getCategories(nameFilter.getText());
-        categoryTable.refresh(categories);
+        categoryTable.rowChangeRefresh(categories);
     }
 }

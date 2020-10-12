@@ -25,7 +25,7 @@ public class UserAddsCategoryListener implements ActionListener {
                     categoryStorage.addCategory(categoryToAdd);
                     nameFilter.setText("");
                     ArrayList<Category> categories = categoryStorage.getCategories(nameFilter.getText());
-                    categoryTable.refresh(categories);
+                    categoryTable.rowChangeRefresh(categories);
 
                 }
         }

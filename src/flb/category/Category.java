@@ -24,6 +24,8 @@ public class Category {
         return default_goal;
     }
 
+    public boolean getExclude() { return exclude; }
+
     @Override
     public boolean equals(Object toCompare) {
         if (this == toCompare) return true;

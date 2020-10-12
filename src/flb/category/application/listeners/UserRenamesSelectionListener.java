@@ -4,14 +4,13 @@ import flb.category.application.*;
 import flb.category.*;
 import javax.swing.*;
 import java.awt.event.*;
-import java.util.*;
 
-public class UserClearsGoalListener implements ActionListener {
+public class UserRenamesSelectionListener implements ActionListener {
     private final CategoryStorage categoryStorage;
     private final CategoryTable categoryTable;
     private final JTextField nameFilter;
 
-    public UserClearsGoalListener(CategoryStorage categoryStorage, CategoryTable categoryTable, JTextField nameFilter) {
+    public UserRenamesSelectionListener(CategoryStorage categoryStorage, JTextField nameFilter, CategoryTable categoryTable){
         this.categoryStorage = categoryStorage;
         this.categoryTable = categoryTable;
         this.nameFilter = nameFilter;
@@ -19,9 +18,7 @@ public class UserClearsGoalListener implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        String categoryToClear = categoryTable.getSelectedRowName();
-        categoryStorage.updateAmount(categoryToClear, Float.NaN);
-        ArrayList<Category> categories = categoryStorage.getCategories(nameFilter.getText());
-        categoryTable.editRefresh(categories);
+        System.out.println("trying to edit row");
+        categoryTable.editSelectedName();
     }
 }
