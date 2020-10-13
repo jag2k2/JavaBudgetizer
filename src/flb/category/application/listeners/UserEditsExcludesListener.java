@@ -10,12 +10,10 @@ public class UserEditsExcludesListener implements CellEditorListener {
 
     private final CategoryStorage categoryStorage;
     private final CategoryTable categoryTable;
-    private final JTextField nameFilter;
 
-    public UserEditsExcludesListener(CategoryStorage categoryStorage, JTextField nameFilter, CategoryTable categoryTable){
+    public UserEditsExcludesListener(CategoryStorage categoryStorage, CategoryTable categoryTable){
         this.categoryStorage = categoryStorage;
         this.categoryTable = categoryTable;
-        this.nameFilter = nameFilter;
     }
 
     @Override
@@ -27,7 +25,7 @@ public class UserEditsExcludesListener implements CellEditorListener {
     public void editingStopped(ChangeEvent e) {
         String selectedName = categoryTable.getSelectedRowName();
         categoryStorage.toggleExclusion(selectedName);
-        ArrayList<Category> categories = categoryStorage.getCategories(nameFilter.getText());
+        ArrayList<Category> categories = categoryStorage.getCategories(categoryTable.getFilterText());
         categoryTable.editRefresh(categories);
     }
 }

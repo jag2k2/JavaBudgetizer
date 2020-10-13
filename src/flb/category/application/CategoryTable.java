@@ -8,11 +8,13 @@ import flb.category.application.listeners.*;
 
 public class CategoryTable {
     private final CategoryTableModel tableModel;
+    private final JTextField nameFilter;
     private final JTable table;
     private final JScrollPane tableScroller;
 
     public CategoryTable(ArrayList<Category> categories){
         tableModel = new CategoryTableModel(categories);
+        nameFilter = new JTextField();
         table = new JTable(tableModel);
         tableScroller = new JScrollPane(table);
         table.setFillsViewportHeight(true);
@@ -55,8 +57,8 @@ public class CategoryTable {
         return tableModel.getExcludesAt(selectedRow);
     }
 
-    public int getEditingColumn() {
-        return table.getEditingColumn();
+    public void addFilterListener(UserFiltersCategoriesListener filterListener){
+        nameFilter.getDocument().addDocumentListener(filterListener);
     }
 
     public void addExcludeEditorListener(UserEditsExcludesListener editsExcludesListener) {
@@ -75,7 +77,23 @@ public class CategoryTable {
         return table.isEditing();
     }
 
-    public JScrollPane getPane() {
+    public int getEditingColumn() {
+        return table.getEditingColumn();
+    }
+
+    public String getFilterText() {
+        return nameFilter.getText();
+    }
+
+    public void clearFilterText() {
+        nameFilter.setText("");
+    }
+
+    public JScrollPane getTablePane() {
         return tableScroller;
+    }
+
+    public JTextField getNameFilter() {
+        return nameFilter;
     }
 }

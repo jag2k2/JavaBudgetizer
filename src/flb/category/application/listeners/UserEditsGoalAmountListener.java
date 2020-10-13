@@ -8,12 +8,10 @@ import java.util.ArrayList;
 
 public class UserEditsGoalAmountListener implements TableModelListener {
     private final CategoryStorage categoryStorage;
-    private final JTextField nameFilter;
     private final CategoryTable categoryTable;
 
-    public UserEditsGoalAmountListener(CategoryStorage categoryStorage, JTextField nameFilter, CategoryTable categoryTable) {
+    public UserEditsGoalAmountListener(CategoryStorage categoryStorage, CategoryTable categoryTable) {
         this.categoryStorage = categoryStorage;
-        this.nameFilter = nameFilter;
         this.categoryTable = categoryTable;
     }
 
@@ -22,7 +20,7 @@ public class UserEditsGoalAmountListener implements TableModelListener {
         if (e.getColumn() == 1) {
             String categoryToUpdate = categoryTable.getSelectedRowName();
             categoryStorage.updateAmount(categoryToUpdate, categoryTable.getSelectedDefaultGoal());
-            ArrayList<Category> categories = categoryStorage.getCategories(nameFilter.getText());
+            ArrayList<Category> categories = categoryStorage.getCategories(categoryTable.getFilterText());
             categoryTable.editRefresh(categories);
         }
     }

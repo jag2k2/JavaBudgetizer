@@ -10,11 +10,9 @@ public class UserDeletesCategoryListener implements ActionListener {
 
     private final CategoryStorage categoryStorage;
     private final CategoryTable categoryTable;
-    private final JTextField nameFilter;
 
-    public UserDeletesCategoryListener(CategoryStorage categoryStorage, JTextField nameFilter, CategoryTable categoryTable){
+    public UserDeletesCategoryListener(CategoryStorage categoryStorage, CategoryTable categoryTable){
         this.categoryStorage = categoryStorage;
-        this.nameFilter = nameFilter;
         this.categoryTable = categoryTable;
     }
 
@@ -22,7 +20,7 @@ public class UserDeletesCategoryListener implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         String categoryNameToDelete = categoryTable.getSelectedRowName();
         categoryStorage.deleteCategory(categoryNameToDelete);
-        ArrayList<Category> categories = categoryStorage.getCategories(nameFilter.getText());
+        ArrayList<Category> categories = categoryStorage.getCategories(categoryTable.getFilterText());
         categoryTable.rowChangeRefresh(categories);
     }
 }
