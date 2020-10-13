@@ -1,7 +1,5 @@
 package flb.category;
 
-import flb.category.Category;
-
 import java.util.*;
 import java.sql.*;
 
