@@ -10,11 +10,13 @@ public class UserDeletesCategoryListener implements ActionListener {
 
     private final CategoryStorage categoryStorage;
     private final CategoryTable categoryTable;
+    private final JTextField nameFilter;
     private final JFrame frame;
 
-    public UserDeletesCategoryListener(CategoryStorage categoryStorage, CategoryTable categoryTable, JFrame frame){
+    public UserDeletesCategoryListener(CategoryStorage categoryStorage, CategoryTable categoryTable, JTextField nameFilter, JFrame frame){
         this.categoryStorage = categoryStorage;
         this.categoryTable = categoryTable;
+        this.nameFilter = nameFilter;
         this.frame = frame;
     }
 
@@ -26,7 +28,7 @@ public class UserDeletesCategoryListener implements ActionListener {
                 "Confirm Delete", JOptionPane.YES_NO_OPTION);
         if (selection == JOptionPane.YES_OPTION) {
             categoryStorage.deleteCategory(categoryNameToDelete);
-            ArrayList<Category> categories = categoryStorage.getCategories(categoryTable.getFilterText());
+            ArrayList<Category> categories = categoryStorage.getCategories(nameFilter.getText());
             categoryTable.rowChangeRefresh(categories);
         }
     }

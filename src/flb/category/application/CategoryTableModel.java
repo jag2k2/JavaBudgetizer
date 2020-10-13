@@ -13,20 +13,6 @@ public class CategoryTableModel extends AbstractTableModel {
         this.tableContents = tableContents;
     }
 
-    public void setContents(ArrayList<Category> tableContents) {this.tableContents = tableContents;}
-
-    public String getRowName(int row) {
-        return tableContents.get(row).getName();
-    }
-
-    public Float getDefaultGoal(int row) {
-        return tableContents.get(row).getDefaultGoal();
-    }
-
-    public Boolean getExcludesAt(int row) {
-        return tableContents.get(row).getExclude();
-    }
-
     @Override
     public int getRowCount() {
         return tableContents.size();
@@ -70,5 +56,25 @@ public class CategoryTableModel extends AbstractTableModel {
     @Override
     public String getColumnName(int column) {
         return columnNames[column];
+    }
+
+    public String getRowCategoryName(int row) {
+        return tableContents.get(row).getName();
+    }
+
+    public void setContents(ArrayList<Category> tableContents) {
+        this.tableContents = tableContents;
+    }
+
+    public ArrayList<Category> getContents() {
+        return tableContents;
+    }
+
+    public Float getDefaultGoal(int row) {
+        return tableContents.get(row).getDefaultGoal();
+    }
+
+    public Boolean getExcludesAt(int row) {
+        return tableContents.get(row).getExclude();
     }
 }

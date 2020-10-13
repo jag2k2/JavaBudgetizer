@@ -6,18 +6,15 @@ import java.awt.*;
 import java.text.DecimalFormat;
 import java.util.*;
 import flb.category.*;
-import flb.category.application.listeners.*;
 
 public class CategoryTable {
     private final CategoryTableModel tableModel;
-    private final JTextField nameFilter;
     private final JTable table;
     private final JScrollPane tableScroller;
 
-    public CategoryTable(ArrayList<Category> categories){
-        tableModel = new CategoryTableModel(categories);
-        nameFilter = new JTextField();
-        table = new JTable(tableModel);
+    public CategoryTable(JTable table, CategoryTableModel tableModel){
+        this.tableModel = tableModel;
+        this.table = table;
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         table.setFillsViewportHeight(true);
         GoalRenderer goalRenderer = new GoalRenderer();
@@ -51,7 +48,7 @@ public class CategoryTable {
             return "";
         }
         else {
-            return tableModel.getRowName(selectedRow);
+            return tableModel.getRowCategoryName(selectedRow);
         }
     }
 
@@ -65,22 +62,6 @@ public class CategoryTable {
         return tableModel.getExcludesAt(selectedRow);
     }
 
-    public void addFilterListener(UserFiltersCategoriesListener filterListener){
-        nameFilter.getDocument().addDocumentListener(filterListener);
-    }
-
-    public void addExcludeEditorListener(UserEditsExcludesListener editsExcludesListener) {
-        table.getDefaultEditor(Boolean.class).addCellEditorListener(editsExcludesListener);
-    }
-
-    public void addRenameEditorListener(UserRenamesSelectionListener renameListener) {
-        table.addPropertyChangeListener(renameListener);
-    }
-
-    public void addGoalAmountEditorListener(UserEditsGoalAmountListener goalEditListener) {
-        tableModel.addTableModelListener(goalEditListener);
-    }
-
     public boolean isEditing() {
         return table.isEditing();
     }
@@ -89,20 +70,8 @@ public class CategoryTable {
         return table.getEditingColumn();
     }
 
-    public String getFilterText() {
-        return nameFilter.getText();
-    }
-
-    public void clearFilterText() {
-        nameFilter.setText("");
-    }
-
     public JScrollPane getTablePane() {
         return tableScroller;
-    }
-
-    public JTextField getNameFilter() {
-        return nameFilter;
     }
 
     static class GoalRenderer  extends DefaultTableCellRenderer{

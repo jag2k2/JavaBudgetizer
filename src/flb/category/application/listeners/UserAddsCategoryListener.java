@@ -2,30 +2,30 @@ package flb.category.application.listeners;
 
 import flb.category.application.*;
 import flb.category.*;
-import java.util.*;
+
 import javax.swing.*;
+import java.util.*;
 import java.awt.event.*;
 
 public class UserAddsCategoryListener implements ActionListener {
     private final CategoryStorage categoryStorage;
-    private final CategoryTable categoryTable;
+    final CategoryTable categoryTable;
+    private final JTextField nameFilter;
 
-    public UserAddsCategoryListener(CategoryStorage categoryStorage, CategoryTable categoryTable){
+    public UserAddsCategoryListener(CategoryStorage categoryStorage, CategoryTable categoryTable, JTextField nameFilter){
         this.categoryStorage = categoryStorage;
         this.categoryTable = categoryTable;
+        this.nameFilter = nameFilter;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        String categoryToAdd = categoryTable.getFilterText();
-        if(!categoryToAdd.equals("")) {
-                if(!categoryStorage.categoryExist(categoryToAdd)) {
-                    categoryStorage.addCategory(categoryToAdd);
-                    categoryTable.clearFilterText();
-                    ArrayList<Category> categories = categoryStorage.getCategories(categoryTable.getFilterText());
-                    categoryTable.rowChangeRefresh(categories);
-
-                }
+        String categoryToAdd = nameFilter.getText();
+        if(!categoryToAdd.equals("") && !categoryStorage.categoryExist(categoryToAdd)) {
+            categoryStorage.addCategory(categoryToAdd);
+            nameFilter.setText("");
+            ArrayList<Category> categories = categoryStorage.getCategories(nameFilter.getText());
+            categoryTable.rowChangeRefresh(categories);
         }
     }
 }

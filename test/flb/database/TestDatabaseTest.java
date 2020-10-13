@@ -1,4 +1,5 @@
-import flb.database.TestDatabase;
+package flb.database;
+
 import org.junit.jupiter.api.*;
 import java.sql.*;
 import static org.junit.jupiter.api.Assertions.*;

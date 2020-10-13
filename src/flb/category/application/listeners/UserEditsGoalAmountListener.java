@@ -9,10 +9,12 @@ import java.util.ArrayList;
 public class UserEditsGoalAmountListener implements TableModelListener {
     private final CategoryStorage categoryStorage;
     private final CategoryTable categoryTable;
+    private final JTextField nameFilter;
 
-    public UserEditsGoalAmountListener(CategoryStorage categoryStorage, CategoryTable categoryTable) {
+    public UserEditsGoalAmountListener(CategoryStorage categoryStorage, CategoryTable categoryTable, JTextField nameFilter) {
         this.categoryStorage = categoryStorage;
         this.categoryTable = categoryTable;
+        this.nameFilter = nameFilter;
     }
 
     @Override
@@ -21,7 +23,7 @@ public class UserEditsGoalAmountListener implements TableModelListener {
             String categoryToUpdate = categoryTable.getSelectedRowName();
             Float newAmount = categoryTable.getSelectedDefaultGoal();
             categoryStorage.updateAmount(categoryToUpdate, newAmount);
-            ArrayList<Category> categories = categoryStorage.getCategories(categoryTable.getFilterText());
+            ArrayList<Category> categories = categoryStorage.getCategories(nameFilter.getText());
             categoryTable.editRefresh(categories);
         }
     }

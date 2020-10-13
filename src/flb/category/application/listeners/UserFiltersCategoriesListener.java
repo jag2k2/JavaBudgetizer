@@ -9,10 +9,12 @@ import java.util.*;
 public class UserFiltersCategoriesListener implements DocumentListener {
     private final CategoryStorage categoryStorage;
     private final CategoryTable categoryTable;
+    private final JTextField nameFilter;
 
-    public UserFiltersCategoriesListener(CategoryStorage categoryStorage, CategoryTable categoryTable) {
+    public UserFiltersCategoriesListener(CategoryStorage categoryStorage, CategoryTable categoryTable, JTextField nameFilter) {
         this.categoryStorage = categoryStorage;
         this.categoryTable = categoryTable;
+        this.nameFilter = nameFilter;
     }
 
     @Override
@@ -30,7 +32,7 @@ public class UserFiltersCategoriesListener implements DocumentListener {
     }
 
     private void updateTableWithFilter() {
-        ArrayList<Category> categories = categoryStorage.getCategories(categoryTable.getFilterText());
+        ArrayList<Category> categories = categoryStorage.getCategories(nameFilter.getText());
         categoryTable.rowChangeRefresh(categories);
     }
 }
