@@ -1,7 +1,6 @@
 package flb.category.application;
 
 import javax.swing.*;
-import flb.category.*;
 import flb.database.*;
 
 public class CategoryManager {
@@ -15,6 +14,7 @@ public class CategoryManager {
                 }
             }
         } catch (Exception e) { e.printStackTrace(); }
+
         SwingUtilities.invokeLater(new CategoryManagerJob());
     }
 
@@ -23,12 +23,10 @@ public class CategoryManager {
         public void run() {
             AbstractDatabase database = new TestDatabase();
             database.connect();
-            CategoryStorage categoryStorage = new CategoryStorage(database);
-            MainPanel mainPanel = new MainPanel(categoryStorage);
-            mainPanel.layout();
-            mainPanel.addListeners();
-            MainFrame mainFrame = new MainFrame();
-            mainFrame.launch(mainPanel);
+            MainGUI mainGui = new MainGUI(database);
+            mainGui.layout();
+            mainGui.addListeners();
+            mainGui.launch();
         }
     }
 }
