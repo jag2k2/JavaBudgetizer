@@ -14,7 +14,8 @@ public class MainFrame {
     public void launch(MainPanel mainPanel){
         frame.setContentPane(mainPanel.getPanel());
         frame.setLocation(200, 100);
-        frame.setMinimumSize(new Dimension(200, 300));
+        frame.setMinimumSize(new Dimension(375, 500));
+        frame.setPreferredSize(new Dimension(375, 500));
         frame.pack();
         frame.setVisible(true);
     }

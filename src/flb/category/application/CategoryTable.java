@@ -17,10 +17,15 @@ public class CategoryTable {
         nameFilter = new JTextField();
         table = new JTable(tableModel);
         tableScroller = new JScrollPane(table);
-        table.setFillsViewportHeight(true);
-        table.getColumnModel().getColumn(0).setPreferredWidth(180);
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        tableScroller.setPreferredSize(new Dimension(250, 300));
+        table.setFillsViewportHeight(true);
+        table.getColumnModel().getColumn(0).setMinWidth(120);
+        table.getColumnModel().getColumn(1).setMinWidth(80);
+        table.getColumnModel().getColumn(1).setMaxWidth(80);
+        table.getColumnModel().getColumn(2).setMinWidth(60);
+        table.getColumnModel().getColumn(2).setMaxWidth(60);
+        //table.setMinimumSize(new Dimension(275, 300));
+        //tableScroller.setMinimumSize(new Dimension(275, 300));
         tableScroller.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         tableScroller.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
     }

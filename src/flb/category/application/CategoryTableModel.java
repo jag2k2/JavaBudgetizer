@@ -49,7 +49,6 @@ public class CategoryTableModel extends AbstractTableModel {
 
     @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-        System.out.println("setValueAt: " + aValue + " columns: " + columnIndex);
         if (columnIndex == 0) {
             tableContents.get(rowIndex).rename((String) aValue);
         } else if (columnIndex == 1) {

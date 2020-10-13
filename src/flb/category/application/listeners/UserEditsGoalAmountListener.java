@@ -19,7 +19,8 @@ public class UserEditsGoalAmountListener implements TableModelListener {
     public void tableChanged(TableModelEvent e) {
         if (e.getColumn() == 1) {
             String categoryToUpdate = categoryTable.getSelectedRowName();
-            categoryStorage.updateAmount(categoryToUpdate, categoryTable.getSelectedDefaultGoal());
+            Float newAmount = categoryTable.getSelectedDefaultGoal();
+            categoryStorage.updateAmount(categoryToUpdate, newAmount);
             ArrayList<Category> categories = categoryStorage.getCategories(categoryTable.getFilterText());
             categoryTable.editRefresh(categories);
         }
