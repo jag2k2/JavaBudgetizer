@@ -21,7 +21,7 @@ class UserAddsCategoryListenerTest {
     private ArrayList<Category> expectedCategories;
 
     @BeforeEach
-    void init() {
+    void setUp() {
         expectedCategories = new ArrayList<>();
         expectedCategories.add(new Category("Name1", 100, false));
         expectedCategories.add(new Category("Name2", 200, true));
@@ -37,6 +37,11 @@ class UserAddsCategoryListenerTest {
         JTable table = new JTable(tableModel);
         CategoryTable categoryTable = new CategoryTable(table, tableModel);
         this.addsListener = new UserAddsCategoryListener(categoryStorage, categoryTable, nameFilter);
+    }
+
+    @AfterEach
+    void tearDown() {
+        database.close();
     }
 
     @Test
@@ -74,10 +79,5 @@ class UserAddsCategoryListenerTest {
         assertEquals(expectedCategories, actualCategories);
         assertEquals(expectedCategories, tableModel.getContents());
         assertEquals("Name1", nameFilter.getText());
-    }
-
-    @AfterEach
-    void close() {
-        database.close();
     }
 }

@@ -32,9 +32,11 @@ public class CategoryTable {
 
     public void editRefresh(ArrayList<Category> tableContents){
         int[] selections = table.getSelectionModel().getSelectedIndices();
-        tableModel.setContents(tableContents);
-        tableModel.fireTableDataChanged();
-        table.getSelectionModel().setSelectionInterval(selections[0], selections[0]);
+        if (selections.length > 0) {
+            tableModel.setContents(tableContents);
+            tableModel.fireTableDataChanged();
+            table.getSelectionModel().setSelectionInterval(selections[0], selections[0]);
+        }
     }
 
     public void rowChangeRefresh(ArrayList<Category> tableContents){

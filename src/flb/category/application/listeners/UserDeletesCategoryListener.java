@@ -23,13 +23,15 @@ public class UserDeletesCategoryListener implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         String categoryNameToDelete = categoryTable.getSelectedRowName();
-        int selection = JOptionPane.showConfirmDialog(
-                frame, "Are you sure you want to delete " + categoryNameToDelete + "?",
-                "Confirm Delete", JOptionPane.YES_NO_OPTION);
-        if (selection == JOptionPane.YES_OPTION) {
-            categoryStorage.deleteCategory(categoryNameToDelete);
-            ArrayList<Category> categories = categoryStorage.getCategories(nameFilter.getText());
-            categoryTable.rowChangeRefresh(categories);
+        if (!categoryNameToDelete.equals("")) {
+            int selection = JOptionPane.showConfirmDialog(
+                    frame, "Are you sure you want to delete " + categoryNameToDelete + "?",
+                    "Confirm Delete", JOptionPane.YES_NO_OPTION);
+            if (selection == JOptionPane.YES_OPTION) {
+                categoryStorage.deleteCategory(categoryNameToDelete);
+                ArrayList<Category> categories = categoryStorage.getCategories(nameFilter.getText());
+                categoryTable.rowChangeRefresh(categories);
+            }
         }
     }
 }

@@ -8,9 +8,14 @@ class TestDatabaseTest {
     private TestDatabase database;
 
     @BeforeEach
-    void init() {
+    void setUp() {
         database = new TestDatabase();
         database.connect();
+    }
+
+    @AfterEach
+    void tearDown() {
+        database.close();
     }
 
     @Test
@@ -41,10 +46,5 @@ class TestDatabaseTest {
         } catch (Exception ex) {ex.printStackTrace();}
 
         assertEquals(5, rowCount);
-    }
-
-    @AfterEach
-    void shutdown() {
-        database.close();
     }
 }

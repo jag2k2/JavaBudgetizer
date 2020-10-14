@@ -12,13 +12,18 @@ class CategoryStorageTest {
     ArrayList<Category> actual;
 
     @BeforeEach
-    void init(){
+    void setUp(){
         expected = new ArrayList<>();
         actual = new ArrayList<>();
 
         dataBase = new TestDatabase();
         dataBase.connect();
         categoryStorage = new CategoryStorage(dataBase);
+    }
+
+    @AfterEach
+    void tearDown() {
+        dataBase.close();
     }
 
     @Test
@@ -128,10 +133,5 @@ class CategoryStorageTest {
 
         actual = categoryStorage.getCategories("Name5");
         assertEquals(expected, actual);
-    }
-
-    @AfterEach
-    void close() {
-        dataBase.close();
     }
 }
