@@ -22,9 +22,9 @@ public class CategoryTableEditor {
         if(!categoryToAdd.equals("") && !categoryStorage.categoryExist(categoryToAdd)) {
             categoryStorage.addCategory(categoryToAdd);
             nameFilter.setText("");
-            ArrayList<Category> categories = categoryStorage.getCategories(nameFilter.getText());
-            categoryTable.rowChangeRefresh(categories);
         }
+        ArrayList<Category> categories = categoryStorage.getCategories(nameFilter.getText());
+        categoryTable.rowChangeRefresh(categories);
     }
 
     public void userDeleteCategory(JFrame frame) {
@@ -34,10 +34,10 @@ public class CategoryTableEditor {
             int selection = getSelectionFromDialog(categoryNameToDelete, frame);
             if (selection == JOptionPane.YES_OPTION) {
                 categoryStorage.deleteCategory(categoryNameToDelete);
-                ArrayList<Category> categories = categoryStorage.getCategories(nameFilter.getText());
-                categoryTable.rowChangeRefresh(categories);
             }
         }
+        ArrayList<Category> categories = categoryStorage.getCategories(nameFilter.getText());
+        categoryTable.rowChangeRefresh(categories);
     }
 
     protected int getSelectionFromDialog(String categoryNameToDelete, JFrame frame) {
