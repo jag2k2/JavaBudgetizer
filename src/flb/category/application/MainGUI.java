@@ -25,7 +25,8 @@ public class MainGUI {
         addButton = new JButton("Add");
         deleteButton = new JButton("Delete");
         clearAmountButton = new JButton("Clear");
-        tableEditor = new CategoryTableEditor(categoryStorage, table, tableModel, nameFilter);
+        CategoryTable categoryTable = new CategoryTable(table, tableModel);
+        tableEditor = new CategoryTableEditor(categoryStorage, categoryTable, nameFilter);
     }
 
     public void layout(){

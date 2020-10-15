@@ -62,6 +62,16 @@ public class CategoryStorage {
         return castResultsToCategories(results);
     }
 
+    public Boolean categoryExist(String name) {
+        String query = "SELECT * FROM categories WHERE name = '$name'";
+        query = query.replace("$name", name);
+
+        ResultSet results = storeEditor.executeQuery(query);
+        ArrayList<Category> categories = castResultsToCategories(results);
+
+        return !categories.isEmpty();
+    }
+
     private ArrayList<Category> castResultsToCategories(ResultSet results) {
         ArrayList<Category> categories = new ArrayList<>();
         try {
@@ -77,15 +87,5 @@ public class CategoryStorage {
             ex.printStackTrace();
         }
         return categories;
-    }
-
-    public Boolean categoryExist(String name) {
-        String query = "SELECT * FROM categories WHERE name = '$name'";
-        query = query.replace("$name", name);
-
-        ResultSet results = storeEditor.executeQuery(query);
-        ArrayList<Category> categories = castResultsToCategories(results);
-
-        return !categories.isEmpty();
     }
 }

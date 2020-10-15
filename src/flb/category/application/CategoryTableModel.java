@@ -58,10 +58,6 @@ public class CategoryTableModel extends AbstractTableModel {
         return columnNames[column];
     }
 
-    public String getCategoryName(int row) {
-        return tableContents.get(row).getName();
-    }
-
     public void setContents(ArrayList<Category> tableContents) {
         this.tableContents = tableContents;
     }
@@ -70,11 +66,11 @@ public class CategoryTableModel extends AbstractTableModel {
         return tableContents;
     }
 
-    public Float getDefaultGoal(int row) {
-        return tableContents.get(row).getDefaultGoal();
-    }
-
-    public Boolean getExcludesAt(int row) {
-        return tableContents.get(row).getExclude();
+    public ArrayList<Category> getCategory(int row) {
+        ArrayList<Category> maybeCategory = new ArrayList<>();
+        if (row >= 0) {
+            maybeCategory.add(tableContents.get(row));
+        }
+        return maybeCategory;
     }
 }
