@@ -13,6 +13,8 @@ public class UserEditsGoalAmountListener implements TableModelListener {
 
     @Override
     public void tableChanged(TableModelEvent event) {
-            tableEditor.userEditsGoalAmount(event.getColumn());
+        if(event.getColumn() == 1) {
+            tableEditor.userEditsGoalAmount();
+        }
     }
 }

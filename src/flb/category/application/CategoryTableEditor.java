@@ -8,13 +8,11 @@ public class CategoryTableEditor {
     private final CategoryStorage categoryStorage;
     private final CategoryTable categoryTable;
     private final JTextField nameFilter;
-    private String oldName;
 
     public CategoryTableEditor(CategoryStorage categoryStorage, CategoryTable categoryTable, JTextField nameFilter){
         this.categoryStorage = categoryStorage;
         this.categoryTable = categoryTable;
         this.nameFilter = nameFilter;
-        this.oldName = "";
     }
 
     public void userAddCategory() {
@@ -56,9 +54,9 @@ public class CategoryTableEditor {
         if (!maybeCategory.isEmpty()) {
             String categoryToClear = maybeCategory.get(0).getName();
             categoryStorage.updateAmount(categoryToClear, Float.NaN);
-            ArrayList<Category> categories = categoryStorage.getCategories(nameFilter.getText());
-            categoryTable.editRefresh(categories);
         }
+        ArrayList<Category> categories = categoryStorage.getCategories(nameFilter.getText());
+        categoryTable.editRefresh(categories);
     }
 
     public void userEditsExcludes() {
@@ -66,39 +64,33 @@ public class CategoryTableEditor {
         if (!maybeCategory.isEmpty()) {
             String selectedName = maybeCategory.get(0).getName();
             categoryStorage.toggleExclusion(selectedName);
-            ArrayList<Category> categories = categoryStorage.getCategories(nameFilter.getText());
-            categoryTable.editRefresh(categories);
         }
+        ArrayList<Category> categories = categoryStorage.getCategories(nameFilter.getText());
+        categoryTable.editRefresh(categories);
     }
 
-    public void userEditsGoalAmount(int editedColumn) {
-        if (editedColumn == 1) {
-            ArrayList<Category> maybeCategory = categoryTable.getSelectedCategory();
-            if (!maybeCategory.isEmpty()) {
-                String categoryToUpdate = maybeCategory.get(0).getName();
-                float newAmount = maybeCategory.get(0).getDefaultGoal();
-                categoryStorage.updateAmount(categoryToUpdate, newAmount);
-                ArrayList<Category> categories = categoryStorage.getCategories(nameFilter.getText());
-                categoryTable.editRefresh(categories);
-            }
+    public void userEditsGoalAmount() {
+        ArrayList<Category> maybeCategory = categoryTable.getSelectedCategory();
+        if (!maybeCategory.isEmpty()) {
+            String categoryToUpdate = maybeCategory.get(0).getName();
+            float newAmount = maybeCategory.get(0).getDefaultGoal();
+            categoryStorage.updateAmount(categoryToUpdate, newAmount);
         }
+        ArrayList<Category> categories = categoryStorage.getCategories(nameFilter.getText());
+        categoryTable.editRefresh(categories);
     }
 
-    public void userRenamesCategory(String eventProperty) {
-        if(eventProperty.equals("tableCellEditor")) {
-            ArrayList<Category> maybeCategory = categoryTable.getEditingCategory();
-            if(!maybeCategory.isEmpty()) {
-                oldName = maybeCategory.get(0).getName();
-            }
-            else {
-                maybeCategory = categoryTable.getRenamedCategory();
-                if (!maybeCategory.isEmpty()) {
-                    String newName = maybeCategory.get(0).getName();
-                    categoryStorage.renameCategory(oldName, newName);
-                    ArrayList<Category> categories = categoryStorage.getCategories(nameFilter.getText());
-                    categoryTable.editRefresh(categories);
-                }
-            }
+    public ArrayList<Category> getEditingCategory() {
+        return categoryTable.getEditingCategory();
+    }
+
+    public void userRenamedCategory(String oldName) {
+        ArrayList<Category> maybeCategory = categoryTable.getSelectedCategory();
+        if(!maybeCategory.isEmpty()) {
+            String newName = maybeCategory.get(0).getName();
+            categoryStorage.renameCategory(oldName, newName);
         }
+        ArrayList<Category> categories = categoryStorage.getCategories(nameFilter.getText());
+        categoryTable.editRefresh(categories);
     }
 }
