@@ -2,31 +2,30 @@ package flb.category.application;
 
 import flb.category.application.listeners.*;
 import flb.category.*;
-import flb.database.*;
 import javax.swing.*;
 import java.awt.*;
 
 public class MainGUI {
-    private final CategoryStorage categoryStorage;
     private final JFrame frame;
     private final JButton addButton;
     private final JButton deleteButton;
     private final JButton clearAmountButton;
     private final JTable table;
+    private final JScrollPane tableScroller;
     private final JTextField nameFilter;
     private final CategoryTableModel tableModel;
-    private final CategoryTable categoryTable;
+    private final CategoryTableEditor tableEditor;
 
-    public MainGUI(AbstractDatabase database) {
-        this.categoryStorage = new CategoryStorage(database);
+    public MainGUI(CategoryStorage categoryStorage) {
+        this.tableModel = new CategoryTableModel(categoryStorage.getCategories(""));
+        this.table = new JTable(tableModel);
+        this.tableScroller = new JScrollPane(table);
+        this.nameFilter = new JTextField();
         frame = new JFrame();
         addButton = new JButton("Add");
         deleteButton = new JButton("Delete");
         clearAmountButton = new JButton("Clear");
-        nameFilter = new JTextField();
-        tableModel = new CategoryTableModel(categoryStorage.getCategories(""));
-        table = new JTable(tableModel);
-        categoryTable = new CategoryTable(table, tableModel);
+        tableEditor = new CategoryTableEditor(categoryStorage, table, tableModel, nameFilter);
     }
 
     public void layout(){
@@ -40,9 +39,12 @@ public class MainGUI {
         southPanel.add(clearAmountButton);
         southPanel.add(deleteButton);
 
+        tableScroller.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        tableScroller.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+
         JPanel mainPanel = new JPanel(new BorderLayout());
         mainPanel.add(BorderLayout.NORTH, northPanel);
-        mainPanel.add(BorderLayout.CENTER, categoryTable.getTablePane());
+        mainPanel.add(BorderLayout.CENTER, tableScroller);
         mainPanel.add(BorderLayout.SOUTH, southPanel);
         mainPanel.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
 
@@ -54,17 +56,16 @@ public class MainGUI {
     }
 
     public void addListeners() {
-        addButton.addActionListener(new UserAddsCategoryListener(categoryStorage, categoryTable, nameFilter));
-        deleteButton.addActionListener(new UserDeletesCategoryListener(categoryStorage, categoryTable, nameFilter, frame));
-        clearAmountButton.addActionListener(new UserClearsGoalListener(categoryStorage, categoryTable, nameFilter));
-        nameFilter.getDocument().addDocumentListener(new UserFiltersCategoriesListener(categoryStorage, categoryTable, nameFilter));
-        table.addPropertyChangeListener(new UserRenamesSelectionListener(categoryStorage, categoryTable, nameFilter));
-        tableModel.addTableModelListener(new UserEditsGoalAmountListener(categoryStorage, categoryTable, nameFilter));
-        table.getDefaultEditor(Boolean.class).addCellEditorListener(new UserEditsExcludesListener(categoryStorage, categoryTable, nameFilter));
+        addButton.addActionListener(new UserAddsCategoryListener(tableEditor));
+        deleteButton.addActionListener(new UserDeletesCategoryListener(tableEditor, frame));
+        clearAmountButton.addActionListener(new UserClearsGoalListener(tableEditor));
+        nameFilter.getDocument().addDocumentListener(new UserFiltersCategoriesListener(tableEditor));
+        table.addPropertyChangeListener(new UserRenamesSelectionListener(tableEditor));
+        tableModel.addTableModelListener(new UserEditsGoalAmountListener(tableEditor));
+        table.getDefaultEditor(Boolean.class).addCellEditorListener(new UserEditsExcludesListener(tableEditor));
     }
     public void launch(){
         frame.pack();
         frame.setVisible(true);
     }
-
 }

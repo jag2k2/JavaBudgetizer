@@ -2,19 +2,15 @@ package flb.category.application.listeners;
 
 import flb.category.application.*;
 import flb.category.*;
-import javax.swing.*;
+
 import javax.swing.event.*;
 import java.util.*;
 
 public class UserFiltersCategoriesListener implements DocumentListener {
-    private final CategoryStorage categoryStorage;
-    private final CategoryTable categoryTable;
-    private final JTextField nameFilter;
+    private final CategoryTableEditor tableEditor;
 
-    public UserFiltersCategoriesListener(CategoryStorage categoryStorage, CategoryTable categoryTable, JTextField nameFilter) {
-        this.categoryStorage = categoryStorage;
-        this.categoryTable = categoryTable;
-        this.nameFilter = nameFilter;
+    public UserFiltersCategoriesListener(CategoryTableEditor tableEditor) {
+        this.tableEditor = tableEditor;
     }
 
     @Override
@@ -23,17 +19,13 @@ public class UserFiltersCategoriesListener implements DocumentListener {
 
     @Override
     public void insertUpdate(DocumentEvent e) {
-        updateTableWithFilter();
+        tableEditor.userFiltersCategories();
     }
 
     @Override
     public void removeUpdate(DocumentEvent e){
-        updateTableWithFilter();
+        tableEditor.userFiltersCategories();
     }
 
-    private void updateTableWithFilter() {
-        ArrayList<Category> categories = categoryStorage.getCategories(nameFilter.getText());
-        categoryTable.rowChangeRefresh(categories);
-    }
 }
 

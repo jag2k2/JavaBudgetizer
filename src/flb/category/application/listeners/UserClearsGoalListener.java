@@ -1,27 +1,17 @@
 package flb.category.application.listeners;
 
 import flb.category.application.*;
-import flb.category.*;
-import javax.swing.*;
 import java.awt.event.*;
-import java.util.*;
 
 public class UserClearsGoalListener implements ActionListener {
-    private final CategoryStorage categoryStorage;
-    private final CategoryTable categoryTable;
-    private final JTextField nameFilter;
+    private final CategoryTableEditor tableEditor;
 
-    public UserClearsGoalListener(CategoryStorage categoryStorage, CategoryTable categoryTable, JTextField nameFilter) {
-        this.categoryStorage = categoryStorage;
-        this.categoryTable = categoryTable;
-        this.nameFilter = nameFilter;
+    public UserClearsGoalListener(CategoryTableEditor tableEditor) {
+        this.tableEditor = tableEditor;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        String categoryToClear = categoryTable.getSelectedRowName();
-        categoryStorage.updateAmount(categoryToClear, Float.NaN);
-        ArrayList<Category> categories = categoryStorage.getCategories(nameFilter.getText());
-        categoryTable.editRefresh(categories);
+        tableEditor.userClearCategoryGoal();
     }
 }

@@ -58,7 +58,7 @@ public class CategoryTableModel extends AbstractTableModel {
         return columnNames[column];
     }
 
-    public String getRowCategoryName(int row) {
+    public String getCategoryName(int row) {
         return tableContents.get(row).getName();
     }
 
