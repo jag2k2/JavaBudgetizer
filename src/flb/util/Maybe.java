@@ -18,6 +18,14 @@ public class Maybe<T> implements Iterable<T> {
     }
 
     @Override
+    public String toString() {
+        for(T value : values) {
+            return "[" + value.toString() + "]";
+        }
+        return "[]";
+    }
+
+    @Override
     public boolean equals(Object toCompare) {
         if (this == toCompare) return true;
         if (this.getClass() != toCompare.getClass()) return false;

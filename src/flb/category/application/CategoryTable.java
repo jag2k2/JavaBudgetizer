@@ -30,12 +30,10 @@ public class CategoryTable {
     }
 
     public Maybe<Category> getEditingCategory() {
-        Maybe<Category> editingCategory = new Maybe<>();
-        int selectedRow = table.getSelectedRow();
         if(table.isEditing()) {
-            editingCategory = tableModel.getCategory(selectedRow);
+            return getSelectedCategory();
         }
-        return editingCategory;
+        else return new Maybe<>();
     }
 
     public void refresh(ArrayList<Category> tableContents){
@@ -45,10 +43,8 @@ public class CategoryTable {
 
     public void refreshAndKeepSelection(ArrayList<Category> tableContents){
         int selection = table.getSelectedRow();
-        if (selection >= 0) {
-            tableModel.setContents(tableContents);
-            tableModel.fireTableDataChanged();
-            table.getSelectionModel().setSelectionInterval(selection, selection);
-        }
+        tableModel.setContents(tableContents);
+        tableModel.fireTableDataChanged();
+        table.getSelectionModel().setSelectionInterval(selection, selection);
     }
 }

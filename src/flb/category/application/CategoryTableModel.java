@@ -68,7 +68,7 @@ public class CategoryTableModel extends AbstractTableModel {
     }
 
     public Maybe<Category> getCategory(int row) {
-        if (row >= 0) {
+        if (row >= 0 && row < tableContents.size()) {
             return new Maybe<>(tableContents.get(row));
         }
         else {
