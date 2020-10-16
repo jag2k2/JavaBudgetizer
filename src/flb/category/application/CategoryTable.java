@@ -38,27 +38,17 @@ public class CategoryTable {
         return maybeCategory;
     }
 
-    public ArrayList<Category> getRenamedCategory() {
-        ArrayList<Category> maybeCategory = new ArrayList<>();
-        int selectedRow = table.getSelectedRow();
-        if (table.getEditingColumn() == 0) {
-            maybeCategory = tableModel.getCategory(selectedRow);
-        }
-        return maybeCategory;
+    public void refresh(ArrayList<Category> tableContents){
+        tableModel.setContents(tableContents);
+        tableModel.fireTableDataChanged();
     }
 
-
-    public void editRefresh(ArrayList<Category> tableContents){
+    public void refreshAndKeepSelection(ArrayList<Category> tableContents){
         int selection = table.getSelectedRow();
         if (selection >= 0) {
             tableModel.setContents(tableContents);
             tableModel.fireTableDataChanged();
             table.getSelectionModel().setSelectionInterval(selection, selection);
         }
-    }
-
-    public void rowChangeRefresh(ArrayList<Category> tableContents){
-        tableModel.setContents(tableContents);
-        tableModel.fireTableDataChanged();
     }
 }

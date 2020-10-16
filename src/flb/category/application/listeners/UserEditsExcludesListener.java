@@ -1,13 +1,17 @@
 package flb.category.application.listeners;
 
 import flb.category.application.*;
+
+import javax.swing.*;
 import javax.swing.event.*;
 
 public class UserEditsExcludesListener implements CellEditorListener {
     private final CategoryTableEditor tableEditor;
+    private final JTextField nameFilter;
 
-    public UserEditsExcludesListener(CategoryTableEditor tableEditor){
+    public UserEditsExcludesListener(CategoryTableEditor tableEditor, JTextField nameFilter){
         this.tableEditor = tableEditor;
+        this.nameFilter = nameFilter;
     }
 
     @Override
@@ -16,6 +20,7 @@ public class UserEditsExcludesListener implements CellEditorListener {
 
     @Override
     public void editingStopped(ChangeEvent e) {
-        tableEditor.userEditsExcludes();
+        tableEditor.userEditsSelectedExcludes();
+        tableEditor.refreshAndKeepSelection(nameFilter.getText());
     }
 }

@@ -2,7 +2,6 @@ package flb.category.application;
 
 import org.junit.jupiter.api.*;
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
 import java.util.*;
 import flb.category.*;
 import flb.database.*;
@@ -13,11 +12,9 @@ class CategoryTableEditorTest {
     private CategoryTableEditor tableEditor;
     private TestDatabase database;
     private JTable table;
-    private JTextField nameFilter;
     private CategoryStorage categoryStorage;
     private CategoryTableModel tableModel;
     private ArrayList<Category> expectedStored;
-    private ArrayList<Category> expectedDisplayed;
 
     @BeforeEach
     void setUp() {
@@ -26,11 +23,14 @@ class CategoryTableEditorTest {
         this.categoryStorage = new CategoryStorage(database);
         this.tableModel = new CategoryTableModel(categoryStorage.getCategories(""));
         this.table = new JTable(tableModel);
-        this.nameFilter = new JTextField();
         this.categoryTable = new CategoryTable(table, tableModel);
-        this.tableEditor = new CategoryTableEditor(categoryStorage, categoryTable, nameFilter);
+        this.tableEditor = new CategoryTableEditor(categoryStorage, categoryTable);
+
         this.expectedStored = new ArrayList<>();
-        this.expectedDisplayed = new ArrayList<>();
+        expectedStored.add(new Category("Name1", 100, false));
+        expectedStored.add(new Category("Name2", 200, true));
+        expectedStored.add(new Category("Name3", 300, false));
+        expectedStored.add(new Category("Test1", Float.NaN, false));
     }
 
     @AfterEach
@@ -39,111 +39,68 @@ class CategoryTableEditorTest {
     }
 
     @Test
-    void addingCategoryWithNoName() {
-        nameFilter.setText("");
-        expectedStored.add(new Category("Name1", 100, false));
-        expectedStored.add(new Category("Name2", 200, true));
-        expectedStored.add(new Category("Name3", 300, false));
-        expectedStored.add(new Category("Test1", Float.NaN, false));
-        expectedDisplayed = expectedStored;
+    void categoryAddable() {
+        assertFalse(tableEditor.categoryNameAddable(""));
+        assertFalse(tableEditor.categoryNameAddable("Name1"));
+        assertTrue(tableEditor.categoryNameAddable("Name0"));
+    }
 
-        tableEditor.userAddCategory();
+    @Test
+    void addingCategoryWithNoName() {
+        tableEditor.userAddCategory("");
 
         assertEquals(expectedStored, categoryStorage.getCategories(""));
-        assertEquals(expectedDisplayed, tableModel.getContents());
     }
 
     @Test
     void addingNewCategory() {
-        nameFilter.setText("Test2");
-        expectedStored.add(new Category("Name1", 100, false));
-        expectedStored.add(new Category("Name2", 200, true));
-        expectedStored.add(new Category("Name3", 300, false));
-        expectedStored.add(new Category("Test1", Float.NaN, false));
         expectedStored.add(new Category("Test2", Float.NaN, false));
-        expectedDisplayed = expectedStored;
 
-        tableEditor.userAddCategory();
+        tableEditor.userAddCategory("Test2");
 
         assertEquals(expectedStored, categoryStorage.getCategories(""));
-        assertEquals(expectedDisplayed, tableModel.getContents());
-        assertEquals("", nameFilter.getText());
     }
 
     @Test
     void addingDuplicateCategory() {
-        nameFilter.setText("Name1");
-        expectedStored.add(new Category("Name1", 100, false));
-        expectedStored.add(new Category("Name2", 200, true));
-        expectedStored.add(new Category("Name3", 300, false));
-        expectedStored.add(new Category("Test1", Float.NaN, false));
-        expectedDisplayed.add(new Category("Name1", 100, false));
-
-        tableEditor.userAddCategory();
+        tableEditor.userAddCategory("Name1");
 
         assertEquals(expectedStored, categoryStorage.getCategories(""));
-        assertEquals(expectedDisplayed, tableModel.getContents());
-        assertEquals("Name1", nameFilter.getText());
     }
 
     @Test
     void clearSelectedGoal() {
-        nameFilter.setText("Name");
         table.getSelectionModel().setSelectionInterval(1,1);
-        expectedStored.add(new Category("Name1", 100, false));
-        expectedStored.add(new Category("Name2", Float.NaN, true));
-        expectedStored.add(new Category("Name3", 300, false));
-        expectedStored.add(new Category("Test1", Float.NaN, false));
+        expectedStored.set(1, new Category("Name2", Float.NaN, true));
 
-        expectedDisplayed.add(new Category("Name1", 100, false));
-        expectedDisplayed.add(new Category("Name2", Float.NaN, true));
-        expectedDisplayed.add(new Category("Name3", 300, false));
-
-        tableEditor.userClearCategoryGoal();
+        tableEditor.userClearSelectedCategoryGoal();
 
         assertEquals(expectedStored, categoryStorage.getCategories(""));
-        assertEquals(expectedDisplayed, tableModel.getContents());
-        assertEquals("Name", nameFilter.getText());
     }
 
     @Test
     void clearNoGoalSelected() {
-        nameFilter.setText("");
         table.getSelectionModel().setSelectionInterval(-1,-1);
-        expectedStored.add(new Category("Name1", 100, false));
-        expectedStored.add(new Category("Name2", 200, true));
-        expectedStored.add(new Category("Name3", 300, false));
-        expectedStored.add(new Category("Test1", Float.NaN, false));
-        expectedDisplayed = expectedStored;
 
-        tableEditor.userClearCategoryGoal();
+        tableEditor.userClearSelectedCategoryGoal();
 
         assertEquals(expectedStored, categoryStorage.getCategories(""));
-        assertEquals(expectedDisplayed, tableModel.getContents());
-        assertEquals("", nameFilter.getText());
     }
 
     @Test
     void deleteSelectedGoalWithConfirm() {
-        nameFilter.setText("Name");
         table.getSelectionModel().setSelectionInterval(1,1);
-        expectedStored.add(new Category("Name1", 100, false));
-        expectedStored.add(new Category("Name3", 300, false));
-        expectedStored.add(new Category("Test1", Float.NaN, false));
-        expectedDisplayed.add(new Category("Name1", 100, false));
-        expectedDisplayed.add(new Category("Name3", 300, false));
+        expectedStored.remove(1);
 
-        TableWillConfirmDelete categoryWillDelete = new TableWillConfirmDelete(categoryStorage, categoryTable, nameFilter);
-        categoryWillDelete.userDeleteCategory(new JFrame());
+        TableWillConfirmDelete categoryWillDelete = new TableWillConfirmDelete(categoryStorage, categoryTable);
+        categoryWillDelete.userDeleteSelectedCategory(new JFrame());
 
         assertEquals(expectedStored, categoryStorage.getCategories(""));
-        assertEquals(expectedDisplayed, tableModel.getContents());
-        assertEquals("Name", nameFilter.getText());
     }
 
     static class TableWillConfirmDelete extends CategoryTableEditor {
-        public TableWillConfirmDelete(CategoryStorage categoryStorage, CategoryTable categoryTable, JTextField nameFilter){
-            super(categoryStorage, categoryTable, nameFilter);
+        public TableWillConfirmDelete(CategoryStorage categoryStorage, CategoryTable categoryTable){
+            super(categoryStorage, categoryTable);
         }
 
         @Override
@@ -153,26 +110,16 @@ class CategoryTableEditorTest {
     }
     @Test
     void deleteSelectedGoalWithNoConfirm() {
-        nameFilter.setText("Name");
         table.getSelectionModel().setSelectionInterval(1,1);
-        expectedStored.add(new Category("Name1", 100, false));
-        expectedStored.add(new Category("Name2", 200, true));
-        expectedStored.add(new Category("Name3", 300, false));
-        expectedStored.add(new Category("Test1", Float.NaN, false));
-        expectedDisplayed.add(new Category("Name1", 100, false));
-        expectedDisplayed.add(new Category("Name2", 200, true));
-        expectedDisplayed.add(new Category("Name3", 300, false));
 
-        TableWontConfirmDelete categoryWontDelete = new TableWontConfirmDelete(categoryStorage, categoryTable, nameFilter);
-        categoryWontDelete.userDeleteCategory(new JFrame());
+        TableWontConfirmDelete categoryWontDelete = new TableWontConfirmDelete(categoryStorage, categoryTable);
+        categoryWontDelete.userDeleteSelectedCategory(new JFrame());
 
         assertEquals(expectedStored, categoryStorage.getCategories(""));
-        assertEquals(expectedDisplayed, tableModel.getContents());
-        assertEquals("Name", nameFilter.getText());
     }
     static class TableWontConfirmDelete extends CategoryTableEditor {
-        public TableWontConfirmDelete(CategoryStorage categoryStorage, CategoryTable categoryTable, JTextField nameFilter){
-            super(categoryStorage, categoryTable, nameFilter);
+        public TableWontConfirmDelete(CategoryStorage categoryStorage, CategoryTable categoryTable){
+            super(categoryStorage, categoryTable);
         }
 
         @Override
@@ -182,63 +129,30 @@ class CategoryTableEditorTest {
     }
 
     @Test
-    void filterCategories(){
-        nameFilter.setText("Name");
-        expectedDisplayed.add(new Category("Name1", 100, false));
-        expectedDisplayed.add(new Category("Name2", 200, true));
-        expectedDisplayed.add(new Category("Name3", 300, false));
-
-        tableEditor.userFiltersCategories();
-
-        assertEquals(expectedDisplayed, tableModel.getContents());
-        assertEquals("Name", nameFilter.getText());
-    }
-
-    @Test
     void toggleExcludes() {
-        nameFilter.setText("Name");
         table.getSelectionModel().setSelectionInterval(1,1);
-        expectedStored.add(new Category("Name1", 100, false));
-        expectedStored.add(new Category("Name2", 200, false));
-        expectedStored.add(new Category("Name3", 300, false));
-        expectedStored.add(new Category("Test1", Float.NaN, false));
-        expectedDisplayed.add(new Category("Name1", 100, false));
-        expectedDisplayed.add(new Category("Name2", 200, false));
-        expectedDisplayed.add(new Category("Name3", 300, false));
+        expectedStored.set(1, new Category("Name2", 200, false));
 
-        tableEditor.userEditsExcludes();
+        tableEditor.userEditsSelectedExcludes();
 
         assertEquals(expectedStored, categoryStorage.getCategories(""));
-        assertEquals(expectedDisplayed, tableModel.getContents());
-        assertEquals("Name", nameFilter.getText());
     }
 
     @Test
     void editCategoryAmount() {
-        nameFilter.setText("Name");
         table.getSelectionModel().setSelectionInterval(1,1);
-        tableModel.getContents().set(1, new Category("Name2", 500, false));
+        tableModel.getContents().set(1, new Category("Name2", 500, true));
+        expectedStored.set(1, new Category("Name2", 500, true));
 
-        expectedStored.add(new Category("Name1", 100, false));
-        expectedStored.add(new Category("Name2", 500, true));
-        expectedStored.add(new Category("Name3", 300, false));
-        expectedStored.add(new Category("Test1", Float.NaN, false));
-        expectedDisplayed.add(new Category("Name1", 100, false));
-        expectedDisplayed.add(new Category("Name2", 500, true));
-        expectedDisplayed.add(new Category("Name3", 300, false));
-
-        tableEditor.userEditsGoalAmount();
+        tableEditor.userEditsSelectedGoalAmount();
 
         assertEquals(expectedStored, categoryStorage.getCategories(""));
-        assertEquals(expectedDisplayed, tableModel.getContents());
-        assertEquals("Name", nameFilter.getText());
     }
 
     @Test
     void getEditingCategory() {
         table.getSelectionModel().setSelectionInterval(1,1);
         table.editCellAt(1,0);
-        System.out.println(table.isEditing());
         ArrayList<Category> expected = new ArrayList<>();
         expected.add(new Category("Name2", 200, true));
 
@@ -250,25 +164,33 @@ class CategoryTableEditorTest {
 
     @Test
     void renameCategory() {
-        nameFilter.setText("Name");
         table.getSelectionModel().setSelectionInterval(1,1);
         tableModel.getContents().set(1, new Category("Name20", 200, true));
-
-        expectedStored.add(new Category("Name1", 100, false));
-        expectedStored.add(new Category("Name20", 200, true));
-        expectedStored.add(new Category("Name3", 300, false));
-        expectedStored.add(new Category("Test1", Float.NaN, false));
-        expectedDisplayed.add(new Category("Name1", 100, false));
-        expectedDisplayed.add(new Category("Name20", 200, true));
-        expectedDisplayed.add(new Category("Name3", 300, false));
-
+        expectedStored.set(1, new Category("Name20", 200, true));
 
         tableEditor.userRenamedCategory("Name2");
 
         assertEquals(expectedStored, categoryStorage.getCategories(""));
-        assertEquals(expectedDisplayed, tableModel.getContents());
-        assertEquals("Name", nameFilter.getText());
     }
 
+    @Test
+    void refresh(){
+        expectedStored.remove(3);
 
+        tableEditor.refresh("Name");
+
+        assertEquals(0, table.getSelectionModel().getSelectedIndices().length);
+        assertEquals(expectedStored, tableModel.getContents());
+    }
+
+    @Test
+    void refreshKeepSelections() {
+        table.getSelectionModel().setSelectionInterval(2,2);
+        expectedStored.remove(3);
+
+        tableEditor.refreshAndKeepSelection("Name");
+
+        assertEquals(2, table.getSelectionModel().getSelectedIndices()[0]);
+        assertEquals(expectedStored, tableModel.getContents());
+    }
 }

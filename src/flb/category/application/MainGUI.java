@@ -26,7 +26,7 @@ public class MainGUI {
         deleteButton = new JButton("Delete");
         clearAmountButton = new JButton("Clear");
         CategoryTable categoryTable = new CategoryTable(table, tableModel);
-        tableEditor = new CategoryTableEditor(categoryStorage, categoryTable, nameFilter);
+        tableEditor = new CategoryTableEditor(categoryStorage, categoryTable);
     }
 
     public void layout(){
@@ -57,13 +57,13 @@ public class MainGUI {
     }
 
     public void addListeners() {
-        addButton.addActionListener(new UserAddsCategoryListener(tableEditor));
-        deleteButton.addActionListener(new UserDeletesCategoryListener(tableEditor, frame));
-        clearAmountButton.addActionListener(new UserClearsGoalListener(tableEditor));
-        nameFilter.getDocument().addDocumentListener(new UserFiltersCategoriesListener(tableEditor));
-        table.addPropertyChangeListener(new UserRenamesSelectionListener(tableEditor));
-        tableModel.addTableModelListener(new UserEditsGoalAmountListener(tableEditor));
-        table.getDefaultEditor(Boolean.class).addCellEditorListener(new UserEditsExcludesListener(tableEditor));
+        addButton.addActionListener(new UserAddsCategoryListener(tableEditor, nameFilter));
+        deleteButton.addActionListener(new UserDeletesCategoryListener(tableEditor, nameFilter, frame));
+        clearAmountButton.addActionListener(new UserClearsGoalListener(tableEditor, nameFilter));
+        nameFilter.getDocument().addDocumentListener(new UserFiltersCategoriesListener(tableEditor, nameFilter));
+        table.addPropertyChangeListener(new UserRenamesSelectionListener(tableEditor, nameFilter));
+        tableModel.addTableModelListener(new UserEditsGoalAmountListener(tableEditor, nameFilter));
+        table.getDefaultEditor(Boolean.class).addCellEditorListener(new UserEditsExcludesListener(tableEditor, nameFilter));
     }
     public void launch(){
         frame.pack();
