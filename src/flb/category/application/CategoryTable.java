@@ -1,7 +1,7 @@
 package flb.category.application;
 
 import flb.category.Category;
-
+import flb.util.*;
 import javax.swing.*;
 import java.util.*;
 
@@ -24,18 +24,18 @@ public class CategoryTable {
         table.getColumnModel().getColumn(2).setMaxWidth(60);
     }
 
-    public ArrayList<Category> getSelectedCategory() {
+    public Maybe<Category> getSelectedCategory() {
         int selectedRow = table.getSelectedRow();
         return tableModel.getCategory(selectedRow);
     }
 
-    public ArrayList<Category> getEditingCategory() {
-        ArrayList<Category> maybeCategory = new ArrayList<>();
+    public Maybe<Category> getEditingCategory() {
+        Maybe<Category> editingCategory = new Maybe<>();
         int selectedRow = table.getSelectedRow();
         if(table.isEditing()) {
-            maybeCategory = tableModel.getCategory(selectedRow);
+            editingCategory = tableModel.getCategory(selectedRow);
         }
-        return maybeCategory;
+        return editingCategory;
     }
 
     public void refresh(ArrayList<Category> tableContents){

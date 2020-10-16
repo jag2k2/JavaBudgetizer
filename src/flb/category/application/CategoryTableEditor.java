@@ -2,6 +2,7 @@ package flb.category.application;
 
 import javax.swing.*;
 import java.util.*;
+import flb.util.*;
 import flb.category.*;
 
 public class CategoryTableEditor {
@@ -61,7 +62,7 @@ public class CategoryTableEditor {
         }
     }
 
-    public ArrayList<Category> getEditingCategory() {
+    public Maybe<Category> getEditingCategory() {
         return categoryTable.getEditingCategory();
     }
 

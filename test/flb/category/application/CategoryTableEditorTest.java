@@ -3,6 +3,7 @@ package flb.category.application;
 import org.junit.jupiter.api.*;
 import javax.swing.*;
 import java.util.*;
+import flb.util.*;
 import flb.category.*;
 import flb.database.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -153,12 +154,11 @@ class CategoryTableEditorTest {
     void getEditingCategory() {
         table.getSelectionModel().setSelectionInterval(1,1);
         table.editCellAt(1,0);
-        ArrayList<Category> expected = new ArrayList<>();
-        expected.add(new Category("Name2", 200, true));
+        Maybe<Category> expected = new Maybe<>(new Category("Name2", 200, true));
 
-        ArrayList<Category> maybeCategory = tableEditor.getEditingCategory();
+        Maybe<Category> editingCategory = tableEditor.getEditingCategory();
 
-        assertEquals(expected, maybeCategory);
+        assertEquals(expected, editingCategory);
     }
 
 

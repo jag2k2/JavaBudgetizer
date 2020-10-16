@@ -1,6 +1,7 @@
 package flb.category.application;
 
 import flb.category.Category;
+import flb.util.*;
 import javax.swing.table.*;
 import java.util.*;
 
@@ -66,11 +67,12 @@ public class CategoryTableModel extends AbstractTableModel {
         return tableContents;
     }
 
-    public ArrayList<Category> getCategory(int row) {
-        ArrayList<Category> maybeCategory = new ArrayList<>();
+    public Maybe<Category> getCategory(int row) {
         if (row >= 0) {
-            maybeCategory.add(tableContents.get(row));
+            return new Maybe<>(tableContents.get(row));
         }
-        return maybeCategory;
+        else {
+            return new Maybe<>();
+        }
     }
 }
