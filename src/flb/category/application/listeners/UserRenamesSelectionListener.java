@@ -8,7 +8,7 @@ import java.util.*;
 
 public class UserRenamesSelectionListener implements PropertyChangeListener {
     private final CategoryTableEditor tableEditor;
-    private JTextField nameFilter;
+    private final JTextField nameFilter;
     private String oldName;
 
     public UserRenamesSelectionListener(CategoryTableEditor tableEditor, JTextField nameFilter) {
@@ -21,9 +21,8 @@ public class UserRenamesSelectionListener implements PropertyChangeListener {
     public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getPropertyName().equals("tableCellEditor")) {
             if (((JTable) evt.getSource()).getEditingColumn() != 0) {
-                ArrayList<Category> maybeCategory = tableEditor.getEditingCategory();
-                if (!maybeCategory.isEmpty()){
-                    oldName = maybeCategory.get(0).getName();
+                for (Category editingCategory : tableEditor.getEditingCategory()) {
+                    oldName = editingCategory.getName();
                 }
             }
             else {

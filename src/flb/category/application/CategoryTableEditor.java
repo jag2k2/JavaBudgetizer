@@ -24,9 +24,8 @@ public class CategoryTableEditor {
     }
 
     public void userDeleteSelectedCategory(JFrame frame) {
-        ArrayList<Category> maybeCategory = categoryTable.getSelectedCategory();
-        if (!maybeCategory.isEmpty()) {
-            String categoryNameToDelete = maybeCategory.get(0).getName();
+        for (Category selectedCategory : categoryTable.getSelectedCategory()) {
+            String categoryNameToDelete = selectedCategory.getName();
             int selection = getSelectionFromDialog(categoryNameToDelete, frame);
             if (selection == JOptionPane.YES_OPTION) {
                 categoryStorage.deleteCategory(categoryNameToDelete);
@@ -41,26 +40,23 @@ public class CategoryTableEditor {
     }
 
     public void userClearSelectedCategoryGoal() {
-        ArrayList<Category> maybeCategory = categoryTable.getSelectedCategory();
-        if (!maybeCategory.isEmpty()) {
-            String categoryToClear = maybeCategory.get(0).getName();
+        for (Category selectedCategory : categoryTable.getSelectedCategory()) {
+            String categoryToClear = selectedCategory.getName();
             categoryStorage.updateAmount(categoryToClear, Float.NaN);
         }
     }
 
     public void userEditsSelectedExcludes() {
-        ArrayList<Category> maybeCategory = categoryTable.getSelectedCategory();
-        if (!maybeCategory.isEmpty()) {
-            String selectedName = maybeCategory.get(0).getName();
+        for (Category selectedCategory : categoryTable.getSelectedCategory()) {
+            String selectedName = selectedCategory.getName();
             categoryStorage.toggleExclusion(selectedName);
         }
     }
 
     public void userEditsSelectedGoalAmount() {
-        ArrayList<Category> maybeCategory = categoryTable.getSelectedCategory();
-        if (!maybeCategory.isEmpty()) {
-            String categoryToUpdate = maybeCategory.get(0).getName();
-            float newAmount = maybeCategory.get(0).getDefaultGoal();
+        for (Category selectedCategory : categoryTable.getSelectedCategory()) {
+            String categoryToUpdate = selectedCategory.getName();
+            float newAmount = selectedCategory.getDefaultGoal();
             categoryStorage.updateAmount(categoryToUpdate, newAmount);
         }
     }
@@ -70,9 +66,8 @@ public class CategoryTableEditor {
     }
 
     public void userRenamedCategory(String oldName) {
-        ArrayList<Category> maybeCategory = categoryTable.getSelectedCategory();
-        if(!maybeCategory.isEmpty()) {
-            String newName = maybeCategory.get(0).getName();
+        for (Category selectedCategory : categoryTable.getSelectedCategory()) {
+            String newName = selectedCategory.getName();
             categoryStorage.renameCategory(oldName, newName);
         }
     }
