@@ -59,30 +59,6 @@ class CategoryTableTest {
     }
 
     @Test
-    void getEditingCategory() {
-        expected = new Maybe<>();
-        actual = categoryTable.getEditingCategory();
-        assertEquals(expected, actual);
-
-        table.getSelectionModel().setSelectionInterval(0,0);
-        expected = new Maybe<>();
-        actual = categoryTable.getEditingCategory();
-        assertEquals(expected, actual);
-
-        table.getSelectionModel().setSelectionInterval(0,0);
-        table.editCellAt(0,0);
-        expected = new Maybe<>(new Category("Name1", 100, false));
-        actual = categoryTable.getEditingCategory();
-        assertEquals(expected, actual);
-
-        table.getSelectionModel().setSelectionInterval(1,1);
-        table.editCellAt(1,2);
-        expected = new Maybe<>(new Category("Name2", 200, true));
-        actual = categoryTable.getEditingCategory();
-        assertEquals(expected, actual);
-    }
-
-    @Test
     void refresh() {
         expectedDisplay = new ArrayList<>();
         categoryTable.refresh(expectedDisplay);

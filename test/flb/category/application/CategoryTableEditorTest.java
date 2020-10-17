@@ -151,12 +151,11 @@ class CategoryTableEditorTest {
     }
 
     @Test
-    void getEditingCategory() {
+    void getSelectedCategory() {
         table.getSelectionModel().setSelectionInterval(1,1);
-        table.editCellAt(1,0);
         Maybe<Category> expected = new Maybe<>(new Category("Name2", 200, true));
 
-        Maybe<Category> editingCategory = tableEditor.getEditingCategory();
+        Maybe<Category> editingCategory = tableEditor.getSelectedCategory();
 
         assertEquals(expected, editingCategory);
     }

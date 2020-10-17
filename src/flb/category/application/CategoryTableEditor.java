@@ -62,8 +62,8 @@ public class CategoryTableEditor {
         }
     }
 
-    public Maybe<Category> getEditingCategory() {
-        return categoryTable.getEditingCategory();
+    public Maybe<Category> getSelectedCategory() {
+        return categoryTable.getSelectedCategory();
     }
 
     public void userRenamedCategory(String oldName) {

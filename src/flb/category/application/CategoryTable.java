@@ -29,13 +29,6 @@ public class CategoryTable {
         return tableModel.getCategory(selectedRow);
     }
 
-    public Maybe<Category> getEditingCategory() {
-        if(table.isEditing()) {
-            return getSelectedCategory();
-        }
-        else return new Maybe<>();
-    }
-
     public void refresh(ArrayList<Category> tableContents){
         tableModel.setContents(tableContents);
         tableModel.fireTableDataChanged();

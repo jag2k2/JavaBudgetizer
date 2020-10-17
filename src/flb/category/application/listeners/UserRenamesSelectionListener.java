@@ -4,31 +4,41 @@ import flb.category.application.*;
 import flb.category.*;
 import javax.swing.*;
 import java.beans.*;
-import java.util.*;
 
-public class UserRenamesSelectionListener implements PropertyChangeListener {
+public class UserRenamesSelectionListener implements PropertyChangeListener, Runnable {
     private final CategoryTableEditor tableEditor;
     private final JTextField nameFilter;
     private String oldName;
+    private JTable table;
+    private int columnBeingEdited;
 
     public UserRenamesSelectionListener(CategoryTableEditor tableEditor, JTextField nameFilter) {
         this.tableEditor = tableEditor;
         this.nameFilter = nameFilter;
         this.oldName = "";
+        this.columnBeingEdited = -1;
     }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getPropertyName().equals("tableCellEditor")) {
-            if (((JTable) evt.getSource()).getEditingColumn() != 0) {
-                for (Category editingCategory : tableEditor.getEditingCategory()) {
-                    oldName = editingCategory.getName();
+            this.table = (JTable)evt.getSource();
+            if (table.isEditing()) {
+                for (Category selectedCategory : tableEditor.getSelectedCategory()) {
+                    oldName = selectedCategory.getName();
                 }
+                SwingUtilities.invokeLater(this);
             }
-            else {
+            else if (columnBeingEdited == 0) {
                 tableEditor.userRenamedCategory(oldName);
                 tableEditor.refreshAndKeepSelection(nameFilter.getText());
             }
         }
+    }
+
+    @Override
+    public void run()
+    {
+        columnBeingEdited = table.getEditingColumn();
     }
 }
