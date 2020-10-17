@@ -6,16 +6,14 @@ import flb.database.*;
 import org.junit.jupiter.api.*;
 import javax.swing.*;
 import java.util.*;
-import javax.swing.event.ChangeEvent;
 import static org.junit.jupiter.api.Assertions.*;
 
-class UserRenamesSelectionListenerTest {
-    private UserRenamesSelectionListener renamesListener;
+class UserAddsCategoryListenerTest {
+    private UserAddsCategoryListener addListener;
     private TestDatabase database;
     private CategoryStorage categoryStorage;
-    private JTable table;
-    private ArrayList<Category> expectedStored;
     private JTextField nameFilter;
+    private ArrayList<Category> expectedStored;
 
     @BeforeEach
     void setUp() {
@@ -24,10 +22,10 @@ class UserRenamesSelectionListenerTest {
         database.connect();
         this.categoryStorage = new CategoryStorage(database);
         CategoryTableModel tableModel = new CategoryTableModel(categoryStorage.getCategories(""));
-        this.table = new JTable(tableModel);
+        JTable table = new JTable(tableModel);
         CategoryTable categoryTable = new CategoryTable(table, tableModel);
         CategoryTableEditor tableEditor = new CategoryTableEditor(categoryStorage, categoryTable);
-        this.renamesListener = new UserRenamesSelectionListener(tableEditor, nameFilter);
+        this.addListener = new UserAddsCategoryListener(tableEditor, nameFilter);
 
         this.expectedStored = new ArrayList<>();
         expectedStored.add(new Category("Name1", 100, false));
@@ -42,32 +40,35 @@ class UserRenamesSelectionListenerTest {
     }
 
     @Test
-    void renameFirstCategory() {
-        nameFilter.setText("Name");
-        table.getSelectionModel().setSelectionInterval(0,0);
-        table.addPropertyChangeListener(renamesListener);
+    void categoryAdded() {
+        nameFilter.setText("Test2");
+        JButton testButton = new JButton();
+        testButton.addActionListener(addListener);
+        testButton.doClick();
 
-        table.editCellAt(0,0);
-        table.setCellEditor(new DefaultCellEditor(new JTextField("Name10")));
-        table.editingStopped(new ChangeEvent(table));
-
-        expectedStored.set(0, new Category("Name10", 100, false));
+        expectedStored.add(new Category("Test2", Float.NaN, false));
         assertEquals(expectedStored, categoryStorage.getCategories(""));
-        assertEquals("Name", nameFilter.getText());
+        assertEquals("", nameFilter.getText());
     }
 
     @Test
-    void renameLastCategory() {
-        nameFilter.setText("Name");
-        table.getSelectionModel().setSelectionInterval(3,3);
-        table.addPropertyChangeListener(renamesListener);
+    void emptyNameNotAdded() {
+        nameFilter.setText("");
+        JButton testButton = new JButton();
+        testButton.addActionListener(addListener);
+        testButton.doClick();
 
-        table.editCellAt(3,0);
-        table.setCellEditor(new DefaultCellEditor(new JTextField("Test10")));
-        table.editingStopped(new ChangeEvent(table));
-
-        expectedStored.set(3, new Category("Test10", Float.NaN, false));
         assertEquals(expectedStored, categoryStorage.getCategories(""));
-        assertEquals("Name", nameFilter.getText());
+        assertEquals("", nameFilter.getText());
+    }
+
+    @Test
+    void duplicateNameNotAdded() {
+        nameFilter.setText("Name1");
+        JButton testButton = new JButton();
+        testButton.addActionListener(addListener);
+        testButton.doClick();
+
+        assertEquals("Name1", nameFilter.getText());
     }
 }
