@@ -1,19 +1,20 @@
 package flb.category.application.listeners;
 
-import flb.category.application.*;
 import flb.category.*;
-import flb.database.*;
+import flb.category.application.*;
+import flb.database.TestDatabase;
 import org.junit.jupiter.api.*;
 import javax.swing.*;
-import java.util.*;
+import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.*;
 
-class UserAddsCategoryListenerTest {
-    private UserAddsCategoryListener addListener;
+class UserClearsGoalListenerTest {
+    private UserClearsGoalListener clearListener;
     private TestDatabase database;
     private CategoryStorage categoryStorage;
     private JTextField nameFilter;
     private ArrayList<Category> expectedStored;
+    private JTable table;
     private JButton testButton;
 
     @BeforeEach
@@ -24,10 +25,10 @@ class UserAddsCategoryListenerTest {
         database.connect();
         this.categoryStorage = new CategoryStorage(database);
         CategoryTableModel tableModel = new CategoryTableModel(categoryStorage.getCategories(""));
-        JTable table = new JTable(tableModel);
+        this.table = new JTable(tableModel);
         CategoryTable categoryTable = new CategoryTable(table, tableModel);
         CategoryTableEditor tableEditor = new CategoryTableEditor(categoryStorage, categoryTable);
-        this.addListener = new UserAddsCategoryListener(tableEditor, nameFilter);
+        this.clearListener = new UserClearsGoalListener(tableEditor, nameFilter);
 
         this.expectedStored = new ArrayList<>();
         expectedStored.add(new Category("Name1", 100, false));
@@ -42,32 +43,25 @@ class UserAddsCategoryListenerTest {
     }
 
     @Test
-    void categoryAdded() {
-        nameFilter.setText("Test2");
-        testButton.addActionListener(addListener);
+    void clearSelected() {
+        nameFilter.setText("Name");
+        testButton.addActionListener(clearListener);
+        table.getSelectionModel().setSelectionInterval(1,1);
         testButton.doClick();
 
-        expectedStored.add(new Category("Test2", Float.NaN, false));
+        expectedStored.set(1, new Category("Name2", Float.NaN, true));
         assertEquals(expectedStored, categoryStorage.getCategories(""));
-        assertEquals("", nameFilter.getText());
+        assertEquals("Name", nameFilter.getText());
     }
 
     @Test
-    void emptyNameNotAdded() {
-        nameFilter.setText("");
-        testButton.addActionListener(addListener);
+    void nothingSelectedNothingCleared() {
+        nameFilter.setText("Name");
+        testButton.addActionListener(clearListener);
+        table.getSelectionModel().setSelectionInterval(-1,-1);
         testButton.doClick();
 
         assertEquals(expectedStored, categoryStorage.getCategories(""));
-        assertEquals("", nameFilter.getText());
-    }
-
-    @Test
-    void duplicateNameNotAdded() {
-        nameFilter.setText("Name1");
-        testButton.addActionListener(addListener);
-        testButton.doClick();
-
-        assertEquals("Name1", nameFilter.getText());
+        assertEquals("Name", nameFilter.getText());
     }
 }
