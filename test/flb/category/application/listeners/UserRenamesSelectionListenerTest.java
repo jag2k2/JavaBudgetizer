@@ -6,7 +6,8 @@ import flb.database.*;
 import org.junit.jupiter.api.*;
 import javax.swing.*;
 import java.util.*;
-import javax.swing.event.ChangeEvent;
+import javax.swing.table.*;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class UserRenamesSelectionListenerTest {
@@ -15,6 +16,8 @@ class UserRenamesSelectionListenerTest {
     private JTable table;
     private ArrayList<Category> expectedStored;
     private JTextField nameFilter;
+    private TableCellEditor cellEditor;
+    private JTextField editorComponent;
 
     @BeforeEach
     void setUp() {
@@ -27,6 +30,9 @@ class UserRenamesSelectionListenerTest {
         CategoryTable categoryTable = new CategoryTable(table, tableModel);
         CategoryTableEditor tableEditor = new CategoryTableEditor(categoryStorage, categoryTable);
         table.addPropertyChangeListener(new UserRenamesSelectionListener(tableEditor, nameFilter));
+        cellEditor = table.getDefaultEditor(String.class);
+        editorComponent = (JTextField) cellEditor.getTableCellEditorComponent(table, "", false, 0, 0);
+
 
         this.expectedStored = new ArrayList<>();
         expectedStored.add(new Category("Name1", 100, false));
@@ -46,8 +52,8 @@ class UserRenamesSelectionListenerTest {
         table.getSelectionModel().setSelectionInterval(0,0);
 
         table.editCellAt(0,0);
-        table.setCellEditor(new DefaultCellEditor(new JTextField("Name10")));
-        table.editingStopped(new ChangeEvent(table));
+        editorComponent.setText("Name10");
+        cellEditor.stopCellEditing();
 
         expectedStored.set(0, new Category("Name10", 100, false));
         assertEquals(expectedStored, categoryStorage.getCategories(""));
@@ -60,8 +66,8 @@ class UserRenamesSelectionListenerTest {
         table.getSelectionModel().setSelectionInterval(3,3);
 
         table.editCellAt(3,0);
-        table.setCellEditor(new DefaultCellEditor(new JTextField("Test10")));
-        table.editingStopped(new ChangeEvent(table));
+        editorComponent.setText("Test10");
+        cellEditor.stopCellEditing();
 
         expectedStored.set(3, new Category("Test10", Float.NaN, false));
         assertEquals(expectedStored, categoryStorage.getCategories(""));
