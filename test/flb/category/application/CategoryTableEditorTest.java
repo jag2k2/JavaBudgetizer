@@ -93,40 +93,20 @@ class CategoryTableEditorTest {
         table.getSelectionModel().setSelectionInterval(1,1);
         expectedStored.remove(1);
 
-        TableWillConfirmDelete categoryWillDelete = new TableWillConfirmDelete(categoryStorage, categoryTable);
-        categoryWillDelete.userDeleteSelectedCategory(new JFrame());
+        tableEditor = new TableEditorNoDialog(categoryStorage, categoryTable, true);
+        tableEditor.userDeleteSelectedCategory(new JFrame());
 
         assertEquals(expectedStored, categoryStorage.getCategories(""));
     }
 
-    static class TableWillConfirmDelete extends CategoryTableEditor {
-        public TableWillConfirmDelete(CategoryStorage categoryStorage, CategoryTable categoryTable){
-            super(categoryStorage, categoryTable);
-        }
-
-        @Override
-        protected int getSelectionFromDialog(String categoryNameToDelete, JFrame frame){
-            return JOptionPane.YES_OPTION;
-        }
-    }
     @Test
     void deleteSelectedGoalWithNoConfirm() {
         table.getSelectionModel().setSelectionInterval(1,1);
 
-        TableWontConfirmDelete categoryWontDelete = new TableWontConfirmDelete(categoryStorage, categoryTable);
-        categoryWontDelete.userDeleteSelectedCategory(new JFrame());
+        tableEditor = new TableEditorNoDialog(categoryStorage, categoryTable, false);
+        tableEditor.userDeleteSelectedCategory(new JFrame());
 
         assertEquals(expectedStored, categoryStorage.getCategories(""));
-    }
-    static class TableWontConfirmDelete extends CategoryTableEditor {
-        public TableWontConfirmDelete(CategoryStorage categoryStorage, CategoryTable categoryTable){
-            super(categoryStorage, categoryTable);
-        }
-
-        @Override
-        protected int getSelectionFromDialog(String categoryNameToDelete, JFrame frame){
-            return JOptionPane.NO_OPTION;
-        }
     }
 
     @Test

@@ -2,19 +2,21 @@ package flb.category.application.listeners;
 
 import flb.category.*;
 import flb.category.application.*;
-import flb.database.TestDatabase;
+import flb.database.*;
 import org.junit.jupiter.api.*;
 import javax.swing.*;
-import java.util.ArrayList;
+import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-class UserClearsGoalListenerTest {
+class UserDeletesCategoryListenerTest {
     private TestDatabase database;
     private CategoryStorage categoryStorage;
     private JTextField nameFilter;
     private ArrayList<Category> expectedStored;
     private JTable table;
     private JButton testButton;
+    private CategoryTable categoryTable;
+    private CategoryTableEditor tableEditor;
 
     @BeforeEach
     void setUp() {
@@ -25,9 +27,7 @@ class UserClearsGoalListenerTest {
         this.categoryStorage = new CategoryStorage(database);
         CategoryTableModel tableModel = new CategoryTableModel(categoryStorage.getCategories(""));
         this.table = new JTable(tableModel);
-        CategoryTable categoryTable = new CategoryTable(table, tableModel);
-        CategoryTableEditor tableEditor = new CategoryTableEditor(categoryStorage, categoryTable);
-        testButton.addActionListener(new UserClearsGoalListener(tableEditor, nameFilter));
+        categoryTable = new CategoryTable(table, tableModel);
 
         this.expectedStored = new ArrayList<>();
         expectedStored.add(new Category("Name1", 100, false));
@@ -42,18 +42,37 @@ class UserClearsGoalListenerTest {
     }
 
     @Test
-    void clearSelected() {
+    void userConfirmsDelete() {
+        tableEditor = new TableEditorNoDialog(categoryStorage, categoryTable, true);
+        testButton.addActionListener(new UserDeletesCategoryListener(tableEditor, nameFilter, new JFrame()));
+
         nameFilter.setText("Name");
         table.getSelectionModel().setSelectionInterval(1,1);
         testButton.doClick();
 
-        expectedStored.set(1, new Category("Name2", Float.NaN, true));
+        expectedStored.remove(1);
         assertEquals(expectedStored, categoryStorage.getCategories(""));
         assertEquals("Name", nameFilter.getText());
     }
 
     @Test
-    void nothingSelected() {
+    void userRefusesDelete() {
+        tableEditor = new TableEditorNoDialog(categoryStorage, categoryTable, false);
+        testButton.addActionListener(new UserDeletesCategoryListener(tableEditor, nameFilter, new JFrame()));
+
+        nameFilter.setText("Name");
+        table.getSelectionModel().setSelectionInterval(1,1);
+        testButton.doClick();
+
+        assertEquals(expectedStored, categoryStorage.getCategories(""));
+        assertEquals("Name", nameFilter.getText());
+    }
+
+    @Test
+    void userDeletesWithNoSelected() {
+        tableEditor = new CategoryTableEditor(categoryStorage, categoryTable);
+        testButton.addActionListener(new UserDeletesCategoryListener(tableEditor, nameFilter, new JFrame()));
+
         nameFilter.setText("Name");
         table.getSelectionModel().setSelectionInterval(-1,-1);
         testButton.doClick();

@@ -9,7 +9,6 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class UserAddsCategoryListenerTest {
-    private UserAddsCategoryListener addListener;
     private TestDatabase database;
     private CategoryStorage categoryStorage;
     private JTextField nameFilter;
@@ -27,7 +26,7 @@ class UserAddsCategoryListenerTest {
         JTable table = new JTable(tableModel);
         CategoryTable categoryTable = new CategoryTable(table, tableModel);
         CategoryTableEditor tableEditor = new CategoryTableEditor(categoryStorage, categoryTable);
-        this.addListener = new UserAddsCategoryListener(tableEditor, nameFilter);
+        testButton.addActionListener(new UserAddsCategoryListener(tableEditor, nameFilter));
 
         this.expectedStored = new ArrayList<>();
         expectedStored.add(new Category("Name1", 100, false));
@@ -44,7 +43,6 @@ class UserAddsCategoryListenerTest {
     @Test
     void categoryAdded() {
         nameFilter.setText("Test2");
-        testButton.addActionListener(addListener);
         testButton.doClick();
 
         expectedStored.add(new Category("Test2", Float.NaN, false));
@@ -55,7 +53,6 @@ class UserAddsCategoryListenerTest {
     @Test
     void emptyNameNotAdded() {
         nameFilter.setText("");
-        testButton.addActionListener(addListener);
         testButton.doClick();
 
         assertEquals(expectedStored, categoryStorage.getCategories(""));
@@ -65,7 +62,6 @@ class UserAddsCategoryListenerTest {
     @Test
     void duplicateNameNotAdded() {
         nameFilter.setText("Name1");
-        testButton.addActionListener(addListener);
         testButton.doClick();
 
         assertEquals("Name1", nameFilter.getText());
