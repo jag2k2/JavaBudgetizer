@@ -18,7 +18,6 @@ class UserClearsGoalListenerTest {
 
     @BeforeEach
     void setUp() {
-        this.testButton = new JButton();
         this.nameFilter = new JTextField();
         this.database = new TestDatabase();
         database.connect();
@@ -27,6 +26,8 @@ class UserClearsGoalListenerTest {
         this.table = new JTable(tableModel);
         CategoryTable categoryTable = new CategoryTable(table, tableModel);
         CategoryTableEditor tableEditor = new CategoryTableEditor(categoryStorage, categoryTable);
+
+        this.testButton = new JButton();
         testButton.addActionListener(new UserClearsGoalListener(tableEditor, nameFilter));
 
         this.expectedStored = new ArrayList<>();

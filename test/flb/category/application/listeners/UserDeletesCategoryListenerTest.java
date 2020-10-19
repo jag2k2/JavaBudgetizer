@@ -20,7 +20,6 @@ class UserDeletesCategoryListenerTest {
 
     @BeforeEach
     void setUp() {
-        this.testButton = new JButton();
         this.nameFilter = new JTextField();
         this.database = new TestDatabase();
         database.connect();
@@ -28,6 +27,8 @@ class UserDeletesCategoryListenerTest {
         CategoryTableModel tableModel = new CategoryTableModel(categoryStorage.getCategories(""));
         this.table = new JTable(tableModel);
         categoryTable = new CategoryTable(table, tableModel);
+
+        this.testButton = new JButton();
 
         this.expectedStored = new ArrayList<>();
         expectedStored.add(new Category("Name1", 100, false));

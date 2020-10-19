@@ -17,7 +17,6 @@ class UserAddsCategoryListenerTest {
 
     @BeforeEach
     void setUp() {
-        this.testButton = new JButton();
         this.nameFilter = new JTextField();
         this.database = new TestDatabase();
         database.connect();
@@ -26,6 +25,8 @@ class UserAddsCategoryListenerTest {
         JTable table = new JTable(tableModel);
         CategoryTable categoryTable = new CategoryTable(table, tableModel);
         CategoryTableEditor tableEditor = new CategoryTableEditor(categoryStorage, categoryTable);
+
+        this.testButton = new JButton();
         testButton.addActionListener(new UserAddsCategoryListener(tableEditor, nameFilter));
 
         this.expectedStored = new ArrayList<>();

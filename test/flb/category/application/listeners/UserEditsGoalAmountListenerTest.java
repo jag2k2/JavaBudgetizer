@@ -1,15 +1,18 @@
 package flb.category.application.listeners;
 
-import flb.category.application.*;
 import flb.category.*;
+import flb.category.application.CategoryTable;
+import flb.category.application.CategoryTableEditor;
+import flb.category.application.CategoryTableModel;
 import flb.database.*;
 import org.junit.jupiter.api.*;
 import javax.swing.*;
-import java.util.*;
-import javax.swing.table.*;
-import static org.junit.jupiter.api.Assertions.*;
+import javax.swing.table.TableCellEditor;
+import java.util.ArrayList;
 
-class UserRenamesSelectionListenerTest {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+class UserEditsGoalAmountListenerTest {
     private TestDatabase database;
     private CategoryStorage categoryStorage;
     private JTable table;
@@ -28,10 +31,9 @@ class UserRenamesSelectionListenerTest {
         this.table = new JTable(tableModel);
         CategoryTable categoryTable = new CategoryTable(table, tableModel);
         CategoryTableEditor tableEditor = new CategoryTableEditor(categoryStorage, categoryTable);
-        table.addPropertyChangeListener(new UserRenamesSelectionListener(tableEditor, nameFilter));
-        cellEditor = table.getDefaultEditor(String.class);
-        editorComponent = (JTextField) cellEditor.getTableCellEditorComponent(table, "", false, 0, 0);
-
+        cellEditor = table.getDefaultEditor(Float.class);
+        tableModel.addTableModelListener(new UserEditsGoalAmountListener(tableEditor, nameFilter));
+        editorComponent = (JTextField) cellEditor.getTableCellEditorComponent(table, "", false, 0, 1);
 
         this.expectedStored = new ArrayList<>();
         expectedStored.add(new Category("Name1", 100, false));
@@ -46,29 +48,15 @@ class UserRenamesSelectionListenerTest {
     }
 
     @Test
-    void renameFirstCategory() {
+    void editCategoryGoal() {
         nameFilter.setText("Name");
         table.getSelectionModel().setSelectionInterval(0,0);
+        table.editCellAt(0,1);
 
-        table.editCellAt(0,0);
-        editorComponent.setText("Name10");
+        editorComponent.setText("200.0");
         cellEditor.stopCellEditing();
 
-        expectedStored.set(0, new Category("Name10", 100, false));
-        assertEquals(expectedStored, categoryStorage.getCategories(""));
-        assertEquals("Name", nameFilter.getText());
-    }
-
-    @Test
-    void renameLastCategory() {
-        nameFilter.setText("Name");
-        table.getSelectionModel().setSelectionInterval(3,3);
-
-        table.editCellAt(3,0);
-        editorComponent.setText("Test10");
-        cellEditor.stopCellEditing();
-
-        expectedStored.set(3, new Category("Test10", Float.NaN, false));
+        expectedStored.set(0, new Category("Name1", 200, false));
         assertEquals(expectedStored, categoryStorage.getCategories(""));
         assertEquals("Name", nameFilter.getText());
     }
