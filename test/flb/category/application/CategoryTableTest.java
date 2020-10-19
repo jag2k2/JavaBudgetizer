@@ -25,7 +25,8 @@ class CategoryTableTest {
         modelContents.add(new Category("Test1", Float.NaN, false));
 
         expectedDisplay = new ArrayList<>();
-        tableModel = new CategoryTableModel(modelContents);
+        tableModel = new CategoryTableModel();
+        tableModel.setContents(modelContents);
         table = new JTable(tableModel);
         categoryTable = new CategoryTable(table, tableModel);
     }

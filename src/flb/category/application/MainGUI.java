@@ -2,6 +2,8 @@ package flb.category.application;
 
 import flb.category.application.listeners.*;
 import flb.category.*;
+import flb.database.AbstractDatabase;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -15,9 +17,11 @@ public class MainGUI {
     private final JTextField nameFilter;
     private final CategoryTableModel tableModel;
     private final CategoryTableEditor tableEditor;
+    private final AbstractDatabase database;
 
-    public MainGUI(CategoryStorage categoryStorage) {
-        this.tableModel = new CategoryTableModel(categoryStorage.getCategories(""));
+    public MainGUI(AbstractDatabase database) {
+        this.database = database;
+        this.tableModel = new CategoryTableModel();
         this.table = new JTable(tableModel);
         this.tableScroller = new JScrollPane(table);
         this.nameFilter = new JTextField();
@@ -26,6 +30,7 @@ public class MainGUI {
         deleteButton = new JButton("Delete");
         clearAmountButton = new JButton("Clear");
         CategoryTable categoryTable = new CategoryTable(table, tableModel);
+        CategoryStorage categoryStorage = new CategoryStorageImp(database);
         tableEditor = new CategoryTableEditor(categoryStorage, categoryTable);
     }
 
@@ -54,6 +59,7 @@ public class MainGUI {
         frame.setLocation(200, 100);
         frame.setMinimumSize(new Dimension(375, 500));
         frame.setPreferredSize(new Dimension(375, 500));
+        frame.pack();
     }
 
     public void addListeners() {
@@ -66,7 +72,8 @@ public class MainGUI {
         table.getDefaultEditor(Boolean.class).addCellEditorListener(new UserEditsExcludesListener(tableEditor, nameFilter));
     }
     public void launch(){
-        frame.pack();
+        database.connect();
+        tableEditor.refresh("");
         frame.setVisible(true);
     }
 }

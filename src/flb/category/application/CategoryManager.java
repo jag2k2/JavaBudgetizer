@@ -1,7 +1,7 @@
 package flb.category.application;
 
 import javax.swing.*;
-import flb.category.CategoryStorage;
+import flb.category.*;
 import flb.database.*;
 
 public class CategoryManager {
@@ -23,9 +23,7 @@ public class CategoryManager {
         @Override
         public void run() {
             AbstractDatabase database = new TestDatabase();
-            database.connect();
-            CategoryStorage categoryStorage = new CategoryStorage(database);
-            MainGUI mainGui = new MainGUI(categoryStorage);
+            MainGUI mainGui = new MainGUI(database);
             mainGui.layout();
             mainGui.addListeners();
             mainGui.launch();

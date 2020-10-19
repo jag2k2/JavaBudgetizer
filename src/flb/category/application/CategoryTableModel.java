@@ -10,8 +10,8 @@ public class CategoryTableModel extends AbstractTableModel {
     private final String[] columnNames = {"Name", "Default Goal", "Exclude"};
     private ArrayList<Category> tableContents;
 
-    public CategoryTableModel(ArrayList<Category> tableContents) {
-        this.tableContents = tableContents;
+    public CategoryTableModel() {
+        this.tableContents = new ArrayList<>();
     }
 
     @Override

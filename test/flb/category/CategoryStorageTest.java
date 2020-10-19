@@ -18,7 +18,7 @@ class CategoryStorageTest {
 
         dataBase = new TestDatabase();
         dataBase.connect();
-        categoryStorage = new CategoryStorage(dataBase);
+        categoryStorage = new CategoryStorageImp(dataBase);
     }
 
     @AfterEach

@@ -40,7 +40,7 @@ public class CategoryTableEditor {
                 "Confirm Delete", JOptionPane.YES_NO_OPTION);
     }
 
-    public void userClearSelectedCategoryGoal() {
+    public void userClearSelectedGoalAmount() {
         for (Category selectedCategory : categoryTable.getSelectedCategory()) {
             String categoryToClear = selectedCategory.getName();
             categoryStorage.updateAmount(categoryToClear, Float.NaN);

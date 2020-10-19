@@ -20,23 +20,24 @@ class UserEditsExcludesListenerTest {
 
     @BeforeEach
     void setUp() {
+        this.expectedStored = new ArrayList<>();
+        expectedStored.add(new Category("Name1", 100, false));
+        expectedStored.add(new Category("Name2", 200, true));
+        expectedStored.add(new Category("Name3", 300, false));
+        expectedStored.add(new Category("Test1", Float.NaN, false));
+
         this.nameFilter = new JTextField();
         this.database = new TestDatabase();
         database.connect();
-        this.categoryStorage = new CategoryStorage(database);
-        CategoryTableModel tableModel = new CategoryTableModel(categoryStorage.getCategories(""));
+        this.categoryStorage = new CategoryStorageImp(database);
+        CategoryTableModel tableModel = new CategoryTableModel();
+        tableModel.setContents(expectedStored);
         this.table = new JTable(tableModel);
         CategoryTable categoryTable = new CategoryTable(table, tableModel);
         CategoryTableEditor tableEditor = new CategoryTableEditor(categoryStorage, categoryTable);
         cellEditor = table.getDefaultEditor(Boolean.class);
         cellEditor.addCellEditorListener(new UserEditsExcludesListener(tableEditor, nameFilter));
         editorComponent = (JCheckBox) cellEditor.getTableCellEditorComponent(table, true, false, 0, 2);
-
-        this.expectedStored = new ArrayList<>();
-        expectedStored.add(new Category("Name1", 100, false));
-        expectedStored.add(new Category("Name2", 200, true));
-        expectedStored.add(new Category("Name3", 300, false));
-        expectedStored.add(new Category("Test1", Float.NaN, false));
     }
 
     @AfterEach

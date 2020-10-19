@@ -19,7 +19,8 @@ class CategoryTableModelTest {
         modelContents.add(new Category("Name2", 200, true));
         modelContents.add(new Category("Name3", 300, false));
         modelContents.add(new Category("Test1", Float.NaN, false));
-        tableModel = new CategoryTableModel(modelContents);
+        tableModel = new CategoryTableModel();
+        tableModel.setContents(modelContents);
     }
 
     @Test

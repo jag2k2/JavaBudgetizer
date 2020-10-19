@@ -19,8 +19,8 @@ class UserFiltersCategoriesListenerTest {
         this.nameFilter = new JTextField();
         this.database = new TestDatabase();
         database.connect();
-        CategoryStorage categoryStorage = new CategoryStorage(database);
-        tableModel = new CategoryTableModel(categoryStorage.getCategories(""));
+        CategoryStorage categoryStorage = new CategoryStorageImp(database);
+        tableModel = new CategoryTableModel();
         JTable table = new JTable(tableModel);
         CategoryTable categoryTable = new CategoryTable(table, tableModel);
         CategoryTableEditor tableEditor = new CategoryTableEditor(categoryStorage, categoryTable);

@@ -20,8 +20,8 @@ class UserAddsCategoryListenerTest {
         this.nameFilter = new JTextField();
         this.database = new TestDatabase();
         database.connect();
-        this.categoryStorage = new CategoryStorage(database);
-        CategoryTableModel tableModel = new CategoryTableModel(categoryStorage.getCategories(""));
+        this.categoryStorage = new CategoryStorageImp(database);
+        CategoryTableModel tableModel = new CategoryTableModel();
         JTable table = new JTable(tableModel);
         CategoryTable categoryTable = new CategoryTable(table, tableModel);
         CategoryTableEditor tableEditor = new CategoryTableEditor(categoryStorage, categoryTable);

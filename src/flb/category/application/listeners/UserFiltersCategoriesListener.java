@@ -19,15 +19,12 @@ public class UserFiltersCategoriesListener implements DocumentListener {
 
     @Override
     public void insertUpdate(DocumentEvent e) {
-        System.out.println("insert");
         tableEditor.refresh(nameFilter.getText());
     }
 
     @Override
     public void removeUpdate(DocumentEvent e){
-        System.out.println("remove");
         tableEditor.refresh(nameFilter.getText());
     }
-
 }
 

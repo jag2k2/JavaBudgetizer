@@ -20,21 +20,22 @@ class UserDeletesCategoryListenerTest {
 
     @BeforeEach
     void setUp() {
-        this.nameFilter = new JTextField();
-        this.database = new TestDatabase();
-        database.connect();
-        this.categoryStorage = new CategoryStorage(database);
-        CategoryTableModel tableModel = new CategoryTableModel(categoryStorage.getCategories(""));
-        this.table = new JTable(tableModel);
-        categoryTable = new CategoryTable(table, tableModel);
-
-        this.testButton = new JButton();
-
         this.expectedStored = new ArrayList<>();
         expectedStored.add(new Category("Name1", 100, false));
         expectedStored.add(new Category("Name2", 200, true));
         expectedStored.add(new Category("Name3", 300, false));
         expectedStored.add(new Category("Test1", Float.NaN, false));
+
+        this.nameFilter = new JTextField();
+        this.database = new TestDatabase();
+        database.connect();
+        this.categoryStorage = new CategoryStorageImp(database);
+        CategoryTableModel tableModel = new CategoryTableModel();
+        tableModel.setContents(expectedStored);
+        this.table = new JTable(tableModel);
+        categoryTable = new CategoryTable(table, tableModel);
+
+        this.testButton = new JButton();
     }
 
     @AfterEach

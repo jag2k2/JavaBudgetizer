@@ -19,19 +19,20 @@ class CategoryTableEditorTest {
 
     @BeforeEach
     void setUp() {
-        this.database = new TestDatabase();
-        database.connect();
-        this.categoryStorage = new CategoryStorage(database);
-        this.tableModel = new CategoryTableModel(categoryStorage.getCategories(""));
-        this.table = new JTable(tableModel);
-        this.categoryTable = new CategoryTable(table, tableModel);
-        this.tableEditor = new CategoryTableEditor(categoryStorage, categoryTable);
-
         this.expectedStored = new ArrayList<>();
         expectedStored.add(new Category("Name1", 100, false));
         expectedStored.add(new Category("Name2", 200, true));
         expectedStored.add(new Category("Name3", 300, false));
         expectedStored.add(new Category("Test1", Float.NaN, false));
+
+        this.database = new TestDatabase();
+        database.connect();
+        this.categoryStorage = new CategoryStorageImp(database);
+        this.tableModel = new CategoryTableModel();
+        tableModel.setContents(expectedStored);
+        this.table = new JTable(tableModel);
+        this.categoryTable = new CategoryTable(table, tableModel);
+        this.tableEditor = new CategoryTableEditor(categoryStorage, categoryTable);
     }
 
     @AfterEach
@@ -74,7 +75,7 @@ class CategoryTableEditorTest {
         table.getSelectionModel().setSelectionInterval(1,1);
         expectedStored.set(1, new Category("Name2", Float.NaN, true));
 
-        tableEditor.userClearSelectedCategoryGoal();
+        tableEditor.userClearSelectedGoalAmount();
 
         assertEquals(expectedStored, categoryStorage.getCategories(""));
     }
@@ -83,7 +84,7 @@ class CategoryTableEditorTest {
     void clearNoGoalSelected() {
         table.getSelectionModel().setSelectionInterval(-1,-1);
 
-        tableEditor.userClearSelectedCategoryGoal();
+        tableEditor.userClearSelectedGoalAmount();
 
         assertEquals(expectedStored, categoryStorage.getCategories(""));
     }
@@ -91,11 +92,11 @@ class CategoryTableEditorTest {
     @Test
     void deleteSelectedGoalWithConfirm() {
         table.getSelectionModel().setSelectionInterval(1,1);
-        expectedStored.remove(1);
 
         tableEditor = new TableEditorNoDialog(categoryStorage, categoryTable, true);
         tableEditor.userDeleteSelectedCategory(new JFrame());
 
+        expectedStored.remove(1);
         assertEquals(expectedStored, categoryStorage.getCategories(""));
     }
 

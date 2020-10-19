@@ -16,7 +16,7 @@ public class UserClearsGoalListener implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        tableEditor.userClearSelectedCategoryGoal();
+        tableEditor.userClearSelectedGoalAmount();
         tableEditor.refreshAndKeepSelection(nameFilter.getText());
 
     }
