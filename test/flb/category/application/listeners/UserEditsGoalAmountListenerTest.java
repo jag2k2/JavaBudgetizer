@@ -1,14 +1,12 @@
 package flb.category.application.listeners;
 
 import flb.category.*;
-import flb.category.application.CategoryTable;
-import flb.category.application.CategoryTableEditor;
-import flb.category.application.CategoryTableModel;
+import flb.category.application.*;
 import flb.database.*;
 import org.junit.jupiter.api.*;
 import javax.swing.*;
-import javax.swing.table.TableCellEditor;
-import java.util.ArrayList;
+import javax.swing.table.*;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
