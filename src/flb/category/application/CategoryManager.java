@@ -1,7 +1,6 @@
 package flb.category.application;
 
 import javax.swing.*;
-
 import flb.category.CategoryStorage;
 import flb.database.*;
 
