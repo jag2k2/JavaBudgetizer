@@ -4,8 +4,10 @@ import javax.swing.*;
 import java.util.*;
 import flb.util.*;
 import flb.category.*;
+import flb.category.application.listeners.*;
 
-public class CategoryTableEditor {
+public class CategoryTableEditor implements CategoryAdder, CategoryClearer, CategoryDeleter, CategoryExcludeEditor,
+                                            CategoryAmountEditor, CategoryNameEditor {
     private final CategoryStorage categoryStorage;
     private final CategoryTable categoryTable;
 
@@ -73,7 +75,7 @@ public class CategoryTableEditor {
         }
     }
 
-    public void refresh(String nameFilter) {
+    public void refreshAndClearSelection(String nameFilter) {
         ArrayList<Category> categories = categoryStorage.getCategories(nameFilter);
         categoryTable.refresh(categories);
     }

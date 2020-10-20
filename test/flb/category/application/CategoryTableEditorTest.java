@@ -157,7 +157,7 @@ class CategoryTableEditorTest {
     void refresh(){
         expectedStored.remove(3);
 
-        tableEditor.refresh("Name");
+        tableEditor.refreshAndClearSelection("Name");
 
         assertEquals(0, table.getSelectionModel().getSelectedIndices().length);
         assertEquals(expectedStored, tableModel.getContents());

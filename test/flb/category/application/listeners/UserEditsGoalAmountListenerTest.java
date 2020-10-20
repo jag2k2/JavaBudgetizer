@@ -2,6 +2,7 @@ package flb.category.application.listeners;
 
 import flb.category.*;
 import flb.category.application.*;
+import flb.category.application.CategoryTableEditor;
 import flb.database.*;
 import org.junit.jupiter.api.*;
 import javax.swing.*;
@@ -35,9 +36,9 @@ class UserEditsGoalAmountListenerTest {
         tableModel.setContents(expectedStored);
         this.table = new JTable(tableModel);
         CategoryTable categoryTable = new CategoryTable(table, tableModel);
-        CategoryTableEditor tableEditor = new CategoryTableEditor(categoryStorage, categoryTable);
+        CategoryAmountEditor amountEditor = new CategoryTableEditor(categoryStorage, categoryTable);
         cellEditor = table.getDefaultEditor(Float.class);
-        tableModel.addTableModelListener(new UserEditsGoalAmountListener(tableEditor, nameFilter));
+        tableModel.addTableModelListener(new UserEditsGoalAmountListener(amountEditor, nameFilter));
         editorComponent = (JTextField) cellEditor.getTableCellEditorComponent(table, "", false, 0, 1);
     }
 

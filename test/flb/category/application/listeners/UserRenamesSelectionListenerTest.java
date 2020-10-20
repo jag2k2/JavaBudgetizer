@@ -2,6 +2,7 @@ package flb.category.application.listeners;
 
 import flb.category.application.*;
 import flb.category.*;
+import flb.category.application.CategoryTableEditor;
 import flb.database.*;
 import org.junit.jupiter.api.*;
 import javax.swing.*;
@@ -34,8 +35,8 @@ class UserRenamesSelectionListenerTest {
         tableModel.setContents(expectedStored);
         this.table = new JTable(tableModel);
         CategoryTable categoryTable = new CategoryTable(table, tableModel);
-        CategoryTableEditor tableEditor = new CategoryTableEditor(categoryStorage, categoryTable);
-        table.addPropertyChangeListener(new UserRenamesSelectionListener(tableEditor, nameFilter));
+        CategoryNameEditor nameEditor = new CategoryTableEditor(categoryStorage, categoryTable);
+        table.addPropertyChangeListener(new UserRenamesSelectionListener(nameEditor, nameFilter));
         cellEditor = table.getDefaultEditor(String.class);
         editorComponent = (JTextField) cellEditor.getTableCellEditorComponent(table, "", false, 0, 0);
     }

@@ -1,26 +1,24 @@
 package flb.category.application.listeners;
 
-import flb.category.application.*;
-
 import javax.swing.*;
 import java.awt.event.*;
 
 public class UserAddsCategoryListener implements ActionListener {
-    private final CategoryTableEditor tableEditor;
+    private final CategoryAdder categoryAdder;
     private final JTextField nameFilter;
 
-    public UserAddsCategoryListener(CategoryTableEditor tableEditor, JTextField nameFilter){
-        this.tableEditor = tableEditor;
+    public UserAddsCategoryListener(CategoryAdder categoryAdder, JTextField nameFilter){
+        this.categoryAdder = categoryAdder;
         this.nameFilter = nameFilter;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         String nameToAdd = nameFilter.getText();
-        if (tableEditor.categoryNameAddable(nameToAdd)) {
-            tableEditor.userAddCategory(nameToAdd);
+        if (categoryAdder.categoryNameAddable(nameToAdd)) {
+            categoryAdder.userAddCategory(nameToAdd);
             nameFilter.setText("");
-            tableEditor.refresh("");
+            categoryAdder.refreshAndClearSelection("");
         }
     }
 }

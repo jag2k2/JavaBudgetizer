@@ -2,6 +2,7 @@ package flb.category.application.listeners;
 
 import flb.category.*;
 import flb.category.application.*;
+import flb.category.application.CategoryTableEditor;
 import flb.database.*;
 import org.junit.jupiter.api.*;
 import javax.swing.*;
@@ -16,7 +17,7 @@ class UserDeletesCategoryListenerTest {
     private JTable table;
     private JButton testButton;
     private CategoryTable categoryTable;
-    private CategoryTableEditor tableEditor;
+    private CategoryDeleter categoryDeleter;
 
     @BeforeEach
     void setUp() {
@@ -45,8 +46,8 @@ class UserDeletesCategoryListenerTest {
 
     @Test
     void userConfirmsDelete() {
-        tableEditor = new TableEditorNoDialog(categoryStorage, categoryTable, true);
-        testButton.addActionListener(new UserDeletesCategoryListener(tableEditor, nameFilter, new JFrame()));
+        categoryDeleter = new TableEditorNoDialog(categoryStorage, categoryTable, true);
+        testButton.addActionListener(new UserDeletesCategoryListener(categoryDeleter, nameFilter, new JFrame()));
 
         nameFilter.setText("Name");
         table.getSelectionModel().setSelectionInterval(1,1);
@@ -59,8 +60,8 @@ class UserDeletesCategoryListenerTest {
 
     @Test
     void userRefusesDelete() {
-        tableEditor = new TableEditorNoDialog(categoryStorage, categoryTable, false);
-        testButton.addActionListener(new UserDeletesCategoryListener(tableEditor, nameFilter, new JFrame()));
+        categoryDeleter = new TableEditorNoDialog(categoryStorage, categoryTable, false);
+        testButton.addActionListener(new UserDeletesCategoryListener(categoryDeleter, nameFilter, new JFrame()));
 
         nameFilter.setText("Name");
         table.getSelectionModel().setSelectionInterval(1,1);
@@ -72,8 +73,8 @@ class UserDeletesCategoryListenerTest {
 
     @Test
     void userDeletesWithNoSelected() {
-        tableEditor = new CategoryTableEditor(categoryStorage, categoryTable);
-        testButton.addActionListener(new UserDeletesCategoryListener(tableEditor, nameFilter, new JFrame()));
+        categoryDeleter = new CategoryTableEditor(categoryStorage, categoryTable);
+        testButton.addActionListener(new UserDeletesCategoryListener(categoryDeleter, nameFilter, new JFrame()));
 
         nameFilter.setText("Name");
         table.getSelectionModel().setSelectionInterval(-1,-1);

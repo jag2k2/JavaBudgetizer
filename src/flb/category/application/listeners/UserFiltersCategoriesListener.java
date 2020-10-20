@@ -1,15 +1,14 @@
 package flb.category.application.listeners;
 
-import flb.category.application.*;
 import javax.swing.*;
 import javax.swing.event.*;
 
 public class UserFiltersCategoriesListener implements DocumentListener {
-    private final CategoryTableEditor tableEditor;
+    private final ListChangeRefresher changeRefresher;
     private final JTextField nameFilter;
 
-    public UserFiltersCategoriesListener(CategoryTableEditor tableEditor, JTextField nameFilter) {
-        this.tableEditor = tableEditor;
+    public UserFiltersCategoriesListener(ListChangeRefresher changeRefresher, JTextField nameFilter) {
+        this.changeRefresher = changeRefresher;
         this.nameFilter = nameFilter;
     }
 
@@ -19,12 +18,12 @@ public class UserFiltersCategoriesListener implements DocumentListener {
 
     @Override
     public void insertUpdate(DocumentEvent e) {
-        tableEditor.refresh(nameFilter.getText());
+        changeRefresher.refreshAndClearSelection(nameFilter.getText());
     }
 
     @Override
     public void removeUpdate(DocumentEvent e){
-        tableEditor.refresh(nameFilter.getText());
+        changeRefresher.refreshAndClearSelection(nameFilter.getText());
     }
 }
 

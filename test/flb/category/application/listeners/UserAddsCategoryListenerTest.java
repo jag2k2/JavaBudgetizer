@@ -2,6 +2,7 @@ package flb.category.application.listeners;
 
 import flb.category.application.*;
 import flb.category.*;
+import flb.category.application.CategoryTableEditor;
 import flb.database.*;
 import org.junit.jupiter.api.*;
 import javax.swing.*;
@@ -24,10 +25,10 @@ class UserAddsCategoryListenerTest {
         CategoryTableModel tableModel = new CategoryTableModel();
         JTable table = new JTable(tableModel);
         CategoryTable categoryTable = new CategoryTable(table, tableModel);
-        CategoryTableEditor tableEditor = new CategoryTableEditor(categoryStorage, categoryTable);
+        CategoryAdder categoryAdder = new CategoryTableEditor(categoryStorage, categoryTable);
 
         this.testButton = new JButton();
-        testButton.addActionListener(new UserAddsCategoryListener(tableEditor, nameFilter));
+        testButton.addActionListener(new UserAddsCategoryListener(categoryAdder, nameFilter));
 
         this.expectedStored = new ArrayList<>();
         expectedStored.add(new Category("Name1", 100, false));

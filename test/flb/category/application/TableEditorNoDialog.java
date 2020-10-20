@@ -3,7 +3,7 @@ package flb.category.application;
 import flb.category.*;
 import javax.swing.*;
 
-public class TableEditorNoDialog extends CategoryTableEditor{
+public class TableEditorNoDialog extends CategoryTableEditor {
     private final boolean alwaysConfirm;
 
     public TableEditorNoDialog(CategoryStorage categoryStorage, CategoryTable categoryTable, boolean alwaysConfirm){

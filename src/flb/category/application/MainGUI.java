@@ -73,7 +73,7 @@ public class MainGUI {
     }
     public void launch(){
         database.connect();
-        tableEditor.refresh("");
+        tableEditor.refreshAndClearSelection("");
         frame.setVisible(true);
     }
 }

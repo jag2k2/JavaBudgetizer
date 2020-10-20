@@ -1,23 +1,20 @@
 package flb.category.application.listeners;
 
-import flb.category.application.*;
-
 import javax.swing.*;
 import java.awt.event.*;
 
 public class UserClearsGoalListener implements ActionListener {
-    private final CategoryTableEditor tableEditor;
+    private final CategoryClearer categoryClearer;
     private final JTextField nameFilter;
 
-    public UserClearsGoalListener(CategoryTableEditor tableEditor, JTextField nameFilter) {
-        this.tableEditor = tableEditor;
+    public UserClearsGoalListener(CategoryClearer categoryClearer, JTextField nameFilter) {
+        this.categoryClearer = categoryClearer;
         this.nameFilter = nameFilter;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        tableEditor.userClearSelectedGoalAmount();
-        tableEditor.refreshAndKeepSelection(nameFilter.getText());
-
+        categoryClearer.userClearSelectedGoalAmount();
+        categoryClearer.refreshAndKeepSelection(nameFilter.getText());
     }
 }

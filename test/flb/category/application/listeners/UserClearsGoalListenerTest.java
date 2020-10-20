@@ -2,6 +2,7 @@ package flb.category.application.listeners;
 
 import flb.category.*;
 import flb.category.application.*;
+import flb.category.application.CategoryTableEditor;
 import flb.database.TestDatabase;
 import org.junit.jupiter.api.*;
 import javax.swing.*;
@@ -32,10 +33,10 @@ class UserClearsGoalListenerTest {
         tableModel.setContents(expectedStored);
         this.table = new JTable(tableModel);
         CategoryTable categoryTable = new CategoryTable(table, tableModel);
-        CategoryTableEditor tableEditor = new CategoryTableEditor(categoryStorage, categoryTable);
+        CategoryClearer categoryClearer = new CategoryTableEditor(categoryStorage, categoryTable);
 
         this.testButton = new JButton();
-        testButton.addActionListener(new UserClearsGoalListener(tableEditor, nameFilter));
+        testButton.addActionListener(new UserClearsGoalListener(categoryClearer, nameFilter));
     }
 
     @AfterEach

@@ -2,6 +2,7 @@ package flb.category.application.listeners;
 
 import flb.category.application.*;
 import flb.category.*;
+import flb.category.application.CategoryTableEditor;
 import flb.database.*;
 import org.junit.jupiter.api.*;
 import javax.swing.*;
@@ -34,9 +35,9 @@ class UserEditsExcludesListenerTest {
         tableModel.setContents(expectedStored);
         this.table = new JTable(tableModel);
         CategoryTable categoryTable = new CategoryTable(table, tableModel);
-        CategoryTableEditor tableEditor = new CategoryTableEditor(categoryStorage, categoryTable);
+        CategoryExcludeEditor excludeEditor = new CategoryTableEditor(categoryStorage, categoryTable);
         cellEditor = table.getDefaultEditor(Boolean.class);
-        cellEditor.addCellEditorListener(new UserEditsExcludesListener(tableEditor, nameFilter));
+        cellEditor.addCellEditorListener(new UserEditsExcludesListener(excludeEditor, nameFilter));
         editorComponent = (JCheckBox) cellEditor.getTableCellEditorComponent(table, true, false, 0, 2);
     }
 
