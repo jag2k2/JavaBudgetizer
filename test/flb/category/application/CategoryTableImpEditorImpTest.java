@@ -8,13 +8,13 @@ import flb.category.*;
 import flb.database.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-class CategoryTableEditorTest {
-    private CategoryTable categoryTable;
-    private CategoryTableEditor tableEditor;
+class CategoryTableImpEditorImpTest {
+    private CategoryTableImp categoryTableImp;
+    private CategoryTableEditorImp tableEditor;
     private TestDatabase database;
     private JTable table;
-    private CategoryStorage categoryStorage;
-    private CategoryTableModel tableModel;
+    private CategoryStoreEditor categoryStoreEditor;
+    private CategoryTableModelImp tableModel;
     private ArrayList<Category> expectedStored;
 
     @BeforeEach
@@ -27,12 +27,12 @@ class CategoryTableEditorTest {
 
         this.database = new TestDatabase();
         database.connect();
-        this.categoryStorage = new CategoryStorageImp(database);
-        this.tableModel = new CategoryTableModel();
-        tableModel.setContents(expectedStored);
+        this.categoryStoreEditor = new CategoryStoreEditorImp(database);
+        this.tableModel = new CategoryTableModelImp();
+        tableModel.updateCategories(expectedStored);
         this.table = new JTable(tableModel);
-        this.categoryTable = new CategoryTable(table, tableModel);
-        this.tableEditor = new CategoryTableEditor(categoryStorage, categoryTable);
+        this.categoryTableImp = new CategoryTableImp(table, tableModel);
+        this.tableEditor = new CategoryTableEditorImp(categoryStoreEditor, categoryTableImp);
     }
 
     @AfterEach
@@ -51,7 +51,7 @@ class CategoryTableEditorTest {
     void addingCategoryWithNoName() {
         tableEditor.userAddCategory("");
 
-        assertEquals(expectedStored, categoryStorage.getCategories(""));
+        assertEquals(expectedStored, categoryStoreEditor.getCategories(""));
     }
 
     @Test
@@ -60,14 +60,14 @@ class CategoryTableEditorTest {
 
         tableEditor.userAddCategory("Test2");
 
-        assertEquals(expectedStored, categoryStorage.getCategories(""));
+        assertEquals(expectedStored, categoryStoreEditor.getCategories(""));
     }
 
     @Test
     void addingDuplicateCategory() {
         tableEditor.userAddCategory("Name1");
 
-        assertEquals(expectedStored, categoryStorage.getCategories(""));
+        assertEquals(expectedStored, categoryStoreEditor.getCategories(""));
     }
 
     @Test
@@ -77,7 +77,7 @@ class CategoryTableEditorTest {
 
         tableEditor.userClearSelectedGoalAmount();
 
-        assertEquals(expectedStored, categoryStorage.getCategories(""));
+        assertEquals(expectedStored, categoryStoreEditor.getCategories(""));
     }
 
     @Test
@@ -86,28 +86,28 @@ class CategoryTableEditorTest {
 
         tableEditor.userClearSelectedGoalAmount();
 
-        assertEquals(expectedStored, categoryStorage.getCategories(""));
+        assertEquals(expectedStored, categoryStoreEditor.getCategories(""));
     }
 
     @Test
     void deleteSelectedGoalWithConfirm() {
         table.getSelectionModel().setSelectionInterval(1,1);
 
-        tableEditor = new TableEditorNoDialog(categoryStorage, categoryTable, true);
+        tableEditor = new TableEditorNoDialog(categoryStoreEditor, categoryTableImp, true);
         tableEditor.userDeleteSelectedCategory(new JFrame());
 
         expectedStored.remove(1);
-        assertEquals(expectedStored, categoryStorage.getCategories(""));
+        assertEquals(expectedStored, categoryStoreEditor.getCategories(""));
     }
 
     @Test
     void deleteSelectedGoalWithNoConfirm() {
         table.getSelectionModel().setSelectionInterval(1,1);
 
-        tableEditor = new TableEditorNoDialog(categoryStorage, categoryTable, false);
+        tableEditor = new TableEditorNoDialog(categoryStoreEditor, categoryTableImp, false);
         tableEditor.userDeleteSelectedCategory(new JFrame());
 
-        assertEquals(expectedStored, categoryStorage.getCategories(""));
+        assertEquals(expectedStored, categoryStoreEditor.getCategories(""));
     }
 
     @Test
@@ -117,18 +117,17 @@ class CategoryTableEditorTest {
 
         tableEditor.userEditsSelectedExcludes();
 
-        assertEquals(expectedStored, categoryStorage.getCategories(""));
+        assertEquals(expectedStored, categoryStoreEditor.getCategories(""));
     }
 
     @Test
     void editCategoryAmount() {
         table.getSelectionModel().setSelectionInterval(1,1);
-        tableModel.getContents().set(1, new Category("Name2", 500, true));
         expectedStored.set(1, new Category("Name2", 500, true));
 
         tableEditor.userEditsSelectedGoalAmount();
 
-        assertEquals(expectedStored, categoryStorage.getCategories(""));
+        assertEquals(expectedStored, categoryStoreEditor.getCategories(""));
     }
 
     @Test
@@ -145,12 +144,11 @@ class CategoryTableEditorTest {
     @Test
     void renameCategory() {
         table.getSelectionModel().setSelectionInterval(1,1);
-        tableModel.getContents().set(1, new Category("Name20", 200, true));
         expectedStored.set(1, new Category("Name20", 200, true));
 
         tableEditor.userRenamedCategory("Name2");
 
-        assertEquals(expectedStored, categoryStorage.getCategories(""));
+        assertEquals(expectedStored, categoryStoreEditor.getCategories(""));
     }
 
     @Test

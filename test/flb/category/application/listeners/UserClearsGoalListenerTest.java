@@ -2,7 +2,7 @@ package flb.category.application.listeners;
 
 import flb.category.*;
 import flb.category.application.*;
-import flb.category.application.CategoryTableEditor;
+import flb.category.application.CategoryTableEditorImp;
 import flb.database.TestDatabase;
 import org.junit.jupiter.api.*;
 import javax.swing.*;
@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class UserClearsGoalListenerTest {
     private TestDatabase database;
-    private CategoryStorage categoryStorage;
+    private CategoryStoreEditor categoryStoreEditor;
     private JTextField nameFilter;
     private ArrayList<Category> expectedStored;
     private JTable table;
@@ -28,12 +28,12 @@ class UserClearsGoalListenerTest {
         this.nameFilter = new JTextField();
         this.database = new TestDatabase();
         database.connect();
-        this.categoryStorage = new CategoryStorageImp(database);
-        CategoryTableModel tableModel = new CategoryTableModel();
-        tableModel.setContents(expectedStored);
+        this.categoryStoreEditor = new CategoryStoreEditorImp(database);
+        CategoryTableModelImp tableModel = new CategoryTableModelImp();
+        tableModel.updateCategories(expectedStored);
         this.table = new JTable(tableModel);
-        CategoryTable categoryTable = new CategoryTable(table, tableModel);
-        CategoryClearer categoryClearer = new CategoryTableEditor(categoryStorage, categoryTable);
+        CategoryTableImp categoryTableImp = new CategoryTableImp(table, tableModel);
+        CategoryClearer categoryClearer = new CategoryTableEditorImp(categoryStoreEditor, categoryTableImp);
 
         this.testButton = new JButton();
         testButton.addActionListener(new UserClearsGoalListener(categoryClearer, nameFilter));
@@ -51,7 +51,7 @@ class UserClearsGoalListenerTest {
         testButton.doClick();
 
         expectedStored.set(1, new Category("Name2", Float.NaN, true));
-        assertEquals(expectedStored, categoryStorage.getCategories(""));
+        assertEquals(expectedStored, categoryStoreEditor.getCategories(""));
         assertEquals("Name", nameFilter.getText());
     }
 
@@ -61,7 +61,7 @@ class UserClearsGoalListenerTest {
         table.getSelectionModel().setSelectionInterval(-1,-1);
         testButton.doClick();
 
-        assertEquals(expectedStored, categoryStorage.getCategories(""));
+        assertEquals(expectedStored, categoryStoreEditor.getCategories(""));
         assertEquals("Name", nameFilter.getText());
     }
 }

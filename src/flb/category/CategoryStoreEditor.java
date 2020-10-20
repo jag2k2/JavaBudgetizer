@@ -2,7 +2,7 @@ package flb.category;
 
 import java.util.ArrayList;
 
-public interface CategoryStorage {
+public interface CategoryStoreEditor {
     void addCategory(String name);
     void deleteCategory(String name);
     void updateAmount(String name, float amount);

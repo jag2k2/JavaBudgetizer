@@ -3,11 +3,11 @@ package flb.category;
 import java.util.*;
 import java.sql.*;
 
-public class CategoryStorageImp implements CategoryStorage{
+public class CategoryStoreEditorImp implements CategoryStoreEditor {
 
     private final StoreEditor storeEditor;
 
-    public CategoryStorageImp(StoreEditor storeEditor) {
+    public CategoryStoreEditorImp(StoreEditor storeEditor) {
         this.storeEditor = storeEditor;
     }
 

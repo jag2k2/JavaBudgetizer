@@ -7,8 +7,8 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class CategoryTableModelTest {
-    private CategoryTableModel tableModel;
+class CategoryTableImpModelTest {
+    private CategoryTableModelImp tableModel;
     private Maybe<Category> expected;
     private Maybe<Category> actual;
 
@@ -19,8 +19,8 @@ class CategoryTableModelTest {
         modelContents.add(new Category("Name2", 200, true));
         modelContents.add(new Category("Name3", 300, false));
         modelContents.add(new Category("Test1", Float.NaN, false));
-        tableModel = new CategoryTableModel();
-        tableModel.setContents(modelContents);
+        tableModel = new CategoryTableModelImp();
+        tableModel.updateCategories(modelContents);
     }
 
     @Test

@@ -2,7 +2,7 @@ package flb.category.application.listeners;
 
 import flb.category.*;
 import flb.category.application.*;
-import flb.category.application.CategoryTableEditor;
+import flb.category.application.CategoryTableEditorImp;
 import flb.database.*;
 import org.junit.jupiter.api.*;
 import javax.swing.*;
@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class UserEditsGoalAmountListenerTest {
     private TestDatabase database;
-    private CategoryStorage categoryStorage;
+    private CategoryStoreEditor categoryStoreEditor;
     private JTable table;
     private ArrayList<Category> expectedStored;
     private JTextField nameFilter;
@@ -31,12 +31,12 @@ class UserEditsGoalAmountListenerTest {
         this.nameFilter = new JTextField();
         this.database = new TestDatabase();
         database.connect();
-        this.categoryStorage = new CategoryStorageImp(database);
-        CategoryTableModel tableModel = new CategoryTableModel();
-        tableModel.setContents(expectedStored);
+        this.categoryStoreEditor = new CategoryStoreEditorImp(database);
+        CategoryTableModelImp tableModel = new CategoryTableModelImp();
+        tableModel.updateCategories(expectedStored);
         this.table = new JTable(tableModel);
-        CategoryTable categoryTable = new CategoryTable(table, tableModel);
-        CategoryAmountEditor amountEditor = new CategoryTableEditor(categoryStorage, categoryTable);
+        CategoryTableImp categoryTableImp = new CategoryTableImp(table, tableModel);
+        CategoryAmountEditor amountEditor = new CategoryTableEditorImp(categoryStoreEditor, categoryTableImp);
         cellEditor = table.getDefaultEditor(Float.class);
         tableModel.addTableModelListener(new UserEditsGoalAmountListener(amountEditor, nameFilter));
         editorComponent = (JTextField) cellEditor.getTableCellEditorComponent(table, "", false, 0, 1);
@@ -57,7 +57,7 @@ class UserEditsGoalAmountListenerTest {
         cellEditor.stopCellEditing();
 
         expectedStored.set(0, new Category("Name1", 200, false));
-        assertEquals(expectedStored, categoryStorage.getCategories(""));
+        assertEquals(expectedStored, categoryStoreEditor.getCategories(""));
         assertEquals("Name", nameFilter.getText());
     }
 }

@@ -8,10 +8,10 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class CategoryTableTest {
-    private CategoryTable categoryTable;
+class CategoryTableImpTest {
+    private CategoryTableImp categoryTableImp;
     private JTable table;
-    private CategoryTableModel tableModel;
+    private CategoryTableModelImp tableModel;
     private Maybe<Category> expected;
     private Maybe<Category> actual;
     ArrayList<Category> expectedDisplay;
@@ -25,56 +25,56 @@ class CategoryTableTest {
         modelContents.add(new Category("Test1", Float.NaN, false));
 
         expectedDisplay = new ArrayList<>();
-        tableModel = new CategoryTableModel();
-        tableModel.setContents(modelContents);
+        tableModel = new CategoryTableModelImp();
+        tableModel.updateCategories(modelContents);
         table = new JTable(tableModel);
-        categoryTable = new CategoryTable(table, tableModel);
+        categoryTableImp = new CategoryTableImp(table, tableModel);
     }
 
     @Test
     void getSelectedCategory() {
         table.getSelectionModel().setSelectionInterval(-1,-1);
         expected = new Maybe<>();
-        actual = categoryTable.getSelectedCategory();
+        actual = categoryTableImp.getSelectedCategory();
         assertEquals(expected, actual);
 
         table.getSelectionModel().setSelectionInterval(0,0);
         expected = new Maybe<>(new Category("Name1", 100, false));
-        actual = categoryTable.getSelectedCategory();
+        actual = categoryTableImp.getSelectedCategory();
         assertEquals(expected, actual);
 
         table.getSelectionModel().setSelectionInterval(1,1);
         expected = new Maybe<>(new Category("Name2", 200, true));
-        actual = categoryTable.getSelectedCategory();
+        actual = categoryTableImp.getSelectedCategory();
         assertEquals(expected, actual);
 
         table.getSelectionModel().setSelectionInterval(3,3);
         expected = new Maybe<>(new Category("Test1", Float.NaN, false));
-        actual = categoryTable.getSelectedCategory();
+        actual = categoryTableImp.getSelectedCategory();
         assertEquals(expected, actual);
 
         table.getSelectionModel().setSelectionInterval(4,4);
         expected = new Maybe<>();
-        actual = categoryTable.getSelectedCategory();
+        actual = categoryTableImp.getSelectedCategory();
         assertEquals(expected, actual);
     }
 
     @Test
     void refresh() {
         expectedDisplay = new ArrayList<>();
-        categoryTable.refresh(expectedDisplay);
+        categoryTableImp.displayAndClearSelection(expectedDisplay);
         assertEquals(expectedDisplay, tableModel.getContents());
         assertEquals(-1, table.getSelectedRow());
 
         expectedDisplay.add(new Category("ID1", -100, true));
         expectedDisplay.add(new Category("ID2", -200, false));
         table.getSelectionModel().setSelectionInterval(1,1);
-        categoryTable.refresh(expectedDisplay);
+        categoryTableImp.displayAndClearSelection(expectedDisplay);
         assertEquals(expectedDisplay, tableModel.getContents());
         assertEquals(-1, table.getSelectedRow());
 
         expectedDisplay = new ArrayList<>();
-        categoryTable.refresh(expectedDisplay);
+        categoryTableImp.displayAndClearSelection(expectedDisplay);
         assertEquals(expectedDisplay, tableModel.getContents());
         assertEquals(-1, table.getSelectedRow());
     }
@@ -82,14 +82,14 @@ class CategoryTableTest {
     @Test
     void refreshAndKeepSelection() {
         expectedDisplay = new ArrayList<>();
-        categoryTable.refreshAndKeepSelection(expectedDisplay);
+        categoryTableImp.displayAndKeepSelection(expectedDisplay);
         assertEquals(expectedDisplay, tableModel.getContents());
         assertEquals(-1, table.getSelectedRow());
 
         expectedDisplay.add(new Category("ID1", -100, true));
         expectedDisplay.add(new Category("ID2", -200, false));
         table.getSelectionModel().setSelectionInterval(1,1);
-        categoryTable.refreshAndKeepSelection(expectedDisplay);
+        categoryTableImp.displayAndKeepSelection(expectedDisplay);
         assertEquals(expectedDisplay, tableModel.getContents());
         assertEquals(1, table.getSelectedRow());
     }

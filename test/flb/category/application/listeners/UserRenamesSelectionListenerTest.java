@@ -2,7 +2,6 @@ package flb.category.application.listeners;
 
 import flb.category.application.*;
 import flb.category.*;
-import flb.category.application.CategoryTableEditor;
 import flb.database.*;
 import org.junit.jupiter.api.*;
 import javax.swing.*;
@@ -12,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class UserRenamesSelectionListenerTest {
     private TestDatabase database;
-    private CategoryStorage categoryStorage;
+    private CategoryStoreEditor categoryStoreEditor;
     private JTable table;
     private ArrayList<Category> expectedStored;
     private JTextField nameFilter;
@@ -30,12 +29,12 @@ class UserRenamesSelectionListenerTest {
         this.nameFilter = new JTextField();
         this.database = new TestDatabase();
         database.connect();
-        this.categoryStorage = new CategoryStorageImp(database);
-        CategoryTableModel tableModel = new CategoryTableModel();
-        tableModel.setContents(expectedStored);
+        this.categoryStoreEditor = new CategoryStoreEditorImp(database);
+        CategoryTableModelImp tableModel = new CategoryTableModelImp();
+        tableModel.updateCategories(expectedStored);
         this.table = new JTable(tableModel);
-        CategoryTable categoryTable = new CategoryTable(table, tableModel);
-        CategoryNameEditor nameEditor = new CategoryTableEditor(categoryStorage, categoryTable);
+        CategoryTableImp categoryTableImp = new CategoryTableImp(table, tableModel);
+        CategoryNameEditor nameEditor = new CategoryTableEditorImp(categoryStoreEditor, categoryTableImp);
         table.addPropertyChangeListener(new UserRenamesSelectionListener(nameEditor, nameFilter));
         cellEditor = table.getDefaultEditor(String.class);
         editorComponent = (JTextField) cellEditor.getTableCellEditorComponent(table, "", false, 0, 0);
@@ -56,7 +55,7 @@ class UserRenamesSelectionListenerTest {
         cellEditor.stopCellEditing();
 
         expectedStored.set(0, new Category("Name10", 100, false));
-        assertEquals(expectedStored, categoryStorage.getCategories(""));
+        assertEquals(expectedStored, categoryStoreEditor.getCategories(""));
         assertEquals("Name", nameFilter.getText());
     }
 
@@ -70,7 +69,7 @@ class UserRenamesSelectionListenerTest {
         cellEditor.stopCellEditing();
 
         expectedStored.set(3, new Category("Test10", Float.NaN, false));
-        assertEquals(expectedStored, categoryStorage.getCategories(""));
+        assertEquals(expectedStored, categoryStoreEditor.getCategories(""));
         assertEquals("Name", nameFilter.getText());
     }
 }

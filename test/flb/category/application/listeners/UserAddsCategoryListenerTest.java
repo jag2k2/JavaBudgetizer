@@ -2,7 +2,7 @@ package flb.category.application.listeners;
 
 import flb.category.application.*;
 import flb.category.*;
-import flb.category.application.CategoryTableEditor;
+import flb.category.application.CategoryTableEditorImp;
 import flb.database.*;
 import org.junit.jupiter.api.*;
 import javax.swing.*;
@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class UserAddsCategoryListenerTest {
     private TestDatabase database;
-    private CategoryStorage categoryStorage;
+    private CategoryStoreEditor categoryStoreEditor;
     private JTextField nameFilter;
     private ArrayList<Category> expectedStored;
     private JButton testButton;
@@ -21,11 +21,11 @@ class UserAddsCategoryListenerTest {
         this.nameFilter = new JTextField();
         this.database = new TestDatabase();
         database.connect();
-        this.categoryStorage = new CategoryStorageImp(database);
-        CategoryTableModel tableModel = new CategoryTableModel();
+        this.categoryStoreEditor = new CategoryStoreEditorImp(database);
+        CategoryTableModelImp tableModel = new CategoryTableModelImp();
         JTable table = new JTable(tableModel);
-        CategoryTable categoryTable = new CategoryTable(table, tableModel);
-        CategoryAdder categoryAdder = new CategoryTableEditor(categoryStorage, categoryTable);
+        CategoryTableImp categoryTableImp = new CategoryTableImp(table, tableModel);
+        CategoryAdder categoryAdder = new CategoryTableEditorImp(categoryStoreEditor, categoryTableImp);
 
         this.testButton = new JButton();
         testButton.addActionListener(new UserAddsCategoryListener(categoryAdder, nameFilter));
@@ -48,7 +48,7 @@ class UserAddsCategoryListenerTest {
         testButton.doClick();
 
         expectedStored.add(new Category("Test2", Float.NaN, false));
-        assertEquals(expectedStored, categoryStorage.getCategories(""));
+        assertEquals(expectedStored, categoryStoreEditor.getCategories(""));
         assertEquals("", nameFilter.getText());
     }
 
@@ -57,7 +57,7 @@ class UserAddsCategoryListenerTest {
         nameFilter.setText("");
         testButton.doClick();
 
-        assertEquals(expectedStored, categoryStorage.getCategories(""));
+        assertEquals(expectedStored, categoryStoreEditor.getCategories(""));
         assertEquals("", nameFilter.getText());
     }
 

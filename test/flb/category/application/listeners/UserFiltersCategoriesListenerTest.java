@@ -2,7 +2,7 @@ package flb.category.application.listeners;
 
 import flb.category.application.*;
 import flb.category.*;
-import flb.category.application.CategoryTableEditor;
+import flb.category.application.CategoryTableEditorImp;
 import flb.database.*;
 import org.junit.jupiter.api.*;
 import javax.swing.*;
@@ -13,18 +13,18 @@ class UserFiltersCategoriesListenerTest {
     private TestDatabase database;
     private ArrayList<Category> expectedStored;
     private JTextField nameFilter;
-    private CategoryTableModel tableModel;
+    private CategoryTableModelImp tableModel;
 
     @BeforeEach
     void setUp() {
         this.nameFilter = new JTextField();
         this.database = new TestDatabase();
         database.connect();
-        CategoryStorage categoryStorage = new CategoryStorageImp(database);
-        tableModel = new CategoryTableModel();
+        CategoryStoreEditor categoryStoreEditor = new CategoryStoreEditorImp(database);
+        tableModel = new CategoryTableModelImp();
         JTable table = new JTable(tableModel);
-        CategoryTable categoryTable = new CategoryTable(table, tableModel);
-        ListChangeRefresher listChangeRefresher = new CategoryTableEditor(categoryStorage, categoryTable);
+        CategoryTableImp categoryTableImp = new CategoryTableImp(table, tableModel);
+        ListChangeRefresher listChangeRefresher = new CategoryTableEditorImp(categoryStoreEditor, categoryTableImp);
         nameFilter.getDocument().addDocumentListener(new UserFiltersCategoriesListener(listChangeRefresher, nameFilter));
 
         this.expectedStored = new ArrayList<>();

@@ -15,13 +15,13 @@ public class MainGUI {
     private final JTable table;
     private final JScrollPane tableScroller;
     private final JTextField nameFilter;
-    private final CategoryTableModel tableModel;
-    private final CategoryTableEditor tableEditor;
+    private final CategoryTableModelImp tableModel;
+    private final CategoryTableEditorImp tableEditor;
     private final AbstractDatabase database;
 
     public MainGUI(AbstractDatabase database) {
         this.database = database;
-        this.tableModel = new CategoryTableModel();
+        this.tableModel = new CategoryTableModelImp();
         this.table = new JTable(tableModel);
         this.tableScroller = new JScrollPane(table);
         this.nameFilter = new JTextField();
@@ -29,9 +29,9 @@ public class MainGUI {
         addButton = new JButton("Add");
         deleteButton = new JButton("Delete");
         clearAmountButton = new JButton("Clear");
-        CategoryTable categoryTable = new CategoryTable(table, tableModel);
-        CategoryStorage categoryStorage = new CategoryStorageImp(database);
-        tableEditor = new CategoryTableEditor(categoryStorage, categoryTable);
+        CategoryTableImp categoryTableImp = new CategoryTableImp(table, tableModel);
+        CategoryStoreEditor categoryStoreEditor = new CategoryStoreEditorImp(database);
+        tableEditor = new CategoryTableEditorImp(categoryStoreEditor, categoryTableImp);
     }
 
     public void layout(){

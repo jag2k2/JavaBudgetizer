@@ -2,7 +2,7 @@ package flb.category.application.listeners;
 
 import flb.category.application.*;
 import flb.category.*;
-import flb.category.application.CategoryTableEditor;
+import flb.category.application.CategoryTableEditorImp;
 import flb.database.*;
 import org.junit.jupiter.api.*;
 import javax.swing.*;
@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class UserEditsExcludesListenerTest {
     private TestDatabase database;
-    private CategoryStorage categoryStorage;
+    private CategoryStoreEditor categoryStoreEditor;
     private JTextField nameFilter;
     private ArrayList<Category> expectedStored;
     private JTable table;
@@ -30,12 +30,12 @@ class UserEditsExcludesListenerTest {
         this.nameFilter = new JTextField();
         this.database = new TestDatabase();
         database.connect();
-        this.categoryStorage = new CategoryStorageImp(database);
-        CategoryTableModel tableModel = new CategoryTableModel();
-        tableModel.setContents(expectedStored);
+        this.categoryStoreEditor = new CategoryStoreEditorImp(database);
+        CategoryTableModelImp tableModel = new CategoryTableModelImp();
+        tableModel.updateCategories(expectedStored);
         this.table = new JTable(tableModel);
-        CategoryTable categoryTable = new CategoryTable(table, tableModel);
-        CategoryExcludeEditor excludeEditor = new CategoryTableEditor(categoryStorage, categoryTable);
+        CategoryTableImp categoryTableImp = new CategoryTableImp(table, tableModel);
+        CategoryExcludeEditor excludeEditor = new CategoryTableEditorImp(categoryStoreEditor, categoryTableImp);
         cellEditor = table.getDefaultEditor(Boolean.class);
         cellEditor.addCellEditorListener(new UserEditsExcludesListener(excludeEditor, nameFilter));
         editorComponent = (JCheckBox) cellEditor.getTableCellEditorComponent(table, true, false, 0, 2);
@@ -55,7 +55,7 @@ class UserEditsExcludesListenerTest {
         cellEditor.stopCellEditing();
 
         expectedStored.set(0, new Category("Name1", 100, true));
-        assertEquals(expectedStored, categoryStorage.getCategories(""));
+        assertEquals(expectedStored, categoryStoreEditor.getCategories(""));
         assertEquals("Name", nameFilter.getText());
     }
 
@@ -68,7 +68,7 @@ class UserEditsExcludesListenerTest {
         cellEditor.stopCellEditing();
 
         expectedStored.set(1, new Category("Name2", 200, false));
-        assertEquals(expectedStored, categoryStorage.getCategories(""));
+        assertEquals(expectedStored, categoryStoreEditor.getCategories(""));
         assertEquals("Name", nameFilter.getText());
     }
 }
