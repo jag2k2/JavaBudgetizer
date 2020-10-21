@@ -1,7 +1,6 @@
 package flb.category.application;
 
 import javax.swing.*;
-import flb.category.*;
 import flb.database.*;
 
 public class CategoryManager {
@@ -16,10 +15,10 @@ public class CategoryManager {
             }
         } catch (Exception e) { e.printStackTrace(); }
 
-        SwingUtilities.invokeLater(new CategoryManagerJob());
+        SwingUtilities.invokeLater(new InitializeJob());
     }
 
-    static class CategoryManagerJob implements Runnable {
+    static class InitializeJob implements Runnable {
         @Override
         public void run() {
             AbstractDatabase database = new TestDatabase();

@@ -2,8 +2,7 @@ package flb.category.application;
 
 import flb.category.application.listeners.*;
 import flb.category.*;
-import flb.database.AbstractDatabase;
-
+import flb.database.*;
 import javax.swing.*;
 import java.awt.*;
 
@@ -29,9 +28,9 @@ public class MainGUI {
         addButton = new JButton("Add");
         deleteButton = new JButton("Delete");
         clearAmountButton = new JButton("Clear");
-        CategoryTableImp categoryTableImp = new CategoryTableImp(table, tableModel);
+        CategoryTable categoryTable = new CategoryTableImp(table, tableModel);
         CategoryStoreEditor categoryStoreEditor = new CategoryStoreEditorImp(database);
-        tableEditor = new CategoryTableEditorImp(categoryStoreEditor, categoryTableImp);
+        tableEditor = new CategoryTableEditorImp(categoryStoreEditor, categoryTable);
     }
 
     public void layout(){
