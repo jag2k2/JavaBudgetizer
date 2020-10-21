@@ -7,7 +7,7 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class CategoryTableImpModelTest {
+class CategoryTableModelImpTest {
     private CategoryTableModelImp tableModel;
     private Maybe<Category> expected;
     private Maybe<Category> actual;

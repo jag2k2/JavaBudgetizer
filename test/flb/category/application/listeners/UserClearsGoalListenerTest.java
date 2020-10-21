@@ -32,8 +32,8 @@ class UserClearsGoalListenerTest {
         CategoryTableModelImp tableModel = new CategoryTableModelImp();
         tableModel.updateCategories(expectedStored);
         this.table = new JTable(tableModel);
-        CategoryTableImp categoryTableImp = new CategoryTableImp(table, tableModel);
-        CategoryClearer categoryClearer = new CategoryTableEditorImp(categoryStoreEditor, categoryTableImp);
+        CategoryTable categoryTable = new CategoryTableImp(table, tableModel);
+        CategoryClearer categoryClearer = new CategoryTableEditorImp(categoryStoreEditor, categoryTable);
 
         this.testButton = new JButton();
         testButton.addActionListener(new UserClearsGoalListener(categoryClearer, nameFilter));

@@ -33,8 +33,8 @@ class UserRenamesSelectionListenerTest {
         CategoryTableModelImp tableModel = new CategoryTableModelImp();
         tableModel.updateCategories(expectedStored);
         this.table = new JTable(tableModel);
-        CategoryTableImp categoryTableImp = new CategoryTableImp(table, tableModel);
-        CategoryNameEditor nameEditor = new CategoryTableEditorImp(categoryStoreEditor, categoryTableImp);
+        CategoryTable categoryTable = new CategoryTableImp(table, tableModel);
+        CategoryNameEditor nameEditor = new CategoryTableEditorImp(categoryStoreEditor, categoryTable);
         table.addPropertyChangeListener(new UserRenamesSelectionListener(nameEditor, nameFilter));
         cellEditor = table.getDefaultEditor(String.class);
         editorComponent = (JTextField) cellEditor.getTableCellEditorComponent(table, "", false, 0, 0);

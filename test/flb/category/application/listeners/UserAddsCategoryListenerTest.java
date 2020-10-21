@@ -18,23 +18,23 @@ class UserAddsCategoryListenerTest {
 
     @BeforeEach
     void setUp() {
+        this.expectedStored = new ArrayList<>();
+        expectedStored.add(new Category("Name1", 100, false));
+        expectedStored.add(new Category("Name2", 200, true));
+        expectedStored.add(new Category("Name3", 300, false));
+        expectedStored.add(new Category("Test1", Float.NaN, false));
+
         this.nameFilter = new JTextField();
         this.database = new TestDatabase();
         database.connect();
         this.categoryStoreEditor = new CategoryStoreEditorImp(database);
         CategoryTableModelImp tableModel = new CategoryTableModelImp();
         JTable table = new JTable(tableModel);
-        CategoryTableImp categoryTableImp = new CategoryTableImp(table, tableModel);
-        CategoryAdder categoryAdder = new CategoryTableEditorImp(categoryStoreEditor, categoryTableImp);
+        CategoryTable categoryTable = new CategoryTableImp(table, tableModel);
+        CategoryAdder categoryAdder = new CategoryTableEditorImp(categoryStoreEditor, categoryTable);
 
         this.testButton = new JButton();
         testButton.addActionListener(new UserAddsCategoryListener(categoryAdder, nameFilter));
-
-        this.expectedStored = new ArrayList<>();
-        expectedStored.add(new Category("Name1", 100, false));
-        expectedStored.add(new Category("Name2", 200, true));
-        expectedStored.add(new Category("Name3", 300, false));
-        expectedStored.add(new Category("Test1", Float.NaN, false));
     }
 
     @AfterEach

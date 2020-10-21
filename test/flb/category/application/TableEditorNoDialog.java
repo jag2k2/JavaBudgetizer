@@ -6,8 +6,8 @@ import javax.swing.*;
 public class TableEditorNoDialog extends CategoryTableEditorImp {
     private final boolean alwaysConfirm;
 
-    public TableEditorNoDialog(CategoryStoreEditor categoryStoreEditor, CategoryTableImp categoryTableImp, boolean alwaysConfirm){
-        super(categoryStoreEditor, categoryTableImp);
+    public TableEditorNoDialog(CategoryStoreEditor categoryStoreEditor, CategoryTable categoryTable, boolean alwaysConfirm){
+        super(categoryStoreEditor, categoryTable);
         this.alwaysConfirm = alwaysConfirm;
     }
 

@@ -16,7 +16,7 @@ class UserDeletesCategoryListenerTest {
     private ArrayList<Category> expectedStored;
     private JTable table;
     private JButton testButton;
-    private CategoryTableImp categoryTableImp;
+    private CategoryTable categoryTable;
     private CategoryDeleter categoryDeleter;
 
     @BeforeEach
@@ -34,7 +34,7 @@ class UserDeletesCategoryListenerTest {
         CategoryTableModelImp tableModel = new CategoryTableModelImp();
         tableModel.updateCategories(expectedStored);
         this.table = new JTable(tableModel);
-        categoryTableImp = new CategoryTableImp(table, tableModel);
+        categoryTable = new CategoryTableImp(table, tableModel);
 
         this.testButton = new JButton();
     }
@@ -46,7 +46,7 @@ class UserDeletesCategoryListenerTest {
 
     @Test
     void userConfirmsDelete() {
-        categoryDeleter = new TableEditorNoDialog(categoryStoreEditor, categoryTableImp, true);
+        categoryDeleter = new TableEditorNoDialog(categoryStoreEditor, categoryTable, true);
         testButton.addActionListener(new UserDeletesCategoryListener(categoryDeleter, nameFilter, new JFrame()));
 
         nameFilter.setText("Name");
@@ -60,7 +60,7 @@ class UserDeletesCategoryListenerTest {
 
     @Test
     void userRefusesDelete() {
-        categoryDeleter = new TableEditorNoDialog(categoryStoreEditor, categoryTableImp, false);
+        categoryDeleter = new TableEditorNoDialog(categoryStoreEditor, categoryTable, false);
         testButton.addActionListener(new UserDeletesCategoryListener(categoryDeleter, nameFilter, new JFrame()));
 
         nameFilter.setText("Name");
@@ -73,7 +73,7 @@ class UserDeletesCategoryListenerTest {
 
     @Test
     void userDeletesWithNoSelected() {
-        categoryDeleter = new CategoryTableEditorImp(categoryStoreEditor, categoryTableImp);
+        categoryDeleter = new CategoryTableEditorImp(categoryStoreEditor, categoryTable);
         testButton.addActionListener(new UserDeletesCategoryListener(categoryDeleter, nameFilter, new JFrame()));
 
         nameFilter.setText("Name");

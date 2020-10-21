@@ -34,8 +34,8 @@ class UserEditsExcludesListenerTest {
         CategoryTableModelImp tableModel = new CategoryTableModelImp();
         tableModel.updateCategories(expectedStored);
         this.table = new JTable(tableModel);
-        CategoryTableImp categoryTableImp = new CategoryTableImp(table, tableModel);
-        CategoryExcludeEditor excludeEditor = new CategoryTableEditorImp(categoryStoreEditor, categoryTableImp);
+        CategoryTable categoryTable = new CategoryTableImp(table, tableModel);
+        CategoryExcludeEditor excludeEditor = new CategoryTableEditorImp(categoryStoreEditor, categoryTable);
         cellEditor = table.getDefaultEditor(Boolean.class);
         cellEditor.addCellEditorListener(new UserEditsExcludesListener(excludeEditor, nameFilter));
         editorComponent = (JCheckBox) cellEditor.getTableCellEditorComponent(table, true, false, 0, 2);

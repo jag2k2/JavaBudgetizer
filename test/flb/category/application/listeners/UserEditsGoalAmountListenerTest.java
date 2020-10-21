@@ -35,8 +35,8 @@ class UserEditsGoalAmountListenerTest {
         CategoryTableModelImp tableModel = new CategoryTableModelImp();
         tableModel.updateCategories(expectedStored);
         this.table = new JTable(tableModel);
-        CategoryTableImp categoryTableImp = new CategoryTableImp(table, tableModel);
-        CategoryAmountEditor amountEditor = new CategoryTableEditorImp(categoryStoreEditor, categoryTableImp);
+        CategoryTable categoryTable = new CategoryTableImp(table, tableModel);
+        CategoryAmountEditor amountEditor = new CategoryTableEditorImp(categoryStoreEditor, categoryTable);
         cellEditor = table.getDefaultEditor(Float.class);
         tableModel.addTableModelListener(new UserEditsGoalAmountListener(amountEditor, nameFilter));
         editorComponent = (JTextField) cellEditor.getTableCellEditorComponent(table, "", false, 0, 1);

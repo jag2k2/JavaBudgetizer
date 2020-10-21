@@ -59,13 +59,13 @@ public class CategoryTableModelImp extends AbstractTableModel implements Categor
         return columnNames[column];
     }
 
+    public ArrayList<Category> getContents() {
+        return tableContents;
+    }
+
     public void updateCategories(ArrayList<Category> tableContents) {
         this.tableContents = tableContents;
         fireTableDataChanged();
-    }
-
-    public ArrayList<Category> getContents() {
-        return tableContents;
     }
 
     public Maybe<Category> getCategory(int row) {

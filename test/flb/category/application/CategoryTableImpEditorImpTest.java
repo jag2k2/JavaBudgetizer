@@ -9,8 +9,8 @@ import flb.database.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class CategoryTableImpEditorImpTest {
-    private CategoryTableImp categoryTableImp;
     private CategoryTableEditorImp tableEditor;
+    private CategoryTable categoryTable;
     private TestDatabase database;
     private JTable table;
     private CategoryStoreEditor categoryStoreEditor;
@@ -31,8 +31,8 @@ class CategoryTableImpEditorImpTest {
         this.tableModel = new CategoryTableModelImp();
         tableModel.updateCategories(expectedStored);
         this.table = new JTable(tableModel);
-        this.categoryTableImp = new CategoryTableImp(table, tableModel);
-        this.tableEditor = new CategoryTableEditorImp(categoryStoreEditor, categoryTableImp);
+        this.categoryTable = new CategoryTableImp(table, tableModel);
+        this.tableEditor = new CategoryTableEditorImp(categoryStoreEditor, categoryTable);
     }
 
     @AfterEach
@@ -93,7 +93,7 @@ class CategoryTableImpEditorImpTest {
     void deleteSelectedGoalWithConfirm() {
         table.getSelectionModel().setSelectionInterval(1,1);
 
-        tableEditor = new TableEditorNoDialog(categoryStoreEditor, categoryTableImp, true);
+        tableEditor = new TableEditorNoDialog(categoryStoreEditor, categoryTable, true);
         tableEditor.userDeleteSelectedCategory(new JFrame());
 
         expectedStored.remove(1);
@@ -104,7 +104,7 @@ class CategoryTableImpEditorImpTest {
     void deleteSelectedGoalWithNoConfirm() {
         table.getSelectionModel().setSelectionInterval(1,1);
 
-        tableEditor = new TableEditorNoDialog(categoryStoreEditor, categoryTableImp, false);
+        tableEditor = new TableEditorNoDialog(categoryStoreEditor, categoryTable, false);
         tableEditor.userDeleteSelectedCategory(new JFrame());
 
         assertEquals(expectedStored, categoryStoreEditor.getCategories(""));

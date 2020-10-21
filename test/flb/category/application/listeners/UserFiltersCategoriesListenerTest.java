@@ -23,8 +23,8 @@ class UserFiltersCategoriesListenerTest {
         CategoryStoreEditor categoryStoreEditor = new CategoryStoreEditorImp(database);
         tableModel = new CategoryTableModelImp();
         JTable table = new JTable(tableModel);
-        CategoryTableImp categoryTableImp = new CategoryTableImp(table, tableModel);
-        ListChangeRefresher listChangeRefresher = new CategoryTableEditorImp(categoryStoreEditor, categoryTableImp);
+        CategoryTable categoryTable = new CategoryTableImp(table, tableModel);
+        ListChangeRefresher listChangeRefresher = new CategoryTableEditorImp(categoryStoreEditor, categoryTable);
         nameFilter.getDocument().addDocumentListener(new UserFiltersCategoriesListener(listChangeRefresher, nameFilter));
 
         this.expectedStored = new ArrayList<>();
