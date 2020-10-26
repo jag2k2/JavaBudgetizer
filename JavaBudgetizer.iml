@@ -34,5 +34,6 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="org.swinglabs.swingx:swingx-all:1.6.5-1" level="project" />
   </component>
 </module>

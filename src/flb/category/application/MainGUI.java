@@ -12,7 +12,6 @@ public class MainGUI {
     private final JButton deleteButton;
     private final JButton clearAmountButton;
     private final JTable table;
-    private final JScrollPane tableScroller;
     private final JTextField nameFilter;
     private final CategoryTableModelImp tableModel;
     private final CategoryTableEditorImp tableEditor;
@@ -22,7 +21,6 @@ public class MainGUI {
         this.database = database;
         this.tableModel = new CategoryTableModelImp();
         this.table = new JTable(tableModel);
-        this.tableScroller = new JScrollPane(table);
         this.nameFilter = new JTextField();
         frame = new JFrame();
         addButton = new JButton("Add");
@@ -44,6 +42,7 @@ public class MainGUI {
         southPanel.add(clearAmountButton);
         southPanel.add(deleteButton);
 
+        JScrollPane tableScroller = new JScrollPane(table);
         tableScroller.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         tableScroller.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
