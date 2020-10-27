@@ -60,4 +60,49 @@ public class TransactionStoreEditorImp {
         }
         return bankingTransactions;
     }
+
+    public ArrayList<CreditTransaction> getCreditTransactions (WhichMonth searchMonth) {
+        String query = "SELECT $uniquifier, " +
+                "transactions.date, " +
+                "transactions.amount, " +
+                "transactions.description," +
+                "categories.name, " +
+                "transactions.reference, " +
+                "transactions.balance " +
+                "FROM transactions " +
+                "LEFT JOIN categories ON transactions.category_id = categories.id WHERE " +
+                "transactions.date LIKE '$yrmo-%' AND transactions.type = '$type' " +
+                "ORDER BY transactions.date ASC, transactions.id ASC";
+        String uniquifier = "transactions.reference";
+        String dateString = searchMonth.get(Calendar.YEAR) + "-" + (1 + searchMonth.get(Calendar.MONTH));
+        String type = "credit";
+        query = query.replace("$uniquifier", uniquifier);
+        query = query.replace("$yrmo", dateString);
+        query = query.replace("$type", type);
+
+        ResultSet results = storeEditor.executeQuery(query);
+
+        return castResultsToCreditTransactions(results);
+    }
+
+    private ArrayList<CreditTransaction> castResultsToCreditTransactions(ResultSet results) {
+        ArrayList<CreditTransaction> creditTransactions = new ArrayList<>();
+        try {
+            while (results.next()) {
+                Date sqlDate = results.getDate("transactions.date");
+                float amount = results.getFloat("transactions.amount");
+                String description = results.getString("transactions.description");
+                String categoryName = results.getString("categories.name");
+                if (results.wasNull())
+                    categoryName = "";
+                String reference = results.getString("transactions.reference");
+                LocalDate localDate = sqlDate.toLocalDate();
+                Calendar date = new GregorianCalendar(localDate.getYear(), localDate.getMonthValue()-1, localDate.getDayOfMonth());
+                creditTransactions.add(new CreditTransaction(reference, date, description, amount, categoryName));
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return creditTransactions;
+    }
 }

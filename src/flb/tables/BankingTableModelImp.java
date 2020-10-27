@@ -7,7 +7,7 @@ import java.util.*;
 
 public class BankingTableModelImp extends AbstractTableModel {
 
-    private final String[] columnNames = {"Date", "Amount", "Description", "Category"};
+    private final String[] columnNames = {"Date", "Amount", "Category", "Description"};
     private ArrayList<BankingTransaction> tableContents;
 
     public BankingTableModelImp() {
@@ -29,8 +29,8 @@ public class BankingTableModelImp extends AbstractTableModel {
         return switch (column) {
             case 0 -> tableContents.get(row).getDateString();
             case 1 -> tableContents.get(row).getAmount();
-            case 2 -> tableContents.get(row).getDescription();
-            case 3 -> tableContents.get(row).getCategory();
+            case 2 -> tableContents.get(row).getCategory();
+            case 3 -> tableContents.get(row).getDescription();
             default -> null;
         };
     }

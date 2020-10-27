@@ -1,17 +1,16 @@
 package flb.tables;
 
+import flb.tuples.CreditTransaction;
+
 import javax.swing.table.*;
 import java.util.*;
 
 public class CreditTableModelImp extends AbstractTableModel {
-    private final String[] columnNames = {"Date", "Amount", "Description", "Category", "Group"};
-    private ArrayList<String> tableContents;
+    private final String[] columnNames = {"Date", "Amount", "Category", "Description", "Group"};
+    private ArrayList<CreditTransaction> tableContents;
 
     public CreditTableModelImp() {
         tableContents = new ArrayList<>();
-        tableContents.add("10/24/2020");
-        tableContents.add("10/25/2020");
-        tableContents.add("10/26/2020");
     }
 
     @Override
@@ -27,11 +26,11 @@ public class CreditTableModelImp extends AbstractTableModel {
     @Override
     public Object getValueAt(int row, int column) {
         return switch (column) {
-            case 0 -> tableContents.get(row);
-            case 1 -> "Amount";
-            case 2 -> "Description";
-            case 3 -> "Category";
-            case 4 -> "Group";
+            case 0 -> tableContents.get(row).getDateString();
+            case 1 -> tableContents.get(row).getAmount();
+            case 2 -> tableContents.get(row).getCategory();
+            case 3 -> tableContents.get(row).getDescription();
+            case 4 -> "";
             default -> null;
         };
     }
@@ -54,5 +53,10 @@ public class CreditTableModelImp extends AbstractTableModel {
     @Override
     public String getColumnName(int column) {
         return columnNames[column];
+    }
+
+    public void updateTransactions(ArrayList<CreditTransaction> tableContents) {
+        this.tableContents = tableContents;
+        fireTableDataChanged();
     }
 }

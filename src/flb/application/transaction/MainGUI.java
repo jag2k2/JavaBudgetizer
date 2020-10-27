@@ -26,6 +26,7 @@ public class MainGUI {
     private final BankingTableImp bankingTable;
     private final CreditTableImp creditTable;
     private final BankingTableEditorImp bankingTableEditor;
+    private final CreditTableEditorImp creditTableEditor;
 
     public MainGUI(AbstractDatabase database) {
         this.database = database;
@@ -45,6 +46,7 @@ public class MainGUI {
         this.creditTable = new CreditTableImp(tableForCredit, creditModel);
 
         this.bankingTableEditor = new BankingTableEditorImp(transactionStoreEditor, bankingTable);
+        this.creditTableEditor = new CreditTableEditorImp(transactionStoreEditor, creditTable);
 
         this.prev = new JButton("Prev");
         this.month = new JComboBox<>(Months.values());
@@ -157,6 +159,7 @@ public class MainGUI {
     public void launch(){
         database.connect();
         bankingTableEditor.refreshAndClearSelection(new WhichMonth(2020, Calendar.OCTOBER));
+        creditTableEditor.refreshAndClearSelection(new WhichMonth(2020, Calendar.OCTOBER));
         frame.setVisible(true);
     }
 }

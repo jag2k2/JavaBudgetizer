@@ -21,7 +21,7 @@ public class TransactionManager {
     static class InitializeJob implements Runnable {
         @Override
         public void run() {
-            AbstractDatabase database = new TestDatabase();
+            AbstractDatabase database = new ProductionDatabase();
             MainGUI mainGui = new MainGUI(database);
             mainGui.layout();
             mainGui.addListeners();

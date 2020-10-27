@@ -1,25 +1,27 @@
 package flb.tables;
 
-import flb.tuples.BankingTransaction;
-import java.util.*;
+import flb.tuples.CreditTransaction;
 import org.junit.jupiter.api.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import static org.junit.jupiter.api.Assertions.*;
 
-class BankingTableModelImpTest {
-    private BankingTableModelImp tableModel;
+class CreditTableModelImpTest {
+    private CreditTableModelImp tableModel;
 
     @BeforeEach
     void setUp() {
-        tableModel = new BankingTableModelImp();
-        ArrayList<BankingTransaction> tableContents = new ArrayList<>();
+        tableModel = new CreditTableModelImp();
+        ArrayList<CreditTransaction> tableContents = new ArrayList<>();
 
         Calendar date1 = new GregorianCalendar(2020, Calendar.OCTOBER, 25);
         Calendar date2 = new GregorianCalendar(2020,Calendar.OCTOBER,26);
         Calendar date3 = new GregorianCalendar(2020, Calendar.OCTOBER, 27);
 
-        tableContents.add(new BankingTransaction("3589045", date1, "Amazon", 50F, "Name1", 1000F));
-        tableContents.add(new BankingTransaction("3589046", date2, "HEB", 40F, "Name2", 960F));
-        tableContents.add(new BankingTransaction("3589047", date3, "Walmart", 30F, "", 930F));
+        tableContents.add(new CreditTransaction("3589045", date1, "Amazon", 50F, "Name1"));
+        tableContents.add(new CreditTransaction("3589046", date2, "HEB", 40F, "Name2"));
+        tableContents.add(new CreditTransaction("3589047", date3, "Walmart", 30F, ""));
 
         tableModel.updateTransactions(tableContents);
     }

@@ -1,7 +1,6 @@
 package flb.application.category.listeners;
 
 import flb.tuples.*;
-
 import javax.swing.*;
 import java.beans.*;
 

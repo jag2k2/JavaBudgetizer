@@ -72,6 +72,6 @@ class TestDatabaseTest {
             }
         } catch (Exception ex) {ex.printStackTrace();}
 
-        assertEquals(3, rowCount);
+        assertEquals(6, rowCount);
     }
 }
