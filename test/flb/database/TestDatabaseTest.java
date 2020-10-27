@@ -19,7 +19,7 @@ class TestDatabaseTest {
     }
 
     @Test
-    void executeQuery() {
+    void confirmDatabase() {
         String query = "SELECT DATABASE()";
         ResultSet results = database.executeQuery(query);
 
@@ -33,10 +33,24 @@ class TestDatabaseTest {
     }
 
     @Test
-    void executeUpdate() {
-        String update = "INSERT INTO categories (name, default_goal_amt, exclude) VALUES ('test', NULL, FALSE)";
-        database.executeUpdate(update);
+    void confirmTables() {
+        String query = "SHOW TABLES";
+        ResultSet results = database.executeQuery(query);
 
+        try {
+            results.next();
+            String resultTable = results.getString(1);
+            assertEquals("categories", resultTable);
+
+            results.next();
+            resultTable = results.getString(1);
+            assertEquals("transactions", resultTable);
+        } catch (SQLException ex) {ex.printStackTrace();}
+
+    }
+
+    @Test
+    void confirmCategories() {
         ResultSet results = database.executeQuery("SELECT * FROM categories");
         int rowCount = 0;
         try {
@@ -45,6 +59,19 @@ class TestDatabaseTest {
             }
         } catch (Exception ex) {ex.printStackTrace();}
 
-        assertEquals(5, rowCount);
+        assertEquals(4, rowCount);
+    }
+
+    @Test
+    void confirmTransactions() {
+        ResultSet results = database.executeQuery("SELECT * FROM transactions");
+        int rowCount = 0;
+        try {
+            while(results.next()) {
+                rowCount++;
+            }
+        } catch (Exception ex) {ex.printStackTrace();}
+
+        assertEquals(3, rowCount);
     }
 }
