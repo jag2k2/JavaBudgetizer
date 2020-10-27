@@ -8,7 +8,7 @@ import flb.tuples.*;
 import flb.database.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-class CategoryTableImpEditorImpTest {
+class CategoryTableEditorImpTest {
     private CategoryTableEditorImp tableEditor;
     private CategoryTable categoryTable;
     private TestDatabase database;

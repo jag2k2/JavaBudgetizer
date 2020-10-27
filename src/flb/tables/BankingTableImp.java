@@ -1,5 +1,7 @@
 package flb.tables;
 
+import flb.tuples.BankingTransaction;
+import java.util.*;
 import javax.swing.*;
 
 public class BankingTableImp {
@@ -23,13 +25,13 @@ public class BankingTableImp {
     /*public Maybe<Category> getSelectedCategory() {
         int selectedRow = table.getSelectedRow();
         return tableModel.getCategory(selectedRow);
+    }*/
+
+    public void displayAndClearSelection(ArrayList<BankingTransaction> tableContents){
+        tableModel.updateTransactions(tableContents);
     }
 
-    public void displayAndClearSelection(ArrayList<Category> tableContents){
-        tableModel.updateCategories(tableContents);
-    }
-
-    public void displayAndKeepSelection(ArrayList<Category> tableContents){
+    /*public void displayAndKeepSelection(ArrayList<Category> tableContents){
         int selection = table.getSelectedRow();
         tableModel.updateCategories(tableContents);
         table.getSelectionModel().setSelectionInterval(selection, selection);

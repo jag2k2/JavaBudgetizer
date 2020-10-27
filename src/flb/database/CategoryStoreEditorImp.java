@@ -1,7 +1,6 @@
 package flb.database;
 
-import flb.tuples.Category;
-
+import flb.tuples.*;
 import java.util.*;
 import java.sql.*;
 

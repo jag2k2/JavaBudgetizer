@@ -1,19 +1,18 @@
 package flb.tables;
 
+import flb.tuples.BankingTransaction;
 import flb.util.*;
 import javax.swing.table.*;
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class BankingTableModelImp extends AbstractTableModel {
 
     private final String[] columnNames = {"Date", "Amount", "Description", "Category"};
-    private ArrayList<String> tableContents;
+    private ArrayList<BankingTransaction> tableContents;
 
     public BankingTableModelImp() {
         tableContents = new ArrayList<>();
-        tableContents.add("10/24/2020");
-        tableContents.add("10/25/2020");
-        tableContents.add("10/26/2020");
     }
 
     @Override
@@ -29,10 +28,10 @@ public class BankingTableModelImp extends AbstractTableModel {
     @Override
     public Object getValueAt(int row, int column) {
         return switch (column) {
-            case 0 -> tableContents.get(row);
-            case 1 -> "Amount";
-            case 2 -> "Description";
-            case 3 -> "Category";
+            case 0 -> tableContents.get(row).getDateString();
+            case 1 -> tableContents.get(row).getAmount();
+            case 2 -> tableContents.get(row).getDescription();
+            case 3 -> tableContents.get(row).getCategory();
             default -> null;
         };
     }
@@ -55,5 +54,14 @@ public class BankingTableModelImp extends AbstractTableModel {
     @Override
     public String getColumnName(int column) {
         return columnNames[column];
+    }
+
+    public void updateTransactions(ArrayList<BankingTransaction> tableContents) {
+        this.tableContents = tableContents;
+        fireTableDataChanged();
+    }
+
+    public ArrayList<BankingTransaction> getContents() {
+        return tableContents;
     }
 }

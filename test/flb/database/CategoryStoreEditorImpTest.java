@@ -5,7 +5,7 @@ import flb.tuples.Category;
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-class CategoryStoreEditorTest {
+class CategoryStoreEditorImpTest {
     private CategoryStoreEditor categoryStoreEditor;
     private TestDatabase dataBase;
     ArrayList<Category> expected;

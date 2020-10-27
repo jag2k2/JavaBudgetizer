@@ -5,14 +5,16 @@ import javax.swing.*;
 import javax.swing.border.*;
 
 import flb.tables.*;
+import flb.util.WhichMonth;
 import org.jdesktop.swingx.*;
 import java.awt.*;
+import java.util.Calendar;
 
 public class MainGUI {
     private final JFrame frame;
     private final AbstractDatabase database;
     private final JButton prev;
-    private enum Months {January, February, March, April, May, June, July, August, September, October, November, December};
+    private enum Months {January, February, March, April, May, June, July, August, September, October, November, December}
     private final JComboBox<Months> month;
     private final JFormattedTextField year;
     private final JTextField balance;
@@ -23,6 +25,7 @@ public class MainGUI {
     private final GoalTableImp goalTable;
     private final BankingTableImp bankingTable;
     private final CreditTableImp creditTable;
+    private final BankingTableEditorImp bankingTableEditor;
 
     public MainGUI(AbstractDatabase database) {
         this.database = database;
@@ -31,6 +34,8 @@ public class MainGUI {
         CreditTableModelImp creditModel = new CreditTableModelImp();
         GoalTableModelImp goalModel = new GoalTableModelImp();
 
+        TransactionStoreEditorImp transactionStoreEditor = new TransactionStoreEditorImp(database);
+
         this.tableForBanking = new JTable(bankingModel);
         this.tableForCredit = new JTable(creditModel);
         this.tableForGoals = new JTable(goalModel);
@@ -38,6 +43,8 @@ public class MainGUI {
         this.goalTable = new GoalTableImp(tableForGoals, goalModel);
         this.bankingTable = new BankingTableImp(tableForBanking, bankingModel);
         this.creditTable = new CreditTableImp(tableForCredit, creditModel);
+
+        this.bankingTableEditor = new BankingTableEditorImp(transactionStoreEditor, bankingTable);
 
         this.prev = new JButton("Prev");
         this.month = new JComboBox<>(Months.values());
@@ -149,7 +156,7 @@ public class MainGUI {
     }
     public void launch(){
         database.connect();
-
+        bankingTableEditor.refreshAndClearSelection(new WhichMonth(2020, Calendar.OCTOBER));
         frame.setVisible(true);
     }
 }

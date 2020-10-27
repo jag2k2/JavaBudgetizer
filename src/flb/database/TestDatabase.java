@@ -52,8 +52,8 @@ public class TestDatabase extends AbstractDatabase {
         super.executeUpdate(update);
 
         update = "INSERT INTO transactions (date, type, description, amount, category_id, balance, reference) VALUES " +
-                "('2020-10-25', 'banking', 'Amazon', '50.00', '-1', '1000.00', '3589045'), " +
-                "('2020-10-26', 'banking', 'HEB', '40.00', '-1', '960.00', '3589046'), " +
+                "('2020-10-25', 'banking', 'Amazon', '50.00', '1', '1000.00', '3589045'), " +
+                "('2020-10-26', 'banking', 'HEB', '40.00', '2', '960.00', '3589046'), " +
                 "('2020-10-27', 'banking', 'Walmart', '30.00', '-1', '930.00', '3589047')";
         super.executeUpdate(update);
     }

@@ -1,15 +1,15 @@
 package flb.tuples;
 
-import java.time.*;
+import java.util.*;
 
 public class Transaction {
     private final String reference;
-    private final LocalDate date;
+    private final Calendar date;
     private final String description;
     private final float amount;
     private final String categoryName;
 
-    public Transaction (String reference, LocalDate date, String description, float amount, String categoryName) {
+    public Transaction (String reference, Calendar date, String description, float amount, String categoryName) {
         this.reference = reference;
         this.date = date;
         this.description = description;
@@ -17,8 +17,10 @@ public class Transaction {
         this.categoryName = categoryName;
     }
 
-    public LocalDate getDate() {
-        return date;
+    public String getDateString() {
+        return date.get(Calendar.YEAR) + "-" +
+                (1+date.get(Calendar.MONTH)) + "-" +
+                date.get(Calendar.DAY_OF_MONTH);
     }
 
     public String getDescription() {
@@ -35,7 +37,9 @@ public class Transaction {
 
     @Override
     public String toString() {
-        return (reference + " " + date + " " + description + " " + amount + " " + categoryName);
+        return (reference + " " +
+                date.get(Calendar.YEAR) + "-" + date.get(Calendar.MONTH) + "-" + date.get(Calendar.DAY_OF_MONTH) + " "
+                + description + " " + amount + " " + categoryName);
     }
 
     @Override
