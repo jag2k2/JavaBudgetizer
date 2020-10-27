@@ -18,8 +18,8 @@ public class BankingTableImp {
         table.getColumnModel().getColumn(1).setMinWidth(65);
         table.getColumnModel().getColumn(1).setMaxWidth(65);
         table.getColumnModel().getColumn(2).setMinWidth(120);
-        table.getColumnModel().getColumn(3).setMinWidth(120);
-        table.getColumnModel().getColumn(3).setMaxWidth(120);
+        table.getColumnModel().getColumn(3).setMinWidth(170);
+        table.getColumnModel().getColumn(3).setMaxWidth(170);
     }
 
     /*public Maybe<Category> getSelectedCategory() {
