@@ -1,10 +1,7 @@
-package flb.tuples;
+package flb.database;
 
 import java.util.*;
-
-import flb.database.CategoryStoreEditorImp;
-import flb.database.TestDatabase;
-import flb.database.CategoryStoreEditor;
+import flb.tuples.Category;
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 
