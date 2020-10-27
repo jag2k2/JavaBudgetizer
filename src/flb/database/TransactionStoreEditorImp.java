@@ -1,8 +1,7 @@
 package flb.database;
 
-import flb.tuples.*;
 import flb.util.WhichMonth;
-
+import flb.tuples.*;
 import java.sql.*;
 import java.time.*;
 import java.util.ArrayList;

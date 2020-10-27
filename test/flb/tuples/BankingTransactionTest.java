@@ -55,6 +55,5 @@ class BankingTransactionTest {
                 date, "Amazon", 100F,
                 "Misc", 2000F);
         assertNotEquals(compareTransaction, bankingTransaction);
-
     }
 }

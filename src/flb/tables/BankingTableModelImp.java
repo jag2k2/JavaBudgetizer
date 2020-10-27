@@ -1,9 +1,8 @@
 package flb.tables;
 
 import flb.tuples.BankingTransaction;
-import flb.util.*;
+
 import javax.swing.table.*;
-import java.lang.reflect.Array;
 import java.util.*;
 
 public class BankingTableModelImp extends AbstractTableModel {

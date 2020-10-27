@@ -1,10 +1,9 @@
 package flb.database;
 
-import flb.tuples.*;
 import flb.util.WhichMonth;
+import flb.tuples.*;
 import org.junit.jupiter.api.*;
 import java.util.*;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class TransactionStoreEditorImpTest {
