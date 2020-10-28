@@ -1,6 +1,9 @@
 package flb.application.category.listeners;
 
-import flb.tables.*;
+import flb.tables.category.CategoryTable;
+import flb.tables.category.CategoryTableEditorImp;
+import flb.tables.category.CategoryTableImp;
+import flb.tables.category.CategoryTableModelImp;
 import flb.tuples.*;
 import flb.database.*;
 import org.junit.jupiter.api.*;
@@ -21,7 +24,8 @@ class UserAddsCategoryListenerTest {
         expectedStored.add(new Category("Name1", 100, false));
         expectedStored.add(new Category("Name2", 200, true));
         expectedStored.add(new Category("Name3", 300, false));
-        expectedStored.add(new Category("Test1", Float.NaN, false));
+        expectedStored.add(new Category("Test1::sub1", Float.NaN, false));
+        expectedStored.add(new Category("Test1::sub2", 500, true));
 
         this.nameFilter = new JTextField();
         this.database = new TestDatabase();

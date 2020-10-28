@@ -1,8 +1,12 @@
 package flb.application.category;
 
-import flb.tables.*;
 import flb.application.category.listeners.*;
 import flb.database.*;
+import flb.tables.category.CategoryTable;
+import flb.tables.category.CategoryTableEditorImp;
+import flb.tables.category.CategoryTableImp;
+import flb.tables.category.CategoryTableModelImp;
+
 import javax.swing.*;
 import java.awt.*;
 

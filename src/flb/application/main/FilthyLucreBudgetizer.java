@@ -1,9 +1,9 @@
-package flb.application.transaction;
+package flb.application.main;
 
 import flb.database.*;
 import javax.swing.*;
 
-public class TransactionManager {
+public class FilthyLucreBudgetizer {
 
     public static void main(String[] args) {
         try {
@@ -15,13 +15,13 @@ public class TransactionManager {
             }
         } catch (Exception e) { e.printStackTrace(); }
 
-        SwingUtilities.invokeLater(new TransactionManager.InitializeJob());
+        SwingUtilities.invokeLater(new FilthyLucreBudgetizer.InitializeJob());
     }
 
     static class InitializeJob implements Runnable {
         @Override
         public void run() {
-            AbstractDatabase database = new ProductionDatabase();
+            AbstractDatabase database = new TestDatabase();
             MainGUI mainGui = new MainGUI(database);
             mainGui.layout();
             mainGui.addListeners();

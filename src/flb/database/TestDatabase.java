@@ -30,7 +30,8 @@ public class TestDatabase extends AbstractDatabase {
                 "('Name1', '100', FALSE), " +
                 "('Name2', '200', TRUE), " +
                 "('Name3', '300', FALSE), " +
-                "('Test1', NULL, FALSE)";
+                "('Test1::sub1', NULL, FALSE), " +
+                "('Test1::sub2', 500, TRUE)";
         super.executeUpdate(update);
 
         tables = super.executeQuery("SHOW TABLES LIKE 'transactions'");

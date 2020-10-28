@@ -1,4 +1,4 @@
-package flb.tables;
+package flb.tables.goal;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;

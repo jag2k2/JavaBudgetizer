@@ -1,5 +1,6 @@
 package flb.tables;
 
+import flb.tables.category.CategoryTableModelImp;
 import flb.tuples.*;
 import flb.util.*;
 import org.junit.jupiter.api.*;

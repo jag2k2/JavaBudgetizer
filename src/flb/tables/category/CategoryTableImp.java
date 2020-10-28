@@ -1,5 +1,6 @@
-package flb.tables;
+package flb.tables.category;
 
+import flb.tables.goal.GoalRenderer;
 import flb.tuples.Category;
 import flb.util.*;
 import javax.swing.*;

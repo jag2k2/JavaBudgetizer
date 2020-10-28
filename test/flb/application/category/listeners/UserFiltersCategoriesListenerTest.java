@@ -1,6 +1,9 @@
 package flb.application.category.listeners;
 
-import flb.tables.*;
+import flb.tables.category.CategoryTable;
+import flb.tables.category.CategoryTableEditorImp;
+import flb.tables.category.CategoryTableImp;
+import flb.tables.category.CategoryTableModelImp;
 import flb.tuples.*;
 import flb.database.*;
 import org.junit.jupiter.api.*;

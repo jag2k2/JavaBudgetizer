@@ -1,5 +1,6 @@
 package flb.tables;
 
+import flb.tables.banking.BankingTableModelImp;
 import flb.tuples.BankingTransaction;
 import java.util.*;
 import org.junit.jupiter.api.*;
@@ -32,10 +33,10 @@ class BankingTableModelImpTest {
         float actualAmount = (float)tableModel.getValueAt(0,1);
         assertEquals(50F, actualAmount);
 
-        String actualDescription = (String)tableModel.getValueAt(0,2);
-        assertEquals("Amazon", actualDescription);
-
-        String actualCategory = (String)tableModel.getValueAt(0,3);
+        String actualCategory = (String)tableModel.getValueAt(0,2);
         assertEquals("Name1", actualCategory);
+
+        String actualDescription = (String)tableModel.getValueAt(0,3);
+        assertEquals("Amazon", actualDescription);
     }
 }

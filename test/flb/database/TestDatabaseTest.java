@@ -59,7 +59,7 @@ class TestDatabaseTest {
             }
         } catch (Exception ex) {ex.printStackTrace();}
 
-        assertEquals(4, rowCount);
+        assertEquals(5, rowCount);
     }
 
     @Test

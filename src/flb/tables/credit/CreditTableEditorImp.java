@@ -1,4 +1,4 @@
-package flb.tables;
+package flb.tables.credit;
 
 import flb.database.TransactionStoreEditorImp;
 import flb.tuples.CreditTransaction;

@@ -1,4 +1,4 @@
-package flb.tables;
+package flb.tables.banking;
 
 import flb.tuples.BankingTransaction;
 

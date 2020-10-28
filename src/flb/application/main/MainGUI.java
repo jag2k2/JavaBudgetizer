@@ -1,10 +1,18 @@
-package flb.application.transaction;
+package flb.application.main;
 
+import flb.application.main.listeners.*;
 import flb.database.*;
 import javax.swing.*;
 import javax.swing.border.*;
 
-import flb.tables.*;
+import flb.tables.banking.BankingTableEditorImp;
+import flb.tables.banking.BankingTableImp;
+import flb.tables.banking.BankingTableModelImp;
+import flb.tables.credit.CreditTableEditorImp;
+import flb.tables.credit.CreditTableImp;
+import flb.tables.credit.CreditTableModelImp;
+import flb.tables.goal.GoalTableImp;
+import flb.tables.goal.GoalTableModelImp;
 import flb.util.WhichMonth;
 import org.jdesktop.swingx.*;
 import java.awt.*;
@@ -27,6 +35,7 @@ public class MainGUI {
     private final CreditTableImp creditTable;
     private final BankingTableEditorImp bankingTableEditor;
     private final CreditTableEditorImp creditTableEditor;
+    private final JPopupMenu categoryMenu;
 
     public MainGUI(AbstractDatabase database) {
         this.database = database;
@@ -54,6 +63,7 @@ public class MainGUI {
         this.next = new JButton("Next");
 
         this.balance = new JTextField();
+        this.categoryMenu = new JPopupMenu();
     }
 
     public void layout(){
@@ -70,8 +80,6 @@ public class MainGUI {
         datePane.add(next);
 
         JPanel northLeftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        //northLeftPanel.setBorder(new LineBorder(Color.LIGHT_GRAY));
-        northLeftPanel.add(Box.createRigidArea(new Dimension(33,5)));
         northLeftPanel.add(datePane);
 
         JLabel balanceLabel = new JLabel("Balance");
@@ -83,8 +91,8 @@ public class MainGUI {
         balancePane.add(balance);
 
         JPanel northRightPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        //northRightPanel.setBorder(new LineBorder(Color.LIGHT_GRAY));
         northRightPanel.add(balancePane);
+        northRightPanel.add(Box.createRigidArea(new Dimension(34,5)));
 
         tableForGoals.setPreferredScrollableViewportSize(new Dimension(395,-1));
         JScrollPane goalScroller = new JScrollPane(tableForGoals);
@@ -93,10 +101,6 @@ public class MainGUI {
         goalScroller.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         goalScroller.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         goalScroller.setBorder(new CompoundBorder(greyBorder, margin));
-
-        JPanel rightPane = new JPanel(new BorderLayout());
-        rightPane.add(BorderLayout.NORTH, northRightPanel);
-        rightPane.add(BorderLayout.CENTER, goalScroller);
 
         JScrollPane bankingScroller = new JScrollPane(tableForBanking);
         bankingScroller.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
@@ -107,25 +111,29 @@ public class MainGUI {
         creditScroller.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
         JTabbedPane tabbedPane = new JTabbedPane();
-        tabbedPane.setTabPlacement(JTabbedPane.LEFT);
+        tabbedPane.setTabPlacement(JTabbedPane.RIGHT);
         tabbedPane.addTab(null, bankingScroller);
         tabbedPane.addTab(null, creditScroller);
         JXLabel bankingLabel = new JXLabel(" Banking ");
-        bankingLabel.setTextRotation(3 * Math.PI/2);
+        bankingLabel.setTextRotation(Math.PI/2);
         tabbedPane.setTabComponentAt(0, bankingLabel);
         JXLabel creditLabel = new JXLabel(" Credit ");
-        creditLabel.setTextRotation(3 * Math.PI/2);
+        creditLabel.setTextRotation(Math.PI/2);
         tabbedPane.setTabComponentAt(1, creditLabel);
 
-        tabbedPane.setBorder(new CompoundBorder(greyBorder, margin));
+        tabbedPane.setBorder(new CompoundBorder(greyBorder, BorderFactory.createEmptyBorder(2,5,5,5)));
 
         JPanel leftPane = new JPanel(new BorderLayout());
         leftPane.add(BorderLayout.NORTH, northLeftPanel);
-        leftPane.add(BorderLayout.CENTER, tabbedPane);
+        leftPane.add(BorderLayout.CENTER, goalScroller);
+
+        JPanel rightPane = new JPanel(new BorderLayout());
+        rightPane.add(BorderLayout.NORTH, northRightPanel);
+        rightPane.add(BorderLayout.CENTER, tabbedPane);
 
         JPanel mainPanel = new JPanel(new BorderLayout());
-        mainPanel.add(BorderLayout.EAST, rightPane);
-        mainPanel.add(BorderLayout.CENTER, leftPane);
+        mainPanel.add(BorderLayout.WEST, leftPane);
+        mainPanel.add(BorderLayout.CENTER, rightPane);
 
         JMenuBar menuBar = new JMenuBar();
         JMenu fileMenu = new JMenu("File");
@@ -143,6 +151,14 @@ public class MainGUI {
         menuBar.add(fileMenu);
         menuBar.add(budgetMenu);
 
+        JMenuItem item1 = new JMenuItem("Test1");
+        JMenu superCat = new JMenu("Test2");
+        superCat.add(new JMenuItem("sub1"));
+        superCat.add(new JMenuItem("sub2"));
+        categoryMenu.add(item1);
+        categoryMenu.add(superCat);
+
+        frame.add(categoryMenu);
         frame.setTitle("Filthy Lucre Budgetizer");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setContentPane(mainPanel);
@@ -154,7 +170,8 @@ public class MainGUI {
     }
 
     public void addListeners() {
-
+        tableForBanking.setFocusable(false);
+        tableForBanking.addMouseListener(new UserClicksTableListener(categoryMenu));
     }
     public void launch(){
         database.connect();

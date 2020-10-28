@@ -1,6 +1,7 @@
-package flb.tables;
+package flb.tables.banking;
 
 import flb.tuples.BankingTransaction;
+
 import java.util.*;
 import javax.swing.*;
 
@@ -11,7 +12,7 @@ public class BankingTableImp {
     public BankingTableImp(JTable table, BankingTableModelImp tableModel) {
         this.table = table;
         this.tableModel = tableModel;
-        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        table.setRowSelectionAllowed(false);
         table.setFillsViewportHeight(true);
         table.getColumnModel().getColumn(0).setMinWidth(75);
         table.getColumnModel().getColumn(0).setMaxWidth(75);

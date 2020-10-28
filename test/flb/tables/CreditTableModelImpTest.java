@@ -1,5 +1,6 @@
 package flb.tables;
 
+import flb.tables.credit.CreditTableModelImp;
 import flb.tuples.CreditTransaction;
 import org.junit.jupiter.api.*;
 import java.util.ArrayList;
@@ -35,9 +36,9 @@ class CreditTableModelImpTest {
         assertEquals(50F, actualAmount);
 
         String actualDescription = (String)tableModel.getValueAt(0,2);
-        assertEquals("Amazon", actualDescription);
+        assertEquals("Name1", actualDescription);
 
         String actualCategory = (String)tableModel.getValueAt(0,3);
-        assertEquals("Name1", actualCategory);
+        assertEquals("Amazon", actualCategory);
     }
 }

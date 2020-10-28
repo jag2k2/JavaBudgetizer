@@ -1,4 +1,4 @@
-package flb.tables;
+package flb.tables.category;
 
 import flb.tuples.Category;
 import flb.util.Maybe;

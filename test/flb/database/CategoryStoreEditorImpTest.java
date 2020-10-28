@@ -88,7 +88,8 @@ class CategoryStoreEditorImpTest {
         expected.add(new Category("Name1", 100, false));
         expected.add(new Category("Name2", 200, true));
         expected.add(new Category("Name3", 300, false));
-        expected.add(new Category("Test1", Float.NaN, false));
+        expected.add(new Category("Test1::sub1", Float.NaN, false));
+        expected.add(new Category("Test1::sub2", 500, true));
 
         actual = categoryStoreEditor.getCategories("");
 

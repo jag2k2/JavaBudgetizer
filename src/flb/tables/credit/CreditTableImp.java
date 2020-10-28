@@ -1,4 +1,4 @@
-package flb.tables;
+package flb.tables.credit;
 
 import flb.tuples.CreditTransaction;
 import java.util.*;
@@ -11,7 +11,7 @@ public class CreditTableImp {
     public CreditTableImp(JTable table, CreditTableModelImp tableModel) {
         this.table = table;
         this.tableModel = tableModel;
-        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         table.setFillsViewportHeight(true);
         table.getColumnModel().getColumn(0).setMinWidth(75);
         table.getColumnModel().getColumn(0).setMaxWidth(75);

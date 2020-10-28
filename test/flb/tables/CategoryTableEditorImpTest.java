@@ -1,5 +1,9 @@
 package flb.tables;
 
+import flb.tables.category.CategoryTable;
+import flb.tables.category.CategoryTableEditorImp;
+import flb.tables.category.CategoryTableImp;
+import flb.tables.category.CategoryTableModelImp;
 import org.junit.jupiter.api.*;
 import javax.swing.*;
 import java.util.*;
@@ -23,7 +27,8 @@ class CategoryTableEditorImpTest {
         expectedStored.add(new Category("Name1", 100, false));
         expectedStored.add(new Category("Name2", 200, true));
         expectedStored.add(new Category("Name3", 300, false));
-        expectedStored.add(new Category("Test1", Float.NaN, false));
+        expectedStored.add(new Category("Test1::sub1", Float.NaN, false));
+        expectedStored.add(new Category("Test1::sub2", 500, true));
 
         this.database = new TestDatabase();
         database.connect();
@@ -153,6 +158,7 @@ class CategoryTableEditorImpTest {
 
     @Test
     void refresh(){
+        expectedStored.remove(4);
         expectedStored.remove(3);
 
         tableEditor.refreshAndClearSelection("Name");
@@ -164,6 +170,7 @@ class CategoryTableEditorImpTest {
     @Test
     void refreshKeepSelections() {
         table.getSelectionModel().setSelectionInterval(2,2);
+        expectedStored.remove(4);
         expectedStored.remove(3);
 
         tableEditor.refreshAndKeepSelection("Name");

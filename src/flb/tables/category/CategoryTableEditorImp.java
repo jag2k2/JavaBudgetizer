@@ -1,4 +1,4 @@
-package flb.tables;
+package flb.tables.category;
 
 import javax.swing.*;
 import java.util.*;
