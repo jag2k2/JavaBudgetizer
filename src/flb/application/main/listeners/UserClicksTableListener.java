@@ -12,15 +12,16 @@ public class UserClicksTableListener implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        JTable target = (JTable)e.getSource();
-        int row = target.rowAtPoint(e.getPoint());
-        int column = target.columnAtPoint(e.getPoint());
-        System.out.println(row + ", " + column);
-        categoryMenu.show(target, e.getX(), e.getY());
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
+        JTable table = (JTable)e.getSource();
+        int row = table.rowAtPoint(e.getPoint());
+        int column = table.columnAtPoint(e.getPoint());
+        if(column == 2 && row >= 0) {
+            categoryMenu.show(table, e.getX(), e.getY());
+        }
     }
 
     @Override

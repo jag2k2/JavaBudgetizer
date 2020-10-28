@@ -1,6 +1,5 @@
-package flb.tables;
+package flb.tables.banking;
 
-import flb.tables.banking.BankingTableModelImp;
 import flb.tuples.BankingTransaction;
 import java.util.*;
 import org.junit.jupiter.api.*;

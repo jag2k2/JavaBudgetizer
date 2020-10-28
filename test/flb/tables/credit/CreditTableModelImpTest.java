@@ -1,6 +1,5 @@
-package flb.tables;
+package flb.tables.credit;
 
-import flb.tables.credit.CreditTableModelImp;
 import flb.tuples.CreditTransaction;
 import org.junit.jupiter.api.*;
 import java.util.ArrayList;
