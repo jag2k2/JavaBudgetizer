@@ -11,13 +11,15 @@ import java.util.*;
 class UserEditsExcludesListenerTest {
     private JTextField nameFilter;
     private ArrayList<Category> expected;
-    private CategoryTable categoryTable;
+    private CategoryTableAutomator tableAutomator;
     private TestDatabase database;
     private CategoryStore categoryStore;
 
     @BeforeEach
     void setUp() {
         this.nameFilter = new JTextField();
+        CategoryTableImp categoryTableImp = new CategoryTableImp();
+        this.tableAutomator = categoryTableImp;
 
         this.expected = new ArrayList<>();
         expected.add(new Category("Name1", 100, false));
@@ -25,15 +27,14 @@ class UserEditsExcludesListenerTest {
         expected.add(new Category("Name3", 300, false));
         expected.add(new Category("Test1::sub1", Float.NaN, false));
         expected.add(new Category("Test1::sub2", 500, true));
-        this.categoryTable = new CategoryTableImp();
-        categoryTable.displayAndClearSelection(expected);
+        ((CategoryTable) categoryTableImp).displayAndClearSelection(expected);
 
         this.database = new TestDatabase();
         database.connect();
         this.categoryStore = new CategoryStoreImpl(database);
 
-        CategoryExcludeEditor excludeEditor = new CategoryEditorImp(categoryStore, categoryTable);
-        categoryTable.addExcludesEditListener(new UserEditsExcludesListener(excludeEditor, nameFilter));
+        CategoryExcludeEditor excludeEditor = new CategoryEditorImp(categoryStore, categoryTableImp);
+        ((CategoryTable) categoryTableImp).addExcludesEditListener(new UserEditsExcludesListener(excludeEditor, nameFilter));
     }
 
     @AfterEach
@@ -44,9 +45,9 @@ class UserEditsExcludesListenerTest {
     @Test
     void enableDisabledCategory() {
         nameFilter.setText("Name");
-        categoryTable.setSelectedRow(0);
+        tableAutomator.setSelectedRow(0);
 
-        categoryTable.toggleSelectedExcludes();
+        tableAutomator.toggleSelectedExcludes();
 
         expected.set(0, new Category("Name1", 100, true));
         assertEquals(expected, categoryStore.getCategories(""));
@@ -56,9 +57,9 @@ class UserEditsExcludesListenerTest {
     @Test
     void disableEnabledCategory() {
         nameFilter.setText("Name");
-        categoryTable.setSelectedRow(1);
+        tableAutomator.setSelectedRow(1);
 
-        categoryTable.toggleSelectedExcludes();
+        tableAutomator.toggleSelectedExcludes();
 
         expected.set(1, new Category("Name2", 200, false));
         assertEquals(expected, categoryStore.getCategories(""));

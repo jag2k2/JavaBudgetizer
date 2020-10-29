@@ -10,15 +10,15 @@ import java.awt.*;
 import java.beans.*;
 import java.util.*;
 
-public class CategoryTableImp extends Component implements CategoryTable {
-    private final CategoryTableModelImpl tableModel;
+public class CategoryTableImp extends Component implements CategoryTable, CategoryTableAutomator {
+    private final CategoryTableModel tableModel;
     private final JTable table;
     private final JScrollPane scrollPane;
 
     public CategoryTableImp() {
-        this.tableModel = new CategoryTableModelImpl();
-
-        this.table = new JTable(tableModel);
+        CategoryTableModelImpl categoryTableModel = new CategoryTableModelImpl();
+        this.tableModel = categoryTableModel;
+        this.table = new JTable(categoryTableModel);
         this.table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         this.table.setFillsViewportHeight(true);
         GoalRenderer goalRenderer = new GoalRenderer();

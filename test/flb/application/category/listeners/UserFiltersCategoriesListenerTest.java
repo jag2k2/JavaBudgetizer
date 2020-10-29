@@ -11,11 +11,13 @@ import java.util.*;
 class UserFiltersCategoriesListenerTest {
     private JTextField nameFilter;
     private ArrayList<Category> expected;
-    private CategoryTable categoryTable;
+    private CategoryTableAutomator tableAutomator;
     private TestDatabase database;
 
     @BeforeEach
     void setUp() {
+        CategoryTableImp categoryTableImp = new CategoryTableImp();
+        this.tableAutomator = categoryTableImp;
         this.nameFilter = new JTextField();
 
         this.expected = new ArrayList<>();
@@ -23,13 +25,12 @@ class UserFiltersCategoriesListenerTest {
         expected.add(new Category("Name2", 200, true));
         expected.add(new Category("Name3", 300, false));
         expected.add(new Category("Test1", Float.NaN, false));
-        this.categoryTable = new CategoryTableImp();
 
         this.database = new TestDatabase();
         database.connect();
         CategoryStore categoryStore = new CategoryStoreImpl(database);
 
-        ListChangeRefresher listChangeRefresher = new CategoryEditorImp(categoryStore, categoryTable);
+        ListChangeRefresher listChangeRefresher = new CategoryEditorImp(categoryStore, categoryTableImp);
         nameFilter.getDocument().addDocumentListener(new UserFiltersCategoriesListener(listChangeRefresher, nameFilter));
     }
 
@@ -42,7 +43,7 @@ class UserFiltersCategoriesListenerTest {
     void insertUpdate() {
         nameFilter.setText("N");
         expected.remove(3);
-        assertEquals(expected, categoryTable.getContents());
+        assertEquals(expected, tableAutomator.getContents());
     }
 
     @Test
@@ -50,6 +51,6 @@ class UserFiltersCategoriesListenerTest {
         nameFilter.setText("Name1");
         nameFilter.setText("Name");
         expected.remove(3);
-        assertEquals(expected, categoryTable.getContents());
+        assertEquals(expected, tableAutomator.getContents());
     }
 }

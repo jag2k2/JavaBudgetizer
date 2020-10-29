@@ -12,7 +12,7 @@ class UserClearsGoalListenerTest {
     private JTextField nameFilter;
     private JButton testButton;
     private ArrayList<Category> expected;
-    private CategoryTable categoryTable;
+    private CategoryTableAutomator tableAutomator;
     private TestDatabase database;
     private CategoryStore categoryStore;
 
@@ -20,6 +20,8 @@ class UserClearsGoalListenerTest {
     void setUp() {
         this.nameFilter = new JTextField();
         this.testButton = new JButton();
+        CategoryTableImp categoryTableImp = new CategoryTableImp();
+        this.tableAutomator = categoryTableImp;
 
         this.expected = new ArrayList<>();
         expected.add(new Category("Name1", 100, false));
@@ -27,14 +29,13 @@ class UserClearsGoalListenerTest {
         expected.add(new Category("Name3", 300, false));
         expected.add(new Category("Test1::sub1", Float.NaN, false));
         expected.add(new Category("Test1::sub2", 500, true));
-        this.categoryTable = new CategoryTableImp();
-        categoryTable.displayAndClearSelection(expected);
+        ((CategoryTable) categoryTableImp).displayAndClearSelection(expected);
 
         this.database = new TestDatabase();
         database.connect();
         this.categoryStore = new CategoryStoreImpl(database);
 
-        CategoryClearer categoryClearer = new CategoryEditorImp(categoryStore, categoryTable);
+        CategoryClearer categoryClearer = new CategoryEditorImp(categoryStore, categoryTableImp);
         testButton.addActionListener(new UserClearsGoalListener(categoryClearer, nameFilter));
     }
 
@@ -46,7 +47,7 @@ class UserClearsGoalListenerTest {
     @Test
     void clearSelected() {
         nameFilter.setText("Name");
-        categoryTable.setSelectedRow(1);
+        tableAutomator.setSelectedRow(1);
         testButton.doClick();
 
         expected.set(1, new Category("Name2", Float.NaN, true));
@@ -57,7 +58,7 @@ class UserClearsGoalListenerTest {
     @Test
     void nothingSelected() {
         nameFilter.setText("Name");
-        categoryTable.setSelectedRow(-1);
+        tableAutomator.setSelectedRow(-1);
         testButton.doClick();
 
         assertEquals(expected, categoryStore.getCategories(""));

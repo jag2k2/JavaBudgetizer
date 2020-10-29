@@ -4,7 +4,6 @@ import flb.tuples.Category;
 import flb.util.Maybe;
 import javax.swing.*;
 import javax.swing.event.*;
-import javax.swing.table.*;
 import java.beans.*;
 import java.util.ArrayList;
 
@@ -16,11 +15,4 @@ public interface CategoryTable {
     void addGoalEditListener(TableModelListener tableModelListener);
     void addExcludesEditListener(CellEditorListener cellEditorListener);
     JScrollPane getPane();
-    void setSelectedRow(int row);
-    int getSelectedRow();
-    ArrayList<Category> getContents();
-    void editCellAt(int row, int col);
-    void toggleSelectedExcludes();
-    void setEditorGoal(float newGoal);
-    void setEditorName(String newName);
 }

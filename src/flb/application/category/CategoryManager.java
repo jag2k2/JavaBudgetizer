@@ -22,7 +22,10 @@ public class CategoryManager {
         @Override
         public void run() {
             AbstractDatabase database = new TestDatabase();
-            MainGUI mainGui = new MainGUI(database);
+            CategoryStore categoryStore = new CategoryStoreImpl(database);
+            MainGUI mainGui = new MainGUI(categoryStore);
+
+            database.connect();
             mainGui.layout();
             mainGui.addListeners();
             mainGui.launch();

@@ -13,18 +13,15 @@ public class MainGUI {
     private final JButton clearAmountButton;
     private final JTextField nameFilter;
     private final CategoryEditorImp tableEditor;
-    private final AbstractDatabase database;
     private final CategoryTableImp categoryTable;
 
-    public MainGUI(AbstractDatabase database) {
-        this.database = database;
+    public MainGUI(CategoryStore categoryStore) {
         this.nameFilter = new JTextField();
         frame = new JFrame();
         addButton = new JButton("Add");
         deleteButton = new JButton("Delete");
         clearAmountButton = new JButton("Clear");
         categoryTable = new CategoryTableImp();
-        CategoryStore categoryStore = new CategoryStoreImpl(database);
         tableEditor = new CategoryEditorImp(categoryStore, categoryTable);
     }
 
@@ -63,7 +60,6 @@ public class MainGUI {
         categoryTable.addExcludesEditListener(new UserEditsExcludesListener(tableEditor, nameFilter));
     }
     public void launch(){
-        database.connect();
         tableEditor.refreshAndClearSelection("");
         frame.setVisible(true);
     }

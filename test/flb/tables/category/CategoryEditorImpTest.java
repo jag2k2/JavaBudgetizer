@@ -11,12 +11,17 @@ import static org.junit.jupiter.api.Assertions.*;
 class CategoryEditorImpTest {
     private CategoryEditorImp tableEditor;
     private CategoryTable categoryTable;
+    private CategoryTableAutomator tableAutomator;
     private TestDatabase database;
     private CategoryStore categoryStore;
     private ArrayList<Category> expectedStored;
 
     @BeforeEach
     void setUp() {
+        CategoryTableImp categoryTableImp = new CategoryTableImp();
+        this.tableAutomator = categoryTableImp;
+        this.categoryTable = categoryTableImp;
+
         this.expectedStored = new ArrayList<>();
         expectedStored.add(new Category("Name1", 100, false));
         expectedStored.add(new Category("Name2", 200, true));
@@ -27,7 +32,6 @@ class CategoryEditorImpTest {
         this.database = new TestDatabase();
         database.connect();
         this.categoryStore = new CategoryStoreImpl(database);
-        this.categoryTable = new CategoryTableImp();
         categoryTable.displayAndClearSelection(expectedStored);
         this.tableEditor = new CategoryEditorImp(categoryStore, categoryTable);
     }
@@ -69,7 +73,7 @@ class CategoryEditorImpTest {
 
     @Test
     void clearSelectedGoal() {
-        categoryTable.setSelectedRow(1);
+        tableAutomator.setSelectedRow(1);
         expectedStored.set(1, new Category("Name2", Float.NaN, true));
 
         tableEditor.userClearSelectedGoalAmount();
@@ -79,7 +83,7 @@ class CategoryEditorImpTest {
 
     @Test
     void clearNoGoalSelected() {
-        categoryTable.setSelectedRow(-1);
+        tableAutomator.setSelectedRow(-1);
 
         tableEditor.userClearSelectedGoalAmount();
 
@@ -88,7 +92,7 @@ class CategoryEditorImpTest {
 
     @Test
     void deleteSelectedGoalWithConfirm() {
-        categoryTable.setSelectedRow(1);
+        tableAutomator.setSelectedRow(1);
 
         tableEditor = new CategoryEditorNoDialog(categoryStore, categoryTable, true);
         tableEditor.userDeleteSelectedCategory(new JFrame());
@@ -99,7 +103,7 @@ class CategoryEditorImpTest {
 
     @Test
     void deleteSelectedGoalWithNoConfirm() {
-        categoryTable.setSelectedRow(1);
+        tableAutomator.setSelectedRow(1);
 
         tableEditor = new CategoryEditorNoDialog(categoryStore, categoryTable, false);
         tableEditor.userDeleteSelectedCategory(new JFrame());
@@ -109,7 +113,7 @@ class CategoryEditorImpTest {
 
     @Test
     void toggleExcludes() {
-        categoryTable.setSelectedRow(1);
+        tableAutomator.setSelectedRow(1);
         expectedStored.set(1, new Category("Name2", 200, false));
 
         tableEditor.userEditsSelectedExcludes();
@@ -119,7 +123,7 @@ class CategoryEditorImpTest {
 
     @Test
     void editCategoryAmount() {
-        categoryTable.setSelectedRow(1);
+        tableAutomator.setSelectedRow(1);
         expectedStored.set(1, new Category("Name2", 500, true));
 
         tableEditor.userEditsSelectedGoalAmount();
@@ -129,7 +133,7 @@ class CategoryEditorImpTest {
 
     @Test
     void getSelectedCategory() {
-        categoryTable.setSelectedRow(1);
+        tableAutomator.setSelectedRow(1);
         Maybe<Category> expected = new Maybe<>(new Category("Name2", 200, true));
 
         Maybe<Category> editingCategory = tableEditor.getSelectedCategory();
@@ -140,7 +144,7 @@ class CategoryEditorImpTest {
 
     @Test
     void renameCategory() {
-        categoryTable.setSelectedRow(1);
+        tableAutomator.setSelectedRow(1);
         expectedStored.set(1, new Category("Name20", 200, true));
 
         tableEditor.userRenamedCategory("Name2");
@@ -155,19 +159,19 @@ class CategoryEditorImpTest {
 
         tableEditor.refreshAndClearSelection("Name");
 
-        assertEquals(-1, categoryTable.getSelectedRow());
-        assertEquals(expectedStored, categoryTable.getContents());
+        assertEquals(-1, tableAutomator.getSelectedRow());
+        assertEquals(expectedStored, tableAutomator.getContents());
     }
 
     @Test
     void refreshKeepSelections() {
-        categoryTable.setSelectedRow(2);
+        tableAutomator.setSelectedRow(2);
         expectedStored.remove(4);
         expectedStored.remove(3);
 
         tableEditor.refreshAndKeepSelection("Name");
 
-        assertEquals(2, categoryTable.getSelectedRow());
-        assertEquals(expectedStored, categoryTable.getContents());
+        assertEquals(2, tableAutomator.getSelectedRow());
+        assertEquals(expectedStored, tableAutomator.getContents());
     }
 }

@@ -11,12 +11,14 @@ import java.util.*;
 class UserRenamesSelectionListenerTest {
     private JTextField nameFilter;
     private ArrayList<Category> expected;
-    private CategoryTable categoryTable;
+    private CategoryTableAutomator tableAutomator;
     private TestDatabase database;
     private CategoryStore categoryStore;
 
     @BeforeEach
     void setUp() {
+        CategoryTableImp categoryTableImp = new CategoryTableImp();
+        this.tableAutomator = categoryTableImp;
         this.nameFilter = new JTextField();
 
         this.expected = new ArrayList<>();
@@ -25,15 +27,14 @@ class UserRenamesSelectionListenerTest {
         expected.add(new Category("Name3", 300, false));
         expected.add(new Category("Test1::sub1", Float.NaN, false));
         expected.add(new Category("Test1::sub2", 500, true));
-        this.categoryTable = new CategoryTableImp();
-        categoryTable.displayAndClearSelection(expected);
+        ((CategoryTable) categoryTableImp).displayAndClearSelection(expected);
 
         this.database = new TestDatabase();
         database.connect();
         this.categoryStore = new CategoryStoreImpl(database);
 
-        CategoryNameEditor nameEditor = new CategoryEditorImp(categoryStore, categoryTable);
-        categoryTable.addCategoryRenameListener(new UserRenamesSelectionListener(nameEditor, nameFilter));
+        CategoryNameEditor nameEditor = new CategoryEditorImp(categoryStore, categoryTableImp);
+        ((CategoryTable) categoryTableImp).addCategoryRenameListener(new UserRenamesSelectionListener(nameEditor, nameFilter));
     }
 
     @AfterEach
@@ -44,10 +45,10 @@ class UserRenamesSelectionListenerTest {
     @Test
     void renameFirstCategory() {
         nameFilter.setText("Name");
-        categoryTable.setSelectedRow(0);
+        tableAutomator.setSelectedRow(0);
 
-        categoryTable.editCellAt(0,0);
-        categoryTable.setEditorName("Name10");
+        tableAutomator.editCellAt(0,0);
+        tableAutomator.setEditorName("Name10");
 
         expected.set(0, new Category("Name10", 100, false));
         assertEquals(expected, categoryStore.getCategories(""));
@@ -57,10 +58,10 @@ class UserRenamesSelectionListenerTest {
     @Test
     void renameLastCategory() {
         nameFilter.setText("Name");
-        categoryTable.setSelectedRow(4);
+        tableAutomator.setSelectedRow(4);
 
-        categoryTable.editCellAt(4,0);
-        categoryTable.setEditorName("Test20");
+        tableAutomator.editCellAt(4,0);
+        tableAutomator.setEditorName("Test20");
 
         expected.set(4, new Category("Test20", 500, true));
         assertEquals(expected, categoryStore.getCategories(""));

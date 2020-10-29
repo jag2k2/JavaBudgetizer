@@ -11,12 +11,14 @@ import java.util.*;
 class UserEditsGoalAmountListenerTest {
     private JTextField nameFilter;
     private ArrayList<Category> expected;
-    private CategoryTable categoryTable;
+    private CategoryTableAutomator tableAutomator;
     private TestDatabase database;
     private CategoryStore categoryStore;
 
     @BeforeEach
     void setUp() {
+        CategoryTableImp categoryTableImp = new CategoryTableImp();
+        this.tableAutomator = categoryTableImp;
         this.nameFilter = new JTextField();
 
         this.expected = new ArrayList<>();
@@ -25,15 +27,14 @@ class UserEditsGoalAmountListenerTest {
         expected.add(new Category("Name3", 300, false));
         expected.add(new Category("Test1::sub1", Float.NaN, false));
         expected.add(new Category("Test1::sub2", 500, true));
-        this.categoryTable = new CategoryTableImp();
-        categoryTable.displayAndClearSelection(expected);
+        ((CategoryTable) categoryTableImp).displayAndClearSelection(expected);
 
         this.database = new TestDatabase();
         database.connect();
         this.categoryStore = new CategoryStoreImpl(database);
 
-        CategoryAmountEditor amountEditor = new CategoryEditorImp(categoryStore, categoryTable);
-        categoryTable.addGoalEditListener(new UserEditsGoalAmountListener(amountEditor, nameFilter));
+        CategoryAmountEditor amountEditor = new CategoryEditorImp(categoryStore, categoryTableImp);
+        ((CategoryTable) categoryTableImp).addGoalEditListener(new UserEditsGoalAmountListener(amountEditor, nameFilter));
     }
 
     @AfterEach
@@ -44,10 +45,10 @@ class UserEditsGoalAmountListenerTest {
     @Test
     void editCategoryGoal() {
         nameFilter.setText("Name");
-        categoryTable.setSelectedRow(0);
+        tableAutomator.setSelectedRow(0);
 
-        categoryTable.editCellAt(0,1);
-        categoryTable.setEditorGoal(200);
+        tableAutomator.editCellAt(0,1);
+        tableAutomator.setEditorGoal(200);
 
         expected.set(0, new Category("Name1", 200, false));
         assertEquals(expected, categoryStore.getCategories(""));

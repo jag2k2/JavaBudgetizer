@@ -15,12 +15,16 @@ class UserDeletesCategoryListenerTest {
     private TestDatabase database;
     private CategoryStore categoryStore;
     private CategoryTable categoryTable;
+    private CategoryTableAutomator tableAutomator;
     private CategoryDeleter categoryDeleter;
 
     @BeforeEach
     void setUp() {
         this.nameFilter = new JTextField();
         this.testButton = new JButton();
+        CategoryTableImp categoryTableImp = new CategoryTableImp();
+        this.categoryTable = categoryTableImp;
+        this.tableAutomator = categoryTableImp;
 
         this.expected = new ArrayList<>();
         expected.add(new Category("Name1", 100, false));
@@ -32,7 +36,6 @@ class UserDeletesCategoryListenerTest {
         this.database = new TestDatabase();
         database.connect();
         this.categoryStore = new CategoryStoreImpl(database);
-        categoryTable = new CategoryTableImp();
         categoryTable.displayAndClearSelection(expected);
     }
 
@@ -47,7 +50,7 @@ class UserDeletesCategoryListenerTest {
         testButton.addActionListener(new UserDeletesCategoryListener(categoryDeleter, nameFilter, new JFrame()));
 
         nameFilter.setText("Name");
-        categoryTable.setSelectedRow(1);
+        tableAutomator.setSelectedRow(1);
         testButton.doClick();
 
         expected.remove(1);
@@ -61,7 +64,7 @@ class UserDeletesCategoryListenerTest {
         testButton.addActionListener(new UserDeletesCategoryListener(categoryDeleter, nameFilter, new JFrame()));
 
         nameFilter.setText("Name");
-        categoryTable.setSelectedRow(1);
+        tableAutomator.setSelectedRow(1);
         testButton.doClick();
 
         assertEquals(expected, categoryStore.getCategories(""));
@@ -74,7 +77,7 @@ class UserDeletesCategoryListenerTest {
         testButton.addActionListener(new UserDeletesCategoryListener(categoryDeleter, nameFilter, new JFrame()));
 
         nameFilter.setText("Name");
-        categoryTable.setSelectedRow(-1);
+        tableAutomator.setSelectedRow(-1);
         testButton.doClick();
 
         assertEquals(expected, categoryStore.getCategories(""));
