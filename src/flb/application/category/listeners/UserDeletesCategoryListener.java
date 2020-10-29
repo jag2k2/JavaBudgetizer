@@ -1,5 +1,7 @@
 package flb.application.category.listeners;
 
+import flb.tables.category.CategoryDeleter;
+
 import java.awt.event.*;
 import javax.swing.*;
 

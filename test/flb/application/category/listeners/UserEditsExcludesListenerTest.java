@@ -17,9 +17,14 @@ class UserEditsExcludesListenerTest {
 
     @BeforeEach
     void setUp() {
+        this.database = new TestDatabase();
+        database.connect();
+        this.categoryStore = new CategoryStoreImpl(database);
+        CategoryEditorImpl categoryEditorImpl = new CategoryEditorImpl(categoryStore);
+        categoryEditorImpl.refreshAndKeepSelection("");
+        this.tableAutomator = categoryEditorImpl.getTableAutomator();
+
         this.nameFilter = new JTextField();
-        CategoryTableImp categoryTableImp = new CategoryTableImp();
-        this.tableAutomator = categoryTableImp;
 
         this.expected = new ArrayList<>();
         expected.add(new Category("Name1", 100, false));
@@ -27,14 +32,8 @@ class UserEditsExcludesListenerTest {
         expected.add(new Category("Name3", 300, false));
         expected.add(new Category("Test1::sub1", Float.NaN, false));
         expected.add(new Category("Test1::sub2", 500, true));
-        ((CategoryTable) categoryTableImp).displayAndClearSelection(expected);
 
-        this.database = new TestDatabase();
-        database.connect();
-        this.categoryStore = new CategoryStoreImpl(database);
-
-        CategoryExcludeEditor excludeEditor = new CategoryEditorImp(categoryStore, categoryTableImp);
-        ((CategoryTable) categoryTableImp).addExcludesEditListener(new UserEditsExcludesListener(excludeEditor, nameFilter));
+        categoryEditorImpl.addCategoryEditingListeners(nameFilter);
     }
 
     @AfterEach

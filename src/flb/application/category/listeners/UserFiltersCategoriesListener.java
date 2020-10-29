@@ -1,13 +1,15 @@
 package flb.application.category.listeners;
 
+import flb.tables.category.CategoryListChangeRefresher;
+
 import javax.swing.*;
 import javax.swing.event.*;
 
 public class UserFiltersCategoriesListener implements DocumentListener {
-    private final ListChangeRefresher changeRefresher;
+    private final CategoryListChangeRefresher changeRefresher;
     private final JTextField nameFilter;
 
-    public UserFiltersCategoriesListener(ListChangeRefresher changeRefresher, JTextField nameFilter) {
+    public UserFiltersCategoriesListener(CategoryListChangeRefresher changeRefresher, JTextField nameFilter) {
         this.changeRefresher = changeRefresher;
         this.nameFilter = nameFilter;
     }

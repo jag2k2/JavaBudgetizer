@@ -16,8 +16,11 @@ class UserFiltersCategoriesListenerTest {
 
     @BeforeEach
     void setUp() {
-        CategoryTableImp categoryTableImp = new CategoryTableImp();
-        this.tableAutomator = categoryTableImp;
+        this.database = new TestDatabase();
+        database.connect();
+        CategoryStore categoryStore = new CategoryStoreImpl(database);
+        CategoryEditorImpl categoryEditor = new CategoryEditorImpl(categoryStore);
+        this.tableAutomator = categoryEditor.getTableAutomator();
         this.nameFilter = new JTextField();
 
         this.expected = new ArrayList<>();
@@ -26,12 +29,7 @@ class UserFiltersCategoriesListenerTest {
         expected.add(new Category("Name3", 300, false));
         expected.add(new Category("Test1", Float.NaN, false));
 
-        this.database = new TestDatabase();
-        database.connect();
-        CategoryStore categoryStore = new CategoryStoreImpl(database);
-
-        ListChangeRefresher listChangeRefresher = new CategoryEditorImp(categoryStore, categoryTableImp);
-        nameFilter.getDocument().addDocumentListener(new UserFiltersCategoriesListener(listChangeRefresher, nameFilter));
+        nameFilter.getDocument().addDocumentListener(new UserFiltersCategoriesListener(categoryEditor, nameFilter));
     }
 
     @AfterEach

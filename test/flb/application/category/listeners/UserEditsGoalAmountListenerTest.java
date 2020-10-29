@@ -17,8 +17,11 @@ class UserEditsGoalAmountListenerTest {
 
     @BeforeEach
     void setUp() {
-        CategoryTableImp categoryTableImp = new CategoryTableImp();
-        this.tableAutomator = categoryTableImp;
+        this.database = new TestDatabase();
+        database.connect();
+        this.categoryStore = new CategoryStoreImpl(database);
+        CategoryEditorImpl categoryEditor = new CategoryEditorImpl(categoryStore);
+        this.tableAutomator = categoryEditor.getTableAutomator();
         this.nameFilter = new JTextField();
 
         this.expected = new ArrayList<>();
@@ -27,14 +30,9 @@ class UserEditsGoalAmountListenerTest {
         expected.add(new Category("Name3", 300, false));
         expected.add(new Category("Test1::sub1", Float.NaN, false));
         expected.add(new Category("Test1::sub2", 500, true));
-        ((CategoryTable) categoryTableImp).displayAndClearSelection(expected);
+        categoryEditor.refreshAndKeepSelection("");
 
-        this.database = new TestDatabase();
-        database.connect();
-        this.categoryStore = new CategoryStoreImpl(database);
-
-        CategoryAmountEditor amountEditor = new CategoryEditorImp(categoryStore, categoryTableImp);
-        ((CategoryTable) categoryTableImp).addGoalEditListener(new UserEditsGoalAmountListener(amountEditor, nameFilter));
+        categoryEditor.addCategoryEditingListeners(nameFilter);
     }
 
     @AfterEach

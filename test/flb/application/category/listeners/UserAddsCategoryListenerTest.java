@@ -17,6 +17,11 @@ class UserAddsCategoryListenerTest {
 
     @BeforeEach
     void setUp() {
+        this.database = new TestDatabase();
+        database.connect();
+        this.categoryStore = new CategoryStoreImpl(database);
+        CategoryAdder categoryAdder = new CategoryEditorImpl(categoryStore);
+
         this.nameFilter = new JTextField();
         this.testButton = new JButton();
 
@@ -26,13 +31,7 @@ class UserAddsCategoryListenerTest {
         expected.add(new Category("Name3", 300, false));
         expected.add(new Category("Test1::sub1", Float.NaN, false));
         expected.add(new Category("Test1::sub2", 500, true));
-        CategoryTable categoryTable = new CategoryTableImp();
 
-        this.database = new TestDatabase();
-        database.connect();
-        this.categoryStore = new CategoryStoreImpl(database);
-
-        CategoryAdder categoryAdder = new CategoryEditorImp(categoryStore, categoryTable);
         testButton.addActionListener(new UserAddsCategoryListener(categoryAdder, nameFilter));
     }
 

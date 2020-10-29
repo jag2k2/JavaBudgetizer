@@ -6,16 +6,16 @@ import flb.util.*;
 import org.junit.jupiter.api.*;
 import java.util.*;
 
-class CategoryTableImpTest {
+class CategoryTableImplTest {
     private CategoryTable categoryTable;
     private CategoryTableAutomator tableAutomator;
     private ArrayList<Category> expectedDisplay;
 
     @BeforeEach
     void setUp() {
-        CategoryTableImp categoryTableImp = new CategoryTableImp();
-        this.categoryTable = categoryTableImp;
-        this.tableAutomator = categoryTableImp;
+        CategoryTableImpl categoryTableImpl = new CategoryTableImpl();
+        this.categoryTable = categoryTableImpl;
+        this.tableAutomator = categoryTableImpl;
 
         ArrayList<Category> tableContents = new ArrayList<>();
         tableContents.add(new Category("Name1", 100, false));

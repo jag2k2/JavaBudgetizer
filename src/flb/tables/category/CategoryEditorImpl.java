@@ -2,20 +2,36 @@ package flb.tables.category;
 
 import javax.swing.*;
 import java.util.*;
-
 import flb.database.CategoryStore;
 import flb.util.*;
 import flb.tuples.*;
 import flb.application.category.listeners.*;
 
-public class CategoryEditorImp implements CategoryAdder, CategoryClearer, CategoryDeleter, CategoryExcludeEditor,
-                                            CategoryAmountEditor, CategoryNameEditor {
+public class CategoryEditorImpl implements CategoryAdder, CategoryClearer, CategoryDeleter, CategoryExcludeEditor,
+                                            CategoryAmountEditor, CategoryNameEditor, CategoryEditorAutomator {
     private final CategoryStore categoryStore;
     private final CategoryTable categoryTable;
+    private final CategoryTableAutomator tableAutomator;
 
-    public CategoryEditorImp(CategoryStore categoryStore, CategoryTable categoryTable){
+    public CategoryEditorImpl(CategoryStore categoryStore){
         this.categoryStore = categoryStore;
-        this.categoryTable = categoryTable;
+        CategoryTableImpl categoryTableImpl = new CategoryTableImpl();
+        this.categoryTable = categoryTableImpl;
+        this.tableAutomator = categoryTableImpl;
+    }
+
+    public void addCategoryEditingListeners(JTextField nameFilter) {
+        categoryTable.addCategoryRenameListener(new UserRenamesSelectionListener(this, nameFilter));
+        categoryTable.addGoalEditListener(new UserEditsGoalAmountListener(this, nameFilter));
+        categoryTable.addExcludesEditListener(new UserEditsExcludesListener(this, nameFilter));
+    }
+
+    public JScrollPane getPane() {
+        return categoryTable.getPane();
+    }
+
+    public CategoryTableAutomator getTableAutomator() {
+        return tableAutomator;
     }
 
     public boolean categoryNameAddable(String categoryToAdd) {

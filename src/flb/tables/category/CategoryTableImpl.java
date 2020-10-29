@@ -1,21 +1,20 @@
 package flb.tables.category;
 
 import flb.tables.goal.GoalRenderer;
-import flb.tuples.Category;
+import flb.tuples.*;
 import flb.util.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.table.*;
-import java.awt.*;
 import java.beans.*;
 import java.util.*;
 
-public class CategoryTableImp extends Component implements CategoryTable, CategoryTableAutomator {
+public class CategoryTableImpl implements CategoryTable, CategoryTableAutomator {
     private final CategoryTableModel tableModel;
     private final JTable table;
     private final JScrollPane scrollPane;
 
-    public CategoryTableImp() {
+    public CategoryTableImpl() {
         CategoryTableModelImpl categoryTableModel = new CategoryTableModelImpl();
         this.tableModel = categoryTableModel;
         this.table = new JTable(categoryTableModel);

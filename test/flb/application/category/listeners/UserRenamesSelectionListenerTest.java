@@ -17,9 +17,13 @@ class UserRenamesSelectionListenerTest {
 
     @BeforeEach
     void setUp() {
-        CategoryTableImp categoryTableImp = new CategoryTableImp();
-        this.tableAutomator = categoryTableImp;
+        this.database = new TestDatabase();
+        database.connect();
+        this.categoryStore = new CategoryStoreImpl(database);
+        CategoryEditorImpl categoryEditor = new CategoryEditorImpl(categoryStore);
+        this.tableAutomator = categoryEditor.getTableAutomator();
         this.nameFilter = new JTextField();
+        categoryEditor.refreshAndClearSelection("");
 
         this.expected = new ArrayList<>();
         expected.add(new Category("Name1", 100, false));
@@ -27,14 +31,8 @@ class UserRenamesSelectionListenerTest {
         expected.add(new Category("Name3", 300, false));
         expected.add(new Category("Test1::sub1", Float.NaN, false));
         expected.add(new Category("Test1::sub2", 500, true));
-        ((CategoryTable) categoryTableImp).displayAndClearSelection(expected);
 
-        this.database = new TestDatabase();
-        database.connect();
-        this.categoryStore = new CategoryStoreImpl(database);
-
-        CategoryNameEditor nameEditor = new CategoryEditorImp(categoryStore, categoryTableImp);
-        ((CategoryTable) categoryTableImp).addCategoryRenameListener(new UserRenamesSelectionListener(nameEditor, nameFilter));
+        categoryEditor.addCategoryEditingListeners(nameFilter);
     }
 
     @AfterEach

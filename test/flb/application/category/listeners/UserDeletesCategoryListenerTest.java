@@ -14,17 +14,17 @@ class UserDeletesCategoryListenerTest {
     private ArrayList<Category> expected;
     private TestDatabase database;
     private CategoryStore categoryStore;
-    private CategoryTable categoryTable;
     private CategoryTableAutomator tableAutomator;
-    private CategoryDeleter categoryDeleter;
+    private CategoryEditorImpl categoryEditor;
 
     @BeforeEach
     void setUp() {
+        this.database = new TestDatabase();
+        database.connect();
+        this.categoryStore = new CategoryStoreImpl(database);
+
         this.nameFilter = new JTextField();
         this.testButton = new JButton();
-        CategoryTableImp categoryTableImp = new CategoryTableImp();
-        this.categoryTable = categoryTableImp;
-        this.tableAutomator = categoryTableImp;
 
         this.expected = new ArrayList<>();
         expected.add(new Category("Name1", 100, false));
@@ -32,11 +32,6 @@ class UserDeletesCategoryListenerTest {
         expected.add(new Category("Name3", 300, false));
         expected.add(new Category("Test1::sub1", Float.NaN, false));
         expected.add(new Category("Test1::sub2", 500, true));
-
-        this.database = new TestDatabase();
-        database.connect();
-        this.categoryStore = new CategoryStoreImpl(database);
-        categoryTable.displayAndClearSelection(expected);
     }
 
     @AfterEach
@@ -46,8 +41,11 @@ class UserDeletesCategoryListenerTest {
 
     @Test
     void userConfirmsDelete() {
-        categoryDeleter = new CategoryEditorNoDialog(categoryStore, categoryTable, true);
-        testButton.addActionListener(new UserDeletesCategoryListener(categoryDeleter, nameFilter, new JFrame()));
+        categoryEditor = new CategoryEditorNoDialog(categoryStore, true);
+        categoryEditor.refreshAndClearSelection("");
+        this.tableAutomator = categoryEditor.getTableAutomator();
+
+        testButton.addActionListener(new UserDeletesCategoryListener(categoryEditor, nameFilter, new JFrame()));
 
         nameFilter.setText("Name");
         tableAutomator.setSelectedRow(1);
@@ -60,8 +58,11 @@ class UserDeletesCategoryListenerTest {
 
     @Test
     void userRefusesDelete() {
-        categoryDeleter = new CategoryEditorNoDialog(categoryStore, categoryTable, false);
-        testButton.addActionListener(new UserDeletesCategoryListener(categoryDeleter, nameFilter, new JFrame()));
+        categoryEditor = new CategoryEditorNoDialog(categoryStore, false);
+        categoryEditor.refreshAndClearSelection("");
+        this.tableAutomator = categoryEditor.getTableAutomator();
+
+        testButton.addActionListener(new UserDeletesCategoryListener(categoryEditor, nameFilter, new JFrame()));
 
         nameFilter.setText("Name");
         tableAutomator.setSelectedRow(1);
@@ -73,8 +74,10 @@ class UserDeletesCategoryListenerTest {
 
     @Test
     void userDeletesWithNoSelected() {
-        categoryDeleter = new CategoryEditorImp(categoryStore, categoryTable);
-        testButton.addActionListener(new UserDeletesCategoryListener(categoryDeleter, nameFilter, new JFrame()));
+        categoryEditor = new CategoryEditorImpl(categoryStore);
+        this.tableAutomator = categoryEditor.getTableAutomator();
+
+        testButton.addActionListener(new UserDeletesCategoryListener(categoryEditor, nameFilter, new JFrame()));
 
         nameFilter.setText("Name");
         tableAutomator.setSelectedRow(-1);

@@ -12,17 +12,15 @@ public class MainGUI {
     private final JButton deleteButton;
     private final JButton clearAmountButton;
     private final JTextField nameFilter;
-    private final CategoryEditorImp tableEditor;
-    private final CategoryTableImp categoryTable;
+    private final CategoryEditorImpl categoryEditor;
 
     public MainGUI(CategoryStore categoryStore) {
-        this.nameFilter = new JTextField();
         frame = new JFrame();
+        categoryEditor = new CategoryEditorImpl(categoryStore);
+        this.nameFilter = new JTextField();
         addButton = new JButton("Add");
         deleteButton = new JButton("Delete");
         clearAmountButton = new JButton("Clear");
-        categoryTable = new CategoryTableImp();
-        tableEditor = new CategoryEditorImp(categoryStore, categoryTable);
     }
 
     public void layout(){
@@ -38,7 +36,7 @@ public class MainGUI {
 
         JPanel mainPanel = new JPanel(new BorderLayout());
         mainPanel.add(BorderLayout.NORTH, northPanel);
-        mainPanel.add(BorderLayout.CENTER, categoryTable);
+        mainPanel.add(BorderLayout.CENTER, categoryEditor.getPane());
         mainPanel.add(BorderLayout.SOUTH, southPanel);
         mainPanel.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
 
@@ -51,16 +49,14 @@ public class MainGUI {
     }
 
     public void addListeners() {
-        addButton.addActionListener(new UserAddsCategoryListener(tableEditor, nameFilter));
-        deleteButton.addActionListener(new UserDeletesCategoryListener(tableEditor, nameFilter, frame));
-        clearAmountButton.addActionListener(new UserClearsGoalListener(tableEditor, nameFilter));
-        nameFilter.getDocument().addDocumentListener(new UserFiltersCategoriesListener(tableEditor, nameFilter));
-        categoryTable.addCategoryRenameListener(new UserRenamesSelectionListener(tableEditor, nameFilter));
-        categoryTable.addGoalEditListener(new UserEditsGoalAmountListener(tableEditor, nameFilter));
-        categoryTable.addExcludesEditListener(new UserEditsExcludesListener(tableEditor, nameFilter));
+        categoryEditor.addCategoryEditingListeners(nameFilter);
+        addButton.addActionListener(new UserAddsCategoryListener(categoryEditor, nameFilter));
+        deleteButton.addActionListener(new UserDeletesCategoryListener(categoryEditor, nameFilter, frame));
+        clearAmountButton.addActionListener(new UserClearsGoalListener(categoryEditor, nameFilter));
+        nameFilter.getDocument().addDocumentListener(new UserFiltersCategoriesListener(categoryEditor, nameFilter));
     }
     public void launch(){
-        tableEditor.refreshAndClearSelection("");
+        categoryEditor.refreshAndClearSelection("");
         frame.setVisible(true);
     }
 }

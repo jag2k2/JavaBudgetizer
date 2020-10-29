@@ -1,5 +1,7 @@
 package flb.application.category.listeners;
 
+import flb.tables.category.CategoryExcludeEditor;
+
 import javax.swing.*;
 import javax.swing.event.*;
 

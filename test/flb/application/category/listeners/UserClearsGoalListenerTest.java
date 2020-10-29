@@ -18,10 +18,16 @@ class UserClearsGoalListenerTest {
 
     @BeforeEach
     void setUp() {
+        this.database = new TestDatabase();
+        database.connect();
+        this.categoryStore = new CategoryStoreImpl(database);
+        CategoryEditorImpl categoryEditor = new CategoryEditorImpl(categoryStore);
+        categoryEditor.refreshAndKeepSelection("");
+        this.tableAutomator = categoryEditor.getTableAutomator();
+
         this.nameFilter = new JTextField();
         this.testButton = new JButton();
-        CategoryTableImp categoryTableImp = new CategoryTableImp();
-        this.tableAutomator = categoryTableImp;
+        testButton.addActionListener(new UserClearsGoalListener(categoryEditor, nameFilter));
 
         this.expected = new ArrayList<>();
         expected.add(new Category("Name1", 100, false));
@@ -29,14 +35,6 @@ class UserClearsGoalListenerTest {
         expected.add(new Category("Name3", 300, false));
         expected.add(new Category("Test1::sub1", Float.NaN, false));
         expected.add(new Category("Test1::sub2", 500, true));
-        ((CategoryTable) categoryTableImp).displayAndClearSelection(expected);
-
-        this.database = new TestDatabase();
-        database.connect();
-        this.categoryStore = new CategoryStoreImpl(database);
-
-        CategoryClearer categoryClearer = new CategoryEditorImp(categoryStore, categoryTableImp);
-        testButton.addActionListener(new UserClearsGoalListener(categoryClearer, nameFilter));
     }
 
     @AfterEach
