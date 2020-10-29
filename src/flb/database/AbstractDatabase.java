@@ -2,7 +2,7 @@ package flb.database;
 
 import java.sql.*;
 
-public abstract class AbstractDatabase implements StoreEditor {
+public abstract class AbstractDatabase implements DataStore {
 
     private Connection connection;
     private String url = "jdbc:mysql://localhost/$name";

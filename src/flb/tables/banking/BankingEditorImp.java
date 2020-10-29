@@ -1,16 +1,16 @@
 package flb.tables.banking;
 
-import flb.database.TransactionStoreEditorImp;
+import flb.database.TransactionStoreImp;
 import flb.tuples.BankingTransaction;
 import flb.util.WhichMonth;
 
 import java.util.ArrayList;
 
-public class BankingTableEditorImp {
-    private final TransactionStoreEditorImp transactionStoreEditor;
+public class BankingEditorImp {
+    private final TransactionStoreImp transactionStoreEditor;
     private final BankingTableImp bankingTable;
 
-    public BankingTableEditorImp(TransactionStoreEditorImp transactionStoreEditor, BankingTableImp bankingTable){
+    public BankingEditorImp(TransactionStoreImp transactionStoreEditor, BankingTableImp bankingTable){
         this.transactionStoreEditor = transactionStoreEditor;
         this.bankingTable = bankingTable;
     }

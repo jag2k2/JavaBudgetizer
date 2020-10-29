@@ -5,14 +5,9 @@ import flb.database.*;
 import javax.swing.*;
 import javax.swing.border.*;
 
-import flb.tables.banking.BankingTableEditorImp;
-import flb.tables.banking.BankingTableImp;
-import flb.tables.banking.BankingTableModelImp;
-import flb.tables.credit.CreditTableEditorImp;
-import flb.tables.credit.CreditTableImp;
-import flb.tables.credit.CreditTableModelImp;
-import flb.tables.goal.GoalTableImp;
-import flb.tables.goal.GoalTableModelImp;
+import flb.tables.banking.*;
+import flb.tables.credit.*;
+import flb.tables.goal.*;
 import flb.util.WhichMonth;
 import org.jdesktop.swingx.*;
 import java.awt.*;
@@ -33,7 +28,7 @@ public class MainGUI {
     private final GoalTableImp goalTable;
     private final BankingTableImp bankingTable;
     private final CreditTableImp creditTable;
-    private final BankingTableEditorImp bankingTableEditor;
+    private final BankingEditorImp bankingTableEditor;
     private final CreditTableEditorImp creditTableEditor;
     private final JPopupMenu categoryMenu;
 
@@ -44,7 +39,7 @@ public class MainGUI {
         CreditTableModelImp creditModel = new CreditTableModelImp();
         GoalTableModelImp goalModel = new GoalTableModelImp();
 
-        TransactionStoreEditorImp transactionStoreEditor = new TransactionStoreEditorImp(database);
+        TransactionStoreImp transactionStoreEditor = new TransactionStoreImp(database);
 
         this.tableForBanking = new JTable(bankingModel);
         this.tableForCredit = new JTable(creditModel);
@@ -54,7 +49,7 @@ public class MainGUI {
         this.bankingTable = new BankingTableImp(tableForBanking, bankingModel);
         this.creditTable = new CreditTableImp(tableForCredit, creditModel);
 
-        this.bankingTableEditor = new BankingTableEditorImp(transactionStoreEditor, bankingTable);
+        this.bankingTableEditor = new BankingEditorImp(transactionStoreEditor, bankingTable);
         this.creditTableEditor = new CreditTableEditorImp(transactionStoreEditor, creditTable);
 
         this.prev = new JButton("Prev");

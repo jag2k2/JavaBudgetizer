@@ -1,39 +1,36 @@
 package flb.application.category.listeners;
 
-import flb.tables.category.CategoryTable;
-import flb.tables.category.CategoryTableEditorImp;
-import flb.tables.category.CategoryTableImp;
-import flb.tables.category.CategoryTableModelImp;
+import static org.junit.jupiter.api.Assertions.*;
+import flb.tables.category.*;
 import flb.tuples.*;
 import flb.database.*;
 import org.junit.jupiter.api.*;
 import javax.swing.*;
 import java.util.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 class UserFiltersCategoriesListenerTest {
-    private TestDatabase database;
-    private ArrayList<Category> expectedStored;
     private JTextField nameFilter;
-    private CategoryTableModelImp tableModel;
+    private ArrayList<Category> expected;
+    private CategoryTable categoryTable;
+    private TestDatabase database;
 
     @BeforeEach
     void setUp() {
         this.nameFilter = new JTextField();
+
+        this.expected = new ArrayList<>();
+        expected.add(new Category("Name1", 100, false));
+        expected.add(new Category("Name2", 200, true));
+        expected.add(new Category("Name3", 300, false));
+        expected.add(new Category("Test1", Float.NaN, false));
+        this.categoryTable = new CategoryTableImp();
+
         this.database = new TestDatabase();
         database.connect();
-        CategoryStoreEditor categoryStoreEditor = new CategoryStoreEditorImp(database);
-        tableModel = new CategoryTableModelImp();
-        JTable table = new JTable(tableModel);
-        CategoryTable categoryTable = new CategoryTableImp(table, tableModel);
-        ListChangeRefresher listChangeRefresher = new CategoryTableEditorImp(categoryStoreEditor, categoryTable);
-        nameFilter.getDocument().addDocumentListener(new UserFiltersCategoriesListener(listChangeRefresher, nameFilter));
+        CategoryStore categoryStore = new CategoryStoreImpl(database);
 
-        this.expectedStored = new ArrayList<>();
-        expectedStored.add(new Category("Name1", 100, false));
-        expectedStored.add(new Category("Name2", 200, true));
-        expectedStored.add(new Category("Name3", 300, false));
-        expectedStored.add(new Category("Test1", Float.NaN, false));
+        ListChangeRefresher listChangeRefresher = new CategoryEditorImp(categoryStore, categoryTable);
+        nameFilter.getDocument().addDocumentListener(new UserFiltersCategoriesListener(listChangeRefresher, nameFilter));
     }
 
     @AfterEach
@@ -44,15 +41,15 @@ class UserFiltersCategoriesListenerTest {
     @Test
     void insertUpdate() {
         nameFilter.setText("N");
-        expectedStored.remove(3);
-        assertEquals(expectedStored, tableModel.getContents());
+        expected.remove(3);
+        assertEquals(expected, categoryTable.getContents());
     }
 
     @Test
     void removeUpdate() {
         nameFilter.setText("Name1");
         nameFilter.setText("Name");
-        expectedStored.remove(3);
-        assertEquals(expectedStored, tableModel.getContents());
+        expected.remove(3);
+        assertEquals(expected, categoryTable.getContents());
     }
 }

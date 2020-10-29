@@ -11,8 +11,8 @@ import java.util.GregorianCalendar;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class BankingTableEditorImpTest {
-    private BankingTableEditorImp bankingEditor;
+class BankingEditorImpTest {
+    private BankingEditorImp bankingEditor;
     private BankingTableModelImp tableModel;
     private TestDatabase database;
     private ArrayList<BankingTransaction> expected;
@@ -21,11 +21,11 @@ class BankingTableEditorImpTest {
     void setUp() {
         this.database = new TestDatabase();
         database.connect();
-        TransactionStoreEditorImp storeEditor = new TransactionStoreEditorImp(database);
+        TransactionStoreImp storeEditor = new TransactionStoreImp(database);
         this.tableModel = new BankingTableModelImp();
         JTable table = new JTable(tableModel);
         BankingTableImp bankingTable = new BankingTableImp(table, tableModel);
-        this.bankingEditor = new BankingTableEditorImp(storeEditor, bankingTable);
+        this.bankingEditor = new BankingEditorImp(storeEditor, bankingTable);
 
         Calendar date1 = new GregorianCalendar(2020, Calendar.OCTOBER, 25);
         Calendar date2 = new GregorianCalendar(2020,Calendar.OCTOBER,26);

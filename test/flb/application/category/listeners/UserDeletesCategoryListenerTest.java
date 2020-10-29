@@ -1,42 +1,39 @@
 package flb.application.category.listeners;
 
+import static org.junit.jupiter.api.Assertions.*;
 import flb.tables.category.*;
 import flb.tuples.*;
 import flb.database.*;
 import org.junit.jupiter.api.*;
 import javax.swing.*;
 import java.util.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 class UserDeletesCategoryListenerTest {
-    private TestDatabase database;
-    private CategoryStoreEditor categoryStoreEditor;
     private JTextField nameFilter;
-    private ArrayList<Category> expectedStored;
-    private JTable table;
     private JButton testButton;
+    private ArrayList<Category> expected;
+    private TestDatabase database;
+    private CategoryStore categoryStore;
     private CategoryTable categoryTable;
     private CategoryDeleter categoryDeleter;
 
     @BeforeEach
     void setUp() {
-        this.expectedStored = new ArrayList<>();
-        expectedStored.add(new Category("Name1", 100, false));
-        expectedStored.add(new Category("Name2", 200, true));
-        expectedStored.add(new Category("Name3", 300, false));
-        expectedStored.add(new Category("Test1::sub1", Float.NaN, false));
-        expectedStored.add(new Category("Test1::sub2", 500, true));
-
         this.nameFilter = new JTextField();
+        this.testButton = new JButton();
+
+        this.expected = new ArrayList<>();
+        expected.add(new Category("Name1", 100, false));
+        expected.add(new Category("Name2", 200, true));
+        expected.add(new Category("Name3", 300, false));
+        expected.add(new Category("Test1::sub1", Float.NaN, false));
+        expected.add(new Category("Test1::sub2", 500, true));
+
         this.database = new TestDatabase();
         database.connect();
-        this.categoryStoreEditor = new CategoryStoreEditorImp(database);
-        CategoryTableModelImp tableModel = new CategoryTableModelImp();
-        tableModel.updateCategories(expectedStored);
-        this.table = new JTable(tableModel);
-        categoryTable = new CategoryTableImp(table, tableModel);
-
-        this.testButton = new JButton();
+        this.categoryStore = new CategoryStoreImpl(database);
+        categoryTable = new CategoryTableImp();
+        categoryTable.displayAndClearSelection(expected);
     }
 
     @AfterEach
@@ -46,41 +43,41 @@ class UserDeletesCategoryListenerTest {
 
     @Test
     void userConfirmsDelete() {
-        categoryDeleter = new TableEditorNoDialog(categoryStoreEditor, categoryTable, true);
+        categoryDeleter = new CategoryEditorNoDialog(categoryStore, categoryTable, true);
         testButton.addActionListener(new UserDeletesCategoryListener(categoryDeleter, nameFilter, new JFrame()));
 
         nameFilter.setText("Name");
-        table.getSelectionModel().setSelectionInterval(1,1);
+        categoryTable.setSelectedRow(1);
         testButton.doClick();
 
-        expectedStored.remove(1);
-        assertEquals(expectedStored, categoryStoreEditor.getCategories(""));
+        expected.remove(1);
+        assertEquals(expected, categoryStore.getCategories(""));
         assertEquals("Name", nameFilter.getText());
     }
 
     @Test
     void userRefusesDelete() {
-        categoryDeleter = new TableEditorNoDialog(categoryStoreEditor, categoryTable, false);
+        categoryDeleter = new CategoryEditorNoDialog(categoryStore, categoryTable, false);
         testButton.addActionListener(new UserDeletesCategoryListener(categoryDeleter, nameFilter, new JFrame()));
 
         nameFilter.setText("Name");
-        table.getSelectionModel().setSelectionInterval(1,1);
+        categoryTable.setSelectedRow(1);
         testButton.doClick();
 
-        assertEquals(expectedStored, categoryStoreEditor.getCategories(""));
+        assertEquals(expected, categoryStore.getCategories(""));
         assertEquals("Name", nameFilter.getText());
     }
 
     @Test
     void userDeletesWithNoSelected() {
-        categoryDeleter = new CategoryTableEditorImp(categoryStoreEditor, categoryTable);
+        categoryDeleter = new CategoryEditorImp(categoryStore, categoryTable);
         testButton.addActionListener(new UserDeletesCategoryListener(categoryDeleter, nameFilter, new JFrame()));
 
         nameFilter.setText("Name");
-        table.getSelectionModel().setSelectionInterval(-1,-1);
+        categoryTable.setSelectedRow(-1);
         testButton.doClick();
 
-        assertEquals(expectedStored, categoryStoreEditor.getCategories(""));
+        assertEquals(expected, categoryStore.getCategories(""));
         assertEquals("Name", nameFilter.getText());
     }
 }

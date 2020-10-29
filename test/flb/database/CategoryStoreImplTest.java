@@ -5,9 +5,9 @@ import flb.tuples.Category;
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-class CategoryStoreEditorImpTest {
-    private CategoryStoreEditor categoryStoreEditor;
+class CategoryStoreImplTest {
     private TestDatabase dataBase;
+    private CategoryStore categoryStore;
     ArrayList<Category> expected;
     ArrayList<Category> actual;
 
@@ -18,7 +18,7 @@ class CategoryStoreEditorImpTest {
 
         dataBase = new TestDatabase();
         dataBase.connect();
-        categoryStoreEditor = new CategoryStoreEditorImp(dataBase);
+        categoryStore = new CategoryStoreImpl(dataBase);
     }
 
     @AfterEach
@@ -31,9 +31,9 @@ class CategoryStoreEditorImpTest {
         Category categoryToAdd = new Category("Name4", Float.NaN, false);
         expected.add(categoryToAdd);
 
-        categoryStoreEditor.addCategory("Name4");
+        categoryStore.addCategory("Name4");
 
-        actual = categoryStoreEditor.getCategories("Name4");
+        actual = categoryStore.getCategories("Name4");
         assertEquals(expected, actual);
     }
 
@@ -42,24 +42,24 @@ class CategoryStoreEditorImpTest {
         expected.add(new Category("Name2", 200, true));
         expected.add(new Category("Name3", 300, false));
 
-        categoryStoreEditor.deleteCategory("Name1");
+        categoryStore.deleteCategory("Name1");
 
-        actual = categoryStoreEditor.getCategories("Name");
+        actual = categoryStore.getCategories("Name");
         assertEquals(expected, actual);
     }
 
     @Test
     void categoryExist() {
-        Boolean found = categoryStoreEditor.categoryExist("Name1");
+        Boolean found = categoryStore.categoryExist("Name1");
         assertTrue(found);
 
-        found = categoryStoreEditor.categoryExist("NameNeverExist");
+        found = categoryStore.categoryExist("NameNeverExist");
         assertFalse(found);
     }
 
     @Test
     void getCategoriesNoMatch() {
-        actual = categoryStoreEditor.getCategories("NameNotExist");
+        actual = categoryStore.getCategories("NameNotExist");
         assertEquals(expected, actual);
     }
 
@@ -67,7 +67,7 @@ class CategoryStoreEditorImpTest {
     void getCategoriesExactMatch() {
         expected.add(new Category("Name1", 100, false));
 
-        ArrayList<Category> actual = categoryStoreEditor.getCategories("Name1");
+        ArrayList<Category> actual = categoryStore.getCategories("Name1");
 
         assertEquals(expected, actual);
     }
@@ -78,7 +78,7 @@ class CategoryStoreEditorImpTest {
         expected.add(new Category("Name2", 200, true));
         expected.add(new Category("Name3", 300, false));
 
-        actual = categoryStoreEditor.getCategories("Name");
+        actual = categoryStore.getCategories("Name");
 
         assertEquals(expected, actual);
     }
@@ -91,7 +91,7 @@ class CategoryStoreEditorImpTest {
         expected.add(new Category("Test1::sub1", Float.NaN, false));
         expected.add(new Category("Test1::sub2", 500, true));
 
-        actual = categoryStoreEditor.getCategories("");
+        actual = categoryStore.getCategories("");
 
         assertEquals(expected, actual);
     }
@@ -100,9 +100,9 @@ class CategoryStoreEditorImpTest {
     void updateCategoryAmount() {
         expected.add(new Category("Name2", 100, true));
 
-        categoryStoreEditor.updateAmount("Name2", 100);
+        categoryStore.updateAmount("Name2", 100);
 
-        actual = categoryStoreEditor.getCategories("Name2");
+        actual = categoryStore.getCategories("Name2");
         assertEquals(expected, actual);
     }
 
@@ -110,9 +110,9 @@ class CategoryStoreEditorImpTest {
     void clearCategoryAmount() {
         expected.add(new Category("Name2", Float.NaN, true));
 
-        categoryStoreEditor.updateAmount("Name2", Float.NaN);
+        categoryStore.updateAmount("Name2", Float.NaN);
 
-        actual = categoryStoreEditor.getCategories("Name2");
+        actual = categoryStore.getCategories("Name2");
         assertEquals(expected, actual);
     }
 
@@ -120,9 +120,9 @@ class CategoryStoreEditorImpTest {
     void toggleExclusion() {
         expected.add(new Category("Name2", 200, false));
 
-        categoryStoreEditor.toggleExclusion("Name2");
+        categoryStore.toggleExclusion("Name2");
 
-        actual = categoryStoreEditor.getCategories("Name2");
+        actual = categoryStore.getCategories("Name2");
         assertEquals(expected, actual);
     }
 
@@ -130,9 +130,9 @@ class CategoryStoreEditorImpTest {
     void renameCategory() {
         expected.add(new Category("Name5", 200, true));
 
-        categoryStoreEditor.renameCategory("Name2", "Name5");
+        categoryStore.renameCategory("Name2", "Name5");
 
-        actual = categoryStoreEditor.getCategories("Name5");
+        actual = categoryStore.getCategories("Name5");
         assertEquals(expected, actual);
     }
 }

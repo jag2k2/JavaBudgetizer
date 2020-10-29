@@ -1,96 +1,89 @@
 package flb.tables.category;
 
+import static org.junit.jupiter.api.Assertions.*;
 import flb.tuples.Category;
 import flb.util.*;
 import org.junit.jupiter.api.*;
-import javax.swing.*;
 import java.util.*;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class CategoryTableImpTest {
     private CategoryTable categoryTable;
-    private JTable table;
-    private CategoryTableModelImp tableModel;
-    private Maybe<Category> expected;
-    private Maybe<Category> actual;
-    ArrayList<Category> expectedDisplay;
+    private ArrayList<Category> expectedDisplay;
 
     @BeforeEach
     void setUp() {
-        ArrayList<Category> modelContents = new ArrayList<>();
-        modelContents.add(new Category("Name1", 100, false));
-        modelContents.add(new Category("Name2", 200, true));
-        modelContents.add(new Category("Name3", 300, false));
-        modelContents.add(new Category("Test1", Float.NaN, false));
+        ArrayList<Category> tableContents = new ArrayList<>();
+        tableContents.add(new Category("Name1", 100, false));
+        tableContents.add(new Category("Name2", 200, true));
+        tableContents.add(new Category("Name3", 300, false));
+        tableContents.add(new Category("Test1", Float.NaN, false));
 
         expectedDisplay = new ArrayList<>();
-        tableModel = new CategoryTableModelImp();
-        tableModel.updateCategories(modelContents);
-        table = new JTable(tableModel);
-        categoryTable = new CategoryTableImp(table, tableModel);
+        categoryTable = new CategoryTableImp();
+        categoryTable.displayAndClearSelection(tableContents);
     }
 
     @Test
     void getSelectedCategory() {
-        table.getSelectionModel().setSelectionInterval(-1,-1);
-        expected = new Maybe<>();
-        actual = categoryTable.getSelectedCategory();
-        assertEquals(expected, actual);
+        categoryTable.setSelectedRow(-1);
+        Maybe<Category> expected = new Maybe<>();
+        assertEquals(expected, categoryTable.getSelectedCategory());
 
-        table.getSelectionModel().setSelectionInterval(0,0);
+        categoryTable.setSelectedRow(0);
         expected = new Maybe<>(new Category("Name1", 100, false));
-        actual = categoryTable.getSelectedCategory();
-        assertEquals(expected, actual);
+        assertEquals(expected, categoryTable.getSelectedCategory());
 
-        table.getSelectionModel().setSelectionInterval(1,1);
+        categoryTable.setSelectedRow(1);
         expected = new Maybe<>(new Category("Name2", 200, true));
-        actual = categoryTable.getSelectedCategory();
-        assertEquals(expected, actual);
+        assertEquals(expected, categoryTable.getSelectedCategory());
 
-        table.getSelectionModel().setSelectionInterval(3,3);
+        categoryTable.setSelectedRow(3);
         expected = new Maybe<>(new Category("Test1", Float.NaN, false));
-        actual = categoryTable.getSelectedCategory();
-        assertEquals(expected, actual);
+        assertEquals(expected, categoryTable.getSelectedCategory());
 
-        table.getSelectionModel().setSelectionInterval(4,4);
+        categoryTable.setSelectedRow(4);
         expected = new Maybe<>();
-        actual = categoryTable.getSelectedCategory();
-        assertEquals(expected, actual);
+        assertEquals(expected, categoryTable.getSelectedCategory());
     }
 
     @Test
     void refresh() {
         expectedDisplay = new ArrayList<>();
+
         categoryTable.displayAndClearSelection(expectedDisplay);
-        assertEquals(expectedDisplay, tableModel.getContents());
-        assertEquals(-1, table.getSelectedRow());
+
+        assertEquals(expectedDisplay, categoryTable.getContents());
+        assertEquals(-1, categoryTable.getSelectedRow());
+
 
         expectedDisplay.add(new Category("ID1", -100, true));
         expectedDisplay.add(new Category("ID2", -200, false));
-        table.getSelectionModel().setSelectionInterval(1,1);
-        categoryTable.displayAndClearSelection(expectedDisplay);
-        assertEquals(expectedDisplay, tableModel.getContents());
-        assertEquals(-1, table.getSelectedRow());
+        categoryTable.setSelectedRow(1);
 
-        expectedDisplay = new ArrayList<>();
         categoryTable.displayAndClearSelection(expectedDisplay);
-        assertEquals(expectedDisplay, tableModel.getContents());
-        assertEquals(-1, table.getSelectedRow());
+
+        assertEquals(expectedDisplay, categoryTable.getContents());
+        assertEquals(-1, categoryTable.getSelectedRow());
     }
 
     @Test
     void refreshAndKeepSelection() {
         expectedDisplay = new ArrayList<>();
+        categoryTable.setSelectedRow(-1);
+
         categoryTable.displayAndKeepSelection(expectedDisplay);
-        assertEquals(expectedDisplay, tableModel.getContents());
-        assertEquals(-1, table.getSelectedRow());
+
+        assertEquals(expectedDisplay, categoryTable.getContents());
+        assertEquals(-1, categoryTable.getSelectedRow());
+
 
         expectedDisplay.add(new Category("ID1", -100, true));
         expectedDisplay.add(new Category("ID2", -200, false));
-        table.getSelectionModel().setSelectionInterval(1,1);
+        categoryTable.setSelectedRow(1);
+
         categoryTable.displayAndKeepSelection(expectedDisplay);
-        assertEquals(expectedDisplay, tableModel.getContents());
-        assertEquals(1, table.getSelectedRow());
+
+        assertEquals(expectedDisplay, categoryTable.getContents());
+        assertEquals(1, categoryTable.getSelectedRow());
     }
 }

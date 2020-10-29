@@ -3,28 +3,28 @@ package flb.tables.category;
 import javax.swing.*;
 import java.util.*;
 
-import flb.database.CategoryStoreEditor;
+import flb.database.CategoryStore;
 import flb.util.*;
 import flb.tuples.*;
 import flb.application.category.listeners.*;
 
-public class CategoryTableEditorImp implements CategoryAdder, CategoryClearer, CategoryDeleter, CategoryExcludeEditor,
+public class CategoryEditorImp implements CategoryAdder, CategoryClearer, CategoryDeleter, CategoryExcludeEditor,
                                             CategoryAmountEditor, CategoryNameEditor {
-    private final CategoryStoreEditor categoryStoreEditor;
+    private final CategoryStore categoryStore;
     private final CategoryTable categoryTable;
 
-    public CategoryTableEditorImp(CategoryStoreEditor categoryStoreEditor, CategoryTable categoryTable){
-        this.categoryStoreEditor = categoryStoreEditor;
+    public CategoryEditorImp(CategoryStore categoryStore, CategoryTable categoryTable){
+        this.categoryStore = categoryStore;
         this.categoryTable = categoryTable;
     }
 
     public boolean categoryNameAddable(String categoryToAdd) {
-        return (!categoryToAdd.equals("") && !categoryStoreEditor.categoryExist(categoryToAdd));
+        return (!categoryToAdd.equals("") && !categoryStore.categoryExist(categoryToAdd));
     }
 
     public void userAddCategory(String categoryToAdd) {
         if (categoryNameAddable(categoryToAdd)) {
-            categoryStoreEditor.addCategory(categoryToAdd);
+            categoryStore.addCategory(categoryToAdd);
         }
     }
 
@@ -33,7 +33,7 @@ public class CategoryTableEditorImp implements CategoryAdder, CategoryClearer, C
             String categoryNameToDelete = selectedCategory.getName();
             int selection = getSelectionFromDialog(categoryNameToDelete, frame);
             if (selection == JOptionPane.YES_OPTION) {
-                categoryStoreEditor.deleteCategory(categoryNameToDelete);
+                categoryStore.deleteCategory(categoryNameToDelete);
             }
         }
     }
@@ -47,14 +47,14 @@ public class CategoryTableEditorImp implements CategoryAdder, CategoryClearer, C
     public void userClearSelectedGoalAmount() {
         for (Category selectedCategory : categoryTable.getSelectedCategory()) {
             String categoryToClear = selectedCategory.getName();
-            categoryStoreEditor.updateAmount(categoryToClear, Float.NaN);
+            categoryStore.updateAmount(categoryToClear, Float.NaN);
         }
     }
 
     public void userEditsSelectedExcludes() {
         for (Category selectedCategory : categoryTable.getSelectedCategory()) {
             String selectedName = selectedCategory.getName();
-            categoryStoreEditor.toggleExclusion(selectedName);
+            categoryStore.toggleExclusion(selectedName);
         }
     }
 
@@ -62,7 +62,7 @@ public class CategoryTableEditorImp implements CategoryAdder, CategoryClearer, C
         for (Category selectedCategory : categoryTable.getSelectedCategory()) {
             String categoryToUpdate = selectedCategory.getName();
             float newAmount = selectedCategory.getDefaultGoal();
-            categoryStoreEditor.updateAmount(categoryToUpdate, newAmount);
+            categoryStore.updateAmount(categoryToUpdate, newAmount);
         }
     }
 
@@ -73,17 +73,17 @@ public class CategoryTableEditorImp implements CategoryAdder, CategoryClearer, C
     public void userRenamedCategory(String oldName) {
         for (Category selectedCategory : categoryTable.getSelectedCategory()) {
             String newName = selectedCategory.getName();
-            categoryStoreEditor.renameCategory(oldName, newName);
+            categoryStore.renameCategory(oldName, newName);
         }
     }
 
     public void refreshAndClearSelection(String nameFilter) {
-        ArrayList<Category> categories = categoryStoreEditor.getCategories(nameFilter);
+        ArrayList<Category> categories = categoryStore.getCategories(nameFilter);
         categoryTable.displayAndClearSelection(categories);
     }
 
     public void refreshAndKeepSelection(String nameFilter) {
-        ArrayList<Category> categories = categoryStoreEditor.getCategories(nameFilter);
+        ArrayList<Category> categories = categoryStore.getCategories(nameFilter);
         categoryTable.displayAndKeepSelection(categories);
     }
 }

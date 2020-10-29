@@ -3,11 +3,11 @@ package flb.tables.category;
 import flb.database.*;
 import javax.swing.*;
 
-public class TableEditorNoDialog extends CategoryTableEditorImp {
+public class CategoryEditorNoDialog extends CategoryEditorImp {
     private final boolean alwaysConfirm;
 
-    public TableEditorNoDialog(CategoryStoreEditor categoryStoreEditor, CategoryTable categoryTable, boolean alwaysConfirm){
-        super(categoryStoreEditor, categoryTable);
+    public CategoryEditorNoDialog(CategoryStore categoryStore, CategoryTable categoryTable, boolean alwaysConfirm){
+        super(categoryStore, categoryTable);
         this.alwaysConfirm = alwaysConfirm;
     }
 

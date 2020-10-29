@@ -4,7 +4,7 @@ import flb.tuples.Category;
 
 import java.util.ArrayList;
 
-public interface CategoryStoreEditor {
+public interface CategoryStore {
     void addCategory(String name);
     void deleteCategory(String name);
     void updateAmount(String name, float amount);

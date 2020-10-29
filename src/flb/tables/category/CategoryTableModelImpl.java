@@ -5,12 +5,12 @@ import flb.util.*;
 import javax.swing.table.*;
 import java.util.*;
 
-public class CategoryTableModelImp extends AbstractTableModel implements CategoryTableModel {
+public class CategoryTableModelImpl extends AbstractTableModel implements CategoryTableModel {
 
     private final String[] columnNames = {"Name", "Default Goal", "Exclude"};
     private ArrayList<Category> tableContents;
 
-    public CategoryTableModelImp() {
+    public CategoryTableModelImpl() {
         this.tableContents = new ArrayList<>();
     }
 

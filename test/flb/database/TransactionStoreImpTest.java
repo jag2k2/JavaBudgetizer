@@ -4,12 +4,11 @@ import flb.util.WhichMonth;
 import flb.tuples.*;
 import org.junit.jupiter.api.*;
 
-import java.lang.reflect.Array;
 import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-class TransactionStoreEditorImpTest {
-    private TransactionStoreEditorImp transactionStoreEditor;
+class TransactionStoreImpTest {
+    private TransactionStoreImp transactionStoreEditor;
     private TestDatabase dataBase;
     private Calendar date1;
     private Calendar date2;
@@ -19,7 +18,7 @@ class TransactionStoreEditorImpTest {
     void setUp(){
         dataBase = new TestDatabase();
         dataBase.connect();
-        transactionStoreEditor = new TransactionStoreEditorImp(dataBase);
+        transactionStoreEditor = new TransactionStoreImp(dataBase);
 
         date1 = new GregorianCalendar(2020, Calendar.OCTOBER, 25);
         date2 = new GregorianCalendar(2020,Calendar.OCTOBER,26);

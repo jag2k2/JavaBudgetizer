@@ -8,11 +8,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-public class TransactionStoreEditorImp {
-    private final StoreEditor storeEditor;
+public class TransactionStoreImp {
+    private final DataStore dataStore;
 
-    public TransactionStoreEditorImp (StoreEditor storeEditor){
-        this.storeEditor = storeEditor;
+    public TransactionStoreImp(DataStore dataStore){
+        this.dataStore = dataStore;
     }
 
     public ArrayList<BankingTransaction> getBankingTransactions (WhichMonth searchMonth) {
@@ -34,7 +34,7 @@ public class TransactionStoreEditorImp {
         query = query.replace("$yrmo", dateString);
         query = query.replace("$type", type);
 
-        ResultSet results = storeEditor.executeQuery(query);
+        ResultSet results = dataStore.executeQuery(query);
 
         return castResultsToBankingTransactions(results);
     }
@@ -80,7 +80,7 @@ public class TransactionStoreEditorImp {
         query = query.replace("$yrmo", dateString);
         query = query.replace("$type", type);
 
-        ResultSet results = storeEditor.executeQuery(query);
+        ResultSet results = dataStore.executeQuery(query);
 
         return castResultsToCreditTransactions(results);
     }

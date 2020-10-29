@@ -4,26 +4,26 @@ import flb.tuples.*;
 import java.util.*;
 import java.sql.*;
 
-public class CategoryStoreEditorImp implements CategoryStoreEditor {
+public class CategoryStoreImpl implements CategoryStore {
 
-    private final StoreEditor storeEditor;
+    private final DataStore dataStore;
 
-    public CategoryStoreEditorImp(StoreEditor storeEditor) {
-        this.storeEditor = storeEditor;
+    public CategoryStoreImpl(DataStore dataStore) {
+        this.dataStore = dataStore;
     }
 
     public void addCategory(String name) {
         String update = "INSERT INTO categories (name, default_goal_amt, exclude) VALUES ('$name', NULL, FALSE)";
         update = update.replace("$name", name);
 
-        storeEditor.executeUpdate(update);
+        dataStore.executeUpdate(update);
     }
 
     public void deleteCategory(String name) {
         String update = "DELETE FROM categories WHERE name = '$name'";
         update = update.replace("$name", name);
 
-        storeEditor.executeUpdate(update);
+        dataStore.executeUpdate(update);
     }
 
     public void updateAmount(String name, float amount) {
@@ -35,20 +35,20 @@ public class CategoryStoreEditorImp implements CategoryStoreEditor {
         update = update.replace("$name", name);
         update = update.replace("$def_goal", amountString);
 
-        storeEditor.executeUpdate(update);
+        dataStore.executeUpdate(update);
     }
 
     public void toggleExclusion(String name) {
         String update = "UPDATE categories SET exclude = !exclude WHERE name = '$name'";
         update = update.replace("$name", name);
-        storeEditor.executeUpdate(update);
+        dataStore.executeUpdate(update);
     }
 
     public void renameCategory(String oldName, String newName) {
         String update = "UPDATE categories SET name = '$newName' WHERE name = '$oldName'";
         update = update.replace("$newName", newName);
         update = update.replace("$oldName", oldName);
-        storeEditor.executeUpdate(update);
+        dataStore.executeUpdate(update);
     }
 
     public ArrayList<Category> getCategories(String nameFilter) {
@@ -58,7 +58,7 @@ public class CategoryStoreEditorImp implements CategoryStoreEditor {
         else { condition = condition.replace("$name", nameFilter); }
         query = query.replace("$condition", condition);
 
-        ResultSet results = storeEditor.executeQuery(query);
+        ResultSet results = dataStore.executeQuery(query);
 
         return castResultsToCategories(results);
     }
@@ -67,7 +67,7 @@ public class CategoryStoreEditorImp implements CategoryStoreEditor {
         String query = "SELECT * FROM categories WHERE name = '$name'";
         query = query.replace("$name", name);
 
-        ResultSet results = storeEditor.executeQuery(query);
+        ResultSet results = dataStore.executeQuery(query);
         ArrayList<Category> categories = castResultsToCategories(results);
 
         return !categories.isEmpty();

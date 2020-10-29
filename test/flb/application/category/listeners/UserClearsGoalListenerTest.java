@@ -1,46 +1,40 @@
 package flb.application.category.listeners;
 
-import flb.database.CategoryStoreEditor;
-import flb.database.CategoryStoreEditorImp;
-import flb.tables.category.CategoryTable;
-import flb.tables.category.CategoryTableEditorImp;
-import flb.tables.category.CategoryTableImp;
-import flb.tables.category.CategoryTableModelImp;
+import static org.junit.jupiter.api.Assertions.*;
+import flb.database.*;
+import flb.tables.category.*;
 import flb.tuples.*;
-import flb.database.TestDatabase;
 import org.junit.jupiter.api.*;
 import javax.swing.*;
-import java.util.ArrayList;
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.*;
 
 class UserClearsGoalListenerTest {
-    private TestDatabase database;
-    private CategoryStoreEditor categoryStoreEditor;
     private JTextField nameFilter;
-    private ArrayList<Category> expectedStored;
-    private JTable table;
     private JButton testButton;
+    private ArrayList<Category> expected;
+    private CategoryTable categoryTable;
+    private TestDatabase database;
+    private CategoryStore categoryStore;
 
     @BeforeEach
     void setUp() {
-        this.expectedStored = new ArrayList<>();
-        expectedStored.add(new Category("Name1", 100, false));
-        expectedStored.add(new Category("Name2", 200, true));
-        expectedStored.add(new Category("Name3", 300, false));
-        expectedStored.add(new Category("Test1::sub1", Float.NaN, false));
-        expectedStored.add(new Category("Test1::sub2", 500, true));
-
         this.nameFilter = new JTextField();
+        this.testButton = new JButton();
+
+        this.expected = new ArrayList<>();
+        expected.add(new Category("Name1", 100, false));
+        expected.add(new Category("Name2", 200, true));
+        expected.add(new Category("Name3", 300, false));
+        expected.add(new Category("Test1::sub1", Float.NaN, false));
+        expected.add(new Category("Test1::sub2", 500, true));
+        this.categoryTable = new CategoryTableImp();
+        categoryTable.displayAndClearSelection(expected);
+
         this.database = new TestDatabase();
         database.connect();
-        this.categoryStoreEditor = new CategoryStoreEditorImp(database);
-        CategoryTableModelImp tableModel = new CategoryTableModelImp();
-        tableModel.updateCategories(expectedStored);
-        this.table = new JTable(tableModel);
-        CategoryTable categoryTable = new CategoryTableImp(table, tableModel);
-        CategoryClearer categoryClearer = new CategoryTableEditorImp(categoryStoreEditor, categoryTable);
+        this.categoryStore = new CategoryStoreImpl(database);
 
-        this.testButton = new JButton();
+        CategoryClearer categoryClearer = new CategoryEditorImp(categoryStore, categoryTable);
         testButton.addActionListener(new UserClearsGoalListener(categoryClearer, nameFilter));
     }
 
@@ -52,21 +46,21 @@ class UserClearsGoalListenerTest {
     @Test
     void clearSelected() {
         nameFilter.setText("Name");
-        table.getSelectionModel().setSelectionInterval(1,1);
+        categoryTable.setSelectedRow(1);
         testButton.doClick();
 
-        expectedStored.set(1, new Category("Name2", Float.NaN, true));
-        assertEquals(expectedStored, categoryStoreEditor.getCategories(""));
+        expected.set(1, new Category("Name2", Float.NaN, true));
+        assertEquals(expected, categoryStore.getCategories(""));
         assertEquals("Name", nameFilter.getText());
     }
 
     @Test
     void nothingSelected() {
         nameFilter.setText("Name");
-        table.getSelectionModel().setSelectionInterval(-1,-1);
+        categoryTable.setSelectedRow(-1);
         testButton.doClick();
 
-        assertEquals(expectedStored, categoryStoreEditor.getCategories(""));
+        assertEquals(expected, categoryStore.getCategories(""));
         assertEquals("Name", nameFilter.getText());
     }
 }

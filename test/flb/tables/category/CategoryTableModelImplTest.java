@@ -7,8 +7,8 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class CategoryTableModelImpTest {
-    private CategoryTableModelImp tableModel;
+class CategoryTableModelImplTest {
+    private CategoryTableModelImpl tableModel;
     private Maybe<Category> expected;
     private Maybe<Category> actual;
 
@@ -19,7 +19,7 @@ class CategoryTableModelImpTest {
         modelContents.add(new Category("Name2", 200, true));
         modelContents.add(new Category("Name3", 300, false));
         modelContents.add(new Category("Test1", Float.NaN, false));
-        tableModel = new CategoryTableModelImp();
+        tableModel = new CategoryTableModelImpl();
         tableModel.updateCategories(modelContents);
     }
 
@@ -61,12 +61,17 @@ class CategoryTableModelImpTest {
     @Test
     void setValues() {
         expected = new Maybe<>(new Category("TestRename", 100, false));
+
         tableModel.setValueAt("TestRename", 0, 0);
+
         actual = tableModel.getCategory(0);
         assertEquals(expected, actual);
 
+
         expected = new Maybe<>(new Category("Name2", 2000, true));
+
         tableModel.setValueAt(2000F, 1, 1);
+
         actual = tableModel.getCategory(1);
         assertEquals(expected, actual);
     }
