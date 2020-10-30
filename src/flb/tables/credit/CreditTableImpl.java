@@ -1,18 +1,24 @@
 package flb.tables.credit;
 
+import flb.tables.credit.interfaces.CreditTable;
+import flb.tables.credit.interfaces.CreditTableAutomator;
 import flb.tuples.CreditTransaction;
+
+import java.awt.event.MouseListener;
 import java.util.*;
 import javax.swing.*;
 
-public class CreditTableImp {
-    private final CreditTableModelImp tableModel;
+public class CreditTableImpl implements CreditTable, CreditTableAutomator {
+    private final CreditTableModelImpl tableModel;
     private final JTable table;
+    private final JScrollPane scrollPane;
 
-    public CreditTableImp(JTable table, CreditTableModelImp tableModel) {
-        this.table = table;
-        this.tableModel = tableModel;
+    public CreditTableImpl() {
+        this.tableModel = new CreditTableModelImpl();
+        this.table = new JTable(tableModel);
         table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         table.setFillsViewportHeight(true);
+        table.getTableHeader().setReorderingAllowed(false);
         table.getColumnModel().getColumn(0).setMinWidth(75);
         table.getColumnModel().getColumn(0).setMaxWidth(75);
         table.getColumnModel().getColumn(1).setMinWidth(65);
@@ -22,6 +28,19 @@ public class CreditTableImp {
         table.getColumnModel().getColumn(3).setMinWidth(120);
         table.getColumnModel().getColumn(4).setMinWidth(120);
         table.getColumnModel().getColumn(4).setMaxWidth(120);
+
+        this.scrollPane = new JScrollPane(table);
+        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+    }
+
+    @Override
+    public ArrayList<CreditTransaction> getTransactions() {
+        return tableModel.getContents();
+    }
+
+    public JScrollPane getPane() {
+        return scrollPane;
     }
 
     /*public Maybe<Category> getSelectedCategory() {
@@ -31,6 +50,11 @@ public class CreditTableImp {
 
     public void displayAndClearSelection(ArrayList<CreditTransaction> tableContents){
         tableModel.updateTransactions(tableContents);
+    }
+
+    @Override
+    public void addCategoryClickedListener(MouseListener mouseListener) {
+        table.addMouseListener(mouseListener);
     }
 
     /*public void displayAndKeepSelection(ArrayList<Category> tableContents){

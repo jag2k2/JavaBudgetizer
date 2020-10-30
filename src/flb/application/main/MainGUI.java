@@ -1,13 +1,12 @@
 package flb.application.main;
 
-import flb.application.main.listeners.*;
-import flb.database.*;
 import javax.swing.*;
 import javax.swing.border.*;
-
+import flb.database.interfaces.*;
 import flb.tables.banking.*;
 import flb.tables.credit.*;
 import flb.tables.goal.*;
+import flb.components.*;
 import flb.util.WhichMonth;
 import org.jdesktop.swingx.*;
 import java.awt.*;
@@ -15,40 +14,27 @@ import java.util.Calendar;
 
 public class MainGUI {
     private final JFrame frame;
-    private final AbstractDatabase database;
     private final JButton prev;
     private enum Months {January, February, March, April, May, June, July, August, September, October, November, December}
     private final JComboBox<Months> month;
     private final JFormattedTextField year;
     private final JTextField balance;
     private final JButton next;
-    private final JTable tableForBanking;
-    private final JTable tableForCredit;
     private final JTable tableForGoals;
     private final GoalTableImp goalTable;
-    private final CreditTableImp creditTable;
-    private final BankingEditorImpl bankingTableEditor;
-    private final CreditTableEditorImp creditTableEditor;
-    private final JPopupMenu categoryMenu;
+    private final BankingEditorImpl bankingEditor;
+    private final CreditEditorImpl creditEditor;
+    private final CategoryMenuImpl categoryMenuImpl;
 
-    public MainGUI(AbstractDatabase database) {
-        this.database = database;
+    public MainGUI(TransactionStore transactionStore, CategoryStore categoryStore) {
         frame = new JFrame();
-        BankingTableModelImp bankingModel = new BankingTableModelImp();
-        CreditTableModelImp creditModel = new CreditTableModelImp();
         GoalTableModelImp goalModel = new GoalTableModelImp();
 
-        TransactionStoreImp transactionStore = new TransactionStoreImp(database);
-
-        this.tableForBanking = new JTable(bankingModel);
-        this.tableForCredit = new JTable(creditModel);
         this.tableForGoals = new JTable(goalModel);
 
         this.goalTable = new GoalTableImp(tableForGoals, goalModel);
-        this.creditTable = new CreditTableImp(tableForCredit, creditModel);
-
-        this.bankingTableEditor = new BankingEditorImpl(transactionStore);
-        this.creditTableEditor = new CreditTableEditorImp(transactionStore, creditTable);
+        this.bankingEditor = new BankingEditorImpl(transactionStore);
+        this.creditEditor = new CreditEditorImpl(transactionStore);
 
         this.prev = new JButton("Prev");
         this.month = new JComboBox<>(Months.values());
@@ -56,7 +42,7 @@ public class MainGUI {
         this.next = new JButton("Next");
 
         this.balance = new JTextField();
-        this.categoryMenu = new JPopupMenu();
+        this.categoryMenuImpl = new CategoryMenuImpl(categoryStore);
     }
 
     public void layout(){
@@ -95,18 +81,10 @@ public class MainGUI {
         goalScroller.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         goalScroller.setBorder(new CompoundBorder(greyBorder, margin));
 
-        JScrollPane bankingScroller = new JScrollPane(tableForBanking);
-        bankingScroller.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        bankingScroller.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-
-        JScrollPane creditScroller = new JScrollPane(tableForCredit);
-        creditScroller.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        creditScroller.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-
         JTabbedPane tabbedPane = new JTabbedPane();
         tabbedPane.setTabPlacement(JTabbedPane.RIGHT);
-        tabbedPane.addTab(null, bankingScroller);
-        tabbedPane.addTab(null, creditScroller);
+        tabbedPane.addTab(null, bankingEditor.getPane());
+        tabbedPane.addTab(null, creditEditor.getPane());
         JXLabel bankingLabel = new JXLabel(" Banking ");
         bankingLabel.setTextRotation(Math.PI/2);
         tabbedPane.setTabComponentAt(0, bankingLabel);
@@ -144,14 +122,7 @@ public class MainGUI {
         menuBar.add(fileMenu);
         menuBar.add(budgetMenu);
 
-        JMenuItem item1 = new JMenuItem("Test1");
-        JMenu superCat = new JMenu("Test2");
-        superCat.add(new JMenuItem("sub1"));
-        superCat.add(new JMenuItem("sub2"));
-        categoryMenu.add(item1);
-        categoryMenu.add(superCat);
-
-        frame.add(categoryMenu);
+        frame.add(categoryMenuImpl.getPopup());
         frame.setTitle("Filthy Lucre Budgetizer");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setContentPane(mainPanel);
@@ -163,13 +134,12 @@ public class MainGUI {
     }
 
     public void addListeners() {
-        tableForBanking.setFocusable(false);
-        tableForBanking.addMouseListener(new UserClicksTableListener(categoryMenu));
+        bankingEditor.addCategorizingListener(categoryMenuImpl);
+        creditEditor.addCategorizingListener(categoryMenuImpl);
     }
     public void launch(){
-        database.connect();
-        bankingTableEditor.refresh(new WhichMonth(2020, Calendar.OCTOBER));
-        creditTableEditor.refreshAndClearSelection(new WhichMonth(2020, Calendar.OCTOBER));
+        bankingEditor.refresh(new WhichMonth(2020, Calendar.OCTOBER));
+        creditEditor.refreshAndClearSelection(new WhichMonth(2020, Calendar.OCTOBER));
         frame.setVisible(true);
     }
 }

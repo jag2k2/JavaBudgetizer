@@ -1,9 +1,9 @@
 package flb.tables.category;
 
+import flb.database.TestDatabase;
 import flb.tuples.*;
 import flb.util.*;
 import org.junit.jupiter.api.*;
-import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -14,35 +14,25 @@ class CategoryTableModelImplTest {
 
     @BeforeEach
     void setUp() {
-        ArrayList<Category> modelContents = new ArrayList<>();
-        modelContents.add(new Category("Name1", 100, false));
-        modelContents.add(new Category("Name2", 200, true));
-        modelContents.add(new Category("Name3", 300, false));
-        modelContents.add(new Category("Test1", Float.NaN, false));
         tableModel = new CategoryTableModelImpl();
-        tableModel.updateCategories(modelContents);
+        tableModel.updateCategories(TestDatabase.getTestCategories());
     }
 
     @Test
     void getCategory() {
-        expected = new Maybe<>();
+                expected = new Maybe<>();
         actual = tableModel.getCategory(-1);
         assertEquals(expected, actual);
 
-        expected = new Maybe<>(new Category("Name1", 100, false));
-        actual = tableModel.getCategory(0);
-        assertEquals(expected, actual);
-
-        expected = new Maybe<>(new Category("Name2", 200, true));
-        actual = tableModel.getCategory(1);
-        assertEquals(expected, actual);
-
-        expected = new Maybe<>(new Category("Test1", Float.NaN, false));
-        actual = tableModel.getCategory(3);
-        assertEquals(expected, actual);
+        int testCategoryCount = TestDatabase.getTestCategories().size();
+        for(int i= 0; i < testCategoryCount; i++) {
+            expected = new Maybe<>(TestDatabase.getTestCategories().get(i));
+            actual = tableModel.getCategory(i);
+            assertEquals(expected, actual);
+        }
 
         expected = new Maybe<>();
-        actual = tableModel.getCategory(4);
+        actual = tableModel.getCategory(testCategoryCount);
         assertEquals(expected, actual);
     }
 

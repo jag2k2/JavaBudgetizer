@@ -1,5 +1,6 @@
 package flb.application.main;
 
+import flb.database.interfaces.*;
 import flb.database.*;
 import javax.swing.*;
 
@@ -22,7 +23,11 @@ public class FilthyLucreBudgetizer {
         @Override
         public void run() {
             AbstractDatabase database = new TestDatabase();
-            MainGUI mainGui = new MainGUI(database);
+            TransactionStore transactionStore = new TransactionStoreImp(database);
+            CategoryStore categoryStore = new CategoryStoreImpl(database);
+            MainGUI mainGui = new MainGUI(transactionStore, categoryStore);
+
+            database.connect();
             mainGui.layout();
             mainGui.addListeners();
             mainGui.launch();

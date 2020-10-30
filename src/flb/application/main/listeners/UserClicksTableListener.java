@@ -1,13 +1,15 @@
 package flb.application.main.listeners;
 
+import flb.components.CategoryMenuImpl;
+
 import javax.swing.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 public class UserClicksTableListener implements MouseListener {
-    private final JPopupMenu categoryMenu;
-    public UserClicksTableListener(JPopupMenu categoryMenu){
-        this.categoryMenu = categoryMenu;
+    private final CategoryMenuImpl categoryMenuImpl;
+    public UserClicksTableListener(CategoryMenuImpl categoryMenuImpl){
+        this.categoryMenuImpl = categoryMenuImpl;
     }
 
     @Override
@@ -20,7 +22,7 @@ public class UserClicksTableListener implements MouseListener {
         int row = table.rowAtPoint(e.getPoint());
         int column = table.columnAtPoint(e.getPoint());
         if(column == 2 && row >= 0) {
-            categoryMenu.show(table, e.getX(), e.getY());
+            categoryMenuImpl.show(table, e.getX(), e.getY());
         }
     }
 

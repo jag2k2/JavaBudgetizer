@@ -22,14 +22,7 @@ class BankingEditorImplTest {
         this.bankingEditor = new BankingEditorImpl(transactionStore);
         this.tableAutomator = bankingEditor.getTableAutomator();
 
-        Calendar date1 = new GregorianCalendar(2020, Calendar.OCTOBER, 25);
-        Calendar date2 = new GregorianCalendar(2020,Calendar.OCTOBER,26);
-        Calendar date3 = new GregorianCalendar(2020, Calendar.OCTOBER, 27);
-
-        expected = new ArrayList<>();
-        expected.add(new BankingTransaction("3589045", date1, "Amazon", 50F, "Name1", 1000F));
-        expected.add(new BankingTransaction("3589046", date2, "HEB", 40F, "Name2", 960F));
-        expected.add(new BankingTransaction("3589047", date3, "Walmart", 30F, "", 930F));
+        expected = TestDatabase.getTestBankingTransactions();
     }
 
     @AfterEach
@@ -38,7 +31,7 @@ class BankingEditorImplTest {
     }
 
     @Test
-    void refreshAndClearSelection() {
+    void refresh() {
         bankingEditor.refresh(new WhichMonth(2020, Calendar.OCTOBER));
         assertEquals(expected, tableAutomator.getTransactions());
 

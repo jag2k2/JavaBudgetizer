@@ -1,6 +1,7 @@
 package flb.database;
 
 import flb.database.interfaces.DataStore;
+import flb.database.interfaces.TransactionStore;
 import flb.util.WhichMonth;
 import flb.tuples.*;
 import java.sql.*;
@@ -9,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-public class TransactionStoreImp {
+public class TransactionStoreImp implements TransactionStore {
     private final DataStore dataStore;
 
     public TransactionStoreImp(DataStore dataStore){

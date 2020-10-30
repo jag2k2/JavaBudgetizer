@@ -1,6 +1,10 @@
 package flb.database;
 
+import flb.tuples.*;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 public class TestDatabase extends AbstractDatabase {
 
@@ -60,5 +64,43 @@ public class TestDatabase extends AbstractDatabase {
                 "('2020-10-26', 'credit', 'Papa Johns', '25.00', '-1', '2', '3589049'), " +
                 "('2020-10-27', 'credit', 'Torchys', '35.00', '-1', '-1', '3589050')";
         super.executeUpdate(update);
+    }
+
+    static public ArrayList<Category> getTestCategories() {
+        ArrayList<Category> testCategories = new ArrayList<>();
+        testCategories.add(new Category("Name1", 100, false));
+        testCategories.add(new Category("Name2", 200, true));
+        testCategories.add(new Category("Name3", 300, false));
+        testCategories.add(new Category("Test1::sub1", Float.NaN, false));
+        testCategories.add(new Category("Test1::sub2", 500, true));
+        return testCategories;
+    }
+
+    static public ArrayList<BankingTransaction> getTestBankingTransactions() {
+        ArrayList<BankingTransaction> testTransactions = new ArrayList<>();
+
+        Calendar date1 = new GregorianCalendar(2020, Calendar.OCTOBER, 25);
+        Calendar date2 = new GregorianCalendar(2020,Calendar.OCTOBER,26);
+        Calendar date3 = new GregorianCalendar(2020, Calendar.OCTOBER, 27);
+
+        testTransactions.add(new BankingTransaction("3589045", date1, "Amazon", 50F, "Name1", 1000F));
+        testTransactions.add(new BankingTransaction("3589046", date2, "HEB", 40F, "Name2", 960F));
+        testTransactions.add(new BankingTransaction("3589047", date3, "Walmart", 30F, "", 930F));
+
+        return testTransactions;
+    }
+
+    static public ArrayList<CreditTransaction> getTestCreditTransactions() {
+        ArrayList<CreditTransaction> testTransactions = new ArrayList<>();
+
+        Calendar date1 = new GregorianCalendar(2020, Calendar.OCTOBER, 25);
+        Calendar date2 = new GregorianCalendar(2020,Calendar.OCTOBER,26);
+        Calendar date3 = new GregorianCalendar(2020, Calendar.OCTOBER, 27);
+
+        testTransactions.add(new CreditTransaction("3589045", date1, "Amazon", 50F, "Name1"));
+        testTransactions.add(new CreditTransaction("3589046", date2, "HEB", 40F, "Name2"));
+        testTransactions.add(new CreditTransaction("3589047", date3, "Walmart", 30F, ""));
+
+        return testTransactions;
     }
 }

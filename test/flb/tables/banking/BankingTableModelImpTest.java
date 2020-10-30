@@ -1,8 +1,8 @@
 package flb.tables.banking;
 
 import static org.junit.jupiter.api.Assertions.*;
-import flb.tuples.BankingTransaction;
-import java.util.*;
+
+import flb.database.TestDatabase;
 import org.junit.jupiter.api.*;
 
 class BankingTableModelImpTest {
@@ -11,17 +11,7 @@ class BankingTableModelImpTest {
     @BeforeEach
     void setUp() {
         tableModel = new BankingTableModelImp();
-        ArrayList<BankingTransaction> tableContents = new ArrayList<>();
-
-        Calendar date1 = new GregorianCalendar(2020, Calendar.OCTOBER, 25);
-        Calendar date2 = new GregorianCalendar(2020,Calendar.OCTOBER,26);
-        Calendar date3 = new GregorianCalendar(2020, Calendar.OCTOBER, 27);
-
-        tableContents.add(new BankingTransaction("3589045", date1, "Amazon", 50F, "Name1", 1000F));
-        tableContents.add(new BankingTransaction("3589046", date2, "HEB", 40F, "Name2", 960F));
-        tableContents.add(new BankingTransaction("3589047", date3, "Walmart", 30F, "", 930F));
-
-        tableModel.updateTransactions(tableContents);
+        tableModel.updateTransactions(TestDatabase.getTestBankingTransactions());
     }
 
     @Test

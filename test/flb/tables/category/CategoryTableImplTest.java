@@ -1,6 +1,8 @@
 package flb.tables.category;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import flb.database.TestDatabase;
 import flb.tables.category.interfaces.*;
 import flb.tuples.*;
 import flb.util.*;
@@ -18,14 +20,8 @@ class CategoryTableImplTest {
         this.categoryTable = categoryTableImpl;
         this.tableAutomator = categoryTableImpl;
 
-        ArrayList<Category> tableContents = new ArrayList<>();
-        tableContents.add(new Category("Name1", 100, false));
-        tableContents.add(new Category("Name2", 200, true));
-        tableContents.add(new Category("Name3", 300, false));
-        tableContents.add(new Category("Test1", Float.NaN, false));
-
-        expectedDisplay = new ArrayList<>();
-        categoryTable.displayAndClearSelection(tableContents);
+        expectedDisplay = TestDatabase.getTestCategories();
+        categoryTable.displayAndClearSelection(expectedDisplay);
     }
 
     @Test
@@ -34,26 +30,21 @@ class CategoryTableImplTest {
         Maybe<Category> expected = new Maybe<>();
         assertEquals(expected, categoryTable.getSelectedCategory());
 
-        tableAutomator.setSelectedRow(0);
-        expected = new Maybe<>(new Category("Name1", 100, false));
-        assertEquals(expected, categoryTable.getSelectedCategory());
+        int testCategoryCount = TestDatabase.getTestCategories().size();
+        for (int i = 0; i < testCategoryCount; i++) {
+            tableAutomator.setSelectedRow(i);
+            expected = new Maybe<>(TestDatabase.getTestCategories().get(i));
+            assertEquals(expected, categoryTable.getSelectedCategory());
+        }
 
-        tableAutomator.setSelectedRow(1);
-        expected = new Maybe<>(new Category("Name2", 200, true));
-        assertEquals(expected, categoryTable.getSelectedCategory());
-
-        tableAutomator.setSelectedRow(3);
-        expected = new Maybe<>(new Category("Test1", Float.NaN, false));
-        assertEquals(expected, categoryTable.getSelectedCategory());
-
-        tableAutomator.setSelectedRow(4);
+        tableAutomator.setSelectedRow(testCategoryCount);
         expected = new Maybe<>();
         assertEquals(expected, categoryTable.getSelectedCategory());
     }
 
     @Test
     void displayAndClearSelection() {
-        expectedDisplay = new ArrayList<>();
+        tableAutomator.setSelectedRow(1);
 
         categoryTable.displayAndClearSelection(expectedDisplay);
 
@@ -61,9 +52,7 @@ class CategoryTableImplTest {
         assertEquals(-1, tableAutomator.getSelectedRow());
 
 
-        expectedDisplay.add(new Category("ID1", -100, true));
-        expectedDisplay.add(new Category("ID2", -200, false));
-        tableAutomator.setSelectedRow(1);
+        expectedDisplay = new ArrayList<>();
 
         categoryTable.displayAndClearSelection(expectedDisplay);
 
@@ -73,16 +62,6 @@ class CategoryTableImplTest {
 
     @Test
     void displayAndKeepSelection() {
-        expectedDisplay = new ArrayList<>();
-        tableAutomator.setSelectedRow(-1);
-
-        categoryTable.displayAndKeepSelection(expectedDisplay);
-
-        assertEquals(expectedDisplay, tableAutomator.getContents());
-        assertEquals(-1, tableAutomator.getSelectedRow());
-
-        expectedDisplay.add(new Category("ID1", -100, true));
-        expectedDisplay.add(new Category("ID2", -200, false));
         tableAutomator.setSelectedRow(1);
 
         categoryTable.displayAndKeepSelection(expectedDisplay);

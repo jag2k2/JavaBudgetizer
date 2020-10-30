@@ -25,13 +25,7 @@ class CategoryEditorImplTest {
         this.categoryEditor = new CategoryEditorImpl(categoryStore);
         this.tableAutomator = categoryEditor.getTableAutomator();
         categoryEditor.refreshAndClearSelection("");
-
-        this.expected = new ArrayList<>();
-        expected.add(new Category("Name1", 100, false));
-        expected.add(new Category("Name2", 200, true));
-        expected.add(new Category("Name3", 300, false));
-        expected.add(new Category("Test1::sub1", Float.NaN, false));
-        expected.add(new Category("Test1::sub2", 500, true));
+        this.expected = TestDatabase.getTestCategories();
     }
 
     @AfterEach
@@ -136,7 +130,7 @@ class CategoryEditorImplTest {
     @Test
     void getSelectedCategory() {
         tableAutomator.setSelectedRow(1);
-        Maybe<Category> expected = new Maybe<>(new Category("Name2", 200, true));
+        Maybe<Category> expected = new Maybe<>(TestDatabase.getTestCategories().get(1));
 
         Maybe<Category> editingCategory = categoryEditor.getSelectedCategory();
 

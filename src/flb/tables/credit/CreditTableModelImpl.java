@@ -5,11 +5,11 @@ import flb.tuples.CreditTransaction;
 import javax.swing.table.*;
 import java.util.*;
 
-public class CreditTableModelImp extends AbstractTableModel {
+public class CreditTableModelImpl extends AbstractTableModel {
     private final String[] columnNames = {"Date", "Amount", "Category", "Description", "Group"};
     private ArrayList<CreditTransaction> tableContents;
 
-    public CreditTableModelImp() {
+    public CreditTableModelImpl() {
         tableContents = new ArrayList<>();
     }
 
@@ -58,5 +58,9 @@ public class CreditTableModelImp extends AbstractTableModel {
     public void updateTransactions(ArrayList<CreditTransaction> tableContents) {
         this.tableContents = tableContents;
         fireTableDataChanged();
+    }
+
+    public ArrayList<CreditTransaction> getContents() {
+        return tableContents;
     }
 }
