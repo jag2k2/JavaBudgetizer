@@ -1,17 +1,17 @@
 package flb.tables.banking;
 
+import flb.tables.banking.interfaces.*;
 import flb.tuples.BankingTransaction;
-
 import java.util.*;
 import javax.swing.*;
 
-public class BankingTableImp {
+public class BankingTableImpl implements BankingTable, BankingTableAutomator {
     private final BankingTableModelImp tableModel;
     private final JTable table;
 
-    public BankingTableImp(JTable table, BankingTableModelImp tableModel) {
-        this.table = table;
-        this.tableModel = tableModel;
+    public BankingTableImpl() {
+        this.tableModel = new BankingTableModelImp();
+        this.table = new JTable(tableModel);
         table.setRowSelectionAllowed(false);
         table.setFillsViewportHeight(true);
         table.getColumnModel().getColumn(0).setMinWidth(75);
@@ -23,18 +23,11 @@ public class BankingTableImp {
         table.getColumnModel().getColumn(3).setMinWidth(120);
     }
 
-    /*public Maybe<Category> getSelectedCategory() {
-        int selectedRow = table.getSelectedRow();
-        return tableModel.getCategory(selectedRow);
-    }*/
-
-    public void displayAndClearSelection(ArrayList<BankingTransaction> tableContents){
-        tableModel.updateTransactions(tableContents);
+    public ArrayList<BankingTransaction> getTransactions() {
+        return tableModel.getContents();
     }
 
-    /*public void displayAndKeepSelection(ArrayList<Category> tableContents){
-        int selection = table.getSelectedRow();
-        tableModel.updateCategories(tableContents);
-        table.getSelectionModel().setSelectionInterval(selection, selection);
-    }*/
+    public void refresh(ArrayList<BankingTransaction> tableContents){
+        tableModel.updateTransactions(tableContents);
+    }
 }

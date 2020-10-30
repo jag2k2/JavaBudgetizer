@@ -1,6 +1,7 @@
 package flb.tables.category;
 
-import flb.database.*;
+import flb.database.interfaces.CategoryStore;
+
 import javax.swing.*;
 
 public class CategoryEditorNoDialog extends CategoryEditorImpl {

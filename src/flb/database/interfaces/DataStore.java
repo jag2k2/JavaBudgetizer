@@ -1,4 +1,4 @@
-package flb.database;
+package flb.database.interfaces;
 
 import java.sql.ResultSet;
 

@@ -1,9 +1,9 @@
 package flb.tables.banking;
 
+import static org.junit.jupiter.api.Assertions.*;
 import flb.tuples.BankingTransaction;
 import java.util.*;
 import org.junit.jupiter.api.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 class BankingTableModelImpTest {
     private BankingTableModelImp tableModel;

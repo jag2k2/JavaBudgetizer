@@ -2,6 +2,7 @@ package flb.application.category;
 
 import javax.swing.*;
 import flb.database.*;
+import flb.database.interfaces.CategoryStore;
 
 public class CategoryManager {
 

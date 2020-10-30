@@ -2,13 +2,14 @@ package flb.tables.category;
 
 import javax.swing.*;
 import java.util.*;
-import flb.database.CategoryStore;
+import flb.database.interfaces.CategoryStore;
+import flb.tables.category.interfaces.*;
 import flb.util.*;
 import flb.tuples.*;
 import flb.application.category.listeners.*;
 
 public class CategoryEditorImpl implements CategoryAdder, CategoryClearer, CategoryDeleter, CategoryExcludeEditor,
-                                            CategoryAmountEditor, CategoryNameEditor, CategoryEditorAutomator {
+        CategoryAmountEditor, CategoryNameEditor, CategoryEditorAutomator {
     private final CategoryStore categoryStore;
     private final CategoryTable categoryTable;
     private final CategoryTableAutomator tableAutomator;

@@ -1,6 +1,6 @@
 package flb.application.category.listeners;
 
-import flb.tables.category.CategoryListChangeRefresher;
+import flb.tables.category.interfaces.CategoryListChangeRefresher;
 
 import javax.swing.*;
 import javax.swing.event.*;

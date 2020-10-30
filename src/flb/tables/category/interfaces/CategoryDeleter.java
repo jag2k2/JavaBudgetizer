@@ -1,4 +1,4 @@
-package flb.tables.category;
+package flb.tables.category.interfaces;
 
 import javax.swing.*;
 

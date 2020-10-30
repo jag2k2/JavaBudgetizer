@@ -1,7 +1,10 @@
 package flb.application.category.listeners;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import flb.database.interfaces.CategoryStore;
 import flb.tables.category.*;
+import flb.tables.category.interfaces.CategoryTableAutomator;
 import flb.tuples.*;
 import flb.database.*;
 import org.junit.jupiter.api.*;

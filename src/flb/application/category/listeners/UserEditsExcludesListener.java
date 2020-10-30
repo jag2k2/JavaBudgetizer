@@ -1,6 +1,6 @@
 package flb.application.category.listeners;
 
-import flb.tables.category.CategoryExcludeEditor;
+import flb.tables.category.interfaces.CategoryExcludeEditor;
 
 import javax.swing.*;
 import javax.swing.event.*;

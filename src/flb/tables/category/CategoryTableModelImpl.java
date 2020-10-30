@@ -1,5 +1,6 @@
 package flb.tables.category;
 
+import flb.tables.category.interfaces.CategoryTableModel;
 import flb.tuples.Category;
 import flb.util.*;
 import javax.swing.table.*;
@@ -59,7 +60,7 @@ public class CategoryTableModelImpl extends AbstractTableModel implements Catego
         return columnNames[column];
     }
 
-    public ArrayList<Category> getContents() {
+    public ArrayList<Category> getCategories() {
         return tableContents;
     }
 

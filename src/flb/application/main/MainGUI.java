@@ -26,9 +26,8 @@ public class MainGUI {
     private final JTable tableForCredit;
     private final JTable tableForGoals;
     private final GoalTableImp goalTable;
-    private final BankingTableImp bankingTable;
     private final CreditTableImp creditTable;
-    private final BankingEditorImp bankingTableEditor;
+    private final BankingEditorImpl bankingTableEditor;
     private final CreditTableEditorImp creditTableEditor;
     private final JPopupMenu categoryMenu;
 
@@ -39,18 +38,17 @@ public class MainGUI {
         CreditTableModelImp creditModel = new CreditTableModelImp();
         GoalTableModelImp goalModel = new GoalTableModelImp();
 
-        TransactionStoreImp transactionStoreEditor = new TransactionStoreImp(database);
+        TransactionStoreImp transactionStore = new TransactionStoreImp(database);
 
         this.tableForBanking = new JTable(bankingModel);
         this.tableForCredit = new JTable(creditModel);
         this.tableForGoals = new JTable(goalModel);
 
         this.goalTable = new GoalTableImp(tableForGoals, goalModel);
-        this.bankingTable = new BankingTableImp(tableForBanking, bankingModel);
         this.creditTable = new CreditTableImp(tableForCredit, creditModel);
 
-        this.bankingTableEditor = new BankingEditorImp(transactionStoreEditor, bankingTable);
-        this.creditTableEditor = new CreditTableEditorImp(transactionStoreEditor, creditTable);
+        this.bankingTableEditor = new BankingEditorImpl(transactionStore);
+        this.creditTableEditor = new CreditTableEditorImp(transactionStore, creditTable);
 
         this.prev = new JButton("Prev");
         this.month = new JComboBox<>(Months.values());
@@ -170,7 +168,7 @@ public class MainGUI {
     }
     public void launch(){
         database.connect();
-        bankingTableEditor.refreshAndClearSelection(new WhichMonth(2020, Calendar.OCTOBER));
+        bankingTableEditor.refresh(new WhichMonth(2020, Calendar.OCTOBER));
         creditTableEditor.refreshAndClearSelection(new WhichMonth(2020, Calendar.OCTOBER));
         frame.setVisible(true);
     }

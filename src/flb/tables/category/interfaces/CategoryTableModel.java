@@ -1,4 +1,4 @@
-package flb.tables.category;
+package flb.tables.category.interfaces;
 
 import flb.tuples.Category;
 import flb.util.Maybe;
@@ -10,5 +10,5 @@ public interface CategoryTableModel {
     Maybe<Category> getCategory(int row);
     void updateCategories(ArrayList<Category> tableContents);
     void addTableModelListener(TableModelListener tableModelListener);
-    ArrayList<Category> getContents();
+    ArrayList<Category> getCategories();
 }

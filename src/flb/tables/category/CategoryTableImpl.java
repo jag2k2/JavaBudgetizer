@@ -1,5 +1,8 @@
 package flb.tables.category;
 
+import flb.tables.category.interfaces.CategoryTable;
+import flb.tables.category.interfaces.CategoryTableAutomator;
+import flb.tables.category.interfaces.CategoryTableModel;
 import flb.tables.goal.GoalRenderer;
 import flb.tuples.*;
 import flb.util.*;
@@ -75,7 +78,7 @@ public class CategoryTableImpl implements CategoryTable, CategoryTableAutomator 
     }
 
     public ArrayList<Category> getContents() {
-        return tableModel.getContents();
+        return tableModel.getCategories();
     }
 
     public void editCellAt(int row, int col) {

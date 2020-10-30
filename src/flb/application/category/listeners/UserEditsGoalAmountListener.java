@@ -1,6 +1,6 @@
 package flb.application.category.listeners;
 
-import flb.tables.category.CategoryAmountEditor;
+import flb.tables.category.interfaces.CategoryAmountEditor;
 
 import javax.swing.*;
 import javax.swing.event.*;

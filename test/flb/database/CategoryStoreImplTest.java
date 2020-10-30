@@ -1,6 +1,8 @@
 package flb.database;
 
 import java.util.*;
+
+import flb.database.interfaces.CategoryStore;
 import flb.tuples.Category;
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;

@@ -1,7 +1,7 @@
 package flb.application.category;
 
 import flb.application.category.listeners.*;
-import flb.database.*;
+import flb.database.interfaces.CategoryStore;
 import flb.tables.category.*;
 import javax.swing.*;
 import java.awt.*;

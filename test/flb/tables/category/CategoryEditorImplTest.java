@@ -1,12 +1,14 @@
 package flb.tables.category;
 
+import static org.junit.jupiter.api.Assertions.*;
+import flb.database.interfaces.CategoryStore;
+import flb.tables.category.interfaces.CategoryTableAutomator;
 import org.junit.jupiter.api.*;
 import javax.swing.*;
 import java.util.*;
 import flb.util.*;
 import flb.tuples.*;
 import flb.database.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 class CategoryEditorImplTest {
     private CategoryEditorImpl categoryEditor;

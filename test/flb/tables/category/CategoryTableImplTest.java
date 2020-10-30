@@ -1,6 +1,7 @@
 package flb.tables.category;
 
 import static org.junit.jupiter.api.Assertions.*;
+import flb.tables.category.interfaces.*;
 import flb.tuples.*;
 import flb.util.*;
 import org.junit.jupiter.api.*;
@@ -51,7 +52,7 @@ class CategoryTableImplTest {
     }
 
     @Test
-    void refresh() {
+    void displayAndClearSelection() {
         expectedDisplay = new ArrayList<>();
 
         categoryTable.displayAndClearSelection(expectedDisplay);
@@ -71,7 +72,7 @@ class CategoryTableImplTest {
     }
 
     @Test
-    void refreshAndKeepSelection() {
+    void displayAndKeepSelection() {
         expectedDisplay = new ArrayList<>();
         tableAutomator.setSelectedRow(-1);
 
