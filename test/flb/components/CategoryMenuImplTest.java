@@ -30,7 +30,7 @@ class CategoryMenuImplTest {
             expected.add(category.getName());
         }
 
-        categoryMenu.buildMenu();
+        categoryMenu.buildMenu(0);
 
         assertEquals(expected, categoryMenu.toStringArray());
     }

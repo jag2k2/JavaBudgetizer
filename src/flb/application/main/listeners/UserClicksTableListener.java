@@ -21,8 +21,8 @@ public class UserClicksTableListener implements MouseListener {
         JTable table = (JTable)e.getSource();
         int row = table.rowAtPoint(e.getPoint());
         int column = table.columnAtPoint(e.getPoint());
-        if(column == 2 && row >= 0) {
-            categoryMenuImpl.show(table, e.getX(), e.getY());
+        if(row >= 0  && column == 2) {
+            categoryMenuImpl.show(table, row, column);
         }
     }
 

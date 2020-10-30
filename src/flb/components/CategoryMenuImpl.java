@@ -1,5 +1,6 @@
 package flb.components;
 
+import flb.application.main.listeners.UserSelectsCategory;
 import flb.database.interfaces.CategoryStore;
 import flb.tuples.Category;
 import javax.swing.*;
@@ -19,16 +20,19 @@ public class CategoryMenuImpl {
         return mainMenu;
     }
 
-    public void show(Component component, int x, int y) {
-        buildMenu();
-        mainMenu.show(component, x, y);
+    public void show(JTable table, int row, int column) {
+        buildMenu(row);
+        Rectangle cellBounds = table.getCellRect(row, column, false);
+        mainMenu.show(table, cellBounds.x, cellBounds.y);
     }
 
-    protected void buildMenu() {
+    protected void buildMenu(int activeRow) {
         mainMenu.removeAll();
         JMenu superCategory = new JMenu("");
         for (Category category : categoryStore.getCategories("")){
             String categoryName = category.getName();
+            JMenuItem categoryItem = new JMenuItem();
+            categoryItem.addActionListener(new UserSelectsCategory());
             if(categoryName.contains("::")){
                 String[] elements = categoryName.split("::");
                 String superCategoryName = elements[0];
@@ -37,10 +41,14 @@ public class CategoryMenuImpl {
                     superCategory = new JMenu(superCategoryName);
                     mainMenu.add(superCategory);
                 }
-                superCategory.add(new JMenuItem(subCategoryName));
+                categoryItem.setText(subCategoryName);
+                categoryItem.setActionCommand(activeRow + " " + superCategoryName + "::" + subCategoryName);
+                superCategory.add(categoryItem);
             }
             else{
-                mainMenu.add(new JMenuItem(categoryName));
+                categoryItem.setText(categoryName);
+                categoryItem.setActionCommand(activeRow + " " + categoryName);
+                mainMenu.add(categoryItem);
             }
         }
     }
