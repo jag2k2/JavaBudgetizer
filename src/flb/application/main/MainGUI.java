@@ -42,7 +42,7 @@ public class MainGUI {
         this.next = new JButton("Next");
 
         this.balance = new JTextField();
-        this.categoryMenuImpl = new CategoryMenuImpl(categoryStore);
+        this.categoryMenuImpl = new CategoryMenuImpl(categoryStore, transactionStore, bankingEditor, creditEditor);
     }
 
     public void layout(){

@@ -1,14 +1,14 @@
 package flb.tables.banking;
 
-import flb.application.main.listeners.UserClicksTableListener;
+import flb.application.main.listeners.*;
 import flb.components.CategoryMenuImpl;
 import flb.database.interfaces.*;
 import flb.tables.banking.interfaces.*;
-import flb.tables.interfaces.TransactionCategorizer;
-import flb.tuples.BankingTransaction;
-import flb.util.WhichMonth;
+import flb.tables.interfaces.*;
+import flb.tuples.*;
+import flb.util.*;
 import javax.swing.*;
-import java.util.ArrayList;
+import java.util.*;
 
 public class BankingEditorImpl implements BankingEditorAutomator, TransactionCategorizer {
     private final TransactionStore transactionStore;
@@ -36,11 +36,10 @@ public class BankingEditorImpl implements BankingEditorAutomator, TransactionCat
     }
 
     public void addCategorizingListener(CategoryMenuImpl categoryMenuImpl) {
-        bankingTable.addCategoryClickedListener(new UserClicksTableListener(categoryMenuImpl));
+        bankingTable.addCategoryClickedListener(new UserClicksTableListener("banking", categoryMenuImpl));
     }
 
-    @Override
-    public void userCategorizesTransaction() {
-        System.out.println("User Categorizes Transaction");
+    public Maybe<Transaction> getTransaction(int row) {
+        return bankingTable.getTransaction(row);
     }
 }

@@ -1,10 +1,9 @@
 package flb.tables.credit;
 
-import flb.tables.credit.interfaces.CreditTable;
-import flb.tables.credit.interfaces.CreditTableAutomator;
-import flb.tuples.CreditTransaction;
-
-import java.awt.event.MouseListener;
+import flb.tables.credit.interfaces.*;
+import flb.tuples.*;
+import flb.util.*;
+import java.awt.event.*;
 import java.util.*;
 import javax.swing.*;
 
@@ -34,11 +33,6 @@ public class CreditTableImpl implements CreditTable, CreditTableAutomator {
         scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
     }
 
-    @Override
-    public ArrayList<CreditTransaction> getTransactions() {
-        return tableModel.getContents();
-    }
-
     public JScrollPane getPane() {
         return scrollPane;
     }
@@ -55,6 +49,16 @@ public class CreditTableImpl implements CreditTable, CreditTableAutomator {
     @Override
     public void addCategoryClickedListener(MouseListener mouseListener) {
         table.addMouseListener(mouseListener);
+    }
+
+    @Override
+    public ArrayList<CreditTransaction> getTransactions() {
+        return tableModel.getTransactions();
+    }
+
+    @Override
+    public Maybe<Transaction> getTransaction(int row){
+        return tableModel.getTransaction(row);
     }
 
     /*public void displayAndKeepSelection(ArrayList<Category> tableContents){

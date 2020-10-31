@@ -3,6 +3,8 @@ package flb.components;
 import static org.junit.jupiter.api.Assertions.*;;
 import flb.database.interfaces.*;
 import flb.database.*;
+import flb.tables.banking.*;
+import flb.tables.credit.*;
 import flb.tuples.*;
 import org.junit.jupiter.api.*;
 import java.util.*;
@@ -17,7 +19,10 @@ class CategoryMenuImplTest {
         this.database = new TestDatabase();
         database.connect();
         CategoryStore categoryStore = new CategoryStoreImpl(database);
-        this.categoryMenu = new CategoryMenuImpl(categoryStore);
+        TransactionStore transactionStore = new TransactionStoreImp(database);
+        BankingEditorImpl bankingEditor = new BankingEditorImpl(transactionStore);
+        CreditEditorImpl creditEditor = new CreditEditorImpl(transactionStore);
+        this.categoryMenu = new CategoryMenuImpl(categoryStore, transactionStore, bankingEditor, creditEditor);
     }
 
     @AfterEach
@@ -30,7 +35,7 @@ class CategoryMenuImplTest {
             expected.add(category.getName());
         }
 
-        categoryMenu.buildMenu(0);
+        categoryMenu.buildMenu("banking", 0);
 
         assertEquals(expected, categoryMenu.toStringArray());
     }

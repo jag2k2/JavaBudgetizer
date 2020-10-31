@@ -83,9 +83,9 @@ public class TestDatabase extends AbstractDatabase {
         Calendar date2 = new GregorianCalendar(2020,Calendar.OCTOBER,26);
         Calendar date3 = new GregorianCalendar(2020, Calendar.OCTOBER, 27);
 
-        testTransactions.add(new BankingTransaction("3589045", date1, "Amazon", 50F, "Name1", 1000F));
-        testTransactions.add(new BankingTransaction("3589046", date2, "HEB", 40F, "Name2", 960F));
-        testTransactions.add(new BankingTransaction("3589047", date3, "Walmart", 30F, "", 930F));
+        testTransactions.add(new BankingTransaction("1", date1, "Amazon", 50F, "Name1", 1000F));
+        testTransactions.add(new BankingTransaction("2", date2, "HEB", 40F, "Name2", 960F));
+        testTransactions.add(new BankingTransaction("3", date3, "Walmart", 30F, "", 930F));
 
         return testTransactions;
     }
@@ -97,9 +97,9 @@ public class TestDatabase extends AbstractDatabase {
         Calendar date2 = new GregorianCalendar(2020,Calendar.OCTOBER,26);
         Calendar date3 = new GregorianCalendar(2020, Calendar.OCTOBER, 27);
 
-        testTransactions.add(new CreditTransaction("3589045", date1, "Amazon", 50F, "Name1"));
-        testTransactions.add(new CreditTransaction("3589046", date2, "HEB", 40F, "Name2"));
-        testTransactions.add(new CreditTransaction("3589047", date3, "Walmart", 30F, ""));
+        testTransactions.add(new CreditTransaction("3589048", date1, "Shell", 20F, "Name1"));
+        testTransactions.add(new CreditTransaction("3589049", date2, "Papa Johns", 25F, ""));
+        testTransactions.add(new CreditTransaction("3589050", date3, "Torchys", 35F, ""));
 
         return testTransactions;
     }

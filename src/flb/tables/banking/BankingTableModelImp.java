@@ -1,11 +1,12 @@
 package flb.tables.banking;
 
-import flb.tuples.BankingTransaction;
-
+import flb.tables.interfaces.*;
+import flb.tuples.*;
+import flb.util.*;
 import javax.swing.table.*;
 import java.util.*;
 
-public class BankingTableModelImp extends AbstractTableModel {
+public class BankingTableModelImp extends AbstractTableModel implements TransactionTableModel {
 
     private final String[] columnNames = {"Date", "Amount", "Category", "Description"};
     private ArrayList<BankingTransaction> tableContents;
@@ -60,7 +61,17 @@ public class BankingTableModelImp extends AbstractTableModel {
         fireTableDataChanged();
     }
 
-    public ArrayList<BankingTransaction> getContents() {
+    public ArrayList<BankingTransaction> getTransactions(){
         return tableContents;
+    }
+
+    @Override
+    public Maybe<Transaction> getTransaction(int row) {
+        if (row >= 0 && row < tableContents.size()) {
+            return new Maybe<>(tableContents.get(row));
+        }
+        else {
+            return new Maybe<>();
+        }
     }
 }

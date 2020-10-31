@@ -1,11 +1,12 @@
 package flb.tables.credit;
 
-import flb.tuples.CreditTransaction;
-
+import flb.tables.interfaces.*;
+import flb.tuples.*;
+import flb.util.Maybe;
 import javax.swing.table.*;
 import java.util.*;
 
-public class CreditTableModelImpl extends AbstractTableModel {
+public class CreditTableModelImpl extends AbstractTableModel implements TransactionTableModel {
     private final String[] columnNames = {"Date", "Amount", "Category", "Description", "Group"};
     private ArrayList<CreditTransaction> tableContents;
 
@@ -60,7 +61,17 @@ public class CreditTableModelImpl extends AbstractTableModel {
         fireTableDataChanged();
     }
 
-    public ArrayList<CreditTransaction> getContents() {
+    public ArrayList<CreditTransaction> getTransactions(){
         return tableContents;
+    }
+
+    @Override
+    public Maybe<Transaction> getTransaction(int row){
+        if (row >= 0 && row < tableContents.size()) {
+            return new Maybe<>(tableContents.get(row));
+        }
+        else {
+            return new Maybe<>();
+        }
     }
 }

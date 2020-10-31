@@ -1,12 +1,12 @@
 package flb.tables.credit;
 
-import flb.application.main.listeners.UserClicksTableListener;
-import flb.components.CategoryMenuImpl;
-import flb.database.interfaces.TransactionStore;
+import flb.application.main.listeners.*;
+import flb.components.*;
+import flb.database.interfaces.*;
 import flb.tables.credit.interfaces.*;
 import flb.tables.interfaces.*;
-import flb.tuples.CreditTransaction;
-import flb.util.WhichMonth;
+import flb.tuples.*;
+import flb.util.*;
 import javax.swing.*;
 import java.util.*;
 
@@ -33,11 +33,11 @@ public class CreditEditorImpl implements CreditEditorAutomator, TransactionCateg
 
     @Override
     public void addCategorizingListener(CategoryMenuImpl categoryMenuImpl) {
-        creditTable.addCategoryClickedListener(new UserClicksTableListener(categoryMenuImpl));
+        creditTable.addCategoryClickedListener(new UserClicksTableListener("credit", categoryMenuImpl));
     }
 
     @Override
-    public void userCategorizesTransaction() {
-        System.out.println("User Categorizes Transaction");
+    public Maybe<Transaction> getTransaction(int row) {
+        return creditTable.getTransaction(row);
     }
 }

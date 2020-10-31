@@ -51,7 +51,7 @@ public class TransactionStoreImp implements TransactionStore {
                 String categoryName = results.getString("categories.name");
                 if (results.wasNull())
                     categoryName = "";
-                String reference = results.getString("transactions.reference");
+                String reference = results.getString("transactions.id");
                 float balance = results.getFloat("transactions.balance");
                 LocalDate localDate = sqlDate.toLocalDate();
                 Calendar date = new GregorianCalendar(localDate.getYear(), localDate.getMonthValue()-1, localDate.getDayOfMonth());
@@ -106,5 +106,18 @@ public class TransactionStoreImp implements TransactionStore {
             ex.printStackTrace();
         }
         return creditTransactions;
+    }
+
+    public void categorizeTransaction(Transaction transaction, String categoryName) {
+        String update = "UPDATE transactions " +
+                "SET category_id = (SELECT categories.id FROM categories WHERE categories.name = '$name') " +
+                "WHERE $uniquifier = '$ref'";
+        String uniquifier = transaction.getUniquifier();
+        String reference = transaction.getReference();
+        update = update.replace("$name", categoryName);
+        update = update.replace("$uniquifier", uniquifier);
+        update = update.replace("$ref", reference);
+
+        dataStore.executeUpdate(update);
     }
 }

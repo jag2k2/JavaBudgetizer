@@ -1,8 +1,10 @@
 package flb.tables.interfaces;
 
-import flb.components.CategoryMenuImpl;
+import flb.components.*;
+import flb.tuples.*;
+import flb.util.*;
 
 public interface TransactionCategorizer {
-    void userCategorizesTransaction();
     void addCategorizingListener(CategoryMenuImpl categoryMenuImpl);
+    Maybe<Transaction> getTransaction(int row);
 }

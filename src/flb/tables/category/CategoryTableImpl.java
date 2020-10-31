@@ -1,8 +1,6 @@
 package flb.tables.category;
 
-import flb.tables.category.interfaces.CategoryTable;
-import flb.tables.category.interfaces.CategoryTableAutomator;
-import flb.tables.category.interfaces.CategoryTableModel;
+import flb.tables.category.interfaces.*;
 import flb.tables.goal.GoalRenderer;
 import flb.tuples.*;
 import flb.util.*;

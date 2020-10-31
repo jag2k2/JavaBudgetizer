@@ -1,9 +1,10 @@
 package flb.tables.banking;
 
 import flb.tables.banking.interfaces.*;
-import flb.tuples.BankingTransaction;
+import flb.tuples.*;
 import java.awt.event.MouseListener;
 import java.util.*;
+import flb.util.*;
 import javax.swing.*;
 
 public class BankingTableImpl implements BankingTable, BankingTableAutomator {
@@ -35,16 +36,22 @@ public class BankingTableImpl implements BankingTable, BankingTableAutomator {
         return scrollPane;
     }
 
-    public ArrayList<BankingTransaction> getTransactions() {
-        return tableModel.getContents();
-    }
-
     public void display(ArrayList<BankingTransaction> tableContents){
         tableModel.updateTransactions(tableContents);
     }
 
     @Override
+    public ArrayList<BankingTransaction> getTransactions() {
+        return tableModel.getTransactions();
+    }
+
+    @Override
     public void addCategoryClickedListener(MouseListener mouseListener) {
         table.addMouseListener(mouseListener);
+    }
+
+    @Override
+    public Maybe<Transaction> getTransaction(int row){
+        return tableModel.getTransaction(row);
     }
 }

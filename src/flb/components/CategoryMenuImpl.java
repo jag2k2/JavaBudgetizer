@@ -1,8 +1,11 @@
 package flb.components;
 
-import flb.application.main.listeners.UserSelectsCategory;
-import flb.database.interfaces.CategoryStore;
-import flb.tuples.Category;
+import flb.application.main.listeners.*;
+import flb.database.interfaces.*;
+import flb.tables.banking.*;
+import flb.tables.credit.*;
+import flb.tuples.*;
+import flb.util.*;
 import javax.swing.*;
 import java.awt.*;
 import java.util.*;
@@ -10,29 +13,41 @@ import java.util.*;
 public class CategoryMenuImpl {
     private final JPopupMenu mainMenu;
     private final CategoryStore categoryStore;
+    private final TransactionStore transactionStore;
+    private final BankingEditorImpl bankingEditor;
+    private final CreditEditorImpl creditEditor;
 
-    public CategoryMenuImpl(CategoryStore categoryStore) {
+    public CategoryMenuImpl(CategoryStore categoryStore, TransactionStore transactionStore, BankingEditorImpl bankingEditor, CreditEditorImpl creditEditor) {
         this.mainMenu = new JPopupMenu();
         this.categoryStore = categoryStore;
+        this.transactionStore = transactionStore;
+        this.bankingEditor = bankingEditor;
+        this.creditEditor = creditEditor;
     }
 
     public JPopupMenu getPopup() {
         return mainMenu;
     }
 
-    public void show(JTable table, int row, int column) {
-        buildMenu(row);
+    public void show(JTable table, String type, int row, int column) {
+        buildMenu(type, row);
         Rectangle cellBounds = table.getCellRect(row, column, false);
         mainMenu.show(table, cellBounds.x, cellBounds.y);
     }
 
-    protected void buildMenu(int activeRow) {
+    protected void buildMenu(String activeTable, int activeRow) {
         mainMenu.removeAll();
         JMenu superCategory = new JMenu("");
         for (Category category : categoryStore.getCategories("")){
             String categoryName = category.getName();
             JMenuItem categoryItem = new JMenuItem();
-            categoryItem.addActionListener(new UserSelectsCategory());
+            Maybe<Transaction> activeTransaction = new Maybe<>();
+            if (activeTable.equals("banking")){
+                categoryItem.addActionListener(new UserCategorizesBankingTransaction(bankingEditor, transactionStore));
+            }
+            else if (activeTable.equals("credit")){
+                categoryItem.addActionListener(new UserCategorizesCreditTransaction(creditEditor, transactionStore));
+            }
             if(categoryName.contains("::")){
                 String[] elements = categoryName.split("::");
                 String superCategoryName = elements[0];
@@ -42,12 +57,12 @@ public class CategoryMenuImpl {
                     mainMenu.add(superCategory);
                 }
                 categoryItem.setText(subCategoryName);
-                categoryItem.setActionCommand(activeRow + " " + superCategoryName + "::" + subCategoryName);
+                categoryItem.setActionCommand(activeRow + "," + superCategoryName + "::" + subCategoryName);
                 superCategory.add(categoryItem);
             }
             else{
                 categoryItem.setText(categoryName);
-                categoryItem.setActionCommand(activeRow + " " + categoryName);
+                categoryItem.setActionCommand(activeRow + "," + categoryName);
                 mainMenu.add(categoryItem);
             }
         }

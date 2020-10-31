@@ -7,6 +7,10 @@ public class CreditTransaction extends Transaction{
         super(reference, date, description, amount, categoryName);
     }
 
+    public String getUniquifier() {
+        return "transactions.reference";
+    }
+
     @Override
     public String toString() {
         return super.toString();

@@ -2,7 +2,7 @@ package flb.tuples;
 
 import java.util.*;
 
-public class Transaction {
+abstract public class Transaction {
     private final String reference;
     private final Calendar date;
     private final String description;
@@ -15,6 +15,10 @@ public class Transaction {
         this.description = description;
         this.amount = amount;
         this.categoryName = categoryName;
+    }
+
+    public String getReference() {
+        return reference;
     }
 
     public String getDateString() {
@@ -34,6 +38,8 @@ public class Transaction {
     public String getCategory(){
         return categoryName;
     }
+
+    abstract public String getUniquifier();
 
     @Override
     public String toString() {

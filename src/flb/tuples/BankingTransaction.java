@@ -10,6 +10,10 @@ public class BankingTransaction extends Transaction{
         this.balance = balance;
     }
 
+    public String getUniquifier(){
+        return "transactions.id";
+    }
+
     public float getBalance() {
         return balance;
     }
