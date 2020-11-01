@@ -30,6 +30,12 @@ public class BankingEditorImpl implements BankingEditorAutomator, TransactionCat
         return tableAutomator;
     }
 
+    public void userCategorizesTransaction(int row, String categoryName) {
+        for (Transaction transaction : bankingTable.getTransaction(row)) {
+            transactionStore.categorizeTransaction(transaction, categoryName);
+        }
+    }
+
     public void refresh(WhichMonth searchDate) {
         ArrayList<BankingTransaction> bankingTransactions = transactionStore.getBankingTransactions(searchDate);
         bankingTable.display(bankingTransactions);
@@ -37,9 +43,5 @@ public class BankingEditorImpl implements BankingEditorAutomator, TransactionCat
 
     public void addCategorizingListener(CategoryMenuImpl categoryMenuImpl) {
         bankingTable.addCategoryClickedListener(new UserClicksTableListener("banking", categoryMenuImpl));
-    }
-
-    public Maybe<Transaction> getTransaction(int row) {
-        return bankingTable.getTransaction(row);
     }
 }

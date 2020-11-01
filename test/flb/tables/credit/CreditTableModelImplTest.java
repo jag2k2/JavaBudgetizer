@@ -2,6 +2,8 @@ package flb.tables.credit;
 
 import static org.junit.jupiter.api.Assertions.*;
 import flb.database.TestDatabase;
+import flb.tuples.*;
+import flb.util.*;
 import org.junit.jupiter.api.*;
 
 class CreditTableModelImplTest {
@@ -26,5 +28,14 @@ class CreditTableModelImplTest {
 
         String actualCategory = (String)tableModel.getValueAt(0,3);
         assertEquals("Shell", actualCategory);
+    }
+
+    @Test
+    void getTransaction() {
+        Maybe<Transaction> expected = new Maybe<>(TestDatabase.getTestCreditTransactions().get(0));
+
+        Maybe<Transaction> actual = tableModel.getTransaction(0);
+
+        assertEquals(expected, actual);
     }
 }

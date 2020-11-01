@@ -1,9 +1,10 @@
 package flb.tables.banking;
 
 import static org.junit.jupiter.api.Assertions.*;
-
-import flb.database.TestDatabase;
 import org.junit.jupiter.api.*;
+import flb.database.*;
+import flb.tuples.*;
+import flb.util.*;
 
 class BankingTableModelImpTest {
     private BankingTableModelImp tableModel;
@@ -27,5 +28,16 @@ class BankingTableModelImpTest {
 
         String actualDescription = (String)tableModel.getValueAt(0,3);
         assertEquals("Amazon", actualDescription);
+    }
+
+    @Test
+    void getTransaction() {
+        Maybe<Transaction> expected = new Maybe<>(TestDatabase.getTestBankingTransactions().get(0));
+        Maybe<Transaction> actual = tableModel.getTransaction(0);
+        assertEquals(expected, actual);
+
+        expected = new Maybe<>();
+        actual = tableModel.getTransaction(-1);
+        assertEquals(expected, actual);
     }
 }

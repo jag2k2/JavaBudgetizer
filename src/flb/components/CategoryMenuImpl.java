@@ -5,7 +5,6 @@ import flb.database.interfaces.*;
 import flb.tables.banking.*;
 import flb.tables.credit.*;
 import flb.tuples.*;
-import flb.util.*;
 import javax.swing.*;
 import java.awt.*;
 import java.util.*;
@@ -41,12 +40,11 @@ public class CategoryMenuImpl {
         for (Category category : categoryStore.getCategories("")){
             String categoryName = category.getName();
             JMenuItem categoryItem = new JMenuItem();
-            Maybe<Transaction> activeTransaction = new Maybe<>();
             if (activeTable.equals("banking")){
-                categoryItem.addActionListener(new UserCategorizesBankingTransaction(bankingEditor, transactionStore));
+                categoryItem.addActionListener(new UserCategorizesBankingTransaction(bankingEditor));
             }
             else if (activeTable.equals("credit")){
-                categoryItem.addActionListener(new UserCategorizesCreditTransaction(creditEditor, transactionStore));
+                categoryItem.addActionListener(new UserCategorizesCreditTransaction(creditEditor));
             }
             if(categoryName.contains("::")){
                 String[] elements = categoryName.split("::");

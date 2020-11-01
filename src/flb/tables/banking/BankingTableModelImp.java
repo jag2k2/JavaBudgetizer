@@ -36,24 +36,19 @@ public class BankingTableModelImp extends AbstractTableModel implements Transact
         };
     }
 
-    /*@Override
-    public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-        if (columnIndex == 0) {
-            tableContents.get(rowIndex).rename((String) aValue);
-        } else if (columnIndex == 1) {
-            tableContents.get(rowIndex).setDefaultGoal((Float) aValue);
-        }
-        fireTableCellUpdated(rowIndex, columnIndex);
-    }*/
-
-    /*@Override
-    public boolean isCellEditable(int row, int col) {
-        return true;
-    }*/
-
     @Override
     public String getColumnName(int column) {
         return columnNames[column];
+    }
+
+    @Override
+    public Maybe<Transaction> getTransaction(int row) {
+        if (row >= 0 && row < getRowCount()) {
+            return new Maybe<>(tableContents.get(row));
+        }
+        else {
+            return new Maybe<>();
+        }
     }
 
     public void updateTransactions(ArrayList<BankingTransaction> tableContents) {
@@ -63,15 +58,5 @@ public class BankingTableModelImp extends AbstractTableModel implements Transact
 
     public ArrayList<BankingTransaction> getTransactions(){
         return tableContents;
-    }
-
-    @Override
-    public Maybe<Transaction> getTransaction(int row) {
-        if (row >= 0 && row < tableContents.size()) {
-            return new Maybe<>(tableContents.get(row));
-        }
-        else {
-            return new Maybe<>();
-        }
     }
 }

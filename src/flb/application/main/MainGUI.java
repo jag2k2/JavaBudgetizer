@@ -15,11 +15,11 @@ import java.util.Calendar;
 public class MainGUI {
     private final JFrame frame;
     private final JButton prev;
+    private final JButton next;
     private enum Months {January, February, March, April, May, June, July, August, September, October, November, December}
     private final JComboBox<Months> month;
     private final JFormattedTextField year;
     private final JTextField balance;
-    private final JButton next;
     private final JTable tableForGoals;
     private final GoalTableImp goalTable;
     private final BankingEditorImpl bankingEditor;
@@ -139,7 +139,7 @@ public class MainGUI {
     }
     public void launch(){
         bankingEditor.refresh(new WhichMonth(2020, Calendar.OCTOBER));
-        creditEditor.refreshAndClearSelection(new WhichMonth(2020, Calendar.OCTOBER));
+        creditEditor.refreshAndKeepSelection(new WhichMonth(2020, Calendar.OCTOBER));
         frame.setVisible(true);
     }
 }

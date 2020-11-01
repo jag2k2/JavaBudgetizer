@@ -11,12 +11,12 @@ import javax.swing.*;
 import java.util.*;
 
 public class CreditEditorImpl implements CreditEditorAutomator, TransactionCategorizer {
-    private final TransactionStore transactionStoreEditor;
+    private final TransactionStore transactionStore;
     private final CreditTableImpl creditTable;
     private final CreditTableAutomator tableAutomator;
 
-    public CreditEditorImpl(TransactionStore transactionStoreEditor){
-        this.transactionStoreEditor = transactionStoreEditor;
+    public CreditEditorImpl(TransactionStore transactionStore){
+        this.transactionStore = transactionStore;
         CreditTableImpl creditTableImpl = new CreditTableImpl();
         this.creditTable = creditTableImpl;
         this.tableAutomator = creditTableImpl;
@@ -26,18 +26,19 @@ public class CreditEditorImpl implements CreditEditorAutomator, TransactionCateg
 
     public CreditTableAutomator getTableAutomator() { return tableAutomator; }
 
-    public void refreshAndClearSelection(WhichMonth searchDate) {
-        ArrayList<CreditTransaction> creditTransactions = transactionStoreEditor.getCreditTransactions(searchDate);
+    public void userCategorizesTransaction(int row, String categoryName){
+        for (Transaction transaction : creditTable.getTransaction(row)) {
+            transactionStore.categorizeTransaction(transaction, categoryName);
+        }
+    }
+
+    public void refreshAndKeepSelection(WhichMonth searchDate) {
+        ArrayList<CreditTransaction> creditTransactions = transactionStore.getCreditTransactions(searchDate);
         creditTable.displayAndClearSelection(creditTransactions);
     }
 
     @Override
     public void addCategorizingListener(CategoryMenuImpl categoryMenuImpl) {
         creditTable.addCategoryClickedListener(new UserClicksTableListener("credit", categoryMenuImpl));
-    }
-
-    @Override
-    public Maybe<Transaction> getTransaction(int row) {
-        return creditTable.getTransaction(row);
     }
 }
