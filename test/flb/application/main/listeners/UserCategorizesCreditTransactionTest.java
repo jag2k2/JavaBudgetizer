@@ -3,7 +3,6 @@ package flb.application.main.listeners;
 import static org.junit.jupiter.api.Assertions.*;
 import flb.database.*;
 import flb.database.interfaces.TransactionStore;
-import flb.tables.banking.BankingEditorImpl;
 import flb.tables.credit.*;
 import flb.tuples.*;
 import flb.util.WhichMonth;
@@ -23,7 +22,7 @@ class UserCategorizesCreditTransactionTest {
         database.connect();
         this.transactionStore = new TransactionStoreImp(database);
         this.creditEditor = new CreditEditorImpl(transactionStore);
-        creditEditor.refreshAndKeepSelection(new WhichMonth(2020,Calendar.OCTOBER));
+        creditEditor.refresh(new WhichMonth(2020,Calendar.OCTOBER));
 
         this.testButton = new JButton();
         testButton.addActionListener(new UserCategorizesCreditTransaction(creditEditor));

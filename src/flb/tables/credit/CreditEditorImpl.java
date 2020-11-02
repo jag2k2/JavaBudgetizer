@@ -10,7 +10,7 @@ import flb.util.*;
 import javax.swing.*;
 import java.util.*;
 
-public class CreditEditorImpl implements CreditEditorAutomator, TransactionCategorizer {
+public class CreditEditorImpl implements CreditEditorAutomator, TransactionCategorizer, MonthChangeListener {
     private final TransactionStore transactionStore;
     private final CreditTableImpl creditTable;
     private final CreditTableAutomator tableAutomator;
@@ -32,7 +32,7 @@ public class CreditEditorImpl implements CreditEditorAutomator, TransactionCateg
         }
     }
 
-    public void refreshAndKeepSelection(WhichMonth searchDate) {
+    public void refresh(WhichMonth searchDate) {
         ArrayList<CreditTransaction> creditTransactions = transactionStore.getCreditTransactions(searchDate);
         creditTable.displayAndClearSelection(creditTransactions);
     }

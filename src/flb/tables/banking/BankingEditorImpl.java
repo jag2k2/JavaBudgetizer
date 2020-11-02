@@ -10,7 +10,7 @@ import flb.util.*;
 import javax.swing.*;
 import java.util.*;
 
-public class BankingEditorImpl implements BankingEditorAutomator, TransactionCategorizer {
+public class BankingEditorImpl implements BankingEditorAutomator, TransactionCategorizer, MonthChangeListener {
     private final TransactionStore transactionStore;
     private final BankingTableImpl bankingTable;
     private final BankingTableAutomator tableAutomator;
@@ -36,8 +36,8 @@ public class BankingEditorImpl implements BankingEditorAutomator, TransactionCat
         }
     }
 
-    public void refresh(WhichMonth searchDate) {
-        ArrayList<BankingTransaction> bankingTransactions = transactionStore.getBankingTransactions(searchDate);
+    public void refresh(WhichMonth selectedDate) {
+        ArrayList<BankingTransaction> bankingTransactions = transactionStore.getBankingTransactions(selectedDate);
         bankingTable.display(bankingTransactions);
     }
 

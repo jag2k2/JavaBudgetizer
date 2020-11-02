@@ -10,7 +10,6 @@ import flb.components.*;
 import flb.util.WhichMonth;
 import org.jdesktop.swingx.*;
 import java.awt.*;
-import java.util.Calendar;
 
 public class MainGUI {
     private final JFrame frame;
@@ -25,14 +24,11 @@ public class MainGUI {
     public MainGUI(TransactionStore transactionStore, CategoryStore categoryStore) {
         this.frame = new JFrame();
         this.monthSelector = new MonthSelectorImp();
-
         this.bankingEditor = new BankingEditorImpl(transactionStore);
         this.creditEditor = new CreditEditorImpl(transactionStore);
-
         GoalTableModelImp goalModel = new GoalTableModelImp();
         this.tableForGoals = new JTable(goalModel);
         this.goalTable = new GoalTableImp(tableForGoals, goalModel);
-
         this.balance = new JTextField();
         this.categoryMenuImpl = new CategoryMenuImpl(categoryStore, bankingEditor, creditEditor);
     }
@@ -120,10 +116,14 @@ public class MainGUI {
     public void addListeners() {
         bankingEditor.addCategorizingListener(categoryMenuImpl);
         creditEditor.addCategorizingListener(categoryMenuImpl);
+
+        monthSelector.addMonthChangeListener(bankingEditor);
+        monthSelector.addMonthChangeListener(creditEditor);
     }
     public void launch(){
-        bankingEditor.refresh(new WhichMonth(2020, Calendar.OCTOBER));
-        creditEditor.refreshAndKeepSelection(new WhichMonth(2020, Calendar.OCTOBER));
+        WhichMonth selectedMonth = monthSelector.getSelectedDate();
+        bankingEditor.refresh(selectedMonth);
+        creditEditor.refresh(selectedMonth);
         frame.setVisible(true);
     }
 }

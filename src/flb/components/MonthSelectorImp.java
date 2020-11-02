@@ -5,15 +5,19 @@ import javax.swing.*;
 import javax.swing.border.*;
 import java.awt.*;
 import java.util.*;
+
+import flb.tables.interfaces.MonthChangeListener;
 import flb.util.*;
 
 public class MonthSelectorImp {
     private final JPanel datePane;
+    private final WhichMonth dateModel;
     private final JButton prev;
     private final JButton next;
     private enum Months {January, February, March, April, May, June, July, August, September, October, November, December}
     private final JComboBox<Months> month;
     private final JFormattedTextField year;
+    private final ArrayList<MonthChangeListener> monthChangeListeners;
 
     public MonthSelectorImp() {
         this.datePane = new JPanel();
@@ -21,11 +25,18 @@ public class MonthSelectorImp {
         this.month = new JComboBox<>(Months.values());
         this.year = new JFormattedTextField();
         this.next = new JButton("Next");
+        Calendar currentDate = new GregorianCalendar();
+        this.dateModel = new WhichMonth(currentDate.get(Calendar.YEAR), currentDate.get(Calendar.MONTH));
+        this.monthChangeListeners = new ArrayList<>();
 
-        //prev.addActionListener(new UserDecrementsMonth(this);
+        prev.setActionCommand("decrement");
+        prev.addActionListener(new UserSpinsMonth(this));
+
+        next.setActionCommand("increment");
+        next.addActionListener(new UserSpinsMonth(this));
 
         layout();
-        setToCurrentDate();
+        refresh();
     }
 
     protected void layout(){
@@ -39,10 +50,12 @@ public class MonthSelectorImp {
         datePane.add(next);
     }
 
-    protected void setToCurrentDate(){
-        Calendar now = new GregorianCalendar();
-        year.setText(Integer.toString(now.get(Calendar.YEAR)));
-        month.setSelectedIndex(now.get(Calendar.MONTH));
+    protected void refresh(){
+        year.setText(Integer.toString(dateModel.getYear()));
+        month.setSelectedIndex(dateModel.getMonth());
+        for(MonthChangeListener monthChangeListener : monthChangeListeners){
+            monthChangeListener.refresh(getSelectedDate());
+        }
     }
 
     public JPanel getPane() {
@@ -52,6 +65,21 @@ public class MonthSelectorImp {
     public WhichMonth getSelectedDate() {
         int selectedYear = Integer.parseInt(year.getText());
         int selectedMonth = month.getSelectedIndex();
-        return new WhichMonth(selectedYear, selectedMonth);}
+        return new WhichMonth(selectedYear, selectedMonth);
+    }
+
+    public void incrementMonth() {
+        dateModel.incrementMonth();
+        refresh();
+    }
+
+    public void decrementMonth() {
+        dateModel.decrementMonth();
+        refresh();
+    }
+
+    public void addMonthChangeListener(MonthChangeListener monthChangeListener) {
+        monthChangeListeners.add(monthChangeListener);
+    }
 }
 

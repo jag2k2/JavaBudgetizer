@@ -19,6 +19,6 @@ public class UserCategorizesCreditTransaction implements ActionListener {
         int row = Integer.parseInt(elements[0]);
         String categoryName = elements[1];
         creditEditor.userCategorizesTransaction(row, categoryName);
-        creditEditor.refreshAndKeepSelection(new WhichMonth(2020, Calendar.OCTOBER));
+        creditEditor.refresh(new WhichMonth(2020, Calendar.OCTOBER));
     }
 }

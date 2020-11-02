@@ -32,4 +32,12 @@ public class WhichMonth extends GregorianCalendar {
     public void decrementMonth() {
         super.add(Calendar.MONTH, -1);
     }
+
+    public int getYear(){
+        return super.get(Calendar.YEAR);
+    }
+
+    public int getMonth(){
+        return super.get(Calendar.MONTH);
+    }
 }
