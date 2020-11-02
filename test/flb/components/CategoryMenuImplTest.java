@@ -12,7 +12,7 @@ import java.util.*;
 class CategoryMenuImplTest {
     private TestDatabase database;
     private CategoryMenuImpl categoryMenu;
-
+    private ArrayList<String> expected;
 
     @BeforeEach
     void setUp() {
@@ -22,20 +22,27 @@ class CategoryMenuImplTest {
         TransactionStore transactionStore = new TransactionStoreImp(database);
         BankingEditorImpl bankingEditor = new BankingEditorImpl(transactionStore);
         CreditEditorImpl creditEditor = new CreditEditorImpl(transactionStore);
-        this.categoryMenu = new CategoryMenuImpl(categoryStore, transactionStore, bankingEditor, creditEditor);
+        this.categoryMenu = new CategoryMenuImpl(categoryStore, bankingEditor, creditEditor);
+
+        this.expected = new ArrayList<>();
+        for (Category category : TestDatabase.getTestCategories()) {
+            expected.add(category.getName());
+        }
     }
 
     @AfterEach
     void tearDown() { this.database.close();}
 
     @Test
-    void buildMenu() {
-        ArrayList<String> expected = new ArrayList<>();
-        for (Category category : TestDatabase.getTestCategories()) {
-            expected.add(category.getName());
-        }
-
+    void buildMenuForBanking() {
         categoryMenu.buildMenu("banking", 0);
+
+        assertEquals(expected, categoryMenu.toStringArray());
+    }
+
+    @Test
+    void buildMenuForCredit() {
+        categoryMenu.buildMenu("credit", 0);
 
         assertEquals(expected, categoryMenu.toStringArray());
     }

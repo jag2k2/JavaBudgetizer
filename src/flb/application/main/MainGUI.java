@@ -14,11 +14,7 @@ import java.util.Calendar;
 
 public class MainGUI {
     private final JFrame frame;
-    private final JButton prev;
-    private final JButton next;
-    private enum Months {January, February, March, April, May, June, July, August, September, October, November, December}
-    private final JComboBox<Months> month;
-    private final JFormattedTextField year;
+    private final MonthSelectorImp monthSelector;
     private final JTextField balance;
     private final JTable tableForGoals;
     private final GoalTableImp goalTable;
@@ -27,39 +23,27 @@ public class MainGUI {
     private final CategoryMenuImpl categoryMenuImpl;
 
     public MainGUI(TransactionStore transactionStore, CategoryStore categoryStore) {
-        frame = new JFrame();
-        GoalTableModelImp goalModel = new GoalTableModelImp();
+        this.frame = new JFrame();
+        this.monthSelector = new MonthSelectorImp();
 
-        this.tableForGoals = new JTable(goalModel);
-
-        this.goalTable = new GoalTableImp(tableForGoals, goalModel);
         this.bankingEditor = new BankingEditorImpl(transactionStore);
         this.creditEditor = new CreditEditorImpl(transactionStore);
 
-        this.prev = new JButton("Prev");
-        this.month = new JComboBox<>(Months.values());
-        this.year = new JFormattedTextField();
-        this.next = new JButton("Next");
+        GoalTableModelImp goalModel = new GoalTableModelImp();
+        this.tableForGoals = new JTable(goalModel);
+        this.goalTable = new GoalTableImp(tableForGoals, goalModel);
 
         this.balance = new JTextField();
-        this.categoryMenuImpl = new CategoryMenuImpl(categoryStore, transactionStore, bankingEditor, creditEditor);
+        this.categoryMenuImpl = new CategoryMenuImpl(categoryStore, bankingEditor, creditEditor);
     }
 
     public void layout(){
-        year.setPreferredSize(new Dimension(50,25));
         Border blackBorder = new LineBorder(Color.BLACK);
         Border greyBorder = new LineBorder(Color.LIGHT_GRAY);
         Border margin = BorderFactory.createEmptyBorder(5,5,5,5);
-        JPanel datePane = new JPanel();
-        datePane.setBorder(new CompoundBorder(blackBorder, margin));
-        datePane.setLayout(new BoxLayout(datePane, BoxLayout.X_AXIS));
-        datePane.add(prev);
-        datePane.add(month);
-        datePane.add(year);
-        datePane.add(next);
 
         JPanel northLeftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        northLeftPanel.add(datePane);
+        northLeftPanel.add(monthSelector.getPane());
 
         JLabel balanceLabel = new JLabel("Balance");
         JPanel balancePane = new JPanel();

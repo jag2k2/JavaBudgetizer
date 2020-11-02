@@ -12,14 +12,12 @@ import java.util.*;
 public class CategoryMenuImpl {
     private final JPopupMenu mainMenu;
     private final CategoryStore categoryStore;
-    private final TransactionStore transactionStore;
     private final BankingEditorImpl bankingEditor;
     private final CreditEditorImpl creditEditor;
 
-    public CategoryMenuImpl(CategoryStore categoryStore, TransactionStore transactionStore, BankingEditorImpl bankingEditor, CreditEditorImpl creditEditor) {
+    public CategoryMenuImpl(CategoryStore categoryStore, BankingEditorImpl bankingEditor, CreditEditorImpl creditEditor) {
         this.mainMenu = new JPopupMenu();
         this.categoryStore = categoryStore;
-        this.transactionStore = transactionStore;
         this.bankingEditor = bankingEditor;
         this.creditEditor = creditEditor;
     }
