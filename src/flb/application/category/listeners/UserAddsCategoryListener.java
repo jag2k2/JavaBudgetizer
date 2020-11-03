@@ -1,6 +1,6 @@
 package flb.application.category.listeners;
 
-import flb.tables.category.interfaces.CategoryAdder;
+import flb.components.editors.CategoryAdder;
 
 import javax.swing.*;
 import java.awt.event.*;

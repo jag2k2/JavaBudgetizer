@@ -1,7 +1,5 @@
 package flb.database;
 
-import flb.database.interfaces.DataStore;
-
 import java.sql.*;
 
 public abstract class AbstractDatabase implements DataStore {

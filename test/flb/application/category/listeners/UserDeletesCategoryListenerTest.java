@@ -2,9 +2,10 @@ package flb.application.category.listeners;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import flb.database.interfaces.CategoryStore;
-import flb.tables.category.*;
-import flb.tables.category.interfaces.CategoryTableAutomator;
+import flb.components.editors.CategoryEditorNoDialog;
+import flb.database.CategoryStore;
+import flb.components.editors.CategoryEditorImpl;
+import flb.components.editors.tables.CategoryTableTester;
 import flb.tuples.*;
 import flb.database.*;
 import org.junit.jupiter.api.*;
@@ -17,7 +18,7 @@ class UserDeletesCategoryListenerTest {
     private ArrayList<Category> expected;
     private TestDatabase database;
     private CategoryStore categoryStore;
-    private CategoryTableAutomator tableAutomator;
+    private CategoryTableTester tableAutomator;
     private CategoryEditorImpl categoryEditor;
 
     @BeforeEach

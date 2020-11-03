@@ -1,6 +1,5 @@
 package flb.application.main;
 
-import flb.database.interfaces.*;
 import flb.database.*;
 import javax.swing.*;
 

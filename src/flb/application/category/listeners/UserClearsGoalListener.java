@@ -1,6 +1,6 @@
 package flb.application.category.listeners;
 
-import flb.tables.category.interfaces.CategoryClearer;
+import flb.components.editors.CategoryClearer;
 
 import javax.swing.*;
 import java.awt.event.*;

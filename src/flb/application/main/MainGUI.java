@@ -2,11 +2,14 @@ package flb.application.main;
 
 import javax.swing.*;
 import javax.swing.border.*;
-import flb.database.interfaces.*;
-import flb.tables.banking.*;
-import flb.tables.credit.*;
-import flb.tables.goal.*;
-import flb.components.*;
+
+import flb.components.monthselector.MonthSelectorImpl;
+import flb.database.CategoryStore;
+import flb.database.TransactionStore;
+import flb.components.editors.BankingEditorImpl;
+import flb.components.editors.CreditEditorImpl;
+import flb.components.editors.tables.GoalTableImp;
+import flb.components.editors.tables.models.GoalTableModelImp;
 import org.jdesktop.swingx.*;
 import java.awt.*;
 

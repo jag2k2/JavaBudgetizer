@@ -1,7 +1,5 @@
 package flb.database;
 
-import flb.database.interfaces.CategoryStore;
-import flb.database.interfaces.DataStore;
 import flb.tuples.*;
 import java.util.*;
 import java.sql.*;

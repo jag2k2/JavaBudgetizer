@@ -2,9 +2,9 @@ package flb.application.category.listeners;
 
 import static org.junit.jupiter.api.Assertions.*;
 import flb.database.*;
-import flb.database.interfaces.CategoryStore;
-import flb.tables.category.*;
-import flb.tables.category.interfaces.CategoryTableAutomator;
+import flb.database.CategoryStore;
+import flb.components.editors.CategoryEditorImpl;
+import flb.components.editors.tables.CategoryTableTester;
 import flb.tuples.*;
 import org.junit.jupiter.api.*;
 import javax.swing.*;
@@ -14,7 +14,7 @@ class UserClearsGoalListenerTest {
     private JTextField nameFilter;
     private JButton testButton;
     private ArrayList<Category> expected;
-    private CategoryTableAutomator tableAutomator;
+    private CategoryTableTester tableAutomator;
     private TestDatabase database;
     private CategoryStore categoryStore;
 
