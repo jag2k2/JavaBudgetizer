@@ -2,8 +2,7 @@ package flb.components;
 
 import flb.application.main.listeners.*;
 import flb.database.interfaces.*;
-import flb.tables.banking.*;
-import flb.tables.credit.*;
+import flb.tables.interfaces.TransactionCategorizer;
 import flb.tuples.*;
 import javax.swing.*;
 import java.awt.*;
@@ -12,40 +11,31 @@ import java.util.*;
 public class CategoryMenuImpl {
     private final JPopupMenu mainMenu;
     private final CategoryStore categoryStore;
-    private final BankingEditorImpl bankingEditor;
-    private final CreditEditorImpl creditEditor;
-    private final MonthSelectorImpl monthSelector;
+    private final TransactionCategorizer transactionCategorizer;
 
-    public CategoryMenuImpl(CategoryStore categoryStore, BankingEditorImpl bankingEditor, CreditEditorImpl creditEditor, MonthSelectorImpl monthSelector) {
+    public CategoryMenuImpl(CategoryStore categoryStore, TransactionCategorizer transactionCategorizer) {
         this.mainMenu = new JPopupMenu();
         this.categoryStore = categoryStore;
-        this.bankingEditor = bankingEditor;
-        this.creditEditor = creditEditor;
-        this.monthSelector = monthSelector;
+        this.transactionCategorizer = transactionCategorizer;
     }
 
     public JPopupMenu getPopup() {
         return mainMenu;
     }
 
-    public void show(JTable table, String type, int row, int column) {
-        buildMenu(type, row);
+    public void show(JTable table, int row, int column) {
+        buildMenu(row);
         Rectangle cellBounds = table.getCellRect(row, column, false);
         mainMenu.show(table, cellBounds.x, cellBounds.y);
     }
 
-    protected void buildMenu(String activeTable, int activeRow) {
+    protected void buildMenu(int activeRow) {
         mainMenu.removeAll();
         JMenu superCategory = new JMenu("");
         for (Category category : categoryStore.getCategories("")){
             String categoryName = category.getName();
             JMenuItem categoryItem = new JMenuItem();
-            if (activeTable.equals("banking")){
-                categoryItem.addActionListener(new UserCategorizesBankingTransaction(bankingEditor, monthSelector));
-            }
-            else if (activeTable.equals("credit")){
-                categoryItem.addActionListener(new UserCategorizesCreditTransaction(creditEditor, monthSelector));
-            }
+            categoryItem.addActionListener(new UserCategorizesTransaction(transactionCategorizer));
             if(categoryName.contains("::")){
                 String[] elements = categoryName.split("::");
                 String superCategoryName = elements[0];

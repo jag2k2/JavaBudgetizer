@@ -10,16 +10,18 @@ import flb.util.*;
 import javax.swing.*;
 import java.util.*;
 
-public class CreditEditorImpl implements CreditEditorAutomator, TransactionCategorizer, MonthChangeListener {
+public class CreditEditorImpl implements CreditEditorAutomator, TransactionCategorizer, MonthChangeListener, StoreChangeListener {
     private final TransactionStore transactionStore;
     private final CreditTableImpl creditTable;
     private final CreditTableAutomator tableAutomator;
+    private final ArrayList<StoreChangeListener> storeChangeListeners;
 
     public CreditEditorImpl(TransactionStore transactionStore){
         this.transactionStore = transactionStore;
         CreditTableImpl creditTableImpl = new CreditTableImpl();
         this.creditTable = creditTableImpl;
         this.tableAutomator = creditTableImpl;
+        this.storeChangeListeners = new ArrayList<>();
     }
 
     public JScrollPane getPane() { return creditTable.getPane(); }
@@ -29,6 +31,14 @@ public class CreditEditorImpl implements CreditEditorAutomator, TransactionCateg
     public void userCategorizesTransaction(int row, String categoryName){
         for (Transaction transaction : creditTable.getTransaction(row)) {
             transactionStore.categorizeTransaction(transaction, categoryName);
+            WhichMonth selectedMonth = transaction.getWhichMonth();
+            notifyStoreChange(selectedMonth);
+        }
+    }
+
+    protected void notifyStoreChange(WhichMonth selectedMonth) {
+        for(StoreChangeListener storeChangeListener : storeChangeListeners) {
+            storeChangeListener.update(selectedMonth);
         }
     }
 
@@ -38,7 +48,11 @@ public class CreditEditorImpl implements CreditEditorAutomator, TransactionCateg
     }
 
     @Override
-    public void addCategorizingListener(CategoryMenuImpl categoryMenuImpl) {
-        creditTable.addCategoryClickedListener(new UserClicksTableListener("credit", categoryMenuImpl));
+    public void addCategoryColumnClickedListener(CategoryMenuImpl categoryMenuImpl) {
+        creditTable.addCategoryColumnClickedListener(new UserClicksTableListener(categoryMenuImpl));
+    }
+
+    public void addStoreChangeListener(StoreChangeListener storeChangeListener) {
+        storeChangeListeners.add(storeChangeListener);
     }
 }

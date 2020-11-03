@@ -7,6 +7,6 @@ import flb.util.*;
 
 public interface BankingTable {
     void display(ArrayList<BankingTransaction> tableContents);
-    void addCategoryClickedListener(MouseListener mouseListener);
+    void addCategoryColumnClickedListener(MouseListener mouseListener);
     Maybe<Transaction>getTransaction(int row);
 }

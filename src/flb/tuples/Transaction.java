@@ -1,5 +1,7 @@
 package flb.tuples;
 
+import flb.util.WhichMonth;
+
 import java.util.*;
 
 abstract public class Transaction {
@@ -19,6 +21,10 @@ abstract public class Transaction {
 
     public String getReference() {
         return reference;
+    }
+
+    public WhichMonth getWhichMonth() {
+        return new WhichMonth(date.get(Calendar.YEAR), date.get(Calendar.MONTH));
     }
 
     public String getDateString() {

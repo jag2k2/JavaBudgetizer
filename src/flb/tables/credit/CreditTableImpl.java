@@ -47,7 +47,7 @@ public class CreditTableImpl implements CreditTable, CreditTableAutomator {
     }
 
     @Override
-    public void addCategoryClickedListener(MouseListener mouseListener) {
+    public void addCategoryColumnClickedListener(MouseListener mouseListener) {
         table.addMouseListener(mouseListener);
     }
 

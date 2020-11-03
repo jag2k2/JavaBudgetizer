@@ -10,16 +10,18 @@ import flb.util.*;
 import javax.swing.*;
 import java.util.*;
 
-public class BankingEditorImpl implements BankingEditorAutomator, TransactionCategorizer, MonthChangeListener {
+public class BankingEditorImpl implements BankingEditorAutomator, TransactionCategorizer, MonthChangeListener, StoreChangeListener {
     private final TransactionStore transactionStore;
     private final BankingTableImpl bankingTable;
     private final BankingTableAutomator tableAutomator;
+    private final ArrayList<StoreChangeListener> storeChangeListeners;
 
     public BankingEditorImpl(TransactionStore transactionStore){
         this.transactionStore = transactionStore;
         BankingTableImpl bankingTableImpl = new BankingTableImpl();
         this.bankingTable = bankingTableImpl;
         this.tableAutomator = bankingTableImpl;
+        this.storeChangeListeners = new ArrayList<>();
     }
 
     public JScrollPane getPane() {
@@ -33,6 +35,13 @@ public class BankingEditorImpl implements BankingEditorAutomator, TransactionCat
     public void userCategorizesTransaction(int row, String categoryName) {
         for (Transaction transaction : bankingTable.getTransaction(row)) {
             transactionStore.categorizeTransaction(transaction, categoryName);
+            notifyStoreChange(transaction.getWhichMonth());
+        }
+    }
+
+    protected void notifyStoreChange(WhichMonth selectedMonth) {
+        for (StoreChangeListener storeChangeListener : storeChangeListeners) {
+            storeChangeListener.update(selectedMonth);
         }
     }
 
@@ -41,7 +50,11 @@ public class BankingEditorImpl implements BankingEditorAutomator, TransactionCat
         bankingTable.display(bankingTransactions);
     }
 
-    public void addCategorizingListener(CategoryMenuImpl categoryMenuImpl) {
-        bankingTable.addCategoryClickedListener(new UserClicksTableListener("banking", categoryMenuImpl));
+    public void addCategoryColumnClickedListener(CategoryMenuImpl categoryMenuImpl) {
+        bankingTable.addCategoryColumnClickedListener(new UserClicksTableListener(categoryMenuImpl));
+    }
+
+    public void addStoreChangeListener(StoreChangeListener storeChangeListener){
+        storeChangeListeners.add(storeChangeListener);
     }
 }

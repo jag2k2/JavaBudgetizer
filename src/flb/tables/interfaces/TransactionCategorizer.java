@@ -1,9 +1,8 @@
 package flb.tables.interfaces;
 
 import flb.components.*;
-import flb.tuples.*;
-import flb.util.*;
 
 public interface TransactionCategorizer {
-    void addCategorizingListener(CategoryMenuImpl categoryMenuImpl);
+    void addCategoryColumnClickedListener(CategoryMenuImpl categoryMenuImpl);
+    void userCategorizesTransaction(int row, String categoryName);
 }

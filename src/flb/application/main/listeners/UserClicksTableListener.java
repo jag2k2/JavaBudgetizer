@@ -6,11 +6,9 @@ import java.awt.event.*;
 
 public class UserClicksTableListener implements MouseListener {
     private final CategoryMenuImpl categoryMenuImpl;
-    private final String tableType;
 
-    public UserClicksTableListener(String tableType, CategoryMenuImpl categoryMenuImpl){
+    public UserClicksTableListener(CategoryMenuImpl categoryMenuImpl){
         this.categoryMenuImpl = categoryMenuImpl;
-        this.tableType = tableType;
     }
 
     @Override
@@ -23,7 +21,7 @@ public class UserClicksTableListener implements MouseListener {
         int row = table.rowAtPoint(e.getPoint());
         int column = table.columnAtPoint(e.getPoint());
         if(row >= 0  && column == 2) {
-            categoryMenuImpl.show(table, tableType, row, column);
+            categoryMenuImpl.show(table, row, column);
         }
     }
 

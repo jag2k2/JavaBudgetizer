@@ -1,10 +1,10 @@
 package flb.components;
 
-import static org.junit.jupiter.api.Assertions.*;;
+import static org.junit.jupiter.api.Assertions.*;
 import flb.database.interfaces.*;
 import flb.database.*;
 import flb.tables.banking.*;
-import flb.tables.credit.*;
+import flb.tables.interfaces.TransactionCategorizer;
 import flb.tuples.*;
 import org.junit.jupiter.api.*;
 import java.util.*;
@@ -20,10 +20,8 @@ class CategoryMenuImplTest {
         database.connect();
         CategoryStore categoryStore = new CategoryStoreImpl(database);
         TransactionStore transactionStore = new TransactionStoreImp(database);
-        BankingEditorImpl bankingEditor = new BankingEditorImpl(transactionStore);
-        CreditEditorImpl creditEditor = new CreditEditorImpl(transactionStore);
-        MonthSelectorImpl monthSelector = new MonthSelectorImpl();
-        this.categoryMenu = new CategoryMenuImpl(categoryStore, bankingEditor, creditEditor, monthSelector);
+        TransactionCategorizer bankingEditor = new BankingEditorImpl(transactionStore);
+        this.categoryMenu = new CategoryMenuImpl(categoryStore, bankingEditor);
 
         this.expected = new ArrayList<>();
         for (Category category : TestDatabase.getTestCategories()) {
@@ -36,14 +34,7 @@ class CategoryMenuImplTest {
 
     @Test
     void buildMenuForBanking() {
-        categoryMenu.buildMenu("banking", 0);
-
-        assertEquals(expected, categoryMenu.toStringArray());
-    }
-
-    @Test
-    void buildMenuForCredit() {
-        categoryMenu.buildMenu("credit", 0);
+        categoryMenu.buildMenu(0);
 
         assertEquals(expected, categoryMenu.toStringArray());
     }

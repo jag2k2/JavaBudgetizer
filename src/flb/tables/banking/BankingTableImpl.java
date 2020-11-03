@@ -46,7 +46,7 @@ public class BankingTableImpl implements BankingTable, BankingTableAutomator {
     }
 
     @Override
-    public void addCategoryClickedListener(MouseListener mouseListener) {
+    public void addCategoryColumnClickedListener(MouseListener mouseListener) {
         table.addMouseListener(mouseListener);
     }
 

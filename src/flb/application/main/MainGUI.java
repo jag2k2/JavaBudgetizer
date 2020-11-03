@@ -18,7 +18,8 @@ public class MainGUI {
     private final GoalTableImp goalTable;
     private final BankingEditorImpl bankingEditor;
     private final CreditEditorImpl creditEditor;
-    private final CategoryMenuImpl categoryMenuImpl;
+    private final CategoryMenuImpl bankingCategoryMenu;
+    private final CategoryMenuImpl creditCategoryMenu;
 
     public MainGUI(TransactionStore transactionStore, CategoryStore categoryStore) {
         this.frame = new JFrame();
@@ -29,7 +30,8 @@ public class MainGUI {
         this.tableForGoals = new JTable(goalModel);
         this.goalTable = new GoalTableImp(tableForGoals, goalModel);
         this.balance = new JTextField();
-        this.categoryMenuImpl = new CategoryMenuImpl(categoryStore, bankingEditor, creditEditor, monthSelector);
+        this.bankingCategoryMenu = new CategoryMenuImpl(categoryStore, bankingEditor);
+        this.creditCategoryMenu = new CategoryMenuImpl(categoryStore, creditEditor);
 
         addListeners();
         layout();
@@ -104,7 +106,8 @@ public class MainGUI {
         menuBar.add(fileMenu);
         menuBar.add(budgetMenu);
 
-        frame.add(categoryMenuImpl.getPopup());
+        frame.add(bankingCategoryMenu.getPopup());
+        frame.add(creditCategoryMenu.getPopup());
         frame.setTitle("Filthy Lucre Budgetizer");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setContentPane(mainPanel);
@@ -116,12 +119,16 @@ public class MainGUI {
     }
 
     protected void addListeners() {
-        bankingEditor.addCategorizingListener(categoryMenuImpl);
-        creditEditor.addCategorizingListener(categoryMenuImpl);
-
         monthSelector.addMonthChangeListener(bankingEditor);
         monthSelector.addMonthChangeListener(creditEditor);
+
+        bankingEditor.addCategoryColumnClickedListener(bankingCategoryMenu);
+        creditEditor.addCategoryColumnClickedListener(creditCategoryMenu);
+
+        bankingEditor.addStoreChangeListener(bankingEditor);
+        creditEditor.addStoreChangeListener(creditEditor);
     }
+
     public void launch(){
         monthSelector.setToCurrentMonth();
         frame.setVisible(true);
