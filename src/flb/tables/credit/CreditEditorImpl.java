@@ -1,6 +1,5 @@
 package flb.tables.credit;
 
-import flb.application.main.listeners.*;
 import flb.components.*;
 import flb.database.interfaces.*;
 import flb.tables.credit.interfaces.*;
@@ -10,15 +9,16 @@ import flb.util.*;
 import javax.swing.*;
 import java.util.*;
 
-public class CreditEditorImpl implements CreditEditorAutomator, TransactionCategorizer, MonthChangeListener, StoreChangeListener {
+public class CreditEditorImpl implements CreditEditorTester, TransactionCategorizer, MonthChangeListener, StoreChangeListener {
     private final TransactionStore transactionStore;
     private final CreditTableImpl creditTable;
-    private final CreditTableAutomator tableAutomator;
+    private final CreditTableTester tableAutomator;
     private final ArrayList<StoreChangeListener> storeChangeListeners;
 
-    public CreditEditorImpl(TransactionStore transactionStore){
+    public CreditEditorImpl(TransactionStore transactionStore, CategoryStore categoryStore){
         this.transactionStore = transactionStore;
-        CreditTableImpl creditTableImpl = new CreditTableImpl();
+        CategoryMenuImpl categoryMenu = new CategoryMenuImpl(categoryStore, this);
+        CreditTableImpl creditTableImpl = new CreditTableImpl(categoryMenu);
         this.creditTable = creditTableImpl;
         this.tableAutomator = creditTableImpl;
         this.storeChangeListeners = new ArrayList<>();
@@ -26,7 +26,7 @@ public class CreditEditorImpl implements CreditEditorAutomator, TransactionCateg
 
     public JScrollPane getPane() { return creditTable.getPane(); }
 
-    public CreditTableAutomator getTableAutomator() { return tableAutomator; }
+    public CreditTableTester getTableAutomator() { return tableAutomator; }
 
     public void userCategorizesTransaction(int row, String categoryName){
         for (Transaction transaction : creditTable.getTransaction(row)) {
@@ -45,11 +45,6 @@ public class CreditEditorImpl implements CreditEditorAutomator, TransactionCateg
     public void update(WhichMonth searchDate) {
         ArrayList<CreditTransaction> creditTransactions = transactionStore.getCreditTransactions(searchDate);
         creditTable.displayAndClearSelection(creditTransactions);
-    }
-
-    @Override
-    public void addCategoryColumnClickedListener(CategoryMenuImpl categoryMenuImpl) {
-        creditTable.addCategoryColumnClickedListener(new UserClicksTableListener(categoryMenuImpl));
     }
 
     public void addStoreChangeListener(StoreChangeListener storeChangeListener) {

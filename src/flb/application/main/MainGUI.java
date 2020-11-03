@@ -18,20 +18,16 @@ public class MainGUI {
     private final GoalTableImp goalTable;
     private final BankingEditorImpl bankingEditor;
     private final CreditEditorImpl creditEditor;
-    private final CategoryMenuImpl bankingCategoryMenu;
-    private final CategoryMenuImpl creditCategoryMenu;
 
     public MainGUI(TransactionStore transactionStore, CategoryStore categoryStore) {
         this.frame = new JFrame();
         this.monthSelector = new MonthSelectorImpl();
-        this.bankingEditor = new BankingEditorImpl(transactionStore);
-        this.creditEditor = new CreditEditorImpl(transactionStore);
+        this.bankingEditor = new BankingEditorImpl(transactionStore, categoryStore);
+        this.creditEditor = new CreditEditorImpl(transactionStore, categoryStore);
         GoalTableModelImp goalModel = new GoalTableModelImp();
         this.tableForGoals = new JTable(goalModel);
         this.goalTable = new GoalTableImp(tableForGoals, goalModel);
         this.balance = new JTextField();
-        this.bankingCategoryMenu = new CategoryMenuImpl(categoryStore, bankingEditor);
-        this.creditCategoryMenu = new CategoryMenuImpl(categoryStore, creditEditor);
 
         addListeners();
         layout();
@@ -106,8 +102,6 @@ public class MainGUI {
         menuBar.add(fileMenu);
         menuBar.add(budgetMenu);
 
-        frame.add(bankingCategoryMenu.getPopup());
-        frame.add(creditCategoryMenu.getPopup());
         frame.setTitle("Filthy Lucre Budgetizer");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setContentPane(mainPanel);
@@ -121,9 +115,6 @@ public class MainGUI {
     protected void addListeners() {
         monthSelector.addMonthChangeListener(bankingEditor);
         monthSelector.addMonthChangeListener(creditEditor);
-
-        bankingEditor.addCategoryColumnClickedListener(bankingCategoryMenu);
-        creditEditor.addCategoryColumnClickedListener(creditCategoryMenu);
 
         bankingEditor.addStoreChangeListener(bankingEditor);
         creditEditor.addStoreChangeListener(creditEditor);

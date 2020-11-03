@@ -14,7 +14,7 @@ import java.util.Calendar;
 class CreditEditorImplTest {
     private TestDatabase database;
     private CreditEditorImpl creditEditor;
-    private CreditTableAutomator tableAutomator;
+    private CreditTableTester tableAutomator;
     private ArrayList<CreditTransaction> expected;
 
 
@@ -23,7 +23,7 @@ class CreditEditorImplTest {
         this.database = new TestDatabase();
         database.connect();
         TransactionStoreImp transactionStore = new TransactionStoreImp(database);
-        this.creditEditor = new CreditEditorImpl(transactionStore);
+        this.creditEditor = new CreditEditorImpl(transactionStore, new CategoryStoreImpl(database));
         this.tableAutomator = creditEditor.getTableAutomator();
 
         expected = TestDatabase.getTestCreditTransactions();

@@ -1,12 +1,13 @@
 package flb.tables.banking.interfaces;
 
 import flb.tuples.*;
-import java.awt.event.*;
 import java.util.*;
 import flb.util.*;
 
+import javax.swing.*;
+
 public interface BankingTable {
+    JScrollPane getPane();
     void display(ArrayList<BankingTransaction> tableContents);
-    void addCategoryColumnClickedListener(MouseListener mouseListener);
     Maybe<Transaction>getTransaction(int row);
 }

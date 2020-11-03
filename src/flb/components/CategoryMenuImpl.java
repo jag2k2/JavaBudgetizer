@@ -1,6 +1,7 @@
 package flb.components;
 
-import flb.application.main.listeners.*;
+import flb.components.interfaces.*;
+import flb.components.listeners.UserCategorizesTransaction;
 import flb.database.interfaces.*;
 import flb.tables.interfaces.TransactionCategorizer;
 import flb.tuples.*;
@@ -8,29 +9,29 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.*;
 
-public class CategoryMenuImpl {
-    private final JPopupMenu mainMenu;
+public class CategoryMenuImpl implements MenuDisplayer, MenuTester {
+    private final JPopupMenu popupMenu;
     private final CategoryStore categoryStore;
     private final TransactionCategorizer transactionCategorizer;
 
     public CategoryMenuImpl(CategoryStore categoryStore, TransactionCategorizer transactionCategorizer) {
-        this.mainMenu = new JPopupMenu();
+        this.popupMenu = new JPopupMenu();
         this.categoryStore = categoryStore;
         this.transactionCategorizer = transactionCategorizer;
     }
 
     public JPopupMenu getPopup() {
-        return mainMenu;
+        return popupMenu;
     }
 
     public void show(JTable table, int row, int column) {
         buildMenu(row);
         Rectangle cellBounds = table.getCellRect(row, column, false);
-        mainMenu.show(table, cellBounds.x, cellBounds.y);
+        popupMenu.show(table, cellBounds.x, cellBounds.y);
     }
 
     protected void buildMenu(int activeRow) {
-        mainMenu.removeAll();
+        popupMenu.removeAll();
         JMenu superCategory = new JMenu("");
         for (Category category : categoryStore.getCategories("")){
             String categoryName = category.getName();
@@ -42,7 +43,7 @@ public class CategoryMenuImpl {
                 String subCategoryName = elements[1];
                 if (!superCategory.getText().equals(superCategoryName)){
                     superCategory = new JMenu(superCategoryName);
-                    mainMenu.add(superCategory);
+                    popupMenu.add(superCategory);
                 }
                 categoryItem.setText(subCategoryName);
                 categoryItem.setActionCommand(activeRow + "," + superCategoryName + "::" + subCategoryName);
@@ -51,14 +52,14 @@ public class CategoryMenuImpl {
             else{
                 categoryItem.setText(categoryName);
                 categoryItem.setActionCommand(activeRow + "," + categoryName);
-                mainMenu.add(categoryItem);
+                popupMenu.add(categoryItem);
             }
         }
     }
 
-    protected ArrayList<String> toStringArray() {
+    public ArrayList<String> toStringArray() {
         ArrayList<String> stringArray = new ArrayList<>();
-        for (MenuElement menuElement : mainMenu.getSubElements()){
+        for (MenuElement menuElement : popupMenu.getSubElements()){
             if (menuElement instanceof JMenu){
                 JMenu superMenu = (JMenu) menuElement;
                 for(MenuElement subMenuElement : superMenu.getPopupMenu().getSubElements()){

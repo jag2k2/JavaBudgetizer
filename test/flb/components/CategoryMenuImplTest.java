@@ -1,6 +1,7 @@
 package flb.components;
 
 import static org.junit.jupiter.api.Assertions.*;
+import flb.components.interfaces.*;
 import flb.database.interfaces.*;
 import flb.database.*;
 import flb.tables.banking.*;
@@ -12,6 +13,7 @@ import java.util.*;
 class CategoryMenuImplTest {
     private TestDatabase database;
     private CategoryMenuImpl categoryMenu;
+    private MenuTester menuTester;
     private ArrayList<String> expected;
 
     @BeforeEach
@@ -20,8 +22,9 @@ class CategoryMenuImplTest {
         database.connect();
         CategoryStore categoryStore = new CategoryStoreImpl(database);
         TransactionStore transactionStore = new TransactionStoreImp(database);
-        TransactionCategorizer bankingEditor = new BankingEditorImpl(transactionStore);
+        TransactionCategorizer bankingEditor = new BankingEditorImpl(transactionStore, new CategoryStoreImpl(database));
         this.categoryMenu = new CategoryMenuImpl(categoryStore, bankingEditor);
+        this.menuTester = categoryMenu;
 
         this.expected = new ArrayList<>();
         for (Category category : TestDatabase.getTestCategories()) {
@@ -36,6 +39,6 @@ class CategoryMenuImplTest {
     void buildMenuForBanking() {
         categoryMenu.buildMenu(0);
 
-        assertEquals(expected, categoryMenu.toStringArray());
+        assertEquals(expected, menuTester.toStringArray());
     }
 }

@@ -1,4 +1,4 @@
 package flb.tables.credit.interfaces;
 
-public interface CreditEditorAutomator {
+public interface CreditEditorTester {
 }

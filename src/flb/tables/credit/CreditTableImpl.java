@@ -1,20 +1,29 @@
 package flb.tables.credit;
 
+import flb.tables.listeners.UserClicksTableListener;
+import flb.components.interfaces.MenuDisplayer;
 import flb.tables.credit.interfaces.*;
 import flb.tuples.*;
 import flb.util.*;
-import java.awt.event.*;
 import java.util.*;
 import javax.swing.*;
 
-public class CreditTableImpl implements CreditTable, CreditTableAutomator {
+public class CreditTableImpl implements CreditTable, CreditTableTester {
     private final CreditTableModelImpl tableModel;
     private final JTable table;
     private final JScrollPane scrollPane;
 
-    public CreditTableImpl() {
+    public CreditTableImpl(MenuDisplayer menuDisplayer) {
         this.tableModel = new CreditTableModelImpl();
         this.table = new JTable(tableModel);
+        this.scrollPane = new JScrollPane(table);
+        table.add(menuDisplayer.getPopup());
+        table.addMouseListener(new UserClicksTableListener(menuDisplayer));
+
+        layout();
+    }
+
+    protected void layout(){
         table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         table.setFillsViewportHeight(true);
         table.getTableHeader().setReorderingAllowed(false);
@@ -28,32 +37,18 @@ public class CreditTableImpl implements CreditTable, CreditTableAutomator {
         table.getColumnModel().getColumn(4).setMinWidth(120);
         table.getColumnModel().getColumn(4).setMaxWidth(120);
 
-        this.scrollPane = new JScrollPane(table);
         scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
     }
 
+    @Override
     public JScrollPane getPane() {
         return scrollPane;
     }
 
-    /*public Maybe<Category> getSelectedCategory() {
-        int selectedRow = table.getSelectedRow();
-        return tableModel.getCategory(selectedRow);
-    }*/
-
+    @Override
     public void displayAndClearSelection(ArrayList<CreditTransaction> tableContents){
         tableModel.updateTransactions(tableContents);
-    }
-
-    @Override
-    public void addCategoryColumnClickedListener(MouseListener mouseListener) {
-        table.addMouseListener(mouseListener);
-    }
-
-    @Override
-    public ArrayList<CreditTransaction> getTransactions() {
-        return tableModel.getTransactions();
     }
 
     @Override
@@ -61,9 +56,8 @@ public class CreditTableImpl implements CreditTable, CreditTableAutomator {
         return tableModel.getTransaction(row);
     }
 
-    /*public void displayAndKeepSelection(ArrayList<Category> tableContents){
-        int selection = table.getSelectedRow();
-        tableModel.updateCategories(tableContents);
-        table.getSelectionModel().setSelectionInterval(selection, selection);
-    }*/
+    @Override
+    public ArrayList<CreditTransaction> getTransactions() {
+        return tableModel.getTransactions();
+    }
 }

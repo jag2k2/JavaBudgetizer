@@ -1,7 +1,6 @@
 package flb.tables.banking;
 
-import flb.application.main.listeners.*;
-import flb.components.CategoryMenuImpl;
+import flb.components.*;
 import flb.database.interfaces.*;
 import flb.tables.banking.interfaces.*;
 import flb.tables.interfaces.*;
@@ -10,15 +9,16 @@ import flb.util.*;
 import javax.swing.*;
 import java.util.*;
 
-public class BankingEditorImpl implements BankingEditorAutomator, TransactionCategorizer, MonthChangeListener, StoreChangeListener {
+public class BankingEditorImpl implements BankingEditorTester, TransactionCategorizer, MonthChangeListener, StoreChangeListener {
     private final TransactionStore transactionStore;
-    private final BankingTableImpl bankingTable;
-    private final BankingTableAutomator tableAutomator;
+    private final BankingTable bankingTable;
+    private final BankingTableTester tableAutomator;
     private final ArrayList<StoreChangeListener> storeChangeListeners;
 
-    public BankingEditorImpl(TransactionStore transactionStore){
+    public BankingEditorImpl(TransactionStore transactionStore, CategoryStore categoryStore) {
         this.transactionStore = transactionStore;
-        BankingTableImpl bankingTableImpl = new BankingTableImpl();
+        CategoryMenuImpl categoryMenu = new CategoryMenuImpl(categoryStore, this);
+        BankingTableImpl bankingTableImpl = new BankingTableImpl(categoryMenu);
         this.bankingTable = bankingTableImpl;
         this.tableAutomator = bankingTableImpl;
         this.storeChangeListeners = new ArrayList<>();
@@ -28,7 +28,7 @@ public class BankingEditorImpl implements BankingEditorAutomator, TransactionCat
         return bankingTable.getPane();
     }
 
-    public BankingTableAutomator getTableAutomator() {
+    public BankingTableTester getTableTester() {
         return tableAutomator;
     }
 
@@ -48,10 +48,6 @@ public class BankingEditorImpl implements BankingEditorAutomator, TransactionCat
     public void update(WhichMonth selectedDate) {
         ArrayList<BankingTransaction> bankingTransactions = transactionStore.getBankingTransactions(selectedDate);
         bankingTable.display(bankingTransactions);
-    }
-
-    public void addCategoryColumnClickedListener(CategoryMenuImpl categoryMenuImpl) {
-        bankingTable.addCategoryColumnClickedListener(new UserClicksTableListener(categoryMenuImpl));
     }
 
     public void addStoreChangeListener(StoreChangeListener storeChangeListener){
