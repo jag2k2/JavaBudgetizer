@@ -36,21 +36,6 @@ public class CreditTableModelImpl extends AbstractTableModel implements Transact
         };
     }
 
-    /*@Override
-    public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-        if (columnIndex == 0) {
-            tableContents.get(rowIndex).rename((String) aValue);
-        } else if (columnIndex == 1) {
-            tableContents.get(rowIndex).setDefaultGoal((Float) aValue);
-        }
-        fireTableCellUpdated(rowIndex, columnIndex);
-    }*/
-
-    /*@Override
-    public boolean isCellEditable(int row, int col) {
-        return true;
-    }*/
-
     @Override
     public String getColumnName(int column) {
         return columnNames[column];
@@ -67,7 +52,7 @@ public class CreditTableModelImpl extends AbstractTableModel implements Transact
 
     @Override
     public Maybe<Transaction> getTransaction(int row){
-        if (row >= 0 && row < tableContents.size()) {
+        if (row >= 0 && row < getRowCount()) {
             return new Maybe<>(tableContents.get(row));
         }
         else {
