@@ -3,11 +3,9 @@ package flb.components.monthselector;
 import javax.swing.*;
 import javax.swing.border.*;
 import java.awt.*;
+import java.text.*;
 import java.awt.event.ItemListener;
-
-import flb.components.monthselector.listeners.UserSelectsSpecificMonth;
-import flb.components.monthselector.listeners.UserSelectsSpecificYear;
-import flb.components.monthselector.listeners.UserSpinsMonth;
+import flb.components.monthselector.listeners.*;
 import flb.components.editors.MonthChangeListener;
 import flb.util.*;
 
@@ -18,14 +16,17 @@ public class MonthSelectorImpl implements MonthChangeListener {
     private final JButton next;
     private enum Months {January, February, March, April, May, June, July, August, September, October, November, December}
     private final JComboBox<Months> month;
-    private final JFormattedTextField year;
+    private final JFormattedTextField yearField;
     private final ItemListener userSelectsSpecificMonth;
 
     public MonthSelectorImpl() {
         this.datePane = new JPanel();
         this.prev = new JButton("Prev");
         this.month = new JComboBox<>(Months.values());
-        this.year = new JFormattedTextField();
+        NumberFormat yearFormat = NumberFormat.getIntegerInstance();
+        yearFormat.setGroupingUsed(false);
+        yearFormat.setParseIntegerOnly(true);
+        this.yearField = new JFormattedTextField(yearFormat);
         this.next = new JButton("Next");
         this.monthModel = new MonthSelectorModelImpl();
         this.userSelectsSpecificMonth = new UserSelectsSpecificMonth(monthModel);
@@ -37,7 +38,7 @@ public class MonthSelectorImpl implements MonthChangeListener {
         next.addActionListener(new UserSpinsMonth(monthModel));
 
         month.addItemListener(userSelectsSpecificMonth);
-        year.addActionListener(new UserSelectsSpecificYear(monthModel));
+        yearField.addActionListener(new UserSelectsSpecificYear(monthModel));
 
         addMonthChangeListener(this);
 
@@ -45,13 +46,13 @@ public class MonthSelectorImpl implements MonthChangeListener {
     }
 
     protected void layout(){
-        year.setPreferredSize(new Dimension(50,25));
+        yearField.setPreferredSize(new Dimension(50,25));
 
         datePane.setBorder(new CompoundBorder(new LineBorder(Color.BLACK), new EmptyBorder(5,5,5,5)));
         datePane.setLayout(new BoxLayout(datePane, BoxLayout.X_AXIS));
         datePane.add(prev);
         datePane.add(month);
-        datePane.add(year);
+        datePane.add(yearField);
         datePane.add(next);
     }
 
@@ -61,7 +62,7 @@ public class MonthSelectorImpl implements MonthChangeListener {
 
     @Override
     public void update(WhichMonth selectedDate) {
-        year.setText(Integer.toString(monthModel.getYear()));
+        yearField.setText(Integer.toString(monthModel.getYear()));
         month.removeItemListener(userSelectsSpecificMonth);
         month.setSelectedIndex(monthModel.getMonth());
         month.addItemListener(userSelectsSpecificMonth);
@@ -83,7 +84,7 @@ public class MonthSelectorImpl implements MonthChangeListener {
         monthModel.setMonth(monthValue);
     }
 
-    public void setYear(int yearValue) {
+    public void setYearField(int yearValue) {
         monthModel.setYear(yearValue);
     }
 }

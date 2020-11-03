@@ -3,8 +3,7 @@ package flb.components.monthselector.listeners;
 import flb.components.monthselector.MonthSelectorModelImpl;
 
 import javax.swing.*;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
+import java.awt.event.*;
 
 public class UserSelectsSpecificMonth implements ItemListener {
     private MonthSelectorModelImpl monthSelectorModel;
