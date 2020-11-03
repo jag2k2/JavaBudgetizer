@@ -25,6 +25,20 @@ public class WhichMonth extends GregorianCalendar {
                 super.get(Calendar.MONTH) == whichMonthToCompare.get(Calendar.MONTH);
     }
 
+    public String toSQLString() {
+        String yearString = Integer.toString(super.get(Calendar.YEAR));
+        String monthString = String.format("%02d", (1 + super.get(Calendar.MONTH)));
+        return yearString + "-" + monthString;
+    }
+
+    public void setMonth(int monthValue) {
+        super.set(Calendar.MONTH, monthValue);
+    }
+
+    public void setYear(int yearValue) {
+        super.set(Calendar.YEAR, yearValue);
+    }
+
     public void incrementMonth() {
         super.add(Calendar.MONTH, 1);
     }

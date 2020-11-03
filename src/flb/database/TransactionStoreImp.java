@@ -30,7 +30,7 @@ public class TransactionStoreImp implements TransactionStore {
                 "transactions.date LIKE '$yrmo-%' AND transactions.type = '$type' " +
                 "ORDER BY transactions.date ASC, transactions.id ASC";
         String uniquifier = "transactions.id";
-        String dateString = searchMonth.get(Calendar.YEAR) + "-" + (1 + searchMonth.get(Calendar.MONTH));
+        String dateString = searchMonth.toSQLString();
         String type = "banking";
         query = query.replace("$uniquifier", uniquifier);
         query = query.replace("$yrmo", dateString);
@@ -76,7 +76,7 @@ public class TransactionStoreImp implements TransactionStore {
                 "transactions.date LIKE '$yrmo-%' AND transactions.type = '$type' " +
                 "ORDER BY transactions.date ASC, transactions.id ASC";
         String uniquifier = "transactions.reference";
-        String dateString = searchMonth.get(Calendar.YEAR) + "-" + (1 + searchMonth.get(Calendar.MONTH));
+        String dateString = searchMonth.toSQLString();
         String type = "credit";
         query = query.replace("$uniquifier", uniquifier);
         query = query.replace("$yrmo", dateString);

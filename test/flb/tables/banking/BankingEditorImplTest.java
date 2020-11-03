@@ -32,10 +32,10 @@ class BankingEditorImplTest {
 
     @Test
     void refresh() {
-        bankingEditor.refresh(new WhichMonth(2020, Calendar.OCTOBER));
+        bankingEditor.update(new WhichMonth(2020, Calendar.OCTOBER));
         assertEquals(expected, tableAutomator.getTransactions());
 
-        bankingEditor.refresh(new WhichMonth(2020, Calendar.JANUARY));
+        bankingEditor.update(new WhichMonth(2020, Calendar.JANUARY));
         expected.clear();
         assertEquals(expected, tableAutomator.getTransactions());
     }

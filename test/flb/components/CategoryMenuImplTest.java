@@ -22,7 +22,8 @@ class CategoryMenuImplTest {
         TransactionStore transactionStore = new TransactionStoreImp(database);
         BankingEditorImpl bankingEditor = new BankingEditorImpl(transactionStore);
         CreditEditorImpl creditEditor = new CreditEditorImpl(transactionStore);
-        this.categoryMenu = new CategoryMenuImpl(categoryStore, bankingEditor, creditEditor);
+        MonthSelectorImpl monthSelector = new MonthSelectorImpl();
+        this.categoryMenu = new CategoryMenuImpl(categoryStore, bankingEditor, creditEditor, monthSelector);
 
         this.expected = new ArrayList<>();
         for (Category category : TestDatabase.getTestCategories()) {

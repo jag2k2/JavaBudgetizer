@@ -32,7 +32,7 @@ public class CreditEditorImpl implements CreditEditorAutomator, TransactionCateg
         }
     }
 
-    public void refresh(WhichMonth searchDate) {
+    public void update(WhichMonth searchDate) {
         ArrayList<CreditTransaction> creditTransactions = transactionStore.getCreditTransactions(searchDate);
         creditTable.displayAndClearSelection(creditTransactions);
     }

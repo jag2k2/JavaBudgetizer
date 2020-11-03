@@ -27,8 +27,6 @@ public class CategoryManager {
             MainGUI mainGui = new MainGUI(categoryStore);
 
             database.connect();
-            mainGui.layout();
-            mainGui.addListeners();
             mainGui.launch();
         }
     }

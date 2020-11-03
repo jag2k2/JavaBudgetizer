@@ -3,5 +3,5 @@ package flb.tables.interfaces;
 import flb.util.WhichMonth;
 
 public interface MonthChangeListener {
-    void refresh(WhichMonth selectedDate);
+    void update(WhichMonth selectedDate);
 }

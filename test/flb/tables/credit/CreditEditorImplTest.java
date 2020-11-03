@@ -34,10 +34,10 @@ class CreditEditorImplTest {
 
     @Test
     void refresh() {
-        creditEditor.refresh(new WhichMonth(2020, Calendar.OCTOBER));
+        creditEditor.update(new WhichMonth(2020, Calendar.OCTOBER));
         assertEquals(expected, tableAutomator.getTransactions());
 
-        creditEditor.refresh(new WhichMonth(2020, Calendar.JANUARY));
+        creditEditor.update(new WhichMonth(2020, Calendar.JANUARY));
         expected.clear();
         assertEquals(expected, tableAutomator.getTransactions());
     }

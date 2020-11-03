@@ -1,6 +1,7 @@
 package flb.application.main.listeners;
 
 import static org.junit.jupiter.api.Assertions.*;
+import flb.components.MonthSelectorImpl;
 import flb.database.*;
 import flb.database.interfaces.TransactionStore;
 import flb.tables.banking.*;
@@ -22,10 +23,14 @@ class UserCategorizesBankingTransactionTest {
         database.connect();
         this.transactionStore = new TransactionStoreImp(database);
         this.bankingEditor = new BankingEditorImpl(transactionStore);
-        bankingEditor.refresh(new WhichMonth(2020,Calendar.OCTOBER));
+        bankingEditor.update(new WhichMonth(2020,Calendar.OCTOBER));
 
         this.testButton = new JButton();
-        testButton.addActionListener(new UserCategorizesBankingTransaction(bankingEditor));
+        MonthSelectorImpl monthSelector = new MonthSelectorImpl();
+        monthSelector.setYear(2020);
+        monthSelector.setMonth(Calendar.OCTOBER);
+
+        testButton.addActionListener(new UserCategorizesBankingTransaction(bankingEditor, monthSelector));
 
     }
 

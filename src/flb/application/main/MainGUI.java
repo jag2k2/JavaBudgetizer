@@ -7,13 +7,12 @@ import flb.tables.banking.*;
 import flb.tables.credit.*;
 import flb.tables.goal.*;
 import flb.components.*;
-import flb.util.WhichMonth;
 import org.jdesktop.swingx.*;
 import java.awt.*;
 
 public class MainGUI {
     private final JFrame frame;
-    private final MonthSelectorImp monthSelector;
+    private final MonthSelectorImpl monthSelector;
     private final JTextField balance;
     private final JTable tableForGoals;
     private final GoalTableImp goalTable;
@@ -23,17 +22,20 @@ public class MainGUI {
 
     public MainGUI(TransactionStore transactionStore, CategoryStore categoryStore) {
         this.frame = new JFrame();
-        this.monthSelector = new MonthSelectorImp();
+        this.monthSelector = new MonthSelectorImpl();
         this.bankingEditor = new BankingEditorImpl(transactionStore);
         this.creditEditor = new CreditEditorImpl(transactionStore);
         GoalTableModelImp goalModel = new GoalTableModelImp();
         this.tableForGoals = new JTable(goalModel);
         this.goalTable = new GoalTableImp(tableForGoals, goalModel);
         this.balance = new JTextField();
-        this.categoryMenuImpl = new CategoryMenuImpl(categoryStore, bankingEditor, creditEditor);
+        this.categoryMenuImpl = new CategoryMenuImpl(categoryStore, bankingEditor, creditEditor, monthSelector);
+
+        addListeners();
+        layout();
     }
 
-    public void layout(){
+    protected void layout(){
         Border blackBorder = new LineBorder(Color.BLACK);
         Border greyBorder = new LineBorder(Color.LIGHT_GRAY);
         Border margin = BorderFactory.createEmptyBorder(5,5,5,5);
@@ -113,7 +115,7 @@ public class MainGUI {
         frame.pack();
     }
 
-    public void addListeners() {
+    protected void addListeners() {
         bankingEditor.addCategorizingListener(categoryMenuImpl);
         creditEditor.addCategorizingListener(categoryMenuImpl);
 
@@ -121,9 +123,7 @@ public class MainGUI {
         monthSelector.addMonthChangeListener(creditEditor);
     }
     public void launch(){
-        WhichMonth selectedMonth = monthSelector.getSelectedDate();
-        bankingEditor.refresh(selectedMonth);
-        creditEditor.refresh(selectedMonth);
+        monthSelector.setToCurrentMonth();
         frame.setVisible(true);
     }
 }

@@ -21,9 +21,12 @@ public class MainGUI {
         addButton = new JButton("Add");
         deleteButton = new JButton("Delete");
         clearAmountButton = new JButton("Clear");
+
+        addListeners();
+        layout();
     }
 
-    public void layout(){
+    protected void layout(){
         JPanel northPanel = new JPanel();
         northPanel.setLayout(new BoxLayout(northPanel, BoxLayout.X_AXIS));
         northPanel.add(nameFilter);
@@ -48,13 +51,14 @@ public class MainGUI {
         frame.pack();
     }
 
-    public void addListeners() {
+    protected void addListeners() {
         categoryEditor.addCategoryEditingListeners(nameFilter);
         addButton.addActionListener(new UserAddsCategoryListener(categoryEditor, nameFilter));
         deleteButton.addActionListener(new UserDeletesCategoryListener(categoryEditor, nameFilter, frame));
         clearAmountButton.addActionListener(new UserClearsGoalListener(categoryEditor, nameFilter));
         nameFilter.getDocument().addDocumentListener(new UserFiltersCategoriesListener(categoryEditor, nameFilter));
     }
+
     public void launch(){
         categoryEditor.refreshAndClearSelection("");
         frame.setVisible(true);

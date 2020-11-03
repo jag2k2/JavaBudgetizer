@@ -14,12 +14,14 @@ public class CategoryMenuImpl {
     private final CategoryStore categoryStore;
     private final BankingEditorImpl bankingEditor;
     private final CreditEditorImpl creditEditor;
+    private final MonthSelectorImpl monthSelector;
 
-    public CategoryMenuImpl(CategoryStore categoryStore, BankingEditorImpl bankingEditor, CreditEditorImpl creditEditor) {
+    public CategoryMenuImpl(CategoryStore categoryStore, BankingEditorImpl bankingEditor, CreditEditorImpl creditEditor, MonthSelectorImpl monthSelector) {
         this.mainMenu = new JPopupMenu();
         this.categoryStore = categoryStore;
         this.bankingEditor = bankingEditor;
         this.creditEditor = creditEditor;
+        this.monthSelector = monthSelector;
     }
 
     public JPopupMenu getPopup() {
@@ -39,10 +41,10 @@ public class CategoryMenuImpl {
             String categoryName = category.getName();
             JMenuItem categoryItem = new JMenuItem();
             if (activeTable.equals("banking")){
-                categoryItem.addActionListener(new UserCategorizesBankingTransaction(bankingEditor));
+                categoryItem.addActionListener(new UserCategorizesBankingTransaction(bankingEditor, monthSelector));
             }
             else if (activeTable.equals("credit")){
-                categoryItem.addActionListener(new UserCategorizesCreditTransaction(creditEditor));
+                categoryItem.addActionListener(new UserCategorizesCreditTransaction(creditEditor, monthSelector));
             }
             if(categoryName.contains("::")){
                 String[] elements = categoryName.split("::");

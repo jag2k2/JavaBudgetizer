@@ -1,15 +1,16 @@
 package flb.application.main.listeners;
 
 import java.awt.event.*;
-import java.util.Calendar;
+import flb.components.MonthSelectorImpl;
 import flb.tables.credit.*;
-import flb.util.WhichMonth;
 
 public class UserCategorizesCreditTransaction implements ActionListener {
     private final CreditEditorImpl creditEditor;
+    private final MonthSelectorImpl monthSelector;
 
-    public UserCategorizesCreditTransaction(CreditEditorImpl creditEditor){
+    public UserCategorizesCreditTransaction(CreditEditorImpl creditEditor, MonthSelectorImpl monthSelector){
         this.creditEditor = creditEditor;
+        this.monthSelector = monthSelector;
     }
 
     @Override
@@ -19,6 +20,6 @@ public class UserCategorizesCreditTransaction implements ActionListener {
         int row = Integer.parseInt(elements[0]);
         String categoryName = elements[1];
         creditEditor.userCategorizesTransaction(row, categoryName);
-        creditEditor.refresh(new WhichMonth(2020, Calendar.OCTOBER));
+        creditEditor.update(monthSelector.getSelectedMonth());
     }
 }

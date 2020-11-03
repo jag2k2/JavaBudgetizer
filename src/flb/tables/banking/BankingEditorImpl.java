@@ -36,7 +36,7 @@ public class BankingEditorImpl implements BankingEditorAutomator, TransactionCat
         }
     }
 
-    public void refresh(WhichMonth selectedDate) {
+    public void update(WhichMonth selectedDate) {
         ArrayList<BankingTransaction> bankingTransactions = transactionStore.getBankingTransactions(selectedDate);
         bankingTable.display(bankingTransactions);
     }

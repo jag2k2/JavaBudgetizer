@@ -1,15 +1,16 @@
 package flb.application.main.listeners;
 
 import java.awt.event.*;
-import java.util.Calendar;
+import flb.components.MonthSelectorImpl;
 import flb.tables.banking.*;
-import flb.util.WhichMonth;
 
 public class UserCategorizesBankingTransaction implements ActionListener {
     private final BankingEditorImpl bankingEditor;
+    private final MonthSelectorImpl monthSelector;
 
-    public UserCategorizesBankingTransaction(BankingEditorImpl bankingEditor){
+    public UserCategorizesBankingTransaction(BankingEditorImpl bankingEditor, MonthSelectorImpl monthSelector){
         this.bankingEditor = bankingEditor;
+        this.monthSelector = monthSelector;
     }
 
     @Override
@@ -19,6 +20,6 @@ public class UserCategorizesBankingTransaction implements ActionListener {
         int row = Integer.parseInt(elements[0]);
         String categoryName = elements[1];
         bankingEditor.userCategorizesTransaction(row, categoryName);
-        bankingEditor.refresh(new WhichMonth(2020, Calendar.OCTOBER));
+        bankingEditor.update(monthSelector.getSelectedMonth());
     }
 }

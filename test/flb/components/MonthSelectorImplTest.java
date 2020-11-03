@@ -1,18 +1,16 @@
 package flb.components;
 
 import static org.junit.jupiter.api.Assertions.*;
-
-import flb.util.WhichMonth;
 import org.junit.jupiter.api.*;
-
 import java.util.*;
+import flb.util.*;
 
-class MonthSelectorImpTest {
-    private MonthSelectorImp monthSelector;
+class MonthSelectorImplTest {
+    private MonthSelectorImpl monthSelector;
 
     @BeforeEach
     void setUp() {
-        this.monthSelector = new MonthSelectorImp();
+        this.monthSelector = new MonthSelectorImpl();
     }
 
     @Test
@@ -20,7 +18,7 @@ class MonthSelectorImpTest {
         Calendar now = new GregorianCalendar();
         WhichMonth expected = new WhichMonth(now.get(Calendar.YEAR), now.get(Calendar.MONTH));
 
-        WhichMonth actual = monthSelector.getSelectedDate();
+        WhichMonth actual = monthSelector.getSelectedMonth();
 
         assertEquals(expected, actual);
     }

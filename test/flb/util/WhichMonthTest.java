@@ -14,6 +14,15 @@ class WhichMonthTest {
     }
 
     @Test
+    void testSQLString() {
+        WhichMonth whichMonth = new WhichMonth(2020, 0);
+        assertEquals("2020-01", whichMonth.toSQLString());
+
+        whichMonth = new WhichMonth(2020, 11);
+        assertEquals("2020-12", whichMonth.toSQLString());
+    }
+
+    @Test
     void testEquals() {
         WhichMonth expected = new WhichMonth(2020,1);
         WhichMonth monthTest = new WhichMonth(2020,1);
@@ -52,6 +61,26 @@ class WhichMonthTest {
         monthTest = new WhichMonth(2021,0);
 
         monthTest.decrementMonth();
+        assertEquals(expected, monthTest);
+    }
+
+    @Test
+    void setMonth() {
+        WhichMonth expected = new WhichMonth(2020,5);
+        WhichMonth monthTest = new WhichMonth(2020,0);
+
+        monthTest.setMonth(5);
+
+        assertEquals(expected, monthTest);
+    }
+
+    @Test
+    void setYear() {
+        WhichMonth expected = new WhichMonth(2025,0);
+        WhichMonth monthTest = new WhichMonth(2020,0);
+
+        monthTest.setYear(2025);
+
         assertEquals(expected, monthTest);
     }
 }
