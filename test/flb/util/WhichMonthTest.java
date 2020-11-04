@@ -3,14 +3,12 @@ package flb.util;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
-
-
 class WhichMonthTest {
 
     @Test
     void testToString() {
         WhichMonth whichMonth = new WhichMonth(2020, 0);
-        assertEquals("2020, January", whichMonth.toString());
+        assertEquals("2020-January", whichMonth.toString());
     }
 
     @Test

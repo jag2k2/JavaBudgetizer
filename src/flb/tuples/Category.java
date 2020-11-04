@@ -12,10 +12,6 @@ public class Category {
         this.exclude = exclude;
     }
 
-    public String toString() {
-        return (name + " " + default_goal + " " + exclude);
-    }
-
     public String getName() {
         return name;
     }
@@ -32,6 +28,11 @@ public class Category {
 
     public void setDefaultGoal(Float newDefaultGoal) {
         this.default_goal = Math.max(newDefaultGoal, 0);
+    }
+
+    @Override
+    public String toString() {
+        return (name + " | " + default_goal + " | " + exclude);
     }
 
     @Override

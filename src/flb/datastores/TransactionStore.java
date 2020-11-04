@@ -1,4 +1,4 @@
-package flb.database;
+package flb.datastores;
 
 import flb.tuples.BankingTransaction;
 import flb.tuples.CreditTransaction;

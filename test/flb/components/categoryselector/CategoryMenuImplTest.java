@@ -2,7 +2,7 @@ package flb.components.categoryselector;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import flb.database.*;
+import flb.datastores.*;
 import flb.components.editors.BankingEditorImpl;
 import flb.components.editors.TransactionCategorizer;
 import flb.tuples.*;
@@ -13,7 +13,7 @@ class CategoryMenuImplTest {
     private TestDatabase database;
     private CategoryMenuImpl categoryMenu;
     private MenuTester menuTester;
-    private ArrayList<String> expected;
+    private List<String> expected;
 
     @BeforeEach
     void setUp() {

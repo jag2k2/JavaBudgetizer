@@ -1,4 +1,4 @@
-package flb.database;
+package flb.datastores;
 
 import org.junit.jupiter.api.*;
 import java.sql.*;
@@ -41,6 +41,10 @@ class TestDatabaseTest {
             results.next();
             String resultTable = results.getString(1);
             assertEquals("categories", resultTable);
+
+            results.next();
+            resultTable = results.getString(1);
+            assertEquals("goals", resultTable);
 
             results.next();
             resultTable = results.getString(1);

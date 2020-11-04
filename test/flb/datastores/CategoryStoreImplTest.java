@@ -1,4 +1,4 @@
-package flb.database;
+package flb.datastores;
 
 import java.util.*;
 
@@ -7,24 +7,24 @@ import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class CategoryStoreImplTest {
-    private TestDatabase dataBase;
+    private TestDatabase database;
     private CategoryStore categoryStore;
-    ArrayList<Category> expected;
-    ArrayList<Category> actual;
+    List<Category> expected;
+    List<Category> actual;
 
     @BeforeEach
     void setUp(){
         expected = new ArrayList<>();
         actual = new ArrayList<>();
 
-        dataBase = new TestDatabase();
-        dataBase.connect();
-        categoryStore = new CategoryStoreImpl(dataBase);
+        database = new TestDatabase();
+        database.connect();
+        categoryStore = new CategoryStoreImpl(database);
     }
 
     @AfterEach
     void tearDown() {
-        dataBase.close();
+        database.close();
     }
 
     @Test
@@ -51,7 +51,7 @@ class CategoryStoreImplTest {
 
     @Test
     void categoryExist() {
-        Boolean found = categoryStore.categoryExist("Name1");
+        boolean found = categoryStore.categoryExist("Name1");
         assertTrue(found);
 
         found = categoryStore.categoryExist("NameNeverExist");

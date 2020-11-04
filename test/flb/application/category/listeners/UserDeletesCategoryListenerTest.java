@@ -3,11 +3,11 @@ package flb.application.category.listeners;
 import static org.junit.jupiter.api.Assertions.*;
 
 import flb.components.editors.CategoryEditorNoDialog;
-import flb.database.CategoryStore;
+import flb.datastores.CategoryStore;
 import flb.components.editors.CategoryEditorImpl;
 import flb.components.editors.tables.CategoryTableTester;
 import flb.tuples.*;
-import flb.database.*;
+import flb.datastores.*;
 import org.junit.jupiter.api.*;
 import javax.swing.*;
 import java.util.*;

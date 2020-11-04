@@ -2,7 +2,7 @@ package flb.components.editors.tables.models;
 
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.*;
-import flb.database.TestDatabase;
+import flb.datastores.TestDatabase;
 import flb.tuples.*;
 import flb.util.*;
 

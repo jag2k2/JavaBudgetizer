@@ -2,34 +2,30 @@ package flb.application.main;
 
 import javax.swing.*;
 import javax.swing.border.*;
-
-import flb.components.monthselector.MonthSelectorImpl;
-import flb.database.CategoryStore;
-import flb.database.TransactionStore;
-import flb.components.editors.BankingEditorImpl;
-import flb.components.editors.CreditEditorImpl;
-import flb.components.editors.tables.GoalTableImp;
-import flb.components.editors.tables.models.GoalTableModelImp;
+import flb.application.category.*;
+import flb.components.monthselector.*;
+import flb.datastores.*;
+import flb.components.editors.*;
 import org.jdesktop.swingx.*;
 import java.awt.*;
+import java.awt.event.*;
 
 public class MainGUI {
     private final JFrame frame;
     private final MonthSelectorImpl monthSelector;
     private final JTextField balance;
-    private final JTable tableForGoals;
-    private final GoalTableImp goalTable;
     private final BankingEditorImpl bankingEditor;
     private final CreditEditorImpl creditEditor;
+    private final GoalEditorImpl goalEditor;
+    private final GoalStore goalStore;
 
-    public MainGUI(TransactionStore transactionStore, CategoryStore categoryStore) {
+    public MainGUI(TransactionStore transactionStore, CategoryStore categoryStore, GoalStore goalStore) {
+        this.goalStore = goalStore;
         this.frame = new JFrame();
         this.monthSelector = new MonthSelectorImpl();
         this.bankingEditor = new BankingEditorImpl(transactionStore, categoryStore);
         this.creditEditor = new CreditEditorImpl(transactionStore, categoryStore);
-        GoalTableModelImp goalModel = new GoalTableModelImp();
-        this.tableForGoals = new JTable(goalModel);
-        this.goalTable = new GoalTableImp(tableForGoals, goalModel);
+        this.goalEditor = new GoalEditorImpl(goalStore);
         this.balance = new JTextField();
 
         addListeners();
@@ -56,14 +52,6 @@ public class MainGUI {
         northRightPanel.add(balancePane);
         northRightPanel.add(Box.createRigidArea(new Dimension(34,5)));
 
-        tableForGoals.setPreferredScrollableViewportSize(new Dimension(395,-1));
-        JScrollPane goalScroller = new JScrollPane(tableForGoals);
-        goalScroller.getViewport().setViewSize(new Dimension(10,10));
-        goalScroller.setMaximumSize(new Dimension(10,10));
-        goalScroller.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        goalScroller.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        goalScroller.setBorder(new CompoundBorder(greyBorder, margin));
-
         JTabbedPane tabbedPane = new JTabbedPane();
         tabbedPane.setTabPlacement(JTabbedPane.RIGHT);
         tabbedPane.addTab(null, bankingEditor.getPane());
@@ -79,7 +67,7 @@ public class MainGUI {
 
         JPanel leftPane = new JPanel(new BorderLayout());
         leftPane.add(BorderLayout.NORTH, northLeftPanel);
-        leftPane.add(BorderLayout.CENTER, goalScroller);
+        leftPane.add(BorderLayout.CENTER, goalEditor.getPane());
 
         JPanel rightPane = new JPanel(new BorderLayout());
         rightPane.add(BorderLayout.NORTH, northRightPanel);
@@ -98,7 +86,20 @@ public class MainGUI {
 
         JMenu budgetMenu = new JMenu("Budget");
         JMenuItem defaultGoalsMenuItem = new JMenuItem("Create Default Goals");
+        defaultGoalsMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                goalStore.createDefaultGoals(monthSelector.getSelectedMonth());
+            }
+        });
         JMenuItem manageCategoriesMenuItem = new JMenuItem("Manage Categories");
+        manageCategoriesMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String[] args = {};
+                CategoryManager.main(args);
+            }
+        });
         budgetMenu.add(defaultGoalsMenuItem);
         budgetMenu.add(manageCategoriesMenuItem);
 

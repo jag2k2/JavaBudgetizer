@@ -1,6 +1,8 @@
-package flb.database;
+package flb.datastores;
 
 import flb.tuples.*;
+import flb.util.WhichMonth;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -20,7 +22,6 @@ public class TestDatabase extends AbstractDatabase {
             if(tables.next()) {
                 super.executeUpdate("DROP TABLE categories");
             }
-
         } catch (Exception ex) {ex.printStackTrace();}
         String update = "CREATE TABLE test.categories " +
                 "( `id` INT NOT NULL AUTO_INCREMENT, " +
@@ -36,6 +37,30 @@ public class TestDatabase extends AbstractDatabase {
                 "('Name3', '300', FALSE), " +
                 "('Test1::sub1', NULL, FALSE), " +
                 "('Test1::sub2', 500, TRUE)";
+        super.executeUpdate(update);
+
+        tables = super.executeQuery("SHOW TABLES LIKE 'goals'");
+        try {
+            if(tables.next()) {
+                super.executeUpdate("DROP TABLE goals");
+            }
+        } catch (Exception ex) {ex.printStackTrace();}
+
+        update = "CREATE TABLE test.goals " +
+                "(`id` INT NOT NULL AUTO_INCREMENT, " +
+                "`year_mo` VARCHAR(255) NOT NULL , " +
+                "`category_id` INT NOT NULL DEFAULT -1 , " +
+                "`amount` FLOAT(9,2) NOT NULL ," +
+                "PRIMARY KEY (`id`)) ENGINE = InnoDB";
+        super.executeUpdate(update);
+
+        update = "INSERT INTO goals (year_mo, category_id, amount) VALUES " +
+                "('2020-09', '1', 50), " +
+                "('2020-09', '2', 55), " +
+                "('2020-09', '3', 60), " +
+                "('2020-10', '2', 65), " +
+                "('2020-10', '3', 70), " +
+                "('2020-10', '5', 75)";
         super.executeUpdate(update);
 
         tables = super.executeQuery("SHOW TABLES LIKE 'transactions'");
@@ -74,6 +99,26 @@ public class TestDatabase extends AbstractDatabase {
         testCategories.add(new Category("Test1::sub1", Float.NaN, false));
         testCategories.add(new Category("Test1::sub2", 500, true));
         return testCategories;
+    }
+
+    static public ArrayList<Goal> getTestGoals() {
+        ArrayList<Goal> testGoals = new ArrayList<>();
+
+        WhichMonth whichMonth0 = new WhichMonth(2020, Calendar.SEPTEMBER);
+        WhichMonth whichMonth1 = new WhichMonth(2020, Calendar.OCTOBER);
+        Category category1 = getTestCategories().get(0);
+        Category category2 = getTestCategories().get(1);
+        Category category3 = getTestCategories().get(2);
+        Category category5 = getTestCategories().get(4);
+
+        testGoals.add(new Goal(whichMonth0, category1, 50));
+        testGoals.add(new Goal(whichMonth0, category2, 55));
+        testGoals.add(new Goal(whichMonth0, category3, 60));
+        testGoals.add(new Goal(whichMonth1, category2, 65));
+        testGoals.add(new Goal(whichMonth1, category3, 70));
+        testGoals.add(new Goal(whichMonth1, category5, 75));
+
+        return testGoals;
     }
 
     static public ArrayList<BankingTransaction> getTestBankingTransactions() {

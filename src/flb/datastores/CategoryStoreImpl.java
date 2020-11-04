@@ -1,4 +1,4 @@
-package flb.database;
+package flb.datastores;
 
 import flb.tuples.*;
 import java.util.*;
@@ -51,6 +51,16 @@ public class CategoryStoreImpl implements CategoryStore {
         dataStore.executeUpdate(update);
     }
 
+    public boolean categoryExist(String name) {
+        String query = "SELECT * FROM categories WHERE name = '$name'";
+        query = query.replace("$name", name);
+
+        ResultSet results = dataStore.executeQuery(query);
+        ArrayList<Category> categories = castResultsToCategories(results);
+
+        return !categories.isEmpty();
+    }
+
     public ArrayList<Category> getCategories(String nameFilter) {
         String query = "SELECT name, default_goal_amt, exclude FROM categories $condition ORDER BY name";
         String condition = "WHERE name LIKE '%$name%'";
@@ -61,16 +71,6 @@ public class CategoryStoreImpl implements CategoryStore {
         ResultSet results = dataStore.executeQuery(query);
 
         return castResultsToCategories(results);
-    }
-
-    public Boolean categoryExist(String name) {
-        String query = "SELECT * FROM categories WHERE name = '$name'";
-        query = query.replace("$name", name);
-
-        ResultSet results = dataStore.executeQuery(query);
-        ArrayList<Category> categories = castResultsToCategories(results);
-
-        return !categories.isEmpty();
     }
 
     private ArrayList<Category> castResultsToCategories(ResultSet results) {

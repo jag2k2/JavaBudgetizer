@@ -1,10 +1,8 @@
 package flb.components.editors;
 
-import flb.components.categoryselector.CategoryMenuImpl;
-import flb.database.CategoryStore;
-import flb.database.TransactionStore;
-import flb.components.editors.tables.CreditTableImpl;
-import flb.components.editors.tables.CreditTableTester;
+import flb.components.categoryselector.*;
+import flb.datastores.*;
+import flb.components.editors.tables.*;
 import flb.tuples.*;
 import flb.util.*;
 import javax.swing.*;
@@ -12,7 +10,7 @@ import java.util.*;
 
 public class CreditEditorImpl implements CreditEditorTester, TransactionCategorizer, MonthChangeListener, StoreChangeListener {
     private final TransactionStore transactionStore;
-    private final CreditTableImpl creditTable;
+    private final CreditTable creditTable;
     private final CreditTableTester tableAutomator;
     private final ArrayList<StoreChangeListener> storeChangeListeners;
 

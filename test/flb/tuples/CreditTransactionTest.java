@@ -21,31 +21,31 @@ class CreditTransactionTest {
 
     @Test
     void testToString() {
-        String result = creditTransaction.toString();
-        String expected = "EE6A3 2020-10-3 Amazon 100.0 Misc";
-        assertEquals(expected, result);
+        String actual = creditTransaction.toString();
+        String expected = "EE6A3 | 2020-10-3 | Amazon | 100.0 | Misc";
+        assertEquals(expected, actual);
     }
 
     @Test
     void testEquals() {
-        CreditTransaction compareTransaction = new CreditTransaction("EE6A3",
+        CreditTransaction transactionToCompare = new CreditTransaction("EE6A3",
                 date, "Amazon", 100F, "Misc");
-        assertEquals(compareTransaction, creditTransaction);
+        assertEquals(transactionToCompare, creditTransaction);
 
-        compareTransaction = new CreditTransaction("EE6A4",
+        transactionToCompare = new CreditTransaction("EE6A4",
                 date, "Amazon", 100F, "Misc");
-        assertNotEquals(compareTransaction, creditTransaction);
+        assertNotEquals(transactionToCompare, creditTransaction);
 
-        compareTransaction = new CreditTransaction("EE6A3",
+        transactionToCompare = new CreditTransaction("EE6A3",
                 date, "HEB", 100F, "Misc");
-        assertNotEquals(compareTransaction, creditTransaction);
+        assertNotEquals(transactionToCompare, creditTransaction);
 
-        compareTransaction = new CreditTransaction("EE6A3",
+        transactionToCompare = new CreditTransaction("EE6A3",
                 date, "Amazon", 200F, "Misc");
-        assertNotEquals(compareTransaction, creditTransaction);
+        assertNotEquals(transactionToCompare, creditTransaction);
 
-        compareTransaction = new CreditTransaction("EE6A3",
+        transactionToCompare = new CreditTransaction("EE6A3",
                 date, "Amazon", 100F, "Groceries");
-        assertNotEquals(compareTransaction, creditTransaction);
+        assertNotEquals(transactionToCompare, creditTransaction);
     }
 }

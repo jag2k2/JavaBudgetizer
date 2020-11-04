@@ -1,6 +1,6 @@
 package flb.application.main;
 
-import flb.database.*;
+import flb.datastores.*;
 import javax.swing.*;
 
 public class FilthyLucreBudgetizer {
@@ -21,10 +21,11 @@ public class FilthyLucreBudgetizer {
     static class InitializeJob implements Runnable {
         @Override
         public void run() {
-            AbstractDatabase database = new ProductionDatabase();
+            AbstractDatabase database = new TestDatabase();
             TransactionStore transactionStore = new TransactionStoreImp(database);
             CategoryStore categoryStore = new CategoryStoreImpl(database);
-            MainGUI mainGui = new MainGUI(transactionStore, categoryStore);
+            GoalStore goalStore = new GoalStoreImpl(database);
+            MainGUI mainGui = new MainGUI(transactionStore, categoryStore, goalStore);
 
             database.connect();
             mainGui.launch();

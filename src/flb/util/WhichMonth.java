@@ -13,7 +13,7 @@ public class WhichMonth extends GregorianCalendar {
     public String toString() {
         int year = super.get(Calendar.YEAR);
         String monthString = new DateFormatSymbols().getMonths()[super.get(Calendar.MONTH)];
-        return year + ", " + monthString;
+        return year + "-" + monthString;
     }
 
     @Override

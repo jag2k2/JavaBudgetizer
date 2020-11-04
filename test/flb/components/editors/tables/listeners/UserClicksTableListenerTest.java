@@ -3,7 +3,7 @@ package flb.components.editors.tables.listeners;
 import flb.components.categoryselector.CategoryMenuImpl;
 import flb.components.categoryselector.MenuDisplayer;
 import flb.components.categoryselector.MenuTester;
-import flb.database.*;
+import flb.datastores.*;
 import flb.components.editors.BankingEditorImpl;
 import flb.components.editors.TransactionCategorizer;
 import flb.tuples.*;

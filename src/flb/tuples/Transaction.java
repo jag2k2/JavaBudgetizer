@@ -49,9 +49,9 @@ abstract public class Transaction {
 
     @Override
     public String toString() {
-        return (reference + " " +
-                date.get(Calendar.YEAR) + "-" + date.get(Calendar.MONTH) + "-" + date.get(Calendar.DAY_OF_MONTH) + " "
-                + description + " " + amount + " " + categoryName);
+        return (reference + " | " +
+                date.get(Calendar.YEAR) + "-" + date.get(Calendar.MONTH) + "-" + date.get(Calendar.DAY_OF_MONTH) + " | "
+                + description + " | " + amount + " | " + categoryName);
     }
 
     @Override

@@ -2,7 +2,7 @@ package flb.components.editors;
 
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.*;
-import flb.database.*;
+import flb.datastores.*;
 import flb.components.editors.tables.*;
 import flb.tuples.*;
 import flb.util.*;
@@ -12,7 +12,7 @@ class BankingEditorImplTest {
     private TestDatabase database;
     private BankingEditorImpl bankingEditor;
     private BankingTableTester tableAutomator;
-    private ArrayList<BankingTransaction> expected;
+    private List<BankingTransaction> expected;
 
     @BeforeEach
     void setUp() {

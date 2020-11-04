@@ -1,4 +1,4 @@
-package flb.database;
+package flb.datastores;
 
 import flb.util.WhichMonth;
 import flb.tuples.*;

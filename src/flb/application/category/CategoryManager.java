@@ -1,8 +1,8 @@
 package flb.application.category;
 
 import javax.swing.*;
-import flb.database.*;
-import flb.database.CategoryStore;
+import flb.datastores.*;
+import flb.datastores.CategoryStore;
 
 public class CategoryManager {
 

@@ -6,7 +6,7 @@ import java.util.*;
 import flb.components.editors.tables.listeners.UserEditsExcludesListener;
 import flb.components.editors.tables.listeners.UserEditsGoalAmountListener;
 import flb.components.editors.tables.listeners.UserRenamesSelectionListener;
-import flb.database.CategoryStore;
+import flb.datastores.CategoryStore;
 import flb.components.editors.tables.CategoryTable;
 import flb.components.editors.tables.CategoryTableTester;
 import flb.components.editors.tables.CategoryTableImpl;

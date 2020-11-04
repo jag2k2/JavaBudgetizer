@@ -20,7 +20,7 @@ public class BankingTransaction extends Transaction{
 
     @Override
     public String toString() {
-        return super.toString() + " " + balance;
+        return super.toString() + " | " + balance;
     }
 
     @Override

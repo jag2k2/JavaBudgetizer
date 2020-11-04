@@ -2,11 +2,11 @@ package flb.components.editors.tables.listeners;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import flb.database.CategoryStore;
+import flb.datastores.CategoryStore;
 import flb.components.editors.CategoryEditorImpl;
 import flb.components.editors.tables.CategoryTableTester;
 import flb.tuples.*;
-import flb.database.*;
+import flb.datastores.*;
 import org.junit.jupiter.api.*;
 import javax.swing.*;
 import java.util.*;

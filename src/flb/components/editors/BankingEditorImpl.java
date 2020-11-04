@@ -1,11 +1,8 @@
 package flb.components.editors;
 
-import flb.components.categoryselector.CategoryMenuImpl;
-import flb.database.CategoryStore;
-import flb.database.TransactionStore;
-import flb.components.editors.tables.BankingTable;
-import flb.components.editors.tables.BankingTableImpl;
-import flb.components.editors.tables.BankingTableTester;
+import flb.components.categoryselector.*;
+import flb.datastores.*;
+import flb.components.editors.tables.*;
 import flb.tuples.*;
 import flb.util.*;
 import javax.swing.*;

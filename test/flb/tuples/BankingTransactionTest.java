@@ -19,41 +19,41 @@ class BankingTransactionTest {
 
     @Test
     void testToString() {
-        String result = bankingTransaction.toString();
-        String expected = "EE6A3 2020-10-3 Amazon 100.0 Misc 1000.0";
-        assertEquals(expected, result);
+        String actual = bankingTransaction.toString();
+        String expected = "EE6A3 | 2020-10-3 | Amazon | 100.0 | Misc | 1000.0";
+        assertEquals(expected, actual);
     }
 
     @Test
     void testEquals() {
-        BankingTransaction compareTransaction = new BankingTransaction("EE6A3",
+        BankingTransaction transactionToCompare = new BankingTransaction("EE6A3",
                 date, "Amazon", 100F,
                 "Misc", 1000F);
-        assertEquals(compareTransaction, bankingTransaction);
+        assertEquals(transactionToCompare, bankingTransaction);
 
-        compareTransaction = new BankingTransaction("EE6A4",
+        transactionToCompare = new BankingTransaction("EE6A4",
                 date, "Amazon", 100F,
                 "Misc", 1000F);
-        assertNotEquals(compareTransaction, bankingTransaction);
+        assertNotEquals(transactionToCompare, bankingTransaction);
 
-        compareTransaction = new BankingTransaction("EE6A3",
+        transactionToCompare = new BankingTransaction("EE6A3",
                 date, "HEB", 100F,
                 "Misc", 1000F);
-        assertNotEquals(compareTransaction, bankingTransaction);
+        assertNotEquals(transactionToCompare, bankingTransaction);
 
-        compareTransaction = new BankingTransaction("EE6A3",
+        transactionToCompare = new BankingTransaction("EE6A3",
                 date, "Amazon", 200F,
                 "Misc", 1000F);
-        assertNotEquals(compareTransaction, bankingTransaction);
+        assertNotEquals(transactionToCompare, bankingTransaction);
 
-        compareTransaction = new BankingTransaction("EE6A3",
+        transactionToCompare = new BankingTransaction("EE6A3",
                 date, "Amazon", 100F,
                 "Groceries", 1000F);
-        assertNotEquals(compareTransaction, bankingTransaction);
+        assertNotEquals(transactionToCompare, bankingTransaction);
 
-        compareTransaction = new BankingTransaction("EE6A3",
+        transactionToCompare = new BankingTransaction("EE6A3",
                 date, "Amazon", 100F,
                 "Misc", 2000F);
-        assertNotEquals(compareTransaction, bankingTransaction);
+        assertNotEquals(transactionToCompare, bankingTransaction);
     }
 }

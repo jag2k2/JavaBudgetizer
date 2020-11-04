@@ -1,7 +1,7 @@
 package flb.components.categoryselector;
 
 import flb.components.categoryselector.listeners.UserCategorizesTransaction;
-import flb.database.CategoryStore;
+import flb.datastores.CategoryStore;
 import flb.components.editors.TransactionCategorizer;
 import flb.tuples.*;
 import javax.swing.*;

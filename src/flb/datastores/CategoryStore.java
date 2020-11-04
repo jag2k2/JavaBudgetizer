@@ -1,4 +1,4 @@
-package flb.database;
+package flb.datastores;
 
 import flb.tuples.Category;
 
@@ -11,5 +11,5 @@ public interface CategoryStore {
     void toggleExclusion(String name);
     void renameCategory(String oldName, String newName);
     ArrayList<Category> getCategories(String nameFilter);
-    Boolean categoryExist(String name);
+    boolean categoryExist(String name);
 }

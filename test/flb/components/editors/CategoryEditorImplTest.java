@@ -2,7 +2,7 @@ package flb.components.editors;
 
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.*;
-import flb.database.*;
+import flb.datastores.*;
 import flb.components.editors.tables.*;
 import javax.swing.*;
 import java.util.*;
@@ -14,7 +14,7 @@ class CategoryEditorImplTest {
     private CategoryTableTester tableAutomator;
     private TestDatabase database;
     private CategoryStore categoryStore;
-    private ArrayList<Category> expected;
+    private List<Category> expected;
 
     @BeforeEach
     void setUp() {

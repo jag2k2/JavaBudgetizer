@@ -1,9 +1,8 @@
 package flb.application.category;
 
 import flb.application.category.listeners.*;
-import flb.database.CategoryStore;
-import flb.components.editors.CategoryEditorImpl;
-
+import flb.datastores.*;
+import flb.components.editors.*;
 import javax.swing.*;
 import java.awt.*;
 
@@ -16,7 +15,7 @@ public class MainGUI {
     private final CategoryEditorImpl categoryEditor;
 
     public MainGUI(CategoryStore categoryStore) {
-        frame = new JFrame();
+        this.frame = new JFrame();
         categoryEditor = new CategoryEditorImpl(categoryStore);
         this.nameFilter = new JTextField();
         addButton = new JButton("Add");
@@ -44,7 +43,7 @@ public class MainGUI {
         mainPanel.add(BorderLayout.SOUTH, southPanel);
         mainPanel.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
 
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setContentPane(mainPanel);
         frame.setLocation(200, 100);
         frame.setMinimumSize(new Dimension(375, 500));

@@ -1,4 +1,4 @@
-package flb.database;
+package flb.datastores;
 
 public class ProductionDatabase extends AbstractDatabase {
 

@@ -21,11 +21,11 @@ Install MySQL Connector / ODBC 3.51
 
 Not sure why this is in my notes:
 NI KB 54LANLBP
-Error -2147467259 from flb.database.AbstractDatabase VI on Windows 7 64-bit
+Error -2147467259 from flb.datastores.AbstractDatabase VI on Windows 7 64-bit
 C:\Windows\SysWOW64\odbcad32.exe (run as administrator)
 
 Used the following blogpost to setup odbc data source
-Using MySQL with the flb.database.AbstractDatabase Connectivity Toolkit on Windows
+Using MySQL with the flb.datastores.AbstractDatabase Connectivity Toolkit on Windows
 http://labviewwebsocket.blogspot.com/2014/03/using-mysql-with-database-connectivity.html
 
 After intalling ODBC:
@@ -38,4 +38,4 @@ After intalling ODBC:
 - User: <username>
 - Password: <password>
 - Click Test to connect to MySQL and populate list of databases
-- flb.database.AbstractDatabase: gringotts
+- flb.datastores.AbstractDatabase: gringotts
