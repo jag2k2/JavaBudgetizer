@@ -1,6 +1,8 @@
 package flb.components.editors;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import flb.components.editors.mock.GoalSelectorMock;
 import org.junit.jupiter.api.*;
 import flb.datastores.*;
 import flb.components.editors.tables.*;
@@ -19,7 +21,7 @@ class BankingEditorImplTest {
         this.database = new TestDatabase();
         database.connect();
         TransactionStore transactionStore = new TransactionStoreImp(database);
-        this.bankingEditor = new BankingEditorImpl(transactionStore, new CategoryStoreImpl(database));
+        this.bankingEditor = new BankingEditorImpl(transactionStore, new CategoryStoreImpl(database), new GoalSelectorMock());
         this.tableAutomator = bankingEditor.getTableTester();
 
         expected = TestDatabase.getTestBankingTransactions();

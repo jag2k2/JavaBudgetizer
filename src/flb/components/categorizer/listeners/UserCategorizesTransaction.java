@@ -1,4 +1,4 @@
-package flb.components.categoryselector.listeners;
+package flb.components.categorizer.listeners;
 
 import java.awt.event.*;
 import flb.components.editors.TransactionCategorizer;

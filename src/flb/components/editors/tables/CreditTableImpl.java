@@ -1,8 +1,10 @@
 package flb.components.editors.tables;
 
-import flb.components.editors.tables.listeners.UserClicksTableListener;
-import flb.components.categoryselector.MenuDisplayer;
-import flb.components.editors.tables.models.CreditTableModelImpl;
+import flb.components.editors.GoalSelector;
+import flb.components.editors.tables.listeners.*;
+import flb.components.categorizer.MenuDisplayer;
+import flb.components.editors.tables.models.*;
+import flb.components.editors.tables.renderers.*;
 import flb.tuples.*;
 import flb.util.*;
 import java.util.*;
@@ -10,13 +12,17 @@ import javax.swing.*;
 
 public class CreditTableImpl implements CreditTable, CreditTableTester {
     private final CreditTableModelImpl tableModel;
-    private final JTable table;
+    private final HighlightableRowTable table;
     private final JScrollPane scrollPane;
 
-    public CreditTableImpl(MenuDisplayer menuDisplayer) {
+    public CreditTableImpl(MenuDisplayer menuDisplayer, GoalSelector goalSelector) {
         this.tableModel = new CreditTableModelImpl();
-        this.table = new JTable(tableModel);
+        this.table = new HighlightableRowTable(tableModel, goalSelector);
         this.scrollPane = new JScrollPane(table);
+
+        SimpleDollarRenderer dollarRenderer = new SimpleDollarRenderer();
+        dollarRenderer.setHorizontalAlignment(JLabel.RIGHT);
+        table.getColumnModel().getColumn(1).setCellRenderer(dollarRenderer);
         table.add(menuDisplayer.getPopup());
         table.addMouseListener(new UserClicksTableListener(menuDisplayer));
 
@@ -50,6 +56,15 @@ public class CreditTableImpl implements CreditTable, CreditTableTester {
     public void displayAndClearSelection(ArrayList<CreditTransaction> tableContents){
         tableModel.updateTransactions(tableContents);
     }
+
+    @Override
+    public void displayAndKeepSelection(ArrayList<CreditTransaction> tableContents){
+        int[] selectedRows = table.getSelectionModel().getSelectedIndices();
+        tableModel.updateTransactions(tableContents);
+    }
+
+    @Override
+    public void renderTable() { tableModel.fireTableDataChanged(); }
 
     @Override
     public Maybe<Transaction> getTransaction(int row){

@@ -1,6 +1,6 @@
 package flb.components.editors;
 
-import flb.components.categoryselector.*;
+import flb.components.categorizer.*;
 import flb.datastores.*;
 import flb.components.editors.tables.*;
 import flb.tuples.*;
@@ -8,16 +8,16 @@ import flb.util.*;
 import javax.swing.*;
 import java.util.*;
 
-public class CreditEditorImpl implements CreditEditorTester, TransactionCategorizer, MonthChangeListener, StoreChangeListener {
+public class CreditEditorImpl implements CreditEditorTester, TransactionCategorizer, MonthChangeListener, StoreChangeListener, GoalSelectedListener {
     private final TransactionStore transactionStore;
     private final CreditTable creditTable;
     private final CreditTableTester tableAutomator;
     private final ArrayList<StoreChangeListener> storeChangeListeners;
 
-    public CreditEditorImpl(TransactionStore transactionStore, CategoryStore categoryStore){
+    public CreditEditorImpl(TransactionStore transactionStore, CategoryStore categoryStore, GoalSelector goalSelector){
         this.transactionStore = transactionStore;
         CategoryMenuImpl categoryMenu = new CategoryMenuImpl(categoryStore, this);
-        CreditTableImpl creditTableImpl = new CreditTableImpl(categoryMenu);
+        CreditTableImpl creditTableImpl = new CreditTableImpl(categoryMenu, goalSelector);
         this.creditTable = creditTableImpl;
         this.tableAutomator = creditTableImpl;
         this.storeChangeListeners = new ArrayList<>();
@@ -36,16 +36,28 @@ public class CreditEditorImpl implements CreditEditorTester, TransactionCategori
 
     protected void notifyStoreChange(WhichMonth selectedMonth) {
         for(StoreChangeListener storeChangeListener : storeChangeListeners) {
-            storeChangeListener.update(selectedMonth);
+            storeChangeListener.updateAndKeepSelection(selectedMonth);
         }
     }
 
+    public void addStoreChangeListener(StoreChangeListener storeChangeListener) {
+        storeChangeListeners.add(storeChangeListener);
+    }
+
+    @Override
     public void update(WhichMonth searchDate) {
         ArrayList<CreditTransaction> creditTransactions = transactionStore.getCreditTransactions(searchDate);
         creditTable.displayAndClearSelection(creditTransactions);
     }
 
-    public void addStoreChangeListener(StoreChangeListener storeChangeListener) {
-        storeChangeListeners.add(storeChangeListener);
+    @Override
+    public void updateAndKeepSelection(WhichMonth selectedDate) {
+        ArrayList<CreditTransaction> creditTransactions = transactionStore.getCreditTransactions(selectedDate);
+        creditTable.displayAndClearSelection(creditTransactions);
+    }
+
+    @Override
+    public void renderTable() {
+        creditTable.renderTable();
     }
 }

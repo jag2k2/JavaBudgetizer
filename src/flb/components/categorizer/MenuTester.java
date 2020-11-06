@@ -1,4 +1,4 @@
-package flb.components.categoryselector;
+package flb.components.categorizer;
 
 import java.util.ArrayList;
 

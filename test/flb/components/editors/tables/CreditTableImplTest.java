@@ -1,9 +1,11 @@
 package flb.components.editors.tables;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import flb.components.categorizer.mock.MenuDisplayerMock;
+import flb.components.editors.mock.GoalSelectorMock;
 import org.junit.jupiter.api.*;
 import flb.datastores.TestDatabase;
-import flb.components.categoryselector.*;
 import flb.tuples.*;
 import java.util.*;
 
@@ -14,7 +16,7 @@ class CreditTableImplTest {
 
     @BeforeEach
     void setUp() {
-        CreditTableImpl creditTableImpl = new CreditTableImpl(new MenuDisplayerMock());
+        CreditTableImpl creditTableImpl = new CreditTableImpl(new MenuDisplayerMock(), new GoalSelectorMock());
         this.creditTable = creditTableImpl;
         this.tableAutomator = creditTableImpl;
 

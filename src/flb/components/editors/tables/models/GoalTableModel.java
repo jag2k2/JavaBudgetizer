@@ -1,5 +1,7 @@
 package flb.components.editors.tables.models;
 
-public interface GoalTableModel {
+import flb.util.*;
 
+public interface GoalTableModel {
+    Maybe<String> getGoalName(int row);
 }

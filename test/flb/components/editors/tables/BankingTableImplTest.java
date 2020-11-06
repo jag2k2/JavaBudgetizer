@@ -1,9 +1,11 @@
 package flb.components.editors.tables;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import flb.components.categorizer.mock.*;
+import flb.components.editors.mock.*;
 import org.junit.jupiter.api.*;
 import flb.datastores.TestDatabase;
-import flb.components.categoryselector.*;
 import flb.tuples.*;
 import java.util.*;
 
@@ -14,7 +16,7 @@ class BankingTableImplTest {
 
     @BeforeEach
     void setUp() {
-        BankingTableImpl bankingTable = new BankingTableImpl(new MenuDisplayerMock());
+        BankingTableImpl bankingTable = new BankingTableImpl(new MenuDisplayerMock(), new GoalSelectorMock());
         this.bankingTable = bankingTable;
         this.tableAutomator = bankingTable;
 

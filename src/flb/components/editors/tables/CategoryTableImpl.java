@@ -1,6 +1,7 @@
 package flb.components.editors.tables;
 
 import flb.components.editors.tables.models.*;
+import flb.components.editors.tables.renderers.*;
 import flb.tuples.*;
 import flb.util.*;
 import javax.swing.*;
@@ -20,9 +21,9 @@ public class CategoryTableImpl implements CategoryTable, CategoryTableTester {
         this.table = new JTable(categoryTableModel);
         this.table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         this.table.setFillsViewportHeight(true);
-        DollarAmountRenderer dollarAmountRenderer = new DollarAmountRenderer();
-        dollarAmountRenderer.setHorizontalAlignment(JLabel.RIGHT);
-        this.table.getColumnModel().getColumn(1).setCellRenderer(dollarAmountRenderer);
+        SimpleDollarRenderer dollarRenderer = new SimpleDollarRenderer();
+        dollarRenderer.setHorizontalAlignment(JLabel.RIGHT);
+        this.table.getColumnModel().getColumn(1).setCellRenderer(dollarRenderer);
         this.table.getColumnModel().getColumn(0).setMinWidth(120);
         this.table.getColumnModel().getColumn(1).setMinWidth(80);
         this.table.getColumnModel().getColumn(1).setMaxWidth(80);
@@ -49,9 +50,9 @@ public class CategoryTableImpl implements CategoryTable, CategoryTableTester {
     }
 
     public void displayAndKeepSelection(ArrayList<Category> tableContents){
-        int selection = table.getSelectedRow();
+        int selectedRow = table.getSelectedRow();
         tableModel.updateCategories(tableContents);
-        table.getSelectionModel().setSelectionInterval(selection, selection);
+        table.getSelectionModel().setSelectionInterval(selectedRow, selectedRow);
     }
 
     public void addCategoryRenameListener(PropertyChangeListener propertyChangeListener) {

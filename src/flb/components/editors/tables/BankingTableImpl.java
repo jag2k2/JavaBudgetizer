@@ -1,8 +1,10 @@
 package flb.components.editors.tables;
 
-import flb.components.categoryselector.MenuDisplayer;
+import flb.components.categorizer.MenuDisplayer;
+import flb.components.editors.GoalSelector;
 import flb.components.editors.tables.listeners.UserClicksTableListener;
 import flb.components.editors.tables.models.*;
+import flb.components.editors.tables.renderers.*;
 import flb.tuples.*;
 import java.util.*;
 import flb.util.*;
@@ -10,13 +12,18 @@ import javax.swing.*;
 
 public class BankingTableImpl implements BankingTable, BankingTableTester {
     private final BankingTableModelImp tableModel;
-    private final JTable table;
+    private final HighlightableRowTable table;
     private final JScrollPane scrollPane;
 
-    public BankingTableImpl(MenuDisplayer menuDisplayer) {
+    public BankingTableImpl(MenuDisplayer menuDisplayer, GoalSelector goalSelector) {
         this.tableModel = new BankingTableModelImp();
-        this.table = new JTable(tableModel);
+        this.table = new HighlightableRowTable(tableModel, goalSelector);
         this.scrollPane = new JScrollPane(table);
+
+        table.setSelectionModel(new NullSelectionModel());
+        SimpleDollarRenderer dollarRenderer = new SimpleDollarRenderer();
+        dollarRenderer.setHorizontalAlignment(JLabel.RIGHT);
+        table.getColumnModel().getColumn(1).setCellRenderer(dollarRenderer);
         table.add(menuDisplayer.getPopup());
         table.addMouseListener(new UserClicksTableListener(menuDisplayer));
 
@@ -48,6 +55,11 @@ public class BankingTableImpl implements BankingTable, BankingTableTester {
     @Override
     public void display(ArrayList<BankingTransaction> tableContents){
         tableModel.updateTransactions(tableContents);
+    }
+
+    @Override
+    public void renderTable(){
+        tableModel.fireTableDataChanged();
     }
 
     @Override

@@ -31,11 +31,11 @@ public class MainGUI {
         northPanel.setLayout(new BoxLayout(northPanel, BoxLayout.X_AXIS));
         northPanel.add(nameFilter);
         northPanel.add(addButton);
+        northPanel.add(deleteButton);
 
         JPanel southPanel = new JPanel();
         southPanel.setLayout(new BoxLayout(southPanel, BoxLayout.X_AXIS));
         southPanel.add(clearAmountButton);
-        southPanel.add(deleteButton);
 
         JPanel mainPanel = new JPanel(new BorderLayout());
         mainPanel.add(BorderLayout.NORTH, northPanel);

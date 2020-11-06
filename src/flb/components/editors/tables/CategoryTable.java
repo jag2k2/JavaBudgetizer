@@ -8,11 +8,11 @@ import java.beans.*;
 import java.util.ArrayList;
 
 public interface CategoryTable {
-    Maybe<Category> getSelectedCategory();
+    JScrollPane getPane();
     void displayAndClearSelection(ArrayList<Category> tableContents);
     void displayAndKeepSelection(ArrayList<Category> tableContents);
+    Maybe<Category> getSelectedCategory();
     void addCategoryRenameListener(PropertyChangeListener propertyChangeListener);
     void addGoalEditListener(TableModelListener tableModelListener);
     void addExcludesEditListener(CellEditorListener cellEditorListener);
-    JScrollPane getPane();
 }

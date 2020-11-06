@@ -1,6 +1,6 @@
-package flb.components.categoryselector;
+package flb.components.categorizer;
 
-import flb.components.categoryselector.listeners.UserCategorizesTransaction;
+import flb.components.categorizer.listeners.UserCategorizesTransaction;
 import flb.datastores.CategoryStore;
 import flb.components.editors.TransactionCategorizer;
 import flb.tuples.*;

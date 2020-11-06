@@ -1,6 +1,6 @@
 package flb.components.editors.tables.listeners;
 
-import flb.components.categoryselector.MenuDisplayer;
+import flb.components.categorizer.MenuDisplayer;
 import javax.swing.*;
 import java.awt.event.*;
 

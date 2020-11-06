@@ -1,7 +1,8 @@
-package flb.components.categoryselector;
+package flb.components.categorizer;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import flb.components.editors.mock.GoalSelectorMock;
 import flb.datastores.*;
 import flb.components.editors.BankingEditorImpl;
 import flb.components.editors.TransactionCategorizer;
@@ -21,7 +22,7 @@ class CategoryMenuImplTest {
         database.connect();
         CategoryStore categoryStore = new CategoryStoreImpl(database);
         TransactionStore transactionStore = new TransactionStoreImp(database);
-        TransactionCategorizer bankingEditor = new BankingEditorImpl(transactionStore, new CategoryStoreImpl(database));
+        TransactionCategorizer bankingEditor = new BankingEditorImpl(transactionStore, new CategoryStoreImpl(database), new GoalSelectorMock());
         this.categoryMenu = new CategoryMenuImpl(categoryStore, bankingEditor);
         this.menuTester = categoryMenu;
 

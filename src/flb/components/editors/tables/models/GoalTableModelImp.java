@@ -3,8 +3,9 @@ package flb.components.editors.tables.models;
 import flb.tuples.TransactionSummary;
 import javax.swing.table.*;
 import java.util.*;
+import flb.util.*;
 
-public class GoalTableModelImp extends AbstractTableModel {
+public class GoalTableModelImp extends AbstractTableModel implements GoalTableModel {
     private final String[] columnNames = {"Categories", "Goal", "Actual", "Diff"};
     private ArrayList<TransactionSummary> tableContents;
 
@@ -52,6 +53,13 @@ public class GoalTableModelImp extends AbstractTableModel {
     @Override
     public String getColumnName(int column) {
         return columnNames[column];
+    }
+
+    public Maybe<String> getGoalName(int row){
+        if (row >= 0 && row < getRowCount()){
+            return new Maybe<>(tableContents.get(row).getName());
+        }
+        else return new Maybe<>();
     }
 
     public void updateSummaries(ArrayList<TransactionSummary> tableContents) {

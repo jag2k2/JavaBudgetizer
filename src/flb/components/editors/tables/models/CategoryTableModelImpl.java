@@ -72,7 +72,7 @@ public class CategoryTableModelImpl extends AbstractTableModel implements Catego
 
     @Override
     public Maybe<Category> getCategory(int row) {
-        if (row >= 0 && row < tableContents.size()) {
+        if (row >= 0 && row < getRowCount()) {
             return new Maybe<>(tableContents.get(row));
         }
         else {

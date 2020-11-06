@@ -1,8 +1,9 @@
 package flb.components.editors.tables.listeners;
 
-import flb.components.categoryselector.CategoryMenuImpl;
-import flb.components.categoryselector.MenuDisplayer;
-import flb.components.categoryselector.MenuTester;
+import flb.components.categorizer.CategoryMenuImpl;
+import flb.components.categorizer.MenuDisplayer;
+import flb.components.categorizer.MenuTester;
+import flb.components.editors.mock.GoalSelectorMock;
 import flb.datastores.*;
 import flb.components.editors.BankingEditorImpl;
 import flb.components.editors.TransactionCategorizer;
@@ -21,7 +22,7 @@ class UserClicksTableListenerTest {
         TestDatabase database = new TestDatabase();
         TransactionStore transactionStore = new TransactionStoreImp(database);
         CategoryStore categoryStore = new CategoryStoreImpl(database);
-        TransactionCategorizer transactionCategorizer = new BankingEditorImpl(transactionStore, categoryStore);
+        TransactionCategorizer transactionCategorizer = new BankingEditorImpl(transactionStore, categoryStore, new GoalSelectorMock());
         CategoryMenuImpl categoryMenu = new CategoryMenuImpl(categoryStore, transactionCategorizer);
         MenuDisplayer menuDisplayer = new CategoryMenuImpl(categoryStore, transactionCategorizer);
         this.menuTester = categoryMenu;

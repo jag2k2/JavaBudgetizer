@@ -23,9 +23,9 @@ public class MainGUI {
         this.goalStore = goalStore;
         this.frame = new JFrame();
         this.monthSelector = new MonthSelectorImpl();
-        this.bankingEditor = new BankingEditorImpl(transactionStore, categoryStore);
-        this.creditEditor = new CreditEditorImpl(transactionStore, categoryStore);
         this.goalEditor = new GoalEditorImpl(transactionStore, goalStore);
+        this.bankingEditor = new BankingEditorImpl(transactionStore, categoryStore, goalEditor);
+        this.creditEditor = new CreditEditorImpl(transactionStore, categoryStore, goalEditor);
         this.balance = new JTextField();
 
         addListeners();
@@ -123,9 +123,11 @@ public class MainGUI {
 
         bankingEditor.addStoreChangeListener(bankingEditor);
         bankingEditor.addStoreChangeListener(goalEditor);
-
         creditEditor.addStoreChangeListener(creditEditor);
         creditEditor.addStoreChangeListener(goalEditor);
+
+        goalEditor.addGoalSelectedListener(bankingEditor);
+        goalEditor.addGoalSelectedListener(creditEditor);
     }
 
     public void launch(){
