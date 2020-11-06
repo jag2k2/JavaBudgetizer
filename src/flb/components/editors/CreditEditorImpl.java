@@ -30,8 +30,7 @@ public class CreditEditorImpl implements CreditEditorTester, TransactionCategori
     public void userCategorizesTransaction(int row, String categoryName){
         for (Transaction transaction : creditTable.getTransaction(row)) {
             transactionStore.categorizeTransaction(transaction, categoryName);
-            WhichMonth selectedMonth = transaction.getWhichMonth();
-            notifyStoreChange(selectedMonth);
+            notifyStoreChange(transaction.getWhichMonth());
         }
     }
 

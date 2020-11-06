@@ -59,15 +59,18 @@ public class CategoryTableModelImpl extends AbstractTableModel implements Catego
         return columnNames[column];
     }
 
+    @Override
     public ArrayList<Category> getCategories() {
         return tableContents;
     }
 
+    @Override
     public void updateCategories(ArrayList<Category> tableContents) {
         this.tableContents = tableContents;
         fireTableDataChanged();
     }
 
+    @Override
     public Maybe<Category> getCategory(int row) {
         if (row >= 0 && row < tableContents.size()) {
             return new Maybe<>(tableContents.get(row));

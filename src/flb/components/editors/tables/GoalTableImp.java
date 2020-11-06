@@ -1,12 +1,11 @@
 package flb.components.editors.tables;
 
 import flb.components.editors.tables.models.GoalTableModelImp;
-
+import flb.tuples.TransactionSummary;
 import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.border.CompoundBorder;
-import javax.swing.border.LineBorder;
+import javax.swing.border.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class GoalTableImp implements GoalTable {
     private final GoalTableModelImp tableModel;
@@ -24,6 +23,11 @@ public class GoalTableImp implements GoalTable {
     protected void layout() {
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         table.setFillsViewportHeight(true);
+        DollarAmountRenderer dollarAmountRenderer = new DollarAmountRenderer();
+        dollarAmountRenderer.setHorizontalAlignment(JLabel.RIGHT);
+        table.getColumnModel().getColumn(1).setCellRenderer(dollarAmountRenderer);
+        table.getColumnModel().getColumn(2).setCellRenderer(dollarAmountRenderer);
+        table.getColumnModel().getColumn(3).setCellRenderer(dollarAmountRenderer);
         table.getColumnModel().getColumn(0).setMinWidth(200);
         table.getColumnModel().getColumn(0).setMaxWidth(200);
         table.getColumnModel().getColumn(1).setMinWidth(65);
@@ -43,7 +47,13 @@ public class GoalTableImp implements GoalTable {
         scrollPane.setBorder(new CompoundBorder(greyBorder, margin));
     }
 
+    @Override
     public JScrollPane getPane(){
         return scrollPane;
+    }
+
+    @Override
+    public void display(ArrayList<TransactionSummary> tableContents) {
+        tableModel.updateSummaries(tableContents);
     }
 }

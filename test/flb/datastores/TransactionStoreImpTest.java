@@ -10,14 +10,14 @@ import static org.junit.jupiter.api.Assertions.*;
 class TransactionStoreImpTest {
     private TransactionStore transactionStore;
     private TestDatabase dataBase;
-    private WhichMonth searchDate;
+    private WhichMonth whichMonth;
 
     @BeforeEach
     void setUp(){
         dataBase = new TestDatabase();
         dataBase.connect();
         transactionStore = new TransactionStoreImp(dataBase);
-        this.searchDate = new WhichMonth(2020, Calendar.OCTOBER);
+        this.whichMonth = new WhichMonth(2020, Calendar.OCTOBER);
     }
 
     @AfterEach
@@ -29,14 +29,14 @@ class TransactionStoreImpTest {
     void getBankingTransactions() {
         ArrayList<BankingTransaction> expected = TestDatabase.getTestBankingTransactions();
 
-        assertEquals(expected, transactionStore.getBankingTransactions(searchDate));
+        assertEquals(expected, transactionStore.getBankingTransactions(whichMonth));
     }
 
     @Test
     void getCreditTransactions() {
         ArrayList<CreditTransaction> expected = TestDatabase.getTestCreditTransactions();
 
-        assertEquals(expected, transactionStore.getCreditTransactions(searchDate));
+        assertEquals(expected, transactionStore.getCreditTransactions(whichMonth));
     }
 
     @Test
@@ -48,7 +48,7 @@ class TransactionStoreImpTest {
 
         transactionStore.categorizeTransaction(bankingTransaction, "Name2");
 
-        assertEquals(expected, transactionStore.getBankingTransactions(searchDate));
+        assertEquals(expected, transactionStore.getBankingTransactions(whichMonth));
     }
 
     @Test
@@ -60,6 +60,17 @@ class TransactionStoreImpTest {
 
         transactionStore.categorizeTransaction(creditTransaction, "Name2");
 
-        assertEquals(expected, transactionStore.getCreditTransactions(searchDate));
+        assertEquals(expected, transactionStore.getCreditTransactions(whichMonth));
+    }
+
+    @Test
+    void getSummaries() {
+        ArrayList<TransactionSummary> expected = new ArrayList<>();
+        expected.add(new TransactionSummary("Name1", Float.NaN, 70));
+        expected.add(new TransactionSummary("Name2", 65, 40));
+        expected.add(new TransactionSummary("Name3", 70, Float.NaN));
+        expected.add(new TransactionSummary("Test1::sub2", 75, Float.NaN));
+
+        assertEquals(expected, transactionStore.getTransactionSummaries(whichMonth));
     }
 }

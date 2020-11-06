@@ -1,17 +1,15 @@
 package flb.components.editors.tables.models;
 
-import javax.swing.table.AbstractTableModel;
-import java.util.ArrayList;
+import flb.tuples.TransactionSummary;
+import javax.swing.table.*;
+import java.util.*;
 
 public class GoalTableModelImp extends AbstractTableModel {
     private final String[] columnNames = {"Categories", "Goal", "Actual", "Diff"};
-    private ArrayList<String> tableContents;
+    private ArrayList<TransactionSummary> tableContents;
 
     public GoalTableModelImp() {
         tableContents = new ArrayList<>();
-        tableContents.add("Category");
-        tableContents.add("Another Category");
-        tableContents.add("Yet Another Category");
     }
 
     @Override
@@ -26,11 +24,12 @@ public class GoalTableModelImp extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int row, int column) {
+        TransactionSummary transactionSummary = tableContents.get(row);
         return switch (column) {
-            case 0 -> tableContents.get(row);
-            case 1 -> "1000.00";
-            case 2 -> "2500.00";
-            case 3 -> "-1500.00";
+            case 0 -> transactionSummary.getName();
+            case 1 -> transactionSummary.getGoalAmount();
+            case 2 -> transactionSummary.getTransactionSum();
+            case 3 -> transactionSummary.getGoalAmount() + transactionSummary.getTransactionSum();
             default -> null;
         };
     }
@@ -53,5 +52,10 @@ public class GoalTableModelImp extends AbstractTableModel {
     @Override
     public String getColumnName(int column) {
         return columnNames[column];
+    }
+
+    public void updateSummaries(ArrayList<TransactionSummary> tableContents) {
+        this.tableContents = tableContents;
+        fireTableDataChanged();
     }
 }

@@ -15,7 +15,21 @@ public class TransactionStoreImp implements TransactionStore {
         this.dataStore = dataStore;
     }
 
-    public ArrayList<BankingTransaction> getBankingTransactions (WhichMonth searchMonth) {
+    @Override
+    public void categorizeTransaction(Transaction transaction, String categoryName) {
+        String update = "UPDATE transactions " +
+                "SET category_id = (SELECT categories.id FROM categories WHERE categories.name = '$name') " +
+                "WHERE $uniquifier = '$ref'";
+        String uniquifier = transaction.getUniquifier();
+        String reference = transaction.getReference();
+        update = update.replace("$name", categoryName);
+        update = update.replace("$uniquifier", uniquifier);
+        update = update.replace("$ref", reference);
+
+        dataStore.executeUpdate(update);
+    }
+
+    public ArrayList<BankingTransaction> getBankingTransactions (WhichMonth whichMonth) {
         String query = "SELECT $uniquifier, " +
                 "transactions.date, " +
                 "transactions.amount, " +
@@ -28,7 +42,7 @@ public class TransactionStoreImp implements TransactionStore {
                 "transactions.date LIKE '$yrmo-%' AND transactions.type = '$type' " +
                 "ORDER BY transactions.date ASC, transactions.id ASC";
         String uniquifier = "transactions.id";
-        String dateString = searchMonth.toSQLString();
+        String dateString = whichMonth.toSQLString();
         String type = "banking";
         query = query.replace("$uniquifier", uniquifier);
         query = query.replace("$yrmo", dateString);
@@ -61,7 +75,7 @@ public class TransactionStoreImp implements TransactionStore {
         return bankingTransactions;
     }
 
-    public ArrayList<CreditTransaction> getCreditTransactions (WhichMonth searchMonth) {
+    public ArrayList<CreditTransaction> getCreditTransactions (WhichMonth whichMonth) {
         String query = "SELECT $uniquifier, " +
                 "transactions.date, " +
                 "transactions.amount, " +
@@ -74,7 +88,7 @@ public class TransactionStoreImp implements TransactionStore {
                 "transactions.date LIKE '$yrmo-%' AND transactions.type = '$type' " +
                 "ORDER BY transactions.date ASC, transactions.id ASC";
         String uniquifier = "transactions.reference";
-        String dateString = searchMonth.toSQLString();
+        String dateString = whichMonth.toSQLString();
         String type = "credit";
         query = query.replace("$uniquifier", uniquifier);
         query = query.replace("$yrmo", dateString);
@@ -106,16 +120,46 @@ public class TransactionStoreImp implements TransactionStore {
         return creditTransactions;
     }
 
-    public void categorizeTransaction(Transaction transaction, String categoryName) {
-        String update = "UPDATE transactions " +
-                "SET category_id = (SELECT categories.id FROM categories WHERE categories.name = '$name') " +
-                "WHERE $uniquifier = '$ref'";
-        String uniquifier = transaction.getUniquifier();
-        String reference = transaction.getReference();
-        update = update.replace("$name", categoryName);
-        update = update.replace("$uniquifier", uniquifier);
-        update = update.replace("$ref", reference);
+    public ArrayList<TransactionSummary> getTransactionSummaries(WhichMonth whichMonth) {
+        String query = "SELECT " +
+                "c.name as category_name, " +
+                "g.amount as goal_amount, " +
+                "SUM(t.amount) as total_txn_amount, " +
+                "c.exclude as excluded " +
+                "FROM categories c " +
+                "LEFT JOIN goals g " +
+                "ON c.id=g.category_id AND g.year_mo = '$yrmo' " +
+                "LEFT JOIN transactions t " +
+                "ON c.id = t.category_id AND t.date LIKE '$yrmo-%' " +
+                "GROUP by c.id " +
+                "HAVING COALESCE (goal_amount, total_txn_amount) IS NOT NULL " +
+                "ORDER BY c.name";
 
-        dataStore.executeUpdate(update);
+        query = query.replace("$yrmo", whichMonth.toSQLString());
+
+        ResultSet results = dataStore.executeQuery(query);
+
+        return castResultsToSummaries(results);
+    }
+
+    private ArrayList<TransactionSummary> castResultsToSummaries (ResultSet results) {
+        ArrayList<TransactionSummary> summaries = new ArrayList<>();
+        try {
+            while (results.next()) {
+                String name = results.getString("category_name");
+                float goal = results.getFloat("goal_amount");
+                if (results.wasNull())
+                    goal = Float.NaN;
+                float sum = results.getFloat("total_txn_amount");
+                if (results.wasNull())
+                    sum = Float.NaN;
+                boolean excludes = results.getBoolean("excluded");
+                summaries.add(new TransactionSummary(name, goal, sum));
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        return summaries;
     }
 }

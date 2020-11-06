@@ -50,12 +50,13 @@ public class BankingTableModelImp extends AbstractTableModel implements Transact
         }
     }
 
+    @Override
+    public ArrayList<BankingTransaction> getTransactions(){
+        return tableContents;
+    }
+
     public void updateTransactions(ArrayList<BankingTransaction> tableContents) {
         this.tableContents = tableContents;
         fireTableDataChanged();
-    }
-
-    public ArrayList<BankingTransaction> getTransactions(){
-        return tableContents;
     }
 }

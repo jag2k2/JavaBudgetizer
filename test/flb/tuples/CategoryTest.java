@@ -21,15 +21,15 @@ class CategoryTest {
     @Test
     void testEquals() {
         Category categoryToCompare = new Category("Name1", 100, false);
-        assertTrue(category.equals(categoryToCompare));
+        assertEquals(categoryToCompare, category);
 
         categoryToCompare = new Category("Name2", 100, false);
-        assertFalse(category.equals(categoryToCompare));
+        assertNotEquals(categoryToCompare, category);
 
         categoryToCompare = new Category("Name1", 200, false);
-        assertFalse(category.equals(categoryToCompare));
+        assertNotEquals(categoryToCompare, category);
 
         categoryToCompare = new Category("Name1", 100, true);
-        assertFalse(category.equals(categoryToCompare));
+        assertNotEquals(categoryToCompare, category);
     }
 }

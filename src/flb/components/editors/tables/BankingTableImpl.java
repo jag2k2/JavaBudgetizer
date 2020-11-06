@@ -2,7 +2,7 @@ package flb.components.editors.tables;
 
 import flb.components.categoryselector.MenuDisplayer;
 import flb.components.editors.tables.listeners.UserClicksTableListener;
-import flb.components.editors.tables.models.BankingTableModelImp;
+import flb.components.editors.tables.models.*;
 import flb.tuples.*;
 import java.util.*;
 import flb.util.*;

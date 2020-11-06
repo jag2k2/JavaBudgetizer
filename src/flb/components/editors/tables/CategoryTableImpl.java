@@ -1,7 +1,6 @@
 package flb.components.editors.tables;
 
-import flb.components.editors.tables.models.CategoryTableModel;
-import flb.components.editors.tables.models.CategoryTableModelImpl;
+import flb.components.editors.tables.models.*;
 import flb.tuples.*;
 import flb.util.*;
 import javax.swing.*;
@@ -21,9 +20,9 @@ public class CategoryTableImpl implements CategoryTable, CategoryTableTester {
         this.table = new JTable(categoryTableModel);
         this.table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         this.table.setFillsViewportHeight(true);
-        GoalRenderer goalRenderer = new GoalRenderer();
-        goalRenderer.setHorizontalAlignment(JLabel.RIGHT);
-        this.table.getColumnModel().getColumn(1).setCellRenderer(goalRenderer);
+        DollarAmountRenderer dollarAmountRenderer = new DollarAmountRenderer();
+        dollarAmountRenderer.setHorizontalAlignment(JLabel.RIGHT);
+        this.table.getColumnModel().getColumn(1).setCellRenderer(dollarAmountRenderer);
         this.table.getColumnModel().getColumn(0).setMinWidth(120);
         this.table.getColumnModel().getColumn(1).setMinWidth(80);
         this.table.getColumnModel().getColumn(1).setMaxWidth(80);

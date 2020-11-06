@@ -2,7 +2,6 @@ package flb.components.editors.tables.models;
 
 import flb.tuples.Category;
 import flb.util.Maybe;
-
 import javax.swing.event.TableModelListener;
 import java.util.ArrayList;
 

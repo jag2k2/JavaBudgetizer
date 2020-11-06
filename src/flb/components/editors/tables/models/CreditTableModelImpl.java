@@ -46,6 +46,7 @@ public class CreditTableModelImpl extends AbstractTableModel implements Transact
         fireTableDataChanged();
     }
 
+    @Override
     public ArrayList<CreditTransaction> getTransactions(){
         return tableContents;
     }

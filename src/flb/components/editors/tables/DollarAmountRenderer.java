@@ -5,7 +5,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 import java.text.DecimalFormat;
 
-public class GoalRenderer extends DefaultTableCellRenderer {
+public class DollarAmountRenderer extends DefaultTableCellRenderer {
     private static final DecimalFormat formatter = new DecimalFormat("#.00");
 
     @Override
