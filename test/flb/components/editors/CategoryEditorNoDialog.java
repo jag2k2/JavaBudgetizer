@@ -20,4 +20,7 @@ public class CategoryEditorNoDialog extends CategoryEditorImpl {
             return JOptionPane.NO_OPTION;
         }
     }
+
+    @Override
+    protected void notifyUserWhyWontDelete(String categoryNameToDelete, int transactionCount, JFrame frame){}
 }

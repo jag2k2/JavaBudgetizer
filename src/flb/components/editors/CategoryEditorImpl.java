@@ -69,6 +69,9 @@ public class CategoryEditorImpl implements CategoryAdder, CategoryClearer, Categ
                 if (transactionCount == 0){
                     categoryStore.deleteCategory(categoryNameToDelete);
                 }
+                else {
+                    notifyUserWhyWontDelete(categoryNameToDelete, transactionCount, frame);
+                }
             }
         }
     }
@@ -77,6 +80,13 @@ public class CategoryEditorImpl implements CategoryAdder, CategoryClearer, Categ
         return JOptionPane.showConfirmDialog(
                 frame, "Are you sure you want to delete " + categoryNameToDelete + "?",
                 "Confirm Delete", JOptionPane.YES_NO_OPTION);
+    }
+
+    protected void notifyUserWhyWontDelete(String categoryNameToDelete, int transactionCount, JFrame frame) {
+        String message = "Can not delete '$Name'.  There are $count transactions that have been assigned that category.";
+        message = message.replace("$Name", categoryNameToDelete);
+        message = message.replace("$count", Integer.toString(transactionCount));
+        JOptionPane.showMessageDialog(frame, message, "Can not Delete", JOptionPane.ERROR_MESSAGE);
     }
 
     public void userClearGoalAmount(int row) {
