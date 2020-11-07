@@ -1,8 +1,8 @@
 package flb.components.editors.tables;
 
-import flb.components.categorizer.MenuDisplayer;
-import flb.components.editors.GoalSelector;
-import flb.components.editors.tables.listeners.UserClicksTableListener;
+import flb.components.menus.*;
+import flb.components.editors.*;
+import flb.components.editors.tables.listeners.*;
 import flb.components.editors.tables.models.*;
 import flb.components.editors.tables.renderers.*;
 import flb.tuples.*;
@@ -25,7 +25,7 @@ public class BankingTableImpl implements BankingTable, BankingTableTester {
         dollarRenderer.setHorizontalAlignment(JLabel.RIGHT);
         table.getColumnModel().getColumn(1).setCellRenderer(dollarRenderer);
         table.add(menuDisplayer.getPopup());
-        table.addMouseListener(new UserClicksTableListener(menuDisplayer));
+        table.addMouseListener(new UserClicksCategoryColumnListener(menuDisplayer));
 
         layout();
     }

@@ -12,4 +12,5 @@ public interface CategoryStore {
     void renameCategory(String oldName, String newName);
     ArrayList<Category> getCategories(String nameFilter);
     boolean categoryExist(String name);
+    int getTransactionCountOfCategory(String categoryNameToDelete);
 }

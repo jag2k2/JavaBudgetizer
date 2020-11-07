@@ -1,12 +1,15 @@
 package flb.components.editors.tables;
 
+import flb.components.editors.tables.listeners.*;
 import flb.components.editors.tables.models.*;
 import flb.components.editors.tables.renderers.*;
+import flb.components.menus.MenuDisplayer;
 import flb.tuples.*;
 import flb.util.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.table.*;
+import java.awt.*;
 import java.beans.*;
 import java.util.*;
 
@@ -19,18 +22,26 @@ public class CategoryTableImpl implements CategoryTable, CategoryTableTester {
         CategoryTableModelImpl categoryTableModel = new CategoryTableModelImpl();
         this.tableModel = categoryTableModel;
         this.table = new JTable(categoryTableModel);
-        this.table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        this.table.setFillsViewportHeight(true);
+        this.scrollPane = new JScrollPane(table);
+
+        layout();
+    }
+
+    protected void layout() {
+        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        table.setFillsViewportHeight(true);
+        table.setRowSelectionAllowed(false);
         SimpleDollarRenderer dollarRenderer = new SimpleDollarRenderer();
         dollarRenderer.setHorizontalAlignment(JLabel.RIGHT);
-        this.table.getColumnModel().getColumn(1).setCellRenderer(dollarRenderer);
-        this.table.getColumnModel().getColumn(0).setMinWidth(120);
-        this.table.getColumnModel().getColumn(1).setMinWidth(80);
-        this.table.getColumnModel().getColumn(1).setMaxWidth(80);
-        this.table.getColumnModel().getColumn(2).setMinWidth(60);
-        this.table.getColumnModel().getColumn(2).setMaxWidth(60);
+        table.getColumnModel().getColumn(1).setCellRenderer(dollarRenderer);
+        table.getColumnModel().getColumn(0).setMinWidth(220);
+        table.getColumnModel().getColumn(0).setMaxWidth(220);
+        table.getColumnModel().getColumn(1).setMinWidth(80);
+        table.getColumnModel().getColumn(1).setMaxWidth(80);
+        table.getColumnModel().getColumn(2).setMinWidth(60);
+        table.getColumnModel().getColumn(2).setMaxWidth(60);
+        table.setPreferredScrollableViewportSize(new Dimension(360,-1));
 
-        this.scrollPane = new JScrollPane(table);
         scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
     }
@@ -42,6 +53,15 @@ public class CategoryTableImpl implements CategoryTable, CategoryTableTester {
     public Maybe<Category> getSelectedCategory() {
         int selectedRow = table.getSelectedRow();
         return tableModel.getCategory(selectedRow);
+    }
+
+    public Maybe<Category> getCategory(int row) {
+        return tableModel.getCategory(row);
+    }
+
+    public void addEditorMenu (MenuDisplayer menuDisplayer) {
+        table.add(menuDisplayer.getPopup());
+        table.addMouseListener(new UserRightClicksCategoryListener(menuDisplayer));
     }
 
     public void displayAndClearSelection(ArrayList<Category> tableContents){

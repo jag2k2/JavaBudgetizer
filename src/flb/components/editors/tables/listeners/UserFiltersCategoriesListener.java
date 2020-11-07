@@ -1,4 +1,4 @@
-package flb.application.category.listeners;
+package flb.components.editors.tables.listeners;
 
 import flb.components.editors.CategoryListChangeRefresher;
 import javax.swing.*;

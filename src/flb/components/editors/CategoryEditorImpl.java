@@ -2,14 +2,11 @@ package flb.components.editors;
 
 import javax.swing.*;
 import java.util.*;
-
-import flb.components.editors.tables.listeners.UserEditsExcludesListener;
-import flb.components.editors.tables.listeners.UserEditsGoalAmountListener;
-import flb.components.editors.tables.listeners.UserRenamesSelectionListener;
+import flb.components.editors.tables.listeners.*;
+import flb.components.menus.CategoryEditorMenuImpl;
+import flb.components.monthselector.MonthSelectorImpl;
 import flb.datastores.CategoryStore;
-import flb.components.editors.tables.CategoryTable;
-import flb.components.editors.tables.CategoryTableTester;
-import flb.components.editors.tables.CategoryTableImpl;
+import flb.components.editors.tables.*;
 import flb.util.*;
 import flb.tuples.*;
 
@@ -18,18 +15,31 @@ public class CategoryEditorImpl implements CategoryAdder, CategoryClearer, Categ
     private final CategoryStore categoryStore;
     private final CategoryTable categoryTable;
     private final CategoryTableTester tableAutomator;
+    private ArrayList<StoreChangeListener> storeChangeListeners;
 
     public CategoryEditorImpl(CategoryStore categoryStore){
         this.categoryStore = categoryStore;
         CategoryTableImpl categoryTableImpl = new CategoryTableImpl();
         this.categoryTable = categoryTableImpl;
         this.tableAutomator = categoryTableImpl;
+        this.storeChangeListeners = new ArrayList<>();
     }
 
-    public void addCategoryEditingListeners(JTextField nameFilter) {
-        categoryTable.addCategoryRenameListener(new UserRenamesSelectionListener(this, nameFilter));
+    public void addCategoryEditingListeners(JTextField nameFilter, JFrame frame, MonthSelectorImpl monthSelector) {
+        categoryTable.addCategoryRenameListener(new UserRenamesSelectionListener(this, nameFilter, monthSelector));
         categoryTable.addGoalEditListener(new UserEditsGoalAmountListener(this, nameFilter));
         categoryTable.addExcludesEditListener(new UserEditsExcludesListener(this, nameFilter));
+        categoryTable.addEditorMenu(new CategoryEditorMenuImpl(this, nameFilter, frame));
+    }
+
+    public void addStoreChangeListener(StoreChangeListener storeChangeListener) {
+        storeChangeListeners.add(storeChangeListener);
+    }
+
+    public void notifyStoreChange(WhichMonth selectedDate) {
+        for (StoreChangeListener storeChangeListener : storeChangeListeners) {
+            storeChangeListener.updateAndKeepSelection(selectedDate);
+        }
     }
 
     public JScrollPane getPane() {
@@ -50,24 +60,27 @@ public class CategoryEditorImpl implements CategoryAdder, CategoryClearer, Categ
         }
     }
 
-    public void userDeleteSelectedCategory(JFrame frame) {
-        for (Category selectedCategory : categoryTable.getSelectedCategory()) {
+    public void userDeleteCategory(int row, JFrame frame) {
+        for (Category selectedCategory : categoryTable.getCategory(row)) {
             String categoryNameToDelete = selectedCategory.getName();
-            int selection = getSelectionFromDialog(categoryNameToDelete, frame);
-            if (selection == JOptionPane.YES_OPTION) {
-                categoryStore.deleteCategory(categoryNameToDelete);
+            int confirmation = getConfirmationFromDialog(categoryNameToDelete, frame);
+            if (confirmation == JOptionPane.YES_OPTION) {
+                int transactionCount = categoryStore.getTransactionCountOfCategory(categoryNameToDelete);
+                if (transactionCount == 0){
+                    categoryStore.deleteCategory(categoryNameToDelete);
+                }
             }
         }
     }
 
-    protected int getSelectionFromDialog(String categoryNameToDelete, JFrame frame) {
+    protected int getConfirmationFromDialog(String categoryNameToDelete, JFrame frame) {
         return JOptionPane.showConfirmDialog(
                 frame, "Are you sure you want to delete " + categoryNameToDelete + "?",
                 "Confirm Delete", JOptionPane.YES_NO_OPTION);
     }
 
-    public void userClearSelectedGoalAmount() {
-        for (Category selectedCategory : categoryTable.getSelectedCategory()) {
+    public void userClearGoalAmount(int row) {
+        for (Category selectedCategory : categoryTable.getCategory(row)) {
             String categoryToClear = selectedCategory.getName();
             categoryStore.updateAmount(categoryToClear, Float.NaN);
         }
@@ -92,11 +105,12 @@ public class CategoryEditorImpl implements CategoryAdder, CategoryClearer, Categ
         return categoryTable.getSelectedCategory();
     }
 
-    public void userRenamedCategory(String oldName) {
+    public void userRenamedCategory(String oldName, WhichMonth selectedMonth) {
         for (Category selectedCategory : categoryTable.getSelectedCategory()) {
             String newName = selectedCategory.getName();
             categoryStore.renameCategory(oldName, newName);
         }
+        notifyStoreChange(selectedMonth);
     }
 
     public void refreshAndClearSelection(String nameFilter) {

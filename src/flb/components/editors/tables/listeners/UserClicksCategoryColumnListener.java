@@ -1,13 +1,13 @@
 package flb.components.editors.tables.listeners;
 
-import flb.components.categorizer.MenuDisplayer;
+import flb.components.menus.MenuDisplayer;
 import javax.swing.*;
 import java.awt.event.*;
 
-public class UserClicksTableListener implements MouseListener {
+public class UserClicksCategoryColumnListener implements MouseListener {
     private final MenuDisplayer menuDisplayer;
 
-    public UserClicksTableListener(MenuDisplayer menuDisplayer){
+    public UserClicksCategoryColumnListener(MenuDisplayer menuDisplayer){
         this.menuDisplayer = menuDisplayer;
     }
 

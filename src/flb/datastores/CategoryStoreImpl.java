@@ -19,6 +19,21 @@ public class CategoryStoreImpl implements CategoryStore {
         dataStore.executeUpdate(update);
     }
 
+    public int getTransactionCountOfCategory(String categoryNameToDelete) {
+        String query = "SELECT COUNT(*) FROM transactions " +
+                "LEFT JOIN categories ON transactions.category_id = categories.id " +
+                "WHERE categories.name = '$name'";
+        query = query.replace("$name", categoryNameToDelete);
+
+        ResultSet resultSet = dataStore.executeQuery(query);
+        int transactionCount = 0;
+        try {
+            resultSet.next();
+            transactionCount = resultSet.getInt(1);
+        } catch (SQLException ex) {ex.printStackTrace();}
+        return transactionCount;
+    }
+
     public void deleteCategory(String name) {
         String update = "DELETE FROM categories WHERE name = '$name'";
         update = update.replace("$name", name);

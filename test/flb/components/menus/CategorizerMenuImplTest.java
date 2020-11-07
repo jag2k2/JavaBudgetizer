@@ -1,4 +1,4 @@
-package flb.components.categorizer;
+package flb.components.menus;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -10,9 +10,9 @@ import flb.tuples.*;
 import org.junit.jupiter.api.*;
 import java.util.*;
 
-class CategoryMenuImplTest {
+class CategorizerMenuImplTest {
     private TestDatabase database;
-    private CategoryMenuImpl categoryMenu;
+    private CategorizerMenuImpl categoryMenu;
     private MenuTester menuTester;
     private List<String> expected;
 
@@ -23,7 +23,7 @@ class CategoryMenuImplTest {
         CategoryStore categoryStore = new CategoryStoreImpl(database);
         TransactionStore transactionStore = new TransactionStoreImp(database);
         TransactionCategorizer bankingEditor = new BankingEditorImpl(transactionStore, new CategoryStoreImpl(database), new GoalSelectorMock());
-        this.categoryMenu = new CategoryMenuImpl(categoryStore, bankingEditor);
+        this.categoryMenu = new CategorizerMenuImpl(categoryStore, bankingEditor);
         this.menuTester = categoryMenu;
 
         this.expected = new ArrayList<>();

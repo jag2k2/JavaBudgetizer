@@ -2,7 +2,7 @@ package flb.components.editors.tables;
 
 import flb.components.editors.GoalSelector;
 import flb.components.editors.tables.listeners.*;
-import flb.components.categorizer.MenuDisplayer;
+import flb.components.menus.MenuDisplayer;
 import flb.components.editors.tables.models.*;
 import flb.components.editors.tables.renderers.*;
 import flb.tuples.*;
@@ -24,7 +24,7 @@ public class CreditTableImpl implements CreditTable, CreditTableTester {
         dollarRenderer.setHorizontalAlignment(JLabel.RIGHT);
         table.getColumnModel().getColumn(1).setCellRenderer(dollarRenderer);
         table.add(menuDisplayer.getPopup());
-        table.addMouseListener(new UserClicksTableListener(menuDisplayer));
+        table.addMouseListener(new UserClicksCategoryColumnListener(menuDisplayer));
 
         layout();
     }

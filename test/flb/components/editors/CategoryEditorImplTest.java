@@ -64,33 +64,40 @@ class CategoryEditorImplTest {
 
     @Test
     void clearSelectedGoal() {
-        tableAutomator.setSelectedRow(1);
         expected.set(1, new Category("Name2", Float.NaN, true));
 
-        categoryEditor.userClearSelectedGoalAmount();
+        categoryEditor.userClearGoalAmount(1);
 
         assertEquals(expected, categoryStore.getCategories(""));
     }
 
     @Test
     void clearNoGoalSelected() {
-        tableAutomator.setSelectedRow(-1);
-
-        categoryEditor.userClearSelectedGoalAmount();
+        categoryEditor.userClearGoalAmount(-1);
 
         assertEquals(expected, categoryStore.getCategories(""));
     }
 
     @Test
-    void deleteSelectedGoalWithConfirm() {
+    void deleteSelectedGoalWithConfirmAndCategoryUnused() {
         categoryEditor = new CategoryEditorNoDialog(categoryStore, true);
         categoryEditor.refreshAndClearSelection("");
         tableAutomator = categoryEditor.getTableAutomator();
-        tableAutomator.setSelectedRow(1);
 
-        categoryEditor.userDeleteSelectedCategory(new JFrame());
+        categoryEditor.userDeleteCategory(2, new JFrame());
 
-        expected.remove(1);
+        expected.remove(2);
+        assertEquals(expected, categoryStore.getCategories(""));
+    }
+
+    @Test
+    void deleteSelectedGoalWithConfirmButCategoryUsed() {
+        categoryEditor = new CategoryEditorNoDialog(categoryStore, true);
+        categoryEditor.refreshAndClearSelection("");
+        tableAutomator = categoryEditor.getTableAutomator();
+
+        categoryEditor.userDeleteCategory(1, new JFrame());
+
         assertEquals(expected, categoryStore.getCategories(""));
     }
 
@@ -99,7 +106,7 @@ class CategoryEditorImplTest {
         tableAutomator.setSelectedRow(1);
 
         categoryEditor = new CategoryEditorNoDialog(categoryStore, false);
-        categoryEditor.userDeleteSelectedCategory(new JFrame());
+        categoryEditor.userDeleteCategory(1, new JFrame());
 
         assertEquals(expected, categoryStore.getCategories(""));
     }
@@ -144,7 +151,7 @@ class CategoryEditorImplTest {
 
         tableAutomator.editCellAt(1,0);
         tableAutomator.setEditorName("Name20");
-        categoryEditor.userRenamedCategory("Name2");
+        categoryEditor.userRenamedCategory("Name2", new WhichMonth(2020, Calendar.OCTOBER));
 
         assertEquals(expected, categoryStore.getCategories(""));
     }

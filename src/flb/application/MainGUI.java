@@ -1,12 +1,11 @@
-package flb.application.main;
+package flb.application;
 
 import javax.swing.*;
 import javax.swing.border.*;
-import flb.application.category.*;
+import flb.components.editors.tables.listeners.*;
 import flb.components.monthselector.*;
 import flb.datastores.*;
 import flb.components.editors.*;
-import org.jdesktop.swingx.*;
 import java.awt.*;
 import java.awt.event.*;
 
@@ -16,17 +15,23 @@ public class MainGUI {
     private final JTextField balance;
     private final BankingEditorImpl bankingEditor;
     private final CreditEditorImpl creditEditor;
+    private final CategoryEditorImpl categoryEditor;
     private final GoalEditorImpl goalEditor;
     private final GoalStore goalStore;
+    private final JTextField nameFilter;
+    private final JButton addButton;
 
     public MainGUI(TransactionStore transactionStore, CategoryStore categoryStore, GoalStore goalStore) {
         this.goalStore = goalStore;
         this.frame = new JFrame();
         this.monthSelector = new MonthSelectorImpl();
         this.goalEditor = new GoalEditorImpl(transactionStore, goalStore);
+        this.categoryEditor = new CategoryEditorImpl(categoryStore);
         this.bankingEditor = new BankingEditorImpl(transactionStore, categoryStore, goalEditor);
         this.creditEditor = new CreditEditorImpl(transactionStore, categoryStore, goalEditor);
         this.balance = new JTextField();
+        this.addButton = new JButton("Add");
+        this.nameFilter = new JTextField();
 
         addListeners();
         layout();
@@ -52,26 +57,32 @@ public class MainGUI {
         northRightPanel.add(balancePane);
         northRightPanel.add(Box.createRigidArea(new Dimension(34,5)));
 
-        JTabbedPane tabbedPane = new JTabbedPane();
-        tabbedPane.setTabPlacement(JTabbedPane.RIGHT);
-        tabbedPane.addTab(null, bankingEditor.getPane());
-        tabbedPane.addTab(null, creditEditor.getPane());
-        JXLabel bankingLabel = new JXLabel(" Banking ");
-        bankingLabel.setTextRotation(Math.PI/2);
-        tabbedPane.setTabComponentAt(0, bankingLabel);
-        JXLabel creditLabel = new JXLabel(" Credit ");
-        creditLabel.setTextRotation(Math.PI/2);
-        tabbedPane.setTabComponentAt(1, creditLabel);
+        JPanel northCategoryPanel = new JPanel();
+        northCategoryPanel.setLayout(new BoxLayout(northCategoryPanel, BoxLayout.X_AXIS));
+        northCategoryPanel.add(nameFilter);
+        northCategoryPanel.add(addButton);
 
-        tabbedPane.setBorder(new CompoundBorder(greyBorder, BorderFactory.createEmptyBorder(2,5,5,5)));
+        JPanel mainCategoryPanel = new JPanel(new BorderLayout());
+        mainCategoryPanel.add(BorderLayout.NORTH, northCategoryPanel);
+        mainCategoryPanel.add(BorderLayout.CENTER, categoryEditor.getPane());
+
+        JTabbedPane tabbedCategoryPane = new JTabbedPane();
+        tabbedCategoryPane.addTab(" Goals ", goalEditor.getPane());
+        tabbedCategoryPane.addTab(" Categories ", mainCategoryPanel);
+        tabbedCategoryPane.setBorder(new CompoundBorder(greyBorder, BorderFactory.createEmptyBorder(2,5,5,5)));
+
+        JTabbedPane tabbedTransactionPane = new JTabbedPane();
+        tabbedTransactionPane.addTab(" Banking ", bankingEditor.getPane());
+        tabbedTransactionPane.addTab(" Credit ", creditEditor.getPane());
+        tabbedTransactionPane.setBorder(new CompoundBorder(greyBorder, BorderFactory.createEmptyBorder(2,5,5,5)));
 
         JPanel leftPane = new JPanel(new BorderLayout());
         leftPane.add(BorderLayout.NORTH, northLeftPanel);
-        leftPane.add(BorderLayout.CENTER, goalEditor.getPane());
+        leftPane.add(BorderLayout.CENTER, tabbedCategoryPane);
 
         JPanel rightPane = new JPanel(new BorderLayout());
         rightPane.add(BorderLayout.NORTH, northRightPanel);
-        rightPane.add(BorderLayout.CENTER, tabbedPane);
+        rightPane.add(BorderLayout.CENTER, tabbedTransactionPane);
 
         JPanel mainPanel = new JPanel(new BorderLayout());
         mainPanel.add(BorderLayout.WEST, leftPane);
@@ -90,18 +101,10 @@ public class MainGUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 goalStore.createDefaultGoals(monthSelector.getSelectedMonth());
-            }
-        });
-        JMenuItem manageCategoriesMenuItem = new JMenuItem("Manage Categories");
-        manageCategoriesMenuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String[] args = {};
-                CategoryManager.main(args);
+                goalEditor.update(monthSelector.getSelectedMonth());
             }
         });
         budgetMenu.add(defaultGoalsMenuItem);
-        budgetMenu.add(manageCategoriesMenuItem);
 
         menuBar.add(fileMenu);
         menuBar.add(budgetMenu);
@@ -125,12 +128,20 @@ public class MainGUI {
         bankingEditor.addStoreChangeListener(goalEditor);
         creditEditor.addStoreChangeListener(creditEditor);
         creditEditor.addStoreChangeListener(goalEditor);
+        categoryEditor.addStoreChangeListener(bankingEditor);
+        categoryEditor.addStoreChangeListener(creditEditor);
+        categoryEditor.addStoreChangeListener(goalEditor);
 
         goalEditor.addGoalSelectedListener(bankingEditor);
         goalEditor.addGoalSelectedListener(creditEditor);
+
+        categoryEditor.addCategoryEditingListeners(nameFilter, frame, monthSelector);
+        addButton.addActionListener(new UserAddsCategoryListener(categoryEditor, nameFilter));
+        nameFilter.getDocument().addDocumentListener(new UserFiltersCategoriesListener(categoryEditor, nameFilter));
     }
 
     public void launch(){
+        categoryEditor.refreshAndClearSelection("");
         monthSelector.setToCurrentMonth();
         frame.setVisible(true);
     }

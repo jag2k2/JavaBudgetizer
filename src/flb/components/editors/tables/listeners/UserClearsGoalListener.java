@@ -1,7 +1,6 @@
-package flb.application.category.listeners;
+package flb.components.editors.tables.listeners;
 
 import flb.components.editors.CategoryClearer;
-
 import javax.swing.*;
 import java.awt.event.*;
 
@@ -16,7 +15,8 @@ public class UserClearsGoalListener implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        categoryClearer.userClearSelectedGoalAmount();
+        int activeRow = Integer.parseInt(e.getActionCommand());
+        categoryClearer.userClearGoalAmount(activeRow);
         categoryClearer.refreshAndKeepSelection(nameFilter.getText());
     }
 }

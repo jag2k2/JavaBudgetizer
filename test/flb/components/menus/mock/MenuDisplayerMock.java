@@ -1,6 +1,6 @@
-package flb.components.categorizer.mock;
+package flb.components.menus.mock;
 
-import flb.components.categorizer.MenuDisplayer;
+import flb.components.menus.MenuDisplayer;
 
 import javax.swing.*;
 

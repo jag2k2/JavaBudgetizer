@@ -1,5 +1,5 @@
 package flb.components.editors;
 
 public interface CategoryClearer extends CategoryEditRefresher {
-    void userClearSelectedGoalAmount();
+    void userClearGoalAmount(int row);
 }

@@ -1,5 +1,6 @@
 package flb.components.editors.tables;
 
+import flb.components.menus.MenuDisplayer;
 import flb.tuples.Category;
 import flb.util.Maybe;
 import javax.swing.*;
@@ -12,7 +13,9 @@ public interface CategoryTable {
     void displayAndClearSelection(ArrayList<Category> tableContents);
     void displayAndKeepSelection(ArrayList<Category> tableContents);
     Maybe<Category> getSelectedCategory();
+    Maybe<Category> getCategory(int row);
     void addCategoryRenameListener(PropertyChangeListener propertyChangeListener);
     void addGoalEditListener(TableModelListener tableModelListener);
     void addExcludesEditListener(CellEditorListener cellEditorListener);
+    void addEditorMenu (MenuDisplayer menuDisplayer);
 }

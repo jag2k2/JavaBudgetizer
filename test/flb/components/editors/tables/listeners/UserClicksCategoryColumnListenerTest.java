@@ -1,8 +1,8 @@
 package flb.components.editors.tables.listeners;
 
-import flb.components.categorizer.CategoryMenuImpl;
-import flb.components.categorizer.MenuDisplayer;
-import flb.components.categorizer.MenuTester;
+import flb.components.menus.CategorizerMenuImpl;
+import flb.components.menus.MenuDisplayer;
+import flb.components.menus.MenuTester;
 import flb.components.editors.mock.GoalSelectorMock;
 import flb.datastores.*;
 import flb.components.editors.BankingEditorImpl;
@@ -12,8 +12,8 @@ import org.junit.jupiter.api.*;
 
 import java.util.*;
 
-class UserClicksTableListenerTest {
-    private UserClicksTableListener userClicksTableListener;
+class UserClicksCategoryColumnListenerTest {
+    private UserClicksCategoryColumnListener userClicksCategoryColumnListener;
     private MenuTester menuTester;
     private ArrayList<String> expected;
 
@@ -23,10 +23,10 @@ class UserClicksTableListenerTest {
         TransactionStore transactionStore = new TransactionStoreImp(database);
         CategoryStore categoryStore = new CategoryStoreImpl(database);
         TransactionCategorizer transactionCategorizer = new BankingEditorImpl(transactionStore, categoryStore, new GoalSelectorMock());
-        CategoryMenuImpl categoryMenu = new CategoryMenuImpl(categoryStore, transactionCategorizer);
-        MenuDisplayer menuDisplayer = new CategoryMenuImpl(categoryStore, transactionCategorizer);
+        CategorizerMenuImpl categoryMenu = new CategorizerMenuImpl(categoryStore, transactionCategorizer);
+        MenuDisplayer menuDisplayer = new CategorizerMenuImpl(categoryStore, transactionCategorizer);
         this.menuTester = categoryMenu;
-        this.userClicksTableListener = new UserClicksTableListener(menuDisplayer);
+        this.userClicksCategoryColumnListener = new UserClicksCategoryColumnListener(menuDisplayer);
 
         this.expected = new ArrayList<>();
         for (Category category : TestDatabase.getTestCategories()) {

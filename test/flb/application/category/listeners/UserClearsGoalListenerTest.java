@@ -1,6 +1,8 @@
 package flb.application.category.listeners;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import flb.components.editors.tables.listeners.UserClearsGoalListener;
 import flb.datastores.*;
 import flb.datastores.CategoryStore;
 import flb.components.editors.CategoryEditorImpl;
@@ -47,7 +49,7 @@ class UserClearsGoalListenerTest {
     @Test
     void clearSelected() {
         nameFilter.setText("Name");
-        tableAutomator.setSelectedRow(1);
+        testButton.setActionCommand("1");
         testButton.doClick();
 
         expected.set(1, new Category("Name2", Float.NaN, true));
@@ -58,7 +60,7 @@ class UserClearsGoalListenerTest {
     @Test
     void nothingSelected() {
         nameFilter.setText("Name");
-        tableAutomator.setSelectedRow(-1);
+        testButton.setActionCommand("-1");
         testButton.doClick();
 
         assertEquals(expected, categoryStore.getCategories(""));

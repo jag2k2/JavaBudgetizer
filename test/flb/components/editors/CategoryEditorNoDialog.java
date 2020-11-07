@@ -12,7 +12,7 @@ public class CategoryEditorNoDialog extends CategoryEditorImpl {
     }
 
     @Override
-    protected int getSelectionFromDialog(String categoryNameToDelete, JFrame frame){
+    protected int getConfirmationFromDialog(String categoryNameToDelete, JFrame frame){
         if(alwaysConfirm) {
             return JOptionPane.YES_OPTION;
         }

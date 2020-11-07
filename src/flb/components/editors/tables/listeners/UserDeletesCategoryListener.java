@@ -1,4 +1,4 @@
-package flb.application.category.listeners;
+package flb.components.editors.tables.listeners;
 
 import flb.components.editors.CategoryDeleter;
 
@@ -19,7 +19,8 @@ public class UserDeletesCategoryListener implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        categoryDeleter.userDeleteSelectedCategory(frame);
+        int activeRow = Integer.parseInt(e.getActionCommand());
+        categoryDeleter.userDeleteCategory(activeRow, frame);
         categoryDeleter.refreshAndClearSelection(nameFilter.getText());
     }
 }

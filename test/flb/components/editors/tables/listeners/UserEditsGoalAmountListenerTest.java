@@ -2,6 +2,7 @@ package flb.components.editors.tables.listeners;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import flb.components.monthselector.MonthSelectorImpl;
 import flb.datastores.CategoryStore;
 import flb.components.editors.CategoryEditorImpl;
 import flb.components.editors.tables.CategoryTableTester;
@@ -35,7 +36,7 @@ class UserEditsGoalAmountListenerTest {
         expected.add(new Category("Test1::sub2", 500, true));
         categoryEditor.refreshAndKeepSelection("");
 
-        categoryEditor.addCategoryEditingListeners(nameFilter);
+        categoryEditor.addCategoryEditingListeners(nameFilter, new JFrame(), new MonthSelectorImpl());
     }
 
     @AfterEach

@@ -1,10 +1,9 @@
-package flb.application.category;
+package flb.application;
 
-import javax.swing.*;
 import flb.datastores.*;
-import flb.datastores.CategoryStore;
+import javax.swing.*;
 
-public class CategoryManager {
+public class FilthyLucreBudgetizer {
 
     public static void main(String[] args) {
         try {
@@ -16,15 +15,17 @@ public class CategoryManager {
             }
         } catch (Exception e) { e.printStackTrace(); }
 
-        SwingUtilities.invokeLater(new InitializeJob());
+        SwingUtilities.invokeLater(new FilthyLucreBudgetizer.InitializeJob());
     }
 
     static class InitializeJob implements Runnable {
         @Override
         public void run() {
             AbstractDatabase database = new TestDatabase();
+            TransactionStore transactionStore = new TransactionStoreImp(database);
             CategoryStore categoryStore = new CategoryStoreImpl(database);
-            MainGUI mainGui = new MainGUI(categoryStore);
+            GoalStore goalStore = new GoalStoreImpl(database);
+            MainGUI mainGui = new MainGUI(transactionStore, categoryStore, goalStore);
 
             database.connect();
             mainGui.launch();

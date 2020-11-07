@@ -1,6 +1,6 @@
-package flb.components.categorizer;
+package flb.components.menus;
 
-import flb.components.categorizer.listeners.UserCategorizesTransaction;
+import flb.components.editors.tables.listeners.UserCategorizesTransaction;
 import flb.datastores.CategoryStore;
 import flb.components.editors.TransactionCategorizer;
 import flb.tuples.*;
@@ -8,12 +8,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.*;
 
-public class CategoryMenuImpl implements MenuDisplayer, MenuTester {
+public class CategorizerMenuImpl implements MenuDisplayer, MenuTester {
     private final JPopupMenu popupMenu;
     private final CategoryStore categoryStore;
     private final TransactionCategorizer transactionCategorizer;
 
-    public CategoryMenuImpl(CategoryStore categoryStore, TransactionCategorizer transactionCategorizer) {
+    public CategorizerMenuImpl(CategoryStore categoryStore, TransactionCategorizer transactionCategorizer) {
         this.popupMenu = new JPopupMenu();
         this.categoryStore = categoryStore;
         this.transactionCategorizer = transactionCategorizer;

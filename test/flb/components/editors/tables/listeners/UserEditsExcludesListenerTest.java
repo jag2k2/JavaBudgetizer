@@ -2,6 +2,7 @@ package flb.components.editors.tables.listeners;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import flb.components.monthselector.MonthSelectorImpl;
 import flb.datastores.CategoryStore;
 import flb.components.editors.CategoryEditorImpl;
 import flb.components.editors.tables.CategoryTableTester;
@@ -36,7 +37,7 @@ class UserEditsExcludesListenerTest {
         expected.add(new Category("Test1::sub1", Float.NaN, false));
         expected.add(new Category("Test1::sub2", 500, true));
 
-        categoryEditorImpl.addCategoryEditingListeners(nameFilter);
+        categoryEditorImpl.addCategoryEditingListeners(nameFilter, new JFrame(), new MonthSelectorImpl());
     }
 
     @AfterEach

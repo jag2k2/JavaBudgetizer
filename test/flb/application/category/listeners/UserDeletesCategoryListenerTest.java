@@ -3,6 +3,7 @@ package flb.application.category.listeners;
 import static org.junit.jupiter.api.Assertions.*;
 
 import flb.components.editors.CategoryEditorNoDialog;
+import flb.components.editors.tables.listeners.UserDeletesCategoryListener;
 import flb.datastores.CategoryStore;
 import flb.components.editors.CategoryEditorImpl;
 import flb.components.editors.tables.CategoryTableTester;
@@ -44,7 +45,7 @@ class UserDeletesCategoryListenerTest {
     }
 
     @Test
-    void userConfirmsDelete() {
+    void userConfirmsDeleteAndCategoryUnused() {
         categoryEditor = new CategoryEditorNoDialog(categoryStore, true);
         categoryEditor.refreshAndClearSelection("");
         this.tableAutomator = categoryEditor.getTableAutomator();
@@ -52,10 +53,26 @@ class UserDeletesCategoryListenerTest {
         testButton.addActionListener(new UserDeletesCategoryListener(categoryEditor, nameFilter, new JFrame()));
 
         nameFilter.setText("Name");
-        tableAutomator.setSelectedRow(1);
+        testButton.setActionCommand("2");
         testButton.doClick();
 
-        expected.remove(1);
+        expected.remove(2);
+        assertEquals(expected, categoryStore.getCategories(""));
+        assertEquals("Name", nameFilter.getText());
+    }
+
+    @Test
+    void userConfirmsDeleteButCategoryUsed() {
+        categoryEditor = new CategoryEditorNoDialog(categoryStore, true);
+        categoryEditor.refreshAndClearSelection("");
+        this.tableAutomator = categoryEditor.getTableAutomator();
+
+        testButton.addActionListener(new UserDeletesCategoryListener(categoryEditor, nameFilter, new JFrame()));
+
+        nameFilter.setText("Name");
+        testButton.setActionCommand("1");
+        testButton.doClick();
+
         assertEquals(expected, categoryStore.getCategories(""));
         assertEquals("Name", nameFilter.getText());
     }
@@ -69,7 +86,7 @@ class UserDeletesCategoryListenerTest {
         testButton.addActionListener(new UserDeletesCategoryListener(categoryEditor, nameFilter, new JFrame()));
 
         nameFilter.setText("Name");
-        tableAutomator.setSelectedRow(1);
+        testButton.setActionCommand("1");
         testButton.doClick();
 
         assertEquals(expected, categoryStore.getCategories(""));
@@ -84,7 +101,7 @@ class UserDeletesCategoryListenerTest {
         testButton.addActionListener(new UserDeletesCategoryListener(categoryEditor, nameFilter, new JFrame()));
 
         nameFilter.setText("Name");
-        tableAutomator.setSelectedRow(-1);
+        testButton.setActionCommand("-1");
         testButton.doClick();
 
         assertEquals(expected, categoryStore.getCategories(""));

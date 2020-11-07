@@ -1,6 +1,6 @@
 package flb.components.editors;
 
-import flb.components.categorizer.*;
+import flb.components.menus.*;
 import flb.datastores.*;
 import flb.components.editors.tables.*;
 import flb.tuples.*;
@@ -16,7 +16,7 @@ public class BankingEditorImpl implements BankingEditorTester, TransactionCatego
 
     public BankingEditorImpl(TransactionStore transactionStore, CategoryStore categoryStore, GoalSelector goalSelector) {
         this.transactionStore = transactionStore;
-        CategoryMenuImpl categoryMenu = new CategoryMenuImpl(categoryStore, this);
+        CategorizerMenuImpl categoryMenu = new CategorizerMenuImpl(categoryStore, this);
         BankingTableImpl bankingTableImpl = new BankingTableImpl(categoryMenu, goalSelector);
         this.bankingTable = bankingTableImpl;
         this.tableAutomator = bankingTableImpl;

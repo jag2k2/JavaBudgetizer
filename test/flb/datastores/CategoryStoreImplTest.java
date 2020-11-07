@@ -39,6 +39,12 @@ class CategoryStoreImplTest {
     }
 
     @Test
+    void countTransactions() {
+        int actual = categoryStore.getTransactionCountOfCategory("Name1");
+        assertEquals(2, actual);
+    }
+
+    @Test
     void deleteCategory() {
         expected.add(new Category("Name2", 200, true));
         expected.add(new Category("Name3", 300, false));

@@ -1,4 +1,4 @@
-package flb.components.categorizer;
+package flb.components.menus;
 
 import java.util.ArrayList;
 

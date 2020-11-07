@@ -1,6 +1,6 @@
 package flb.components.editors;
 
-import flb.components.categorizer.*;
+import flb.components.menus.*;
 import flb.datastores.*;
 import flb.components.editors.tables.*;
 import flb.tuples.*;
@@ -16,7 +16,7 @@ public class CreditEditorImpl implements CreditEditorTester, TransactionCategori
 
     public CreditEditorImpl(TransactionStore transactionStore, CategoryStore categoryStore, GoalSelector goalSelector){
         this.transactionStore = transactionStore;
-        CategoryMenuImpl categoryMenu = new CategoryMenuImpl(categoryStore, this);
+        CategorizerMenuImpl categoryMenu = new CategorizerMenuImpl(categoryStore, this);
         CreditTableImpl creditTableImpl = new CreditTableImpl(categoryMenu, goalSelector);
         this.creditTable = creditTableImpl;
         this.tableAutomator = creditTableImpl;

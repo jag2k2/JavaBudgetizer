@@ -2,7 +2,7 @@ package flb.components.editors.tables;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import flb.components.categorizer.mock.MenuDisplayerMock;
+import flb.components.menus.mock.MenuDisplayerMock;
 import flb.components.editors.mock.GoalSelectorMock;
 import org.junit.jupiter.api.*;
 import flb.datastores.TestDatabase;
