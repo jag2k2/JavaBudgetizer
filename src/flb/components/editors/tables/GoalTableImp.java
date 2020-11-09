@@ -1,7 +1,7 @@
 package flb.components.editors.tables;
 
 import flb.components.editors.*;
-import flb.components.editors.tables.listeners.UserSelectsGoalListener;
+import flb.listeners.UserSelectsGoalListener;
 import flb.components.editors.tables.models.GoalTableModelImp;
 import flb.components.editors.tables.renderers.*;
 import flb.tuples.TransactionSummary;

@@ -2,7 +2,7 @@ package flb.components.editors.tables;
 
 import flb.components.menus.*;
 import flb.components.editors.*;
-import flb.components.editors.tables.listeners.*;
+import flb.listeners.*;
 import flb.components.editors.tables.models.*;
 import flb.components.editors.tables.renderers.*;
 import flb.tuples.*;

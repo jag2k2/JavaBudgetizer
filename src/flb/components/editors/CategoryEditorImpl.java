@@ -2,7 +2,7 @@ package flb.components.editors;
 
 import javax.swing.*;
 import java.util.*;
-import flb.components.editors.tables.listeners.*;
+import flb.listeners.*;
 import flb.components.menus.CategoryEditorMenuImpl;
 import flb.components.monthselector.MonthSelectorImpl;
 import flb.datastores.CategoryStore;
@@ -86,7 +86,7 @@ public class CategoryEditorImpl implements CategoryAdder, CategoryClearer, Categ
         String message = "Can not delete '$Name'.  There are $count transactions that have been assigned that category.";
         message = message.replace("$Name", categoryNameToDelete);
         message = message.replace("$count", Integer.toString(transactionCount));
-        JOptionPane.showMessageDialog(frame, message, "Can not Delete", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(frame, message, "Can Not Delete", JOptionPane.ERROR_MESSAGE);
     }
 
     public void userClearGoalAmount(int row) {

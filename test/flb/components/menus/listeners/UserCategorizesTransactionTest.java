@@ -3,7 +3,7 @@ package flb.components.menus.listeners;
 import static org.junit.jupiter.api.Assertions.*;
 
 import flb.components.editors.mock.GoalSelectorMock;
-import flb.components.editors.tables.listeners.UserCategorizesTransaction;
+import flb.listeners.UserCategorizesTransaction;
 import flb.datastores.*;
 import flb.components.editors.BankingEditorImpl;
 import flb.components.editors.CreditEditorImpl;

@@ -1,6 +1,6 @@
 package flb.components.menus;
 
-import flb.components.editors.tables.listeners.UserCategorizesTransaction;
+import flb.listeners.UserCategorizesTransaction;
 import flb.datastores.CategoryStore;
 import flb.components.editors.TransactionCategorizer;
 import flb.tuples.*;

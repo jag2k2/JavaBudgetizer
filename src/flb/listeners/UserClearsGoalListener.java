@@ -1,4 +1,4 @@
-package flb.components.editors.tables.listeners;
+package flb.listeners;
 
 import flb.components.editors.CategoryClearer;
 import javax.swing.*;

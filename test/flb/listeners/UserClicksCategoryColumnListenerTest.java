@@ -1,4 +1,4 @@
-package flb.components.editors.tables.listeners;
+package flb.listeners;
 
 import flb.components.menus.CategorizerMenuImpl;
 import flb.components.menus.MenuDisplayer;

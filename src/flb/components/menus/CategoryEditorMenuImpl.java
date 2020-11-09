@@ -4,8 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 
 import flb.components.editors.*;
-import flb.components.editors.tables.listeners.UserClearsGoalListener;
-import flb.components.editors.tables.listeners.UserDeletesCategoryListener;
+import flb.listeners.UserClearsGoalListener;
+import flb.listeners.UserDeletesCategoryListener;
 
 public class CategoryEditorMenuImpl implements MenuDisplayer {
     private final CategoryClearer categoryClearer;

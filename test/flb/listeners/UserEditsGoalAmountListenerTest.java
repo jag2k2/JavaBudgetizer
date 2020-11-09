@@ -1,4 +1,4 @@
-package flb.components.editors.tables.listeners;
+package flb.listeners;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

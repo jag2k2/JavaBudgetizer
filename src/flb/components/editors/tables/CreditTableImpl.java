@@ -1,7 +1,7 @@
 package flb.components.editors.tables;
 
 import flb.components.editors.GoalSelector;
-import flb.components.editors.tables.listeners.*;
+import flb.listeners.*;
 import flb.components.menus.MenuDisplayer;
 import flb.components.editors.tables.models.*;
 import flb.components.editors.tables.renderers.*;

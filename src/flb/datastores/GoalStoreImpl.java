@@ -2,13 +2,11 @@ package flb.datastores;
 
 import java.util.*;
 import java.sql.*;
-
-import flb.tuples.Category;
-import flb.tuples.Goal;
-import flb.util.WhichMonth;
+import flb.tuples.*;
+import flb.util.*;
 
 public class GoalStoreImpl implements GoalStore, GoalStoreTester {
-    private DataStore dataStore;
+    private final DataStore dataStore;
 
     public GoalStoreImpl(DataStore dataStore) {
         this.dataStore = dataStore;
@@ -29,13 +27,19 @@ public class GoalStoreImpl implements GoalStore, GoalStoreTester {
     }
 
     @Override
-    public void addGoal(Goal goal) {
+    public int countGoals(WhichMonth selectedMonth) {
+        String query = "SELECT COUNT(*) FROM goals WHERE year_mo = '$yrmo'";
+        query = query.replace("$yrmo", selectedMonth.toSQLString());
 
-    }
+        ResultSet results = dataStore.executeQuery(query);
 
-    @Override
-    public void deleteGoal(String name) {
+        int goalCount = 0;
+        try {
+            results.next();
+            goalCount = results.getInt(1);
+        } catch (SQLException ex) {ex.printStackTrace();}
 
+        return goalCount;
     }
 
     @Override
@@ -44,7 +48,17 @@ public class GoalStoreImpl implements GoalStore, GoalStoreTester {
     }
 
     @Override
+    public void addGoal(Goal goal) {
+
+    }
+
+    @Override
     public void updateGoalAmount(float amount) {
+
+    }
+
+    @Override
+    public void deleteGoal(String name) {
 
     }
 

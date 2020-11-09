@@ -3,7 +3,7 @@ package flb.application.category.listeners;
 import static org.junit.jupiter.api.Assertions.*;
 
 import flb.components.editors.CategoryEditorNoDialog;
-import flb.components.editors.tables.listeners.UserDeletesCategoryListener;
+import flb.listeners.UserDeletesCategoryListener;
 import flb.datastores.CategoryStore;
 import flb.components.editors.CategoryEditorImpl;
 import flb.components.editors.tables.CategoryTableTester;

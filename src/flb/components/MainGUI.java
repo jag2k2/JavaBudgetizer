@@ -1,37 +1,38 @@
-package flb.application;
+package flb.components;
 
 import javax.swing.*;
 import javax.swing.border.*;
-import flb.components.editors.tables.listeners.*;
+
+import flb.components.menus.MenuBarImpl;
+import flb.listeners.*;
 import flb.components.monthselector.*;
 import flb.datastores.*;
 import flb.components.editors.*;
 import java.awt.*;
-import java.awt.event.*;
 
 public class MainGUI {
     private final JFrame frame;
+    private final MenuBarImpl menuBar;
     private final MonthSelectorImpl monthSelector;
     private final JTextField balance;
     private final BankingEditorImpl bankingEditor;
     private final CreditEditorImpl creditEditor;
     private final CategoryEditorImpl categoryEditor;
     private final GoalEditorImpl goalEditor;
-    private final GoalStore goalStore;
     private final JTextField nameFilter;
     private final JButton addButton;
 
     public MainGUI(TransactionStore transactionStore, CategoryStore categoryStore, GoalStore goalStore) {
-        this.goalStore = goalStore;
         this.frame = new JFrame();
         this.monthSelector = new MonthSelectorImpl();
-        this.goalEditor = new GoalEditorImpl(transactionStore, goalStore);
+        this.goalEditor = new GoalEditorImpl(transactionStore, goalStore, frame);
         this.categoryEditor = new CategoryEditorImpl(categoryStore);
         this.bankingEditor = new BankingEditorImpl(transactionStore, categoryStore, goalEditor);
         this.creditEditor = new CreditEditorImpl(transactionStore, categoryStore, goalEditor);
         this.balance = new JTextField();
         this.addButton = new JButton("Add");
         this.nameFilter = new JTextField();
+        this.menuBar = new MenuBarImpl(goalEditor, monthSelector);
 
         addListeners();
         layout();
@@ -88,31 +89,10 @@ public class MainGUI {
         mainPanel.add(BorderLayout.WEST, leftPane);
         mainPanel.add(BorderLayout.CENTER, rightPane);
 
-        JMenuBar menuBar = new JMenuBar();
-        JMenu fileMenu = new JMenu("File");
-        JMenuItem importMenuItem = new JMenuItem("Import Transactions");
-        JMenuItem exitMenuItem = new JMenuItem("Exit");
-        fileMenu.add(importMenuItem);
-        fileMenu.add(exitMenuItem);
-
-        JMenu budgetMenu = new JMenu("Budget");
-        JMenuItem defaultGoalsMenuItem = new JMenuItem("Create Default Goals");
-        defaultGoalsMenuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                goalStore.createDefaultGoals(monthSelector.getSelectedMonth());
-                goalEditor.update(monthSelector.getSelectedMonth());
-            }
-        });
-        budgetMenu.add(defaultGoalsMenuItem);
-
-        menuBar.add(fileMenu);
-        menuBar.add(budgetMenu);
-
         frame.setTitle("Filthy Lucre Budgetizer");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setContentPane(mainPanel);
-        frame.setJMenuBar(menuBar);
+        frame.setJMenuBar(menuBar.getMenuBar());
         frame.setLocation(300, 100);
         frame.setMinimumSize(new Dimension(1200, 500));
         frame.setPreferredSize(new Dimension(1200, 500));

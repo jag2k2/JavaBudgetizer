@@ -2,7 +2,7 @@ package flb.application.category.listeners;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import flb.components.editors.tables.listeners.UserFiltersCategoriesListener;
+import flb.listeners.UserFiltersCategoriesListener;
 import flb.datastores.CategoryStore;
 import flb.components.editors.CategoryEditorImpl;
 import flb.components.editors.tables.CategoryTableTester;

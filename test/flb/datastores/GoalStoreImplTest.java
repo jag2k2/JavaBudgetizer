@@ -55,6 +55,16 @@ class GoalStoreImplTest {
     }
 
     @Test
+    void countGoals() {
+        WhichMonth date = new WhichMonth(2020, Calendar.OCTOBER);
+
+        int actual = goalStore.countGoals(date);
+
+        assertEquals(3, actual);
+
+    }
+
+    @Test
     void addGoal() {
     }
 

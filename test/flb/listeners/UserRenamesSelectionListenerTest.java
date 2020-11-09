@@ -1,4 +1,4 @@
-package flb.components.editors.tables.listeners;
+package flb.listeners;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -12,7 +12,7 @@ import org.junit.jupiter.api.*;
 import javax.swing.*;
 import java.util.*;
 
-class UserEditsExcludesListenerTest {
+class UserRenamesSelectionListenerTest {
     private JTextField nameFilter;
     private ArrayList<Category> expected;
     private CategoryTableTester tableAutomator;
@@ -24,11 +24,10 @@ class UserEditsExcludesListenerTest {
         this.database = new TestDatabase();
         database.connect();
         this.categoryStore = new CategoryStoreImpl(database);
-        CategoryEditorImpl categoryEditorImpl = new CategoryEditorImpl(categoryStore);
-        categoryEditorImpl.refreshAndKeepSelection("");
-        this.tableAutomator = categoryEditorImpl.getTableAutomator();
-
+        CategoryEditorImpl categoryEditor = new CategoryEditorImpl(categoryStore);
+        this.tableAutomator = categoryEditor.getTableAutomator();
         this.nameFilter = new JTextField();
+        categoryEditor.refreshAndClearSelection("");
 
         this.expected = new ArrayList<>();
         expected.add(new Category("Name1", 100, false));
@@ -37,7 +36,7 @@ class UserEditsExcludesListenerTest {
         expected.add(new Category("Test1::sub1", Float.NaN, false));
         expected.add(new Category("Test1::sub2", 500, true));
 
-        categoryEditorImpl.addCategoryEditingListeners(nameFilter, new JFrame(), new MonthSelectorImpl());
+        categoryEditor.addCategoryEditingListeners(nameFilter, new JFrame(), new MonthSelectorImpl());
     }
 
     @AfterEach
@@ -46,25 +45,27 @@ class UserEditsExcludesListenerTest {
     }
 
     @Test
-    void enableDisabledCategory() {
+    void renameFirstCategory() {
         nameFilter.setText("Name");
         tableAutomator.setSelectedRow(0);
 
-        tableAutomator.toggleSelectedExcludes();
+        tableAutomator.editCellAt(0,0);
+        tableAutomator.setEditorName("Name10");
 
-        expected.set(0, new Category("Name1", 100, true));
+        expected.set(0, new Category("Name10", 100, false));
         assertEquals(expected, categoryStore.getCategories(""));
         assertEquals("Name", nameFilter.getText());
     }
 
     @Test
-    void disableEnabledCategory() {
+    void renameLastCategory() {
         nameFilter.setText("Name");
-        tableAutomator.setSelectedRow(1);
+        tableAutomator.setSelectedRow(4);
 
-        tableAutomator.toggleSelectedExcludes();
+        tableAutomator.editCellAt(4,0);
+        tableAutomator.setEditorName("Test20");
 
-        expected.set(1, new Category("Name2", 200, false));
+        expected.set(4, new Category("Test20", 500, true));
         assertEquals(expected, categoryStore.getCategories(""));
         assertEquals("Name", nameFilter.getText());
     }
