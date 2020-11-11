@@ -1,7 +1,9 @@
 package flb.components.editors.tables;
 
 import flb.components.editors.*;
+import flb.components.menus.MenuDisplayer;
 import flb.listeners.UserEditsSummaryGoalListener;
+import flb.listeners.UserRightCicksMonthGoalListener;
 import flb.listeners.UserSelectsGoalListener;
 import flb.components.editors.tables.models.SummaryTableModelImp;
 import flb.components.editors.tables.renderers.*;
@@ -91,6 +93,11 @@ public class SummaryTableImp implements SummaryTable, SummarySelector, SummaryTa
     }
 
     @Override
+    public Maybe<TransactionSummary> getSummary(int row) {
+        return tableModel.getSummary(row);
+    }
+
+    @Override
     public Maybe<String> getSelectedGoalName(){
         int selectedRow = table.getSelectedRow();
         return tableModel.getGoalName(selectedRow);
@@ -112,5 +119,11 @@ public class SummaryTableImp implements SummaryTable, SummarySelector, SummaryTa
         JTextField editorComponent = (JTextField) cellEditor.getTableCellEditorComponent(table, "", false, 0, 1);
         editorComponent.setText(Float.toString(goalAmount));
         cellEditor.stopCellEditing();
+    }
+
+    @Override
+    public void addEditorMenu(MenuDisplayer menuDisplayer) {
+        table.add(menuDisplayer.getPopup());
+        table.addMouseListener(new UserRightCicksMonthGoalListener(menuDisplayer));
     }
 }

@@ -1,6 +1,7 @@
 package flb.components.editors;
 
 import flb.components.editors.tables.*;
+import flb.components.menus.*;
 import flb.datastores.*;
 import flb.listeners.UserEditsSummaryGoalListener;
 import flb.tuples.TransactionSummary;
@@ -8,8 +9,8 @@ import flb.util.*;
 import java.util.*;
 import javax.swing.*;
 
-public class SummaryEditorImpl implements MonthGoalEditor, DefaultGoalMaker, SummarySelector, MonthChangeListener,
-        StoreChangeListener, SummaryEditorTester{
+public class SummaryEditorImpl implements MonthGoalEditor, MonthGoalClearer, DefaultGoalMaker, SummarySelector,
+        MonthChangeListener, StoreChangeListener, SummaryEditorTester{
     private final GoalStore goalStore;
     private final TransactionStore transactionStore;
     private final SummaryTable summaryTable;
@@ -37,6 +38,7 @@ public class SummaryEditorImpl implements MonthGoalEditor, DefaultGoalMaker, Sum
 
     public void addGoalEditingListeners(){
         summaryTable.addGoalEditedListener(new UserEditsSummaryGoalListener(this));
+        summaryTable.addEditorMenu(new GoalEditorMenuImpl(this));
     }
 
     public void createDefaultGoals(WhichMonth selectedMonth) {
@@ -77,7 +79,7 @@ public class SummaryEditorImpl implements MonthGoalEditor, DefaultGoalMaker, Sum
     }
 
     @Override
-    public void UpdateSelectedGoalAmount() {
+    public void updateSelectedGoalAmount() {
         for (TransactionSummary summary : summaryTable.getSelectedSummary()) {
             if(goalStore.goalExists(summary)) {
                 goalStore.updateGoalAmount(summary);
@@ -85,6 +87,15 @@ public class SummaryEditorImpl implements MonthGoalEditor, DefaultGoalMaker, Sum
             else {
                 goalStore.addGoal(summary);
             }
+            updateAndKeepSelection(summary.getMonth());
+        }
+    }
+
+    @Override
+    public void clearGoalAmount(int row) {
+        for (TransactionSummary summary : summaryTable.getSummary(row)) {
+            goalStore.deleteGoal(summary);
+            updateAndKeepSelection(summary.getMonth());
         }
     }
 

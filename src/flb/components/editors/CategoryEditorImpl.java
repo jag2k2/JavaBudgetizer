@@ -15,7 +15,7 @@ public class CategoryEditorImpl implements CategoryAdder, CategoryClearer, Categ
     private final CategoryStore categoryStore;
     private final CategoryTable categoryTable;
     private final CategoryTableTester tableAutomator;
-    private ArrayList<StoreChangeListener> storeChangeListeners;
+    private final ArrayList<StoreChangeListener> storeChangeListeners;
 
     public CategoryEditorImpl(CategoryStore categoryStore){
         this.categoryStore = categoryStore;

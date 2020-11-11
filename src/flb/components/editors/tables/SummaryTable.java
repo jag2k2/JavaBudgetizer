@@ -1,6 +1,7 @@
 package flb.components.editors.tables;
 
 import flb.components.editors.*;
+import flb.components.menus.MenuDisplayer;
 import flb.tuples.*;
 import flb.util.*;
 import java.util.*;
@@ -14,4 +15,6 @@ public interface SummaryTable extends SummarySelector {
     void addGoalSelectedObserver(TableHighlighter tableHighlighter);
     void addGoalEditedListener(TableModelListener tableModelListener);
     Maybe<TransactionSummary> getSelectedSummary();
+    Maybe<TransactionSummary> getSummary(int row);
+    void addEditorMenu (MenuDisplayer menuDisplayer);
 }

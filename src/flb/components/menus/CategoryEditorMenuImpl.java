@@ -2,10 +2,8 @@ package flb.components.menus;
 
 import javax.swing.*;
 import java.awt.*;
-
 import flb.components.editors.*;
-import flb.listeners.UserClearsDefaultGoalListener;
-import flb.listeners.UserDeletesCategoryListener;
+import flb.listeners.*;
 
 public class CategoryEditorMenuImpl implements MenuDisplayer {
     private final CategoryClearer categoryClearer;

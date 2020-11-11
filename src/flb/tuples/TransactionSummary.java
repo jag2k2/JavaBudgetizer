@@ -23,6 +23,10 @@ public class TransactionSummary {
         this.transaction_sum = new Maybe<>(transaction_sum);
     }
 
+    public WhichMonth getMonth() {
+        return whichMonth;
+    }
+
     public String getMonthSQLString() {
         return whichMonth.toSQLString();
     }
