@@ -26,8 +26,6 @@ class UserEditsSummaryGoalListenerTest {
         this.tableTester = summaryEditor.getTableTester();
         StoreChangeListener storeChangeListener = summaryEditor;
         storeChangeListener.updateAndKeepSelection(new WhichMonth(2020, Calendar.OCTOBER));
-
-        summaryEditor.addGoalEditingListeners();
     }
 
     @AfterEach

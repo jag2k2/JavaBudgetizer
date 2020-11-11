@@ -1,7 +1,7 @@
 package flb.datastores;
 
 import flb.tuples.Category;
-
+import flb.util.*;
 import java.util.ArrayList;
 
 public interface CategoryStore {
@@ -13,4 +13,5 @@ public interface CategoryStore {
     ArrayList<Category> getCategories(String nameFilter);
     boolean categoryExist(String name);
     int getTransactionCountOfCategory(String categoryNameToDelete);
+    float getBalance(WhichMonth whichMonth);
 }

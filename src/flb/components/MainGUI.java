@@ -3,6 +3,7 @@ package flb.components;
 import javax.swing.*;
 import javax.swing.border.*;
 
+import flb.components.balancedisplay.BalanceDisplayImpl;
 import flb.components.menus.MenuBarImpl;
 import flb.listeners.*;
 import flb.components.monthselector.*;
@@ -14,7 +15,7 @@ public class MainGUI {
     private final JFrame frame;
     private final MenuBarImpl menuBar;
     private final MonthSelectorImpl monthSelector;
-    private final JTextField balance;
+    private final BalanceDisplayImpl balanceDisplay;
     private final BankingEditorImpl bankingEditor;
     private final CreditEditorImpl creditEditor;
     private final CategoryEditorImpl categoryEditor;
@@ -29,7 +30,7 @@ public class MainGUI {
         this.categoryEditor = new CategoryEditorImpl(categoryStore);
         this.bankingEditor = new BankingEditorImpl(transactionStore, categoryStore, summaryEditor);
         this.creditEditor = new CreditEditorImpl(transactionStore, categoryStore, summaryEditor);
-        this.balance = new JTextField();
+        this.balanceDisplay = new BalanceDisplayImpl(categoryStore);
         this.addButton = new JButton("Add");
         this.nameFilter = new JTextField();
         this.menuBar = new MenuBarImpl(summaryEditor, monthSelector);
@@ -39,23 +40,14 @@ public class MainGUI {
     }
 
     protected void layout(){
-        Border blackBorder = new LineBorder(Color.BLACK);
         Border greyBorder = new LineBorder(Color.LIGHT_GRAY);
-        Border margin = BorderFactory.createEmptyBorder(5,5,5,5);
+
 
         JPanel northLeftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         northLeftPanel.add(monthSelector.getPane());
 
-        JLabel balanceLabel = new JLabel("Balance");
-        JPanel balancePane = new JPanel();
-        balancePane.setBorder(new CompoundBorder(blackBorder, margin));
-        balancePane.setLayout(new BoxLayout(balancePane, BoxLayout.X_AXIS));
-        balancePane.add(balanceLabel);
-        balance.setPreferredSize(new Dimension(100,28));
-        balancePane.add(balance);
-
         JPanel northRightPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        northRightPanel.add(balancePane);
+        northRightPanel.add(balanceDisplay.getPane());
         northRightPanel.add(Box.createRigidArea(new Dimension(34,5)));
 
         JPanel northCategoryPanel = new JPanel();
@@ -103,23 +95,29 @@ public class MainGUI {
         monthSelector.addMonthChangeListener(bankingEditor);
         monthSelector.addMonthChangeListener(creditEditor);
         monthSelector.addMonthChangeListener(summaryEditor);
+        monthSelector.addMonthChangeListener(balanceDisplay);
 
         bankingEditor.addStoreChangeListener(bankingEditor);
         bankingEditor.addStoreChangeListener(summaryEditor);
+        bankingEditor.addStoreChangeListener(balanceDisplay);
+
         creditEditor.addStoreChangeListener(creditEditor);
         creditEditor.addStoreChangeListener(summaryEditor);
+        creditEditor.addStoreChangeListener(balanceDisplay);
+
         categoryEditor.addStoreChangeListener(bankingEditor);
         categoryEditor.addStoreChangeListener(creditEditor);
         categoryEditor.addStoreChangeListener(summaryEditor);
+        categoryEditor.addStoreChangeListener(balanceDisplay);
 
         summaryEditor.addGoalSelectedListener(bankingEditor);
         summaryEditor.addGoalSelectedListener(creditEditor);
+        summaryEditor.addGoalChangeListeners(summaryEditor);
+        summaryEditor.addGoalChangeListeners(balanceDisplay);
 
         categoryEditor.addCategoryEditingListeners(nameFilter, frame, monthSelector);
         addButton.addActionListener(new UserAddsCategoryListener(categoryEditor, nameFilter));
         nameFilter.getDocument().addDocumentListener(new UserFiltersCategoriesListener(categoryEditor, nameFilter));
-
-        summaryEditor.addGoalEditingListeners();
     }
 
     public void launch(){

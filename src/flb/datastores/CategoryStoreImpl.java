@@ -1,6 +1,7 @@
 package flb.datastores;
 
 import flb.tuples.*;
+import flb.util.WhichMonth;
 import java.util.*;
 import java.sql.*;
 
@@ -106,4 +107,51 @@ public class CategoryStoreImpl implements CategoryStore {
         }
         return categories;
     }
+
+    @Override
+    public float getBalance(WhichMonth whichMonth){
+        //Sum of income - sum(max(budget.goal, sum(trans.amount))
+        String query = "SELECT " +
+                "COALESCE(SUM(max_amt),0) " +
+                "FROM(SELECT " +
+                "cat_id, " +
+                "COALESCE(GREATEST(IFNULL(goal_amount, total_tx_amount), IFNULL(total_tx_amount, goal_amount)), 0) as max_amt " +
+                "FROM (SELECT " +
+                "c.id as cat_id, " +
+                "g.amount as goal_amount, " +
+                "$inv*SUM(t.amount) as total_tx_amount, " +
+                "c.exclude as cat_exclude " +
+                "FROM categories c " +
+                "LEFT JOIN goals g " +
+                "ON c.id=g.category_id AND g.year_mo = '$yrmo' " +
+                "LEFT JOIN transactions t " +
+                "ON c.id = t.category_id AND t.date LIKE '$yrmo-%' " +
+                "GROUP by c.id) as all_cat_summaries " +
+                "WHERE $cond AND cat_exclude = 'false') as max_expense_amts";
+        query = query.replace("$yrmo", whichMonth.toSQLString());
+        String incomeQuery = query.replace("$inv", "1");
+        incomeQuery = incomeQuery.replace("$cond", "cat_id = '1' OR cat_id = '2'");
+
+        String expenseQuery = query.replace("$inv", "-1");
+        expenseQuery = expenseQuery.replace("$cond", "cat_id != '1' AND cat_id != '2'");
+
+        ResultSet incomeResults = dataStore.executeQuery(incomeQuery);
+        ResultSet expenseResults = dataStore.executeQuery(expenseQuery);
+
+        float income = Float.NaN;
+        try{
+            incomeResults.next();
+            income = incomeResults.getFloat(1);
+        } catch (SQLException ex) {ex.printStackTrace();}
+
+        float expenses = Float.NaN;
+
+        try{
+            expenseResults.next();
+            expenses = expenseResults.getFloat(1);
+        } catch (SQLException ex) {ex.printStackTrace();}
+
+        return income - expenses;
+    }
+
 }

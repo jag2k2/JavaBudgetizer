@@ -16,7 +16,7 @@ public class SummaryEditorImpl implements MonthGoalEditor, MonthGoalClearer, Def
     private final SummaryTable summaryTable;
     private final SummaryTableTester tableTester;
     private final JFrame frame;
-
+    private final ArrayList<StoreChangeListener> storeChangeListeners;
 
     public SummaryEditorImpl(TransactionStore transactionStore, GoalStore goalStore, JFrame frame){
         this.goalStore = goalStore;
@@ -25,7 +25,24 @@ public class SummaryEditorImpl implements MonthGoalEditor, MonthGoalClearer, Def
         this.tableTester = goalTable;
         this.summaryTable = goalTable;
         this.frame = frame;
+        this.storeChangeListeners = new ArrayList<>();
 
+        addListeners();
+    }
+
+    protected void addListeners() {
+        summaryTable.addEditorMenu(new GoalEditorMenuImpl(this));
+        summaryTable.addGoalEditedListener(new UserEditsSummaryGoalListener(this));
+    }
+
+    public void addGoalChangeListeners(StoreChangeListener storeChangeListener){
+        storeChangeListeners.add(storeChangeListener);
+    }
+
+    protected void notifyGoalChanged(WhichMonth selectedMonth) {
+        for(StoreChangeListener storeChangeListener : storeChangeListeners) {
+            storeChangeListener.updateAndKeepSelection(selectedMonth);
+        }
     }
 
     public JScrollPane getPane() {
@@ -36,23 +53,18 @@ public class SummaryEditorImpl implements MonthGoalEditor, MonthGoalClearer, Def
         summaryTable.addGoalSelectedObserver(tableHighlighter);
     }
 
-    public void addGoalEditingListeners(){
-        summaryTable.addGoalEditedListener(new UserEditsSummaryGoalListener(this));
-        summaryTable.addEditorMenu(new GoalEditorMenuImpl(this));
-    }
-
     public void createDefaultGoals(WhichMonth selectedMonth) {
         int goalCount = goalStore.countGoals(selectedMonth);
         if (goalCount > 0) {
             int confirmation = getConfirmationFromDialog(goalCount, frame);
             if(confirmation == JOptionPane.YES_OPTION) {
                 goalStore.createDefaultGoals(selectedMonth);
-                update(selectedMonth);
+                notifyGoalChanged(selectedMonth);
             }
         }
         else {
             goalStore.createDefaultGoals(selectedMonth);
-            update(selectedMonth);
+            notifyGoalChanged(selectedMonth);
         }
     }
 
@@ -87,7 +99,7 @@ public class SummaryEditorImpl implements MonthGoalEditor, MonthGoalClearer, Def
             else {
                 goalStore.addGoal(summary);
             }
-            updateAndKeepSelection(summary.getMonth());
+            notifyGoalChanged(summary.getMonth());
         }
     }
 
@@ -95,7 +107,7 @@ public class SummaryEditorImpl implements MonthGoalEditor, MonthGoalClearer, Def
     public void clearGoalAmount(int row) {
         for (TransactionSummary summary : summaryTable.getSummary(row)) {
             goalStore.deleteGoal(summary);
-            updateAndKeepSelection(summary.getMonth());
+            notifyGoalChanged(summary.getMonth());
         }
     }
 
