@@ -1,15 +1,15 @@
 package flb.components.editors.tables.models;
 
-import flb.tuples.TransactionSummary;
+import flb.tuples.*;
 import javax.swing.table.*;
 import java.util.*;
 import flb.util.*;
 
-public class GoalTableModelImp extends AbstractTableModel implements GoalTableModel {
+public class SummaryTableModelImp extends AbstractTableModel implements SummaryTableModel {
     private final String[] columnNames = {"Categories", "Goal", "Actual", "Diff"};
     private ArrayList<TransactionSummary> tableContents;
 
-    public GoalTableModelImp() {
+    public SummaryTableModelImp() {
         tableContents = new ArrayList<>();
     }
 
@@ -24,35 +24,38 @@ public class GoalTableModelImp extends AbstractTableModel implements GoalTableMo
     }
 
     @Override
+    public Class getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+    }
+
+    @Override
     public Object getValueAt(int row, int column) {
         TransactionSummary transactionSummary = tableContents.get(row);
         return switch (column) {
             case 0 -> transactionSummary.getName();
-            case 1 -> transactionSummary.getGoalAmount();
-            case 2 -> transactionSummary.getTransactionSum();
-            case 3 -> transactionSummary.getGoalAmount() + transactionSummary.getTransactionSum();
+            case 1 -> transactionSummary.getGoalAmountWithDefault(Float.NaN);
+            case 2 -> transactionSummary.getSumWithDefault(Float.NaN);
+            case 3 -> transactionSummary.getCategoryBalance();
             default -> null;
         };
     }
 
-    /*@Override
-    public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-        if (columnIndex == 0) {
-            tableContents.get(rowIndex).rename((String) aValue);
-        } else if (columnIndex == 1) {
-            tableContents.get(rowIndex).setDefaultGoal((Float) aValue);
-        }
-        fireTableCellUpdated(rowIndex, columnIndex);
-    }*/
-
-    /*@Override
-    public boolean isCellEditable(int row, int col) {
-        return true;
-    }*/
-
     @Override
     public String getColumnName(int column) {
         return columnNames[column];
+    }
+
+    @Override
+    public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+        if (columnIndex == 1) {
+            tableContents.get(rowIndex).addGoal((Float) aValue);
+        }
+        fireTableCellUpdated(rowIndex, columnIndex);
+    }
+
+    @Override
+    public boolean isCellEditable(int row, int col) {
+        return col == 1;
     }
 
     public Maybe<String> getGoalName(int row){
@@ -65,5 +68,13 @@ public class GoalTableModelImp extends AbstractTableModel implements GoalTableMo
     public void updateSummaries(ArrayList<TransactionSummary> tableContents) {
         this.tableContents = tableContents;
         fireTableDataChanged();
+    }
+
+    @Override
+    public Maybe<TransactionSummary> getSummary(int row) {
+        if (row >= 0 && row < getRowCount()) {
+            return new Maybe<>(tableContents.get(row));
+        }
+        else return new Maybe<>();
     }
 }

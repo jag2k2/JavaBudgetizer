@@ -96,36 +96,35 @@ public class TestDatabase extends AbstractDatabase {
         testCategories.add(new Category("Name1", 100, false));
         testCategories.add(new Category("Name2", 200, true));
         testCategories.add(new Category("Name3", 300, false));
-        testCategories.add(new Category("Test1::sub1", Float.NaN, false));
+        testCategories.add(new Category("Test1::sub1", false));
         testCategories.add(new Category("Test1::sub2", 500, true));
         return testCategories;
     }
 
-    static public ArrayList<Goal> getTestGoals() {
-        ArrayList<Goal> testGoals = new ArrayList<>();
+    static public ArrayList<TransactionSummary> getTestSummaries() {
+        ArrayList<TransactionSummary> summaries = new ArrayList<>();
 
         WhichMonth whichMonth0 = new WhichMonth(2020, Calendar.SEPTEMBER);
         WhichMonth whichMonth1 = new WhichMonth(2020, Calendar.OCTOBER);
-        Category category1 = getTestCategories().get(0);
-        Category category2 = getTestCategories().get(1);
-        Category category3 = getTestCategories().get(2);
-        Category category5 = getTestCategories().get(4);
 
-        testGoals.add(new Goal(whichMonth0, category1, 50));
-        testGoals.add(new Goal(whichMonth0, category2, 55));
-        testGoals.add(new Goal(whichMonth0, category3, 60));
-        testGoals.add(new Goal(whichMonth1, category2, 65));
-        testGoals.add(new Goal(whichMonth1, category3, 70));
-        testGoals.add(new Goal(whichMonth1, category5, 75));
+        TransactionSummary summary = new TransactionSummary(whichMonth0, getTestCategories().get(0));
+        summary.addGoal(50);
+        summary.addSum(100);
+        //summaries.add(new Goal(whichMonth0, 50));
+        //summaries.add(new Goal(whichMonth0, 55));
+        //summaries.add(new Goal(whichMonth0, 60));
+        //summaries.add(new Goal(whichMonth1, 65));
+        //summaries.add(new Goal(whichMonth1, 70));
+        //summaries.add(new Goal(whichMonth1, 75));
 
-        return testGoals;
+        return summaries;
     }
 
     static public ArrayList<BankingTransaction> getTestBankingTransactions() {
         ArrayList<BankingTransaction> testTransactions = new ArrayList<>();
 
         Calendar date1 = new GregorianCalendar(2020, Calendar.OCTOBER, 25);
-        Calendar date2 = new GregorianCalendar(2020,Calendar.OCTOBER,26);
+        Calendar date2 = new GregorianCalendar(2020, Calendar.OCTOBER, 26);
         Calendar date3 = new GregorianCalendar(2020, Calendar.OCTOBER, 27);
 
         testTransactions.add(new BankingTransaction("1", date1, "Amazon", 50F, "Name1", 1000F));

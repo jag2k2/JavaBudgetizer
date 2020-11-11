@@ -2,6 +2,6 @@ package flb.components.editors;
 
 import flb.util.Maybe;
 
-public interface GoalSelector {
+public interface SummarySelector {
     Maybe<String> getSelectedGoalName();
 }

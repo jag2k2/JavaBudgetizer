@@ -1,8 +1,7 @@
-package flb.application.category.listeners;
+package flb.listeners;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import flb.listeners.UserClearsGoalListener;
 import flb.datastores.*;
 import flb.datastores.CategoryStore;
 import flb.components.editors.CategoryEditorImpl;
@@ -12,7 +11,7 @@ import org.junit.jupiter.api.*;
 import javax.swing.*;
 import java.util.*;
 
-class UserClearsGoalListenerTest {
+class UserClearsDefaultGoalListenerTest {
     private JTextField nameFilter;
     private JButton testButton;
     private ArrayList<Category> expected;
@@ -27,18 +26,13 @@ class UserClearsGoalListenerTest {
         this.categoryStore = new CategoryStoreImpl(database);
         CategoryEditorImpl categoryEditor = new CategoryEditorImpl(categoryStore);
         categoryEditor.refreshAndKeepSelection("");
-        this.tableAutomator = categoryEditor.getTableAutomator();
+        this.tableAutomator = categoryEditor.getTableTester();
 
         this.nameFilter = new JTextField();
         this.testButton = new JButton();
-        testButton.addActionListener(new UserClearsGoalListener(categoryEditor, nameFilter));
+        testButton.addActionListener(new UserClearsDefaultGoalListener(categoryEditor, nameFilter));
 
-        this.expected = new ArrayList<>();
-        expected.add(new Category("Name1", 100, false));
-        expected.add(new Category("Name2", 200, true));
-        expected.add(new Category("Name3", 300, false));
-        expected.add(new Category("Test1::sub1", Float.NaN, false));
-        expected.add(new Category("Test1::sub2", 500, true));
+        this.expected = TestDatabase.getTestCategories();
     }
 
     @AfterEach
@@ -52,7 +46,7 @@ class UserClearsGoalListenerTest {
         testButton.setActionCommand("1");
         testButton.doClick();
 
-        expected.set(1, new Category("Name2", Float.NaN, true));
+        expected.set(1, new Category("Name2", true));
         assertEquals(expected, categoryStore.getCategories(""));
         assertEquals("Name", nameFilter.getText());
     }

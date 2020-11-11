@@ -25,16 +25,11 @@ class UserRenamesSelectionListenerTest {
         database.connect();
         this.categoryStore = new CategoryStoreImpl(database);
         CategoryEditorImpl categoryEditor = new CategoryEditorImpl(categoryStore);
-        this.tableAutomator = categoryEditor.getTableAutomator();
+        this.tableAutomator = categoryEditor.getTableTester();
         this.nameFilter = new JTextField();
         categoryEditor.refreshAndClearSelection("");
 
-        this.expected = new ArrayList<>();
-        expected.add(new Category("Name1", 100, false));
-        expected.add(new Category("Name2", 200, true));
-        expected.add(new Category("Name3", 300, false));
-        expected.add(new Category("Test1::sub1", Float.NaN, false));
-        expected.add(new Category("Test1::sub2", 500, true));
+        this.expected = TestDatabase.getTestCategories();
 
         categoryEditor.addCategoryEditingListeners(nameFilter, new JFrame(), new MonthSelectorImpl());
     }

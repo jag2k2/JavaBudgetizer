@@ -16,6 +16,6 @@ public class UserCreatesDefaultGoals implements ActionListener {
     }
     @Override
     public void actionPerformed(ActionEvent e) {
-        goalMaker.createDefaultgoals(monthSelector.getSelectedMonth());
+        goalMaker.createDefaultGoals(monthSelector.getSelectedMonth());
     }
 }

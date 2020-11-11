@@ -49,7 +49,7 @@ class CategoryTableModelImplTest {
 
     @Test
     void setValues() {
-        expected = new Maybe<>(new Category("TestRename", 100, false));
+        expected = new Maybe<>(new Category("TestRename", 100,false));
 
         tableModel.setValueAt("TestRename", 0, 0);
 

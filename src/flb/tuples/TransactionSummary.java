@@ -1,31 +1,65 @@
 package flb.tuples;
 
-public class TransactionSummary {
-    private String name;
-    private float goal_amount;
-    private float transaction_sum;
+import flb.util.*;
 
-    public TransactionSummary(String name, float goal_amount, float transaction_sum) {
-        this.name = name;
-        this.goal_amount = goal_amount;
-        this.transaction_sum = transaction_sum;
+public class TransactionSummary {
+    private final WhichMonth whichMonth;
+    private final Category category;
+    private Maybe<Float> goal;
+    private Maybe<Float> transaction_sum;
+
+    public TransactionSummary(WhichMonth whichMonth, Category category) {
+        this.whichMonth = whichMonth;
+        this.category = category;
+        this.goal = new Maybe<>();
+        this.transaction_sum = new Maybe<>();
+    }
+
+    public void addGoal(float goalAmount){
+        this.goal = new Maybe<>(goalAmount);
+    }
+
+    public void addSum(float transaction_sum){
+        this.transaction_sum = new Maybe<>(transaction_sum);
+    }
+
+    public String getMonthSQLString() {
+        return whichMonth.toSQLString();
     }
 
     public String getName() {
-        return name;
+        return category.getName();
     }
 
-    public float getGoalAmount() {
-        return goal_amount;
+    public Maybe<Float> getGoalAmount() {
+        return goal;
     }
 
-    public float getTransactionSum() {
+    public float getGoalAmountWithDefault(float defaultGoalAmount) {
+        for (float goalAmount : goal) {
+            return goalAmount;
+        }
+        return defaultGoalAmount;
+    }
+
+    public Maybe<Float> getTransactionSum() {
         return transaction_sum;
+    }
+
+    public float getSumWithDefault(float defaultSum) {
+        for (float sum : transaction_sum) {
+            return sum;
+        }
+        return defaultSum;
+    }
+
+    public float getCategoryBalance() {
+        return getGoalAmountWithDefault(0) + getSumWithDefault(0);
     }
 
     @Override
     public String toString() {
-        return name + " | " + goal_amount + " | " + transaction_sum;
+        return whichMonth + " | " + category + " | " + goal + " | " + transaction_sum;
     }
 
     @Override
@@ -33,8 +67,9 @@ public class TransactionSummary {
         if (this == toCompare) return true;
         if (this.getClass() != toCompare.getClass()) return false;
         TransactionSummary summaryToCompare = (TransactionSummary) toCompare;
-        return this.name.equals(summaryToCompare.name) &&
-                Float.compare(this.goal_amount, summaryToCompare.goal_amount) == 0 &&
-                Float.compare(this.transaction_sum, summaryToCompare.transaction_sum) == 0;
+        return this.whichMonth.equals(summaryToCompare.whichMonth) &&
+                this.category.equals(summaryToCompare.category) &&
+                this.goal.equals(summaryToCompare.goal) &&
+                this.transaction_sum.equals(summaryToCompare.transaction_sum);
     }
 }

@@ -13,7 +13,7 @@ class CategoryTest {
 
     @Test
     void testToString() {
-        String expected = "Name1 | 100.0 | false";
+        String expected = "Name1 | [100.0] | false";
         String actual = category.toString();
         assertEquals(expected, actual);
     }

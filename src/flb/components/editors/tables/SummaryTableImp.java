@@ -1,26 +1,29 @@
 package flb.components.editors.tables;
 
 import flb.components.editors.*;
+import flb.listeners.UserEditsSummaryGoalListener;
 import flb.listeners.UserSelectsGoalListener;
-import flb.components.editors.tables.models.GoalTableModelImp;
+import flb.components.editors.tables.models.SummaryTableModelImp;
 import flb.components.editors.tables.renderers.*;
 import flb.tuples.TransactionSummary;
 import flb.util.*;
 import javax.swing.*;
+import javax.swing.event.TableModelListener;
+import javax.swing.table.TableCellEditor;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class GoalTableImp implements GoalTable, GoalSelector {
-    private final GoalTableModelImp tableModel;
+public class SummaryTableImp implements SummaryTable, SummarySelector, SummaryTableTester {
+    private final SummaryTableModelImp tableModel;
     private final JTable table;
     private final JScrollPane scrollPane;
-    private final ArrayList<GoalSelectedListener> goalSelectedListeners;
+    private final ArrayList<TableHighlighter> tableHighlighters;
 
-    public GoalTableImp() {
-        this.tableModel = new GoalTableModelImp();
+    public SummaryTableImp() {
+        this.tableModel = new SummaryTableModelImp();
         this.table = new JTable(tableModel);
         this.scrollPane = new JScrollPane(table);
-        this.goalSelectedListeners = new ArrayList<>();
+        this.tableHighlighters = new ArrayList<>();
 
         layout();
         addListeners();
@@ -51,11 +54,17 @@ public class GoalTableImp implements GoalTable, GoalSelector {
     }
 
     protected void addListeners(){
-        table.getSelectionModel().addListSelectionListener(new UserSelectsGoalListener(goalSelectedListeners));
+        table.getSelectionModel().addListSelectionListener(new UserSelectsGoalListener(tableHighlighters));
     }
 
-    public void addGoalSelectedListener(GoalSelectedListener goalSelectedListener){
-        goalSelectedListeners.add(goalSelectedListener);
+    @Override
+    public void addGoalSelectedObserver(TableHighlighter tableHighlighter){
+        tableHighlighters.add(tableHighlighter);
+    }
+
+    @Override
+    public void addGoalEditedListener(TableModelListener tableModelListener) {
+        tableModel.addTableModelListener(tableModelListener);
     }
 
     @Override
@@ -76,8 +85,32 @@ public class GoalTableImp implements GoalTable, GoalSelector {
     }
 
     @Override
+    public Maybe<TransactionSummary> getSelectedSummary(){
+        int selectedRow = table.getSelectedRow();
+        return tableModel.getSummary(selectedRow);
+    }
+
+    @Override
     public Maybe<String> getSelectedGoalName(){
         int selectedRow = table.getSelectedRow();
         return tableModel.getGoalName(selectedRow);
+    }
+
+    @Override
+    public void setSelectedRow(int row) {
+        table.getSelectionModel().setSelectionInterval(row, row);
+    }
+
+    @Override
+    public void editCellAt(int row, int col) {
+        table.editCellAt(row, col);
+    }
+
+    @Override
+    public void setEditorGoal(float goalAmount) {
+        TableCellEditor cellEditor = table.getDefaultEditor(Float.class);
+        JTextField editorComponent = (JTextField) cellEditor.getTableCellEditorComponent(table, "", false, 0, 1);
+        editorComponent.setText(Float.toString(goalAmount));
+        cellEditor.stopCellEditing();
     }
 }

@@ -2,7 +2,7 @@ package flb.components.menus.listeners;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import flb.components.editors.mock.GoalSelectorMock;
+import flb.components.editors.mock.SummarySelectorMock;
 import flb.listeners.UserCategorizesTransaction;
 import flb.datastores.*;
 import flb.components.editors.BankingEditorImpl;
@@ -25,8 +25,8 @@ class UserCategorizesTransactionTest {
         database.connect();
         TransactionStore transactionStore = new TransactionStoreImp(database);
         CategoryStore categoryStore = new CategoryStoreImpl(database);
-        this.bankingEditor = new BankingEditorImpl(transactionStore, categoryStore, new GoalSelectorMock());
-        this.creditEditor = new CreditEditorImpl(transactionStore, categoryStore, new GoalSelectorMock());
+        this.bankingEditor = new BankingEditorImpl(transactionStore, categoryStore, new SummarySelectorMock());
+        this.creditEditor = new CreditEditorImpl(transactionStore, categoryStore, new SummarySelectorMock());
 
         this.testButton = new JButton();
         testButton.setActionCommand("0,Name2");

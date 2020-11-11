@@ -10,8 +10,9 @@ class GoalStoreImplTest {
     private TestDatabase database;
     private GoalStoreTester goalStoreTester;
     private GoalStore goalStore;
-    List<Goal> expected;
-    List<Goal> actual;
+    private WhichMonth selectedDate;
+    List<TransactionSummary> expected;
+    List<TransactionSummary> actual;
 
     @BeforeEach
     void setUp() {
@@ -22,6 +23,7 @@ class GoalStoreImplTest {
         GoalStoreImpl goalStore = new GoalStoreImpl(database);
         goalStoreTester = goalStore;
         this.goalStore = goalStore;
+        selectedDate = new WhichMonth(2020, Calendar.OCTOBER);
     }
 
     @AfterEach
@@ -29,54 +31,89 @@ class GoalStoreImplTest {
         database.close();
     }
 
-    @Test
-    void getGoals() {
-        expected = TestDatabase.getTestGoals();
-        expected = expected.subList(0,3);
-
-        actual = goalStoreTester.getGoals(new WhichMonth(2020, Calendar.SEPTEMBER));
-
-        assertEquals(expected, actual);
-    }
-
-    @Test
+    /*@Test
     void createDefaultGoals() {
         WhichMonth date = new WhichMonth(2020, Calendar.SEPTEMBER);
         expected = new ArrayList<>();
         for (Category category : TestDatabase.getTestCategories()){
             if (!Float.isNaN(category.getDefaultGoal())){
-                expected.add(new Goal(date, category, category.getDefaultGoal()));
+                expected.add(new Goal(date, category.getDefaultGoal()));
             }
         }
 
         goalStore.createDefaultGoals(date);
 
         assertEquals(expected, goalStoreTester.getGoals(date));
-    }
+    }*/
 
-    @Test
+    /*@Test
     void countGoals() {
-        WhichMonth date = new WhichMonth(2020, Calendar.OCTOBER);
-
-        int actual = goalStore.countGoals(date);
+        int actual = goalStore.countGoals(selectedDate);
 
         assertEquals(3, actual);
-
     }
 
     @Test
     void addGoal() {
+        Goal goaltoAdd = new Goal(selectedDate, 42);
+        expected = TestDatabase.getTestGoals().subList(3,6);
+        expected.add(0, goaltoAdd);
+
+        goalStore.addGoal("Name1", goaltoAdd);
+
+        assertEquals(expected, goalStoreTester.getGoals(selectedDate));
     }
 
     @Test
-    void deleteGoal() {
+    void deleteGoalDoesntExist() {
+        expected = TestDatabase.getTestGoals().subList(3,6);
+
+        Goal goalToDelete = new Goal(selectedDate, 0);
+        goalStore.deleteGoal("Name10", goalToDelete);
+
+        assertEquals(expected, goalStoreTester.getGoals(selectedDate));
+    }
+
+    @Test
+    void deleteGoalDoesExist() {
+        expected = TestDatabase.getTestGoals().subList(3,6);
+        expected.remove(0);
+
+        Goal goalToDelete = TestDatabase.getTestGoals().get(3);
+        goalStore.deleteGoal("Name2", goalToDelete);
+
+        assertEquals(expected, goalStoreTester.getGoals(selectedDate));
     }
 
     @Test
     void goalExists() {
+        assertFalse(goalStore.goalExists("Name1", selectedDate));
+
+        assertTrue(goalStore.goalExists("Name2", selectedDate));
+    }*/
+
+    @Test
+    void getGoal() {
+        assertEquals(65, goalStoreTester.getGoal(selectedDate, "Name2"));
     }
 
     @Test
-    void updateGoalAmount() {
+    void updateExistingGoalAmount() {
+        TransactionSummary summaryToUpdate = new TransactionSummary(selectedDate, new Category("Name2", false));
+        summaryToUpdate.addGoal(200);
+
+        goalStore.updateGoalAmount(summaryToUpdate);
+
+        assertEquals(200, goalStoreTester.getGoal(selectedDate, "Name2"));
+    }
+
+    @Test
+    void addGoal() {
+        TransactionSummary summaryToUpdate = new TransactionSummary(selectedDate, new Category("Name1", false));
+        summaryToUpdate.addGoal(200);
+
+        goalStore.addGoal(summaryToUpdate);
+
+        assertEquals(200, goalStoreTester.getGoal(selectedDate, "Name1"));
     }
 }

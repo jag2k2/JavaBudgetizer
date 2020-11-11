@@ -8,16 +8,16 @@ import flb.util.*;
 import javax.swing.*;
 import java.util.*;
 
-public class CreditEditorImpl implements CreditEditorTester, TransactionCategorizer, MonthChangeListener, StoreChangeListener, GoalSelectedListener {
+public class CreditEditorImpl implements CreditEditorTester, TransactionCategorizer, MonthChangeListener, StoreChangeListener, TableHighlighter {
     private final TransactionStore transactionStore;
     private final CreditTable creditTable;
     private final CreditTableTester tableAutomator;
     private final ArrayList<StoreChangeListener> storeChangeListeners;
 
-    public CreditEditorImpl(TransactionStore transactionStore, CategoryStore categoryStore, GoalSelector goalSelector){
+    public CreditEditorImpl(TransactionStore transactionStore, CategoryStore categoryStore, SummarySelector summarySelector){
         this.transactionStore = transactionStore;
         CategorizerMenuImpl categoryMenu = new CategorizerMenuImpl(categoryStore, this);
-        CreditTableImpl creditTableImpl = new CreditTableImpl(categoryMenu, goalSelector);
+        CreditTableImpl creditTableImpl = new CreditTableImpl(categoryMenu, summarySelector);
         this.creditTable = creditTableImpl;
         this.tableAutomator = creditTableImpl;
         this.storeChangeListeners = new ArrayList<>();
@@ -57,7 +57,7 @@ public class CreditEditorImpl implements CreditEditorTester, TransactionCategori
     }
 
     @Override
-    public void renderTable() {
-        creditTable.renderTable();
+    public void highlightRows() {
+        creditTable.highlightRows();
     }
 }

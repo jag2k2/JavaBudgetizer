@@ -1,7 +1,6 @@
 package flb.listeners;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import flb.components.monthselector.MonthSelectorImpl;
 import flb.datastores.CategoryStore;
 import flb.components.editors.CategoryEditorImpl;
@@ -12,7 +11,7 @@ import org.junit.jupiter.api.*;
 import javax.swing.*;
 import java.util.*;
 
-class UserEditsGoalAmountListenerTest {
+class UserEditsDefaultGoalListenerTest {
     private JTextField nameFilter;
     private ArrayList<Category> expected;
     private CategoryTableTester tableAutomator;
@@ -25,15 +24,10 @@ class UserEditsGoalAmountListenerTest {
         database.connect();
         this.categoryStore = new CategoryStoreImpl(database);
         CategoryEditorImpl categoryEditor = new CategoryEditorImpl(categoryStore);
-        this.tableAutomator = categoryEditor.getTableAutomator();
+        this.tableAutomator = categoryEditor.getTableTester();
         this.nameFilter = new JTextField();
 
-        this.expected = new ArrayList<>();
-        expected.add(new Category("Name1", 100, false));
-        expected.add(new Category("Name2", 200, true));
-        expected.add(new Category("Name3", 300, false));
-        expected.add(new Category("Test1::sub1", Float.NaN, false));
-        expected.add(new Category("Test1::sub2", 500, true));
+        this.expected = TestDatabase.getTestCategories();
         categoryEditor.refreshAndKeepSelection("");
 
         categoryEditor.addCategoryEditingListeners(nameFilter, new JFrame(), new MonthSelectorImpl());

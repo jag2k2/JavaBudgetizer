@@ -1,9 +1,8 @@
-package flb.application.category.listeners;
+package flb.listeners;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import flb.components.editors.CategoryEditorNoDialog;
-import flb.listeners.UserDeletesCategoryListener;
 import flb.datastores.CategoryStore;
 import flb.components.editors.CategoryEditorImpl;
 import flb.components.editors.tables.CategoryTableTester;
@@ -31,12 +30,7 @@ class UserDeletesCategoryListenerTest {
         this.nameFilter = new JTextField();
         this.testButton = new JButton();
 
-        this.expected = new ArrayList<>();
-        expected.add(new Category("Name1", 100, false));
-        expected.add(new Category("Name2", 200, true));
-        expected.add(new Category("Name3", 300, false));
-        expected.add(new Category("Test1::sub1", Float.NaN, false));
-        expected.add(new Category("Test1::sub2", 500, true));
+        this.expected = TestDatabase.getTestCategories();
     }
 
     @AfterEach
@@ -48,7 +42,7 @@ class UserDeletesCategoryListenerTest {
     void userConfirmsDeleteAndCategoryUnused() {
         categoryEditor = new CategoryEditorNoDialog(categoryStore, true);
         categoryEditor.refreshAndClearSelection("");
-        this.tableAutomator = categoryEditor.getTableAutomator();
+        this.tableAutomator = categoryEditor.getTableTester();
 
         testButton.addActionListener(new UserDeletesCategoryListener(categoryEditor, nameFilter, new JFrame()));
 
@@ -65,7 +59,7 @@ class UserDeletesCategoryListenerTest {
     void userConfirmsDeleteButCategoryUsed() {
         categoryEditor = new CategoryEditorNoDialog(categoryStore, true);
         categoryEditor.refreshAndClearSelection("");
-        this.tableAutomator = categoryEditor.getTableAutomator();
+        this.tableAutomator = categoryEditor.getTableTester();
 
         testButton.addActionListener(new UserDeletesCategoryListener(categoryEditor, nameFilter, new JFrame()));
 
@@ -81,7 +75,7 @@ class UserDeletesCategoryListenerTest {
     void userRefusesDelete() {
         categoryEditor = new CategoryEditorNoDialog(categoryStore, false);
         categoryEditor.refreshAndClearSelection("");
-        this.tableAutomator = categoryEditor.getTableAutomator();
+        this.tableAutomator = categoryEditor.getTableTester();
 
         testButton.addActionListener(new UserDeletesCategoryListener(categoryEditor, nameFilter, new JFrame()));
 
@@ -96,7 +90,7 @@ class UserDeletesCategoryListenerTest {
     @Test
     void userDeletesWithNoSelected() {
         categoryEditor = new CategoryEditorImpl(categoryStore);
-        this.tableAutomator = categoryEditor.getTableAutomator();
+        this.tableAutomator = categoryEditor.getTableTester();
 
         testButton.addActionListener(new UserDeletesCategoryListener(categoryEditor, nameFilter, new JFrame()));
 

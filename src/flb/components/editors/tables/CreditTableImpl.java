@@ -1,6 +1,6 @@
 package flb.components.editors.tables;
 
-import flb.components.editors.GoalSelector;
+import flb.components.editors.SummarySelector;
 import flb.listeners.*;
 import flb.components.menus.MenuDisplayer;
 import flb.components.editors.tables.models.*;
@@ -15,9 +15,9 @@ public class CreditTableImpl implements CreditTable, CreditTableTester {
     private final HighlightableRowTable table;
     private final JScrollPane scrollPane;
 
-    public CreditTableImpl(MenuDisplayer menuDisplayer, GoalSelector goalSelector) {
+    public CreditTableImpl(MenuDisplayer menuDisplayer, SummarySelector summarySelector) {
         this.tableModel = new CreditTableModelImpl();
-        this.table = new HighlightableRowTable(tableModel, goalSelector);
+        this.table = new HighlightableRowTable(tableModel, summarySelector);
         this.scrollPane = new JScrollPane(table);
 
         SimpleDollarRenderer dollarRenderer = new SimpleDollarRenderer();
@@ -64,7 +64,7 @@ public class CreditTableImpl implements CreditTable, CreditTableTester {
     }
 
     @Override
-    public void renderTable() { tableModel.fireTableDataChanged(); }
+    public void highlightRows() { tableModel.fireTableDataChanged(); }
 
     @Override
     public Maybe<Transaction> getTransaction(int row){

@@ -4,11 +4,11 @@ import flb.components.editors.CategoryClearer;
 import javax.swing.*;
 import java.awt.event.*;
 
-public class UserClearsGoalListener implements ActionListener {
+public class UserClearsDefaultGoalListener implements ActionListener {
     private final CategoryClearer categoryClearer;
     private final JTextField nameFilter;
 
-    public UserClearsGoalListener(CategoryClearer categoryClearer, JTextField nameFilter) {
+    public UserClearsDefaultGoalListener(CategoryClearer categoryClearer, JTextField nameFilter) {
         this.categoryClearer = categoryClearer;
         this.nameFilter = nameFilter;
     }

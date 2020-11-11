@@ -1,14 +1,22 @@
 package flb.tuples;
 
+import flb.util.*;
+
 public class Category {
 
     private String name;
     private final Boolean exclude;
-    private Float default_goal;
+    private Maybe<Float> default_goal;
 
-    public Category(String name, float goal, Boolean exclude) {
+    public Category(String name, Boolean exclude) {
         this.name = name;
-        this.default_goal = goal;
+        this.default_goal = new Maybe<>();
+        this.exclude = exclude;
+    }
+
+    public Category(String name, float default_goal, Boolean exclude){
+        this.name = name;
+        this.default_goal = new Maybe<>(default_goal);
         this.exclude = exclude;
     }
 
@@ -16,8 +24,15 @@ public class Category {
         return name;
     }
 
-    public float getDefaultGoal() {
+    public Maybe<Float> getDefaultGoal() {
         return default_goal;
+    }
+
+    public float getDefaultGoalDisplay() {
+        for (float goalAmount : default_goal) {
+            return goalAmount;
+        }
+        return Float.NaN;
     }
 
     public boolean getExclude() { return exclude; }
@@ -26,8 +41,8 @@ public class Category {
         this.name = newName;
     }
 
-    public void setDefaultGoal(Float newDefaultGoal) {
-        this.default_goal = Math.max(newDefaultGoal, 0);
+    public void setDefaultGoal(Float defaultGoal) {
+        this.default_goal = new Maybe<>(Math.max(defaultGoal, 0));
     }
 
     @Override

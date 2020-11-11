@@ -46,63 +46,77 @@ public class CategoryTableImpl implements CategoryTable, CategoryTableTester {
         scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
     }
 
+    @Override
     public JScrollPane getPane() {
         return scrollPane;
     }
 
+    @Override
     public Maybe<Category> getSelectedCategory() {
         int selectedRow = table.getSelectedRow();
         return tableModel.getCategory(selectedRow);
     }
 
+    @Override
     public Maybe<Category> getCategory(int row) {
         return tableModel.getCategory(row);
     }
 
+    @Override
     public void addEditorMenu (MenuDisplayer menuDisplayer) {
         table.add(menuDisplayer.getPopup());
         table.addMouseListener(new UserRightClicksCategoryListener(menuDisplayer));
     }
 
+    @Override
     public void displayAndClearSelection(ArrayList<Category> tableContents){
         tableModel.updateCategories(tableContents);
         table.clearSelection();
     }
 
+    @Override
     public void displayAndKeepSelection(ArrayList<Category> tableContents){
         int selectedRow = table.getSelectedRow();
         tableModel.updateCategories(tableContents);
         table.getSelectionModel().setSelectionInterval(selectedRow, selectedRow);
     }
 
+    @Override
     public void addCategoryRenameListener(PropertyChangeListener propertyChangeListener) {
         table.addPropertyChangeListener(propertyChangeListener);
     }
 
+    @Override
     public void addGoalEditListener(TableModelListener tableModelListener) {
         tableModel.addTableModelListener(tableModelListener);
     }
 
+    @Override
     public void addExcludesEditListener(CellEditorListener cellEditorListener) {
         table.getDefaultEditor(Boolean.class).addCellEditorListener(cellEditorListener);
     }
 
+    @Override
     public void setSelectedRow(int row) {
         table.getSelectionModel().setSelectionInterval(row,row);
     }
 
+    @Override
     public int getSelectedRow() {
         return table.getSelectedRow();
     }
 
+    @Override
     public ArrayList<Category> getContents() {
         return tableModel.getCategories();
     }
 
+    @Override
     public void editCellAt(int row, int col) {
         table.editCellAt(row, col);
     }
 
+    @Override
     public void toggleSelectedExcludes() {
         TableCellEditor cellEditor =  table.getDefaultEditor(Boolean.class);
         JCheckBox editorComponent =  (JCheckBox) cellEditor.getTableCellEditorComponent
@@ -113,6 +127,7 @@ public class CategoryTableImpl implements CategoryTable, CategoryTableTester {
         cellEditor.stopCellEditing();
     }
 
+    @Override
     public void setEditorGoal(float newGoal) {
         TableCellEditor cellEditor = table.getDefaultEditor(Float.class);
         JTextField editorComponent = (JTextField) cellEditor.getTableCellEditorComponent
@@ -121,6 +136,7 @@ public class CategoryTableImpl implements CategoryTable, CategoryTableTester {
         cellEditor.stopCellEditing();
     }
 
+    @Override
     public void setEditorName(String newName) {
         TableCellEditor cellEditor = table.getDefaultEditor(String.class);
         JTextField editorComponent = (JTextField) cellEditor.getTableCellEditorComponent

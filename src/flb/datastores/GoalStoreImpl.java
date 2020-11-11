@@ -43,58 +43,80 @@ public class GoalStoreImpl implements GoalStore, GoalStoreTester {
     }
 
     @Override
-    public boolean goalExists(String name) {
-        return false;
-    }
-
-    @Override
-    public void addGoal(Goal goal) {
-
-    }
-
-    @Override
-    public void updateGoalAmount(float amount) {
-
-    }
-
-    @Override
-    public void deleteGoal(String name) {
-
-    }
-
-    public ArrayList<Goal> getGoals(WhichMonth whichMonth) {
-        String query = "SELECT " +
-                "c.name, " +
-                "c.default_goal_amt, " +
-                "c.exclude, " +
-                "g.amount " +
-                "FROM goals g  " +
-                "LEFT JOIN categories c  " +
-                "ON g.category_id = c.id " +
-                "WHERE g.year_mo = '$yrmo' " +
-                "ORDER BY c.name;";
-        query = query.replace("$yrmo", whichMonth.toSQLString());
+    public boolean goalExists(TransactionSummary summary) {
+        String query = "SELECT COUNT(*) FROM goals " +
+                "LEFT JOIN categories ON goals.category_id = categories.id " +
+                "WHERE goals.year_mo = '$yrmo' AND categories.name = '$name'";
+        query = query.replace("$yrmo", summary.getMonthSQLString());
+        query = query.replace("$name", summary.getName());
 
         ResultSet results = dataStore.executeQuery(query);
 
-        return castResultsToGoals(results, whichMonth);
+        int goalCount = 0;
+        try {
+            results.next();
+            goalCount = results.getInt(1);
+        } catch (SQLException ex) {ex.printStackTrace();}
+        return (goalCount > 0);
     }
 
-    protected ArrayList<Goal> castResultsToGoals(ResultSet results, WhichMonth whichMonth) {
-        ArrayList<Goal> goals = new ArrayList<>();
-        try {
-            while (results.next()) {
-                String name = results.getString("c.name");
-                float default_amount = results.getFloat("c.default_goal_amt");
-                if (results.wasNull())
-                    default_amount = Float.NaN;
-                boolean excluded = results.getBoolean("c.exclude");
-                float amount = results.getFloat("g.amount");
-                if (results.wasNull())
-                    amount = Float.NaN;
-                goals.add(new Goal(whichMonth, new Category(name, default_amount, excluded), amount));
-            }
+    @Override
+    public void addGoal(TransactionSummary summary) {
+        for (float goalAmount : summary.getGoalAmount()) {
+            String update = "INSERT INTO goals (year_mo, category_id, amount) " +
+                    "SELECT '$yrmo' AS date, id, $amt AS goal_amount " +
+                    "FROM categories " +
+                    "WHERE name = '$name'";
+            update = update.replace("$yrmo", summary.getMonthSQLString());
+            update = update.replace("$name", summary.getName());
+            update = update.replace("$amt", Float.toString(goalAmount));
+
+            dataStore.executeUpdate(update);
+        }
+    }
+
+    @Override
+    public void updateGoalAmount(TransactionSummary summary) {
+        for (float goalAmount : summary.getGoalAmount()) {
+            String update = "UPDATE goals " +
+                    "LEFT JOIN categories ON goals.category_id = categories.id " +
+                    "SET goals.amount = $amt " +
+                    "WHERE goals.year_mo = '$yrmo' AND categories.name = '$name'";
+            update = update.replace("$yrmo", summary.getMonthSQLString());
+            update = update.replace("$name", summary.getName());
+            update = update.replace("$amt", Float.toString(goalAmount));
+
+            dataStore.executeUpdate(update);
+        }
+    }
+
+    @Override
+    public void deleteGoal(TransactionSummary summary) {
+        String update = "DELETE goals FROM goals " +
+                "LEFT JOIN categories ON goals.category_id = categories.id " +
+                "WHERE goals.year_mo = '$yrmo' AND categories.name = '$name'";
+        update = update.replace("$yrmo", summary.getMonthSQLString());
+        update = update.replace("$name", summary.getName());
+
+        dataStore.executeUpdate(update);
+    }
+
+    @Override
+    public float getGoal(WhichMonth whichMonth, String categoryName) {
+        String query = "SELECT amount FROM goals " +
+                "LEFT JOIN categories ON goals.category_id = categories.id " +
+                "WHERE goals.year_mo = '$yrmo' AND categories.name = '$name'";
+        query = query.replace("$yrmo", whichMonth.toSQLString());
+        query = query.replace("$name", categoryName);
+
+        ResultSet results = dataStore.executeQuery(query);
+
+        float goalAmount = Float.NaN;
+        try{
+            results.next();
+            goalAmount = results.getFloat(1);
         } catch (SQLException ex) {ex.printStackTrace();}
-        return goals;
+
+        return goalAmount;
     }
 }

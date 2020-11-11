@@ -29,7 +29,7 @@ class CategoryStoreImplTest {
 
     @Test
     void addCategory() {
-        Category categoryToAdd = new Category("Name4", Float.NaN, false);
+        Category categoryToAdd = new Category("Name4", false);
         expected.add(categoryToAdd);
 
         categoryStore.addCategory("Name4");
@@ -95,7 +95,7 @@ class CategoryStoreImplTest {
         expected.add(new Category("Name1", 100, false));
         expected.add(new Category("Name2", 200, true));
         expected.add(new Category("Name3", 300, false));
-        expected.add(new Category("Test1::sub1", Float.NaN, false));
+        expected.add(new Category("Test1::sub1", false));
         expected.add(new Category("Test1::sub2", 500, true));
 
         actual = categoryStore.getCategories("");
@@ -115,7 +115,7 @@ class CategoryStoreImplTest {
 
     @Test
     void clearCategoryAmount() {
-        expected.add(new Category("Name2", Float.NaN, true));
+        expected.add(new Category("Name2", true));
 
         categoryStore.updateAmount("Name2", Float.NaN);
 

@@ -1,8 +1,7 @@
-package flb.application.category.listeners;
+package flb.listeners;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import flb.listeners.UserFiltersCategoriesListener;
 import flb.datastores.CategoryStore;
 import flb.components.editors.CategoryEditorImpl;
 import flb.components.editors.tables.CategoryTableTester;
@@ -24,14 +23,10 @@ class UserFiltersCategoriesListenerTest {
         database.connect();
         CategoryStore categoryStore = new CategoryStoreImpl(database);
         CategoryEditorImpl categoryEditor = new CategoryEditorImpl(categoryStore);
-        this.tableAutomator = categoryEditor.getTableAutomator();
+        this.tableAutomator = categoryEditor.getTableTester();
         this.nameFilter = new JTextField();
 
-        this.expected = new ArrayList<>();
-        expected.add(new Category("Name1", 100, false));
-        expected.add(new Category("Name2", 200, true));
-        expected.add(new Category("Name3", 300, false));
-        expected.add(new Category("Test1", Float.NaN, false));
+        this.expected = TestDatabase.getTestCategories();
 
         nameFilter.getDocument().addDocumentListener(new UserFiltersCategoriesListener(categoryEditor, nameFilter));
     }
@@ -45,6 +40,7 @@ class UserFiltersCategoriesListenerTest {
     void insertUpdate() {
         nameFilter.setText("N");
         expected.remove(3);
+        expected.remove(3);
         assertEquals(expected, tableAutomator.getContents());
     }
 
@@ -52,6 +48,7 @@ class UserFiltersCategoriesListenerTest {
     void removeUpdate() {
         nameFilter.setText("Name1");
         nameFilter.setText("Name");
+        expected.remove(3);
         expected.remove(3);
         assertEquals(expected, tableAutomator.getContents());
     }

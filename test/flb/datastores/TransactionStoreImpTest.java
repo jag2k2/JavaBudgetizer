@@ -66,10 +66,8 @@ class TransactionStoreImpTest {
     @Test
     void getSummaries() {
         ArrayList<TransactionSummary> expected = new ArrayList<>();
-        expected.add(new TransactionSummary("Name1", Float.NaN, 70));
-        expected.add(new TransactionSummary("Name2", 65, 40));
-        expected.add(new TransactionSummary("Name3", 70, Float.NaN));
-        expected.add(new TransactionSummary("Test1::sub2", 75, Float.NaN));
+        TransactionSummary summary = new TransactionSummary(new WhichMonth(2020, Calendar.OCTOBER), new Category("Name1", false));
+        summary.addGoal(70);
 
         assertEquals(expected, transactionStore.getTransactionSummaries(whichMonth));
     }

@@ -2,36 +2,44 @@ package flb.components.editors;
 
 import flb.components.editors.tables.*;
 import flb.datastores.*;
+import flb.listeners.UserEditsSummaryGoalListener;
 import flb.tuples.TransactionSummary;
 import flb.util.*;
 import java.util.*;
 import javax.swing.*;
 
-public class GoalEditorImpl implements DefaultGoalMaker, GoalSelector, MonthChangeListener, StoreChangeListener{
+public class SummaryEditorImpl implements MonthGoalEditor, DefaultGoalMaker, SummarySelector, MonthChangeListener,
+        StoreChangeListener, SummaryEditorTester{
     private final GoalStore goalStore;
     private final TransactionStore transactionStore;
-    private final GoalTable goalTable;
+    private final SummaryTable summaryTable;
+    private final SummaryTableTester tableTester;
     private final JFrame frame;
 
 
-    public GoalEditorImpl(TransactionStore transactionStore, GoalStore goalStore, JFrame frame){
+    public SummaryEditorImpl(TransactionStore transactionStore, GoalStore goalStore, JFrame frame){
         this.goalStore = goalStore;
         this.transactionStore = transactionStore;
-        GoalTableImp goalTable = new GoalTableImp();
-        this.goalTable = goalTable;
+        SummaryTableImp goalTable = new SummaryTableImp();
+        this.tableTester = goalTable;
+        this.summaryTable = goalTable;
         this.frame = frame;
 
     }
 
     public JScrollPane getPane() {
-        return goalTable.getPane();
+        return summaryTable.getPane();
     }
 
-    public void addGoalSelectedListener(GoalSelectedListener goalSelectedListener){
-        goalTable.addGoalSelectedListener(goalSelectedListener);
+    public void addGoalSelectedListener(TableHighlighter tableHighlighter){
+        summaryTable.addGoalSelectedObserver(tableHighlighter);
     }
 
-    public void createDefaultgoals(WhichMonth selectedMonth) {
+    public void addGoalEditingListeners(){
+        summaryTable.addGoalEditedListener(new UserEditsSummaryGoalListener(this));
+    }
+
+    public void createDefaultGoals(WhichMonth selectedMonth) {
         int goalCount = goalStore.countGoals(selectedMonth);
         if (goalCount > 0) {
             int confirmation = getConfirmationFromDialog(goalCount, frame);
@@ -54,17 +62,34 @@ public class GoalEditorImpl implements DefaultGoalMaker, GoalSelector, MonthChan
     @Override
     public void update(WhichMonth whichMonth) {
         ArrayList<TransactionSummary> transactionSummaries = transactionStore.getTransactionSummaries(whichMonth);
-        goalTable.display(transactionSummaries);
+        summaryTable.display(transactionSummaries);
     }
 
     @Override
     public void updateAndKeepSelection(WhichMonth whichMonth) {
         ArrayList<TransactionSummary> transactionSummaries = transactionStore.getTransactionSummaries(whichMonth);
-        goalTable.displayAndKeepSelection(transactionSummaries);
+        summaryTable.displayAndKeepSelection(transactionSummaries);
     }
 
     @Override
     public Maybe<String> getSelectedGoalName() {
-        return goalTable.getSelectedGoalName();
+        return summaryTable.getSelectedGoalName();
+    }
+
+    @Override
+    public void UpdateSelectedGoalAmount() {
+        for (TransactionSummary summary : summaryTable.getSelectedSummary()) {
+            if(goalStore.goalExists(summary)) {
+                goalStore.updateGoalAmount(summary);
+            }
+            else {
+                goalStore.addGoal(summary);
+            }
+        }
+    }
+
+    @Override
+    public SummaryTableTester getTableTester() {
+        return tableTester;
     }
 }

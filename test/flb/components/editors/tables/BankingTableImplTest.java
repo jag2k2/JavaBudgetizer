@@ -16,7 +16,7 @@ class BankingTableImplTest {
 
     @BeforeEach
     void setUp() {
-        BankingTableImpl bankingTable = new BankingTableImpl(new MenuDisplayerMock(), new GoalSelectorMock());
+        BankingTableImpl bankingTable = new BankingTableImpl(new MenuDisplayerMock(), new SummarySelectorMock());
         this.bankingTable = bankingTable;
         this.tableAutomator = bankingTable;
 

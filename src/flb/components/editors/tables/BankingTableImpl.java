@@ -15,9 +15,9 @@ public class BankingTableImpl implements BankingTable, BankingTableTester {
     private final HighlightableRowTable table;
     private final JScrollPane scrollPane;
 
-    public BankingTableImpl(MenuDisplayer menuDisplayer, GoalSelector goalSelector) {
+    public BankingTableImpl(MenuDisplayer menuDisplayer, SummarySelector summarySelector) {
         this.tableModel = new BankingTableModelImp();
-        this.table = new HighlightableRowTable(tableModel, goalSelector);
+        this.table = new HighlightableRowTable(tableModel, summarySelector);
         this.scrollPane = new JScrollPane(table);
 
         table.setSelectionModel(new NullSelectionModel());
@@ -58,7 +58,7 @@ public class BankingTableImpl implements BankingTable, BankingTableTester {
     }
 
     @Override
-    public void renderTable(){
+    public void highlightRows(){
         tableModel.fireTableDataChanged();
     }
 

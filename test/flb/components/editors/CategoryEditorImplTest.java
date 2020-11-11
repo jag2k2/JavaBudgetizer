@@ -22,7 +22,7 @@ class CategoryEditorImplTest {
         database.connect();
         this.categoryStore = new CategoryStoreImpl(database);
         this.categoryEditor = new CategoryEditorImpl(categoryStore);
-        this.tableAutomator = categoryEditor.getTableAutomator();
+        this.tableAutomator = categoryEditor.getTableTester();
         categoryEditor.refreshAndClearSelection("");
         this.expected = TestDatabase.getTestCategories();
     }
@@ -48,7 +48,7 @@ class CategoryEditorImplTest {
 
     @Test
     void addingNewCategory() {
-        expected.add(new Category("Test2", Float.NaN, false));
+        expected.add(new Category("Test2", false));
 
         categoryEditor.userAddCategory("Test2");
 
@@ -64,7 +64,7 @@ class CategoryEditorImplTest {
 
     @Test
     void clearSelectedGoal() {
-        expected.set(1, new Category("Name2", Float.NaN, true));
+        expected.set(1, new Category("Name2", true));
 
         categoryEditor.userClearGoalAmount(1);
 
@@ -82,7 +82,7 @@ class CategoryEditorImplTest {
     void deleteSelectedGoalWithConfirmAndCategoryUnused() {
         categoryEditor = new CategoryEditorNoDialog(categoryStore, true);
         categoryEditor.refreshAndClearSelection("");
-        tableAutomator = categoryEditor.getTableAutomator();
+        tableAutomator = categoryEditor.getTableTester();
 
         categoryEditor.userDeleteCategory(2, new JFrame());
 
@@ -94,7 +94,7 @@ class CategoryEditorImplTest {
     void deleteSelectedGoalWithConfirmButCategoryUsed() {
         categoryEditor = new CategoryEditorNoDialog(categoryStore, true);
         categoryEditor.refreshAndClearSelection("");
-        tableAutomator = categoryEditor.getTableAutomator();
+        tableAutomator = categoryEditor.getTableTester();
 
         categoryEditor.userDeleteCategory(1, new JFrame());
 
@@ -114,7 +114,7 @@ class CategoryEditorImplTest {
     @Test
     void toggleExcludes() {
         tableAutomator.setSelectedRow(1);
-        expected.set(1, new Category("Name2", 200, false));
+        expected.set(1, new Category("Name2", 200,false));
 
         categoryEditor.userEditsSelectedExcludes();
 
@@ -124,11 +124,11 @@ class CategoryEditorImplTest {
     @Test
     void editCategoryAmount() {
         tableAutomator.setSelectedRow(1);
-        expected.set(1, new Category("Name2", 500, true));
+        expected.set(1, new Category("Name2", 500,true));
 
         tableAutomator.editCellAt(1,1);
         tableAutomator.setEditorGoal(500);
-        categoryEditor.userEditsSelectedGoalAmount();
+        categoryEditor.UpdateSelectedGoalAmount();
 
         assertEquals(expected, categoryStore.getCategories(""));
     }

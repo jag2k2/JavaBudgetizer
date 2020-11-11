@@ -18,21 +18,21 @@ public class MainGUI {
     private final BankingEditorImpl bankingEditor;
     private final CreditEditorImpl creditEditor;
     private final CategoryEditorImpl categoryEditor;
-    private final GoalEditorImpl goalEditor;
+    private final SummaryEditorImpl summaryEditor;
     private final JTextField nameFilter;
     private final JButton addButton;
 
     public MainGUI(TransactionStore transactionStore, CategoryStore categoryStore, GoalStore goalStore) {
         this.frame = new JFrame();
         this.monthSelector = new MonthSelectorImpl();
-        this.goalEditor = new GoalEditorImpl(transactionStore, goalStore, frame);
+        this.summaryEditor = new SummaryEditorImpl(transactionStore, goalStore, frame);
         this.categoryEditor = new CategoryEditorImpl(categoryStore);
-        this.bankingEditor = new BankingEditorImpl(transactionStore, categoryStore, goalEditor);
-        this.creditEditor = new CreditEditorImpl(transactionStore, categoryStore, goalEditor);
+        this.bankingEditor = new BankingEditorImpl(transactionStore, categoryStore, summaryEditor);
+        this.creditEditor = new CreditEditorImpl(transactionStore, categoryStore, summaryEditor);
         this.balance = new JTextField();
         this.addButton = new JButton("Add");
         this.nameFilter = new JTextField();
-        this.menuBar = new MenuBarImpl(goalEditor, monthSelector);
+        this.menuBar = new MenuBarImpl(summaryEditor, monthSelector);
 
         addListeners();
         layout();
@@ -68,7 +68,7 @@ public class MainGUI {
         mainCategoryPanel.add(BorderLayout.CENTER, categoryEditor.getPane());
 
         JTabbedPane tabbedCategoryPane = new JTabbedPane();
-        tabbedCategoryPane.addTab(" Goals ", goalEditor.getPane());
+        tabbedCategoryPane.addTab(" Goals ", summaryEditor.getPane());
         tabbedCategoryPane.addTab(" Categories ", mainCategoryPanel);
         tabbedCategoryPane.setBorder(new CompoundBorder(greyBorder, BorderFactory.createEmptyBorder(2,5,5,5)));
 
@@ -102,22 +102,24 @@ public class MainGUI {
     protected void addListeners() {
         monthSelector.addMonthChangeListener(bankingEditor);
         monthSelector.addMonthChangeListener(creditEditor);
-        monthSelector.addMonthChangeListener(goalEditor);
+        monthSelector.addMonthChangeListener(summaryEditor);
 
         bankingEditor.addStoreChangeListener(bankingEditor);
-        bankingEditor.addStoreChangeListener(goalEditor);
+        bankingEditor.addStoreChangeListener(summaryEditor);
         creditEditor.addStoreChangeListener(creditEditor);
-        creditEditor.addStoreChangeListener(goalEditor);
+        creditEditor.addStoreChangeListener(summaryEditor);
         categoryEditor.addStoreChangeListener(bankingEditor);
         categoryEditor.addStoreChangeListener(creditEditor);
-        categoryEditor.addStoreChangeListener(goalEditor);
+        categoryEditor.addStoreChangeListener(summaryEditor);
 
-        goalEditor.addGoalSelectedListener(bankingEditor);
-        goalEditor.addGoalSelectedListener(creditEditor);
+        summaryEditor.addGoalSelectedListener(bankingEditor);
+        summaryEditor.addGoalSelectedListener(creditEditor);
 
         categoryEditor.addCategoryEditingListeners(nameFilter, frame, monthSelector);
         addButton.addActionListener(new UserAddsCategoryListener(categoryEditor, nameFilter));
         nameFilter.getDocument().addDocumentListener(new UserFiltersCategoriesListener(categoryEditor, nameFilter));
+
+        summaryEditor.addGoalEditingListeners();
     }
 
     public void launch(){

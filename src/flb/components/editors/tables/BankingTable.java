@@ -1,13 +1,13 @@
 package flb.components.editors.tables;
 
-import flb.components.editors.GoalSelectedListener;
+import flb.components.editors.TableHighlighter;
 import flb.tuples.*;
 import java.util.*;
 import flb.util.*;
 
 import javax.swing.*;
 
-public interface BankingTable extends GoalSelectedListener {
+public interface BankingTable extends TableHighlighter {
     JScrollPane getPane();
     void display(ArrayList<BankingTransaction> tableContents);
     Maybe<Transaction> getTransaction(int row);

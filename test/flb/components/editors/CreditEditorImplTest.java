@@ -2,7 +2,7 @@ package flb.components.editors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import flb.components.editors.mock.GoalSelectorMock;
+import flb.components.editors.mock.SummarySelectorMock;
 import org.junit.jupiter.api.*;
 import flb.datastores.*;
 import flb.components.editors.tables.*;
@@ -22,7 +22,7 @@ class CreditEditorImplTest {
         this.database = new TestDatabase();
         database.connect();
         TransactionStore transactionStore = new TransactionStoreImp(database);
-        this.creditEditor = new CreditEditorImpl(transactionStore, new CategoryStoreImpl(database), new GoalSelectorMock());
+        this.creditEditor = new CreditEditorImpl(transactionStore, new CategoryStoreImpl(database), new SummarySelectorMock());
         this.tableAutomator = creditEditor.getTableAutomator();
 
         expected = TestDatabase.getTestCreditTransactions();

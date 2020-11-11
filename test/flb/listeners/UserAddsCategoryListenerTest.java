@@ -1,4 +1,4 @@
-package flb.application.category.listeners;
+package flb.listeners;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -29,12 +29,7 @@ class UserAddsCategoryListenerTest {
         this.nameFilter = new JTextField();
         this.testButton = new JButton();
 
-        this.expected = new ArrayList<>();
-        expected.add(new Category("Name1", 100, false));
-        expected.add(new Category("Name2", 200, true));
-        expected.add(new Category("Name3", 300, false));
-        expected.add(new Category("Test1::sub1", Float.NaN, false));
-        expected.add(new Category("Test1::sub2", 500, true));
+        this.expected = TestDatabase.getTestCategories();
 
         testButton.addActionListener(new UserAddsCategoryListener(categoryAdder, nameFilter));
     }
@@ -46,7 +41,7 @@ class UserAddsCategoryListenerTest {
 
     @Test
     void categoryAdded() {
-        expected.add(new Category("Test2", Float.NaN, false));
+        expected.add(new Category("Test2", false));
         nameFilter.setText("Test2");
 
         testButton.doClick();

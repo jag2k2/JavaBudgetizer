@@ -93,11 +93,13 @@ public class CategoryStoreImpl implements CategoryStore {
         try {
             while (results.next()) {
                 String name = results.getString("name");
-                float goal = results.getFloat("default_goal_amt");
-                if (results.wasNull())
-                    goal = Float.NaN;
                 boolean excluded = results.getBoolean("exclude");
-                categories.add(new Category(name, goal, excluded));
+                Category category = new Category(name, excluded);
+                float defaultGoal = results.getFloat("default_goal_amt");
+                if (!results.wasNull()) {
+                    category.setDefaultGoal(defaultGoal);
+                }
+                categories.add(category);
             }
         } catch (SQLException ex) {
             ex.printStackTrace();

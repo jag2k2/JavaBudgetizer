@@ -139,22 +139,24 @@ public class TransactionStoreImp implements TransactionStore {
 
         ResultSet results = dataStore.executeQuery(query);
 
-        return castResultsToSummaries(results);
+        return castResultsToSummaries(results, whichMonth);
     }
 
-    private ArrayList<TransactionSummary> castResultsToSummaries (ResultSet results) {
+    private ArrayList<TransactionSummary> castResultsToSummaries (ResultSet results, WhichMonth whichMonth) {
         ArrayList<TransactionSummary> summaries = new ArrayList<>();
         try {
             while (results.next()) {
                 String name = results.getString("category_name");
-                float goal = results.getFloat("goal_amount");
-                if (results.wasNull())
-                    goal = Float.NaN;
+                boolean excluded = results.getBoolean("excluded");
+                Category category = new Category(name, excluded);
+                TransactionSummary summary = new TransactionSummary(whichMonth, category);
                 float sum = results.getFloat("total_txn_amount");
-                if (results.wasNull())
-                    sum = Float.NaN;
-                boolean excludes = results.getBoolean("excluded");
-                summaries.add(new TransactionSummary(name, goal, sum));
+                if (!results.wasNull())
+                    summary.addSum(sum);
+                float goal = results.getFloat("goal_amount");
+                if (!results.wasNull())
+                    summary.addGoal(goal);
+                summaries.add(summary);
             }
         } catch (SQLException ex) {
             ex.printStackTrace();

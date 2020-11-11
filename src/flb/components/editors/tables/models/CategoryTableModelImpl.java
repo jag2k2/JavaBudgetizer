@@ -28,7 +28,7 @@ public class CategoryTableModelImpl extends AbstractTableModel implements Catego
     public Object getValueAt(int row, int column) {
         return switch (column) {
             case 0 -> tableContents.get(row).getName();
-            case 1 -> tableContents.get(row).getDefaultGoal();
+            case 1 -> tableContents.get(row).getDefaultGoalDisplay();
             case 2 -> tableContents.get(row).getExclude();
             default -> null;
         };

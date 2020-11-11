@@ -8,16 +8,16 @@ import flb.util.*;
 import javax.swing.*;
 import java.util.*;
 
-public class BankingEditorImpl implements BankingEditorTester, TransactionCategorizer, MonthChangeListener, StoreChangeListener, GoalSelectedListener {
+public class BankingEditorImpl implements BankingEditorTester, TransactionCategorizer, MonthChangeListener, StoreChangeListener, TableHighlighter {
     private final TransactionStore transactionStore;
     private final BankingTable bankingTable;
     private final BankingTableTester tableAutomator;
     private final ArrayList<StoreChangeListener> storeChangeListeners;
 
-    public BankingEditorImpl(TransactionStore transactionStore, CategoryStore categoryStore, GoalSelector goalSelector) {
+    public BankingEditorImpl(TransactionStore transactionStore, CategoryStore categoryStore, SummarySelector summarySelector) {
         this.transactionStore = transactionStore;
         CategorizerMenuImpl categoryMenu = new CategorizerMenuImpl(categoryStore, this);
-        BankingTableImpl bankingTableImpl = new BankingTableImpl(categoryMenu, goalSelector);
+        BankingTableImpl bankingTableImpl = new BankingTableImpl(categoryMenu, summarySelector);
         this.bankingTable = bankingTableImpl;
         this.tableAutomator = bankingTableImpl;
         this.storeChangeListeners = new ArrayList<>();
@@ -63,7 +63,7 @@ public class BankingEditorImpl implements BankingEditorTester, TransactionCatego
     }
 
     @Override
-    public void renderTable() {
-        bankingTable.renderTable();
+    public void highlightRows() {
+        bankingTable.highlightRows();
     }
 }
