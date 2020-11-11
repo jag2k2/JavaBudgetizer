@@ -16,7 +16,12 @@ public class TransactionSummary {
     }
 
     public void addGoal(float goalAmount){
-        this.goal = new Maybe<>(goalAmount);
+        if (Float.isNaN(goalAmount)) {
+            this.goal = new Maybe<>();
+        }
+        else {
+            this.goal = new Maybe<>(goalAmount);
+        }
     }
 
     public void addSum(float transaction_sum){
