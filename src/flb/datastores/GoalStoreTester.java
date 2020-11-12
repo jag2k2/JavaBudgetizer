@@ -1,9 +1,8 @@
 package flb.datastores;
 
-import flb.util.WhichMonth;
-import java.util.ArrayList;
+import flb.util.*;
 
 public interface GoalStoreTester {
     //ArrayList<Tran> getGoals(WhichMonth whichMonth);
-    float getGoal(WhichMonth whichMonth, String categoryName);
+    Maybe<Float> getGoal(WhichMonth whichMonth, String categoryName);
 }

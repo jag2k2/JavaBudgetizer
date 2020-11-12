@@ -1,23 +1,22 @@
 package flb.components.monthselector.listeners;
 
-import flb.components.monthselector.MonthSelectorModelImpl;
-
+import flb.components.monthselector.*;
 import java.awt.event.*;
 
 public class UserSpinsMonth implements ActionListener {
-    private MonthSelectorModelImpl monthModel;
+    private MonthSelectorImpl monthSelector;
 
-    public UserSpinsMonth(MonthSelectorModelImpl monthModel){
-        this.monthModel = monthModel;
+    public UserSpinsMonth(MonthSelectorImpl monthSelector){
+        this.monthSelector = monthSelector;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals("decrement")){
-            monthModel.decrementMonth();
+            monthSelector.decrementMonth();
         }
         else if (e.getActionCommand().equals("increment")){
-            monthModel.incrementMonth();
+            monthSelector.incrementMonth();
         }
     }
 }

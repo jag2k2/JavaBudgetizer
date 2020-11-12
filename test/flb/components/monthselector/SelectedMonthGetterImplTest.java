@@ -5,7 +5,7 @@ import org.junit.jupiter.api.*;
 import java.util.*;
 import flb.util.*;
 
-class MonthSelectorImplTest {
+class SelectedMonthGetterImplTest {
     private MonthSelectorImpl monthSelector;
 
     @BeforeEach

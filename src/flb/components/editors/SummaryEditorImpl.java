@@ -1,31 +1,35 @@
 package flb.components.editors;
 
+import flb.components.StoreChanger;
 import flb.components.editors.tables.*;
 import flb.components.menus.*;
+import flb.components.monthselector.*;
 import flb.datastores.*;
-import flb.listeners.UserEditsSummaryGoalListener;
-import flb.tuples.TransactionSummary;
+import flb.listeners.*;
+import flb.tuples.*;
 import flb.util.*;
 import java.util.*;
 import javax.swing.*;
 
-public class SummaryEditorImpl implements MonthGoalEditor, MonthGoalClearer, DefaultGoalMaker, SummarySelector,
-        MonthChangeListener, StoreChangeListener, SummaryEditorTester{
+public class SummaryEditorImpl implements MonthGoalEditor, MonthGoalClearer, DefaultGoalMaker, SummarySelector, StoreChanger,
+        MonthChangeObserver, StoreChangeObserver, SummaryEditorTester{
     private final GoalStore goalStore;
     private final TransactionStore transactionStore;
     private final SummaryTable summaryTable;
     private final SummaryTableTester tableTester;
     private final JFrame frame;
-    private final ArrayList<StoreChangeListener> storeChangeListeners;
+    private final ArrayList<StoreChangeObserver> storeChangeObservers;
+    private final SelectedMonthGetter selectedMonthGetter;
 
-    public SummaryEditorImpl(TransactionStore transactionStore, GoalStore goalStore, JFrame frame){
+    public SummaryEditorImpl(TransactionStore transactionStore, GoalStore goalStore, SelectedMonthGetter selectedMonthGetter, JFrame frame){
         this.goalStore = goalStore;
         this.transactionStore = transactionStore;
+        this.selectedMonthGetter = selectedMonthGetter;
         SummaryTableImp goalTable = new SummaryTableImp();
         this.tableTester = goalTable;
         this.summaryTable = goalTable;
         this.frame = frame;
-        this.storeChangeListeners = new ArrayList<>();
+        this.storeChangeObservers = new ArrayList<>();
 
         addListeners();
     }
@@ -35,36 +39,39 @@ public class SummaryEditorImpl implements MonthGoalEditor, MonthGoalClearer, Def
         summaryTable.addGoalEditedListener(new UserEditsSummaryGoalListener(this));
     }
 
-    public void addGoalChangeListeners(StoreChangeListener storeChangeListener){
-        storeChangeListeners.add(storeChangeListener);
-    }
-
-    protected void notifyGoalChanged(WhichMonth selectedMonth) {
-        for(StoreChangeListener storeChangeListener : storeChangeListeners) {
-            storeChangeListener.updateAndKeepSelection(selectedMonth);
-        }
-    }
-
     public JScrollPane getPane() {
         return summaryTable.getPane();
+    }
+
+    @Override
+    public void addStoreChangeObserver(StoreChangeObserver storeChangeObserver){
+        storeChangeObservers.add(storeChangeObserver);
+    }
+
+    @Override
+    public void notifyStoreChange() {
+        for(StoreChangeObserver storeChangeObserver : storeChangeObservers) {
+            storeChangeObserver.updateAndKeepSelection();
+        }
     }
 
     public void addGoalSelectedListener(TableHighlighter tableHighlighter){
         summaryTable.addGoalSelectedObserver(tableHighlighter);
     }
 
+    @Override
     public void createDefaultGoals(WhichMonth selectedMonth) {
         int goalCount = goalStore.countGoals(selectedMonth);
         if (goalCount > 0) {
             int confirmation = getConfirmationFromDialog(goalCount, frame);
             if(confirmation == JOptionPane.YES_OPTION) {
                 goalStore.createDefaultGoals(selectedMonth);
-                notifyGoalChanged(selectedMonth);
+                notifyStoreChange();
             }
         }
         else {
             goalStore.createDefaultGoals(selectedMonth);
-            notifyGoalChanged(selectedMonth);
+            notifyStoreChange();
         }
     }
 
@@ -74,14 +81,14 @@ public class SummaryEditorImpl implements MonthGoalEditor, MonthGoalClearer, Def
     }
 
     @Override
-    public void update(WhichMonth whichMonth) {
-        ArrayList<TransactionSummary> transactionSummaries = transactionStore.getTransactionSummaries(whichMonth);
+    public void update() {
+        ArrayList<TransactionSummary> transactionSummaries = transactionStore.getTransactionSummaries(selectedMonthGetter.getSelectedMonth());
         summaryTable.display(transactionSummaries);
     }
 
     @Override
-    public void updateAndKeepSelection(WhichMonth whichMonth) {
-        ArrayList<TransactionSummary> transactionSummaries = transactionStore.getTransactionSummaries(whichMonth);
+    public void updateAndKeepSelection() {
+        ArrayList<TransactionSummary> transactionSummaries = transactionStore.getTransactionSummaries(selectedMonthGetter.getSelectedMonth());
         summaryTable.displayAndKeepSelection(transactionSummaries);
     }
 
@@ -99,7 +106,7 @@ public class SummaryEditorImpl implements MonthGoalEditor, MonthGoalClearer, Def
             else {
                 goalStore.addGoal(summary);
             }
-            notifyGoalChanged(summary.getMonth());
+            notifyStoreChange();
         }
     }
 
@@ -107,7 +114,7 @@ public class SummaryEditorImpl implements MonthGoalEditor, MonthGoalClearer, Def
     public void clearGoalAmount(int row) {
         for (TransactionSummary summary : summaryTable.getSummary(row)) {
             goalStore.deleteGoal(summary);
-            notifyGoalChanged(summary.getMonth());
+            notifyStoreChange();
         }
     }
 

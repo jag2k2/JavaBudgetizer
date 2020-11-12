@@ -3,43 +3,44 @@ package flb.components.editors;
 import javax.swing.*;
 import java.util.*;
 import flb.listeners.*;
+import flb.components.*;
 import flb.components.menus.CategoryEditorMenuImpl;
-import flb.components.monthselector.MonthSelectorImpl;
 import flb.datastores.CategoryStore;
 import flb.components.editors.tables.*;
 import flb.util.*;
 import flb.tuples.*;
 
 public class CategoryEditorImpl implements CategoryAdder, CategoryClearer, CategoryDeleter, CategoryExcludeEditor,
-        CategoryGoalEditor, CategoryNameEditor, CategoryEditorTester {
+        CategoryGoalEditor, CategoryNameEditor, CategoryEditorTester, StoreChanger {
     private final CategoryStore categoryStore;
     private final CategoryTable categoryTable;
     private final CategoryTableTester tableAutomator;
-    private final ArrayList<StoreChangeListener> storeChangeListeners;
+    private final ArrayList<StoreChangeObserver> storeChangeObservers;
 
     public CategoryEditorImpl(CategoryStore categoryStore){
         this.categoryStore = categoryStore;
         CategoryTableImpl categoryTableImpl = new CategoryTableImpl();
         this.categoryTable = categoryTableImpl;
         this.tableAutomator = categoryTableImpl;
-        this.storeChangeListeners = new ArrayList<>();
+        this.storeChangeObservers = new ArrayList<>();
     }
 
-    public void addCategoryEditingListeners(JTextField nameFilter, JFrame frame, MonthSelectorImpl monthSelector) {
-        categoryTable.addCategoryRenameListener(new UserRenamesSelectionListener(this, nameFilter, monthSelector));
+    public void addCategoryEditingListeners(JTextField nameFilter, JFrame frame) {
+        categoryTable.addCategoryRenameListener(new UserRenamesCategoryListener(this, nameFilter));
         categoryTable.addGoalEditListener(new UserEditsDefaultGoalListener(this, nameFilter));
         categoryTable.addExcludesEditListener(new UserEditsExcludesListener(this, nameFilter));
         categoryTable.addEditorMenu(new CategoryEditorMenuImpl(this, nameFilter, frame));
     }
 
-    public void addStoreChangeListener(StoreChangeListener storeChangeListener) {
-        storeChangeListeners.add(storeChangeListener);
+    @Override
+    public void addStoreChangeObserver(StoreChangeObserver storeChangeObserver) {
+        storeChangeObservers.add(storeChangeObserver);
     }
 
-
-    public void notifyStoreChange(WhichMonth selectedDate) {
-        for (StoreChangeListener storeChangeListener : storeChangeListeners) {
-            storeChangeListener.updateAndKeepSelection(selectedDate);
+    @Override
+    public void notifyStoreChange() {
+        for (StoreChangeObserver storeChangeObserver : storeChangeObservers) {
+            storeChangeObserver.updateAndKeepSelection();
         }
     }
 
@@ -99,6 +100,7 @@ public class CategoryEditorImpl implements CategoryAdder, CategoryClearer, Categ
         for (Category selectedCategory : categoryTable.getCategory(row)) {
             String categoryToClear = selectedCategory.getName();
             categoryStore.updateAmount(categoryToClear, Float.NaN);
+            notifyStoreChange();
         }
     }
 
@@ -107,6 +109,7 @@ public class CategoryEditorImpl implements CategoryAdder, CategoryClearer, Categ
         for (Category selectedCategory : categoryTable.getSelectedCategory()) {
             String selectedName = selectedCategory.getName();
             categoryStore.toggleExclusion(selectedName);
+            notifyStoreChange();
         }
     }
 
@@ -116,6 +119,7 @@ public class CategoryEditorImpl implements CategoryAdder, CategoryClearer, Categ
             String categoryToUpdate = selectedCategory.getName();
             for (float newAmount : selectedCategory.getDefaultGoal()) {
                 categoryStore.updateAmount(categoryToUpdate, newAmount);
+                notifyStoreChange();
             }
         }
     }
@@ -126,12 +130,12 @@ public class CategoryEditorImpl implements CategoryAdder, CategoryClearer, Categ
     }
 
     @Override
-    public void userRenamedCategory(String oldName, WhichMonth selectedMonth) {
+    public void userRenamedCategory(String oldName) {
         for (Category selectedCategory : categoryTable.getSelectedCategory()) {
             String newName = selectedCategory.getName();
             categoryStore.renameCategory(oldName, newName);
+            notifyStoreChange();
         }
-        notifyStoreChange(selectedMonth);
     }
 
     @Override

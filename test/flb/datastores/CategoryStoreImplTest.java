@@ -148,6 +148,6 @@ class CategoryStoreImplTest {
 
     @Test
     void getBalance() {
-        System.out.println(categoryStore.getBalance(new WhichMonth(2020, Calendar.OCTOBER)));
+        assertEquals(930F, categoryStore.getBalance(new WhichMonth(2020, Calendar.OCTOBER)));
     }
 }

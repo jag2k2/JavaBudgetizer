@@ -12,7 +12,7 @@ import org.junit.jupiter.api.*;
 import javax.swing.*;
 import java.util.*;
 
-class UserRenamesSelectionListenerTest {
+class UserRenamesCategoryListenerTest {
     private JTextField nameFilter;
     private ArrayList<Category> expected;
     private CategoryTableTester tableAutomator;
@@ -31,7 +31,7 @@ class UserRenamesSelectionListenerTest {
 
         this.expected = TestDatabase.getTestCategories();
 
-        categoryEditor.addCategoryEditingListeners(nameFilter, new JFrame(), new MonthSelectorImpl());
+        categoryEditor.addCategoryEditingListeners(nameFilter, new JFrame());
     }
 
     @AfterEach

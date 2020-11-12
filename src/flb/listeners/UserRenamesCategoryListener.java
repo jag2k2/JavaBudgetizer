@@ -1,22 +1,19 @@
 package flb.listeners;
 
 import flb.components.editors.CategoryNameEditor;
-import flb.components.monthselector.MonthSelectorImpl;
 import flb.tuples.*;
 import javax.swing.*;
 import java.beans.*;
 
-public class UserRenamesSelectionListener implements PropertyChangeListener {
+public class UserRenamesCategoryListener implements PropertyChangeListener {
     private final CategoryNameEditor nameEditor;
     private final JTextField nameFilter;
     private String oldName;
-    private MonthSelectorImpl monthSelector;
 
-    public UserRenamesSelectionListener(CategoryNameEditor nameEditor, JTextField nameFilter, MonthSelectorImpl monthSelector) {
+    public UserRenamesCategoryListener(CategoryNameEditor nameEditor, JTextField nameFilter) {
         this.nameEditor = nameEditor;
         this.nameFilter = nameFilter;
         this.oldName = "";
-        this.monthSelector = monthSelector;
     }
 
     @Override
@@ -29,7 +26,7 @@ public class UserRenamesSelectionListener implements PropertyChangeListener {
                 }
             }
             else if (table.getEditingColumn() == 0) {
-                nameEditor.userRenamedCategory(oldName, monthSelector.getSelectedMonth());
+                nameEditor.userRenamedCategory(oldName);
                 nameEditor.refreshAndKeepSelection(nameFilter.getText());
             }
         }

@@ -2,7 +2,6 @@ package flb.components;
 
 import javax.swing.*;
 import javax.swing.border.*;
-
 import flb.components.balancedisplay.BalanceDisplayImpl;
 import flb.components.menus.MenuBarImpl;
 import flb.listeners.*;
@@ -14,7 +13,11 @@ import java.awt.*;
 public class MainGUI {
     private final JFrame frame;
     private final MenuBarImpl menuBar;
+
+    private final CustomComponent monthSelectorComponent;
+    private final CurrentMonthSetter currentMonthSetter;
     private final MonthSelectorImpl monthSelector;
+
     private final BalanceDisplayImpl balanceDisplay;
     private final BankingEditorImpl bankingEditor;
     private final CreditEditorImpl creditEditor;
@@ -25,12 +28,15 @@ public class MainGUI {
 
     public MainGUI(TransactionStore transactionStore, CategoryStore categoryStore, GoalStore goalStore) {
         this.frame = new JFrame();
-        this.monthSelector = new MonthSelectorImpl();
-        this.summaryEditor = new SummaryEditorImpl(transactionStore, goalStore, frame);
+        MonthSelectorImpl monthSelector = new MonthSelectorImpl();
+        this.currentMonthSetter = monthSelector;
+        this.monthSelectorComponent = monthSelector;
+        this.monthSelector = monthSelector;
+        this.summaryEditor = new SummaryEditorImpl(transactionStore, goalStore, monthSelector, frame);
         this.categoryEditor = new CategoryEditorImpl(categoryStore);
-        this.bankingEditor = new BankingEditorImpl(transactionStore, categoryStore, summaryEditor);
-        this.creditEditor = new CreditEditorImpl(transactionStore, categoryStore, summaryEditor);
-        this.balanceDisplay = new BalanceDisplayImpl(categoryStore);
+        this.bankingEditor = new BankingEditorImpl(transactionStore, categoryStore, monthSelector, summaryEditor);
+        this.creditEditor = new CreditEditorImpl(transactionStore, categoryStore, monthSelector, summaryEditor);
+        this.balanceDisplay = new BalanceDisplayImpl(categoryStore, monthSelector);
         this.addButton = new JButton("Add");
         this.nameFilter = new JTextField();
         this.menuBar = new MenuBarImpl(summaryEditor, monthSelector);
@@ -42,9 +48,8 @@ public class MainGUI {
     protected void layout(){
         Border greyBorder = new LineBorder(Color.LIGHT_GRAY);
 
-
         JPanel northLeftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        northLeftPanel.add(monthSelector.getPane());
+        northLeftPanel.add(monthSelectorComponent.getPanel());
 
         JPanel northRightPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         northRightPanel.add(balanceDisplay.getPane());
@@ -92,37 +97,38 @@ public class MainGUI {
     }
 
     protected void addListeners() {
-        monthSelector.addMonthChangeListener(bankingEditor);
-        monthSelector.addMonthChangeListener(creditEditor);
-        monthSelector.addMonthChangeListener(summaryEditor);
-        monthSelector.addMonthChangeListener(balanceDisplay);
+        monthSelector.addMonthChangeObserver(bankingEditor);
+        monthSelector.addMonthChangeObserver(creditEditor);
+        monthSelector.addMonthChangeObserver(summaryEditor);
+        monthSelector.addMonthChangeObserver(balanceDisplay);
 
-        bankingEditor.addStoreChangeListener(bankingEditor);
-        bankingEditor.addStoreChangeListener(summaryEditor);
-        bankingEditor.addStoreChangeListener(balanceDisplay);
+        bankingEditor.addStoreChangeObserver(bankingEditor);
+        bankingEditor.addStoreChangeObserver(summaryEditor);
+        bankingEditor.addStoreChangeObserver(balanceDisplay);
 
-        creditEditor.addStoreChangeListener(creditEditor);
-        creditEditor.addStoreChangeListener(summaryEditor);
-        creditEditor.addStoreChangeListener(balanceDisplay);
+        creditEditor.addStoreChangeObserver(creditEditor);
+        creditEditor.addStoreChangeObserver(summaryEditor);
+        creditEditor.addStoreChangeObserver(balanceDisplay);
 
-        categoryEditor.addStoreChangeListener(bankingEditor);
-        categoryEditor.addStoreChangeListener(creditEditor);
-        categoryEditor.addStoreChangeListener(summaryEditor);
-        categoryEditor.addStoreChangeListener(balanceDisplay);
+        categoryEditor.addStoreChangeObserver(bankingEditor);
+        categoryEditor.addStoreChangeObserver(creditEditor);
+        categoryEditor.addStoreChangeObserver(summaryEditor);
+        categoryEditor.addStoreChangeObserver(balanceDisplay);
+
+        summaryEditor.addStoreChangeObserver(summaryEditor);
+        summaryEditor.addStoreChangeObserver(balanceDisplay);
 
         summaryEditor.addGoalSelectedListener(bankingEditor);
         summaryEditor.addGoalSelectedListener(creditEditor);
-        summaryEditor.addGoalChangeListeners(summaryEditor);
-        summaryEditor.addGoalChangeListeners(balanceDisplay);
 
-        categoryEditor.addCategoryEditingListeners(nameFilter, frame, monthSelector);
+        categoryEditor.addCategoryEditingListeners(nameFilter, frame);
         addButton.addActionListener(new UserAddsCategoryListener(categoryEditor, nameFilter));
         nameFilter.getDocument().addDocumentListener(new UserFiltersCategoriesListener(categoryEditor, nameFilter));
     }
 
     public void launch(){
         categoryEditor.refreshAndClearSelection("");
-        monthSelector.setToCurrentMonth();
+        currentMonthSetter.setToCurrentMonth();
         frame.setVisible(true);
     }
 }

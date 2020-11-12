@@ -3,7 +3,8 @@ package flb.listeners;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import flb.components.editors.*;
 import flb.components.editors.tables.SummaryTableTester;
-import flb.util.WhichMonth;
+import flb.components.monthselector.MonthSelectorImpl;
+import flb.util.*;
 import org.junit.jupiter.api.*;
 import flb.datastores.*;
 import javax.swing.*;
@@ -15,6 +16,8 @@ class UserEditsSummaryGoalListenerTest {
     private GoalStoreTester goalStoreTester;
     private SummaryTableTester tableTester;
     private WhichMonth selectedMonth;
+    private Float newGoal;
+    private Maybe<Float> expected;
 
     @BeforeEach
     void setUp() {
@@ -24,10 +27,15 @@ class UserEditsSummaryGoalListenerTest {
         GoalStoreImpl goalStore = new GoalStoreImpl(database);
         this.goalStoreTester = goalStore;
         TransactionStore transactionStore = new TransactionStoreImp(database);
-        SummaryEditorImpl summaryEditor = new SummaryEditorImpl(transactionStore, goalStore, new JFrame());
+        MonthSelectorImpl monthSelectorImpl = new MonthSelectorImpl();
+        monthSelectorImpl.setYear(2020);
+        monthSelectorImpl.setMonth(Calendar.OCTOBER);
+        SummaryEditorImpl summaryEditor = new SummaryEditorImpl(transactionStore, goalStore, monthSelectorImpl, new JFrame());
         this.tableTester = summaryEditor.getTableTester();
-        StoreChangeListener storeChangeListener = summaryEditor;
-        storeChangeListener.updateAndKeepSelection(selectedMonth);
+        StoreChangeObserver storeChangeObserver = summaryEditor;
+        storeChangeObserver.updateAndKeepSelection();
+        this.newGoal = 200F;
+        this.expected = new Maybe<>(newGoal);
     }
 
     @AfterEach
@@ -40,9 +48,9 @@ class UserEditsSummaryGoalListenerTest {
         tableTester.setSelectedRow(1);
 
         tableTester.editCellAt(1, 1);
-        tableTester.setEditorGoal(200);
+        tableTester.setEditorGoal(newGoal);
 
-        assertEquals(200F, goalStoreTester.getGoal(selectedMonth, "Name2"));
+        assertEquals(expected, goalStoreTester.getGoal(selectedMonth, "Name2"));
     }
 
     @Test
@@ -51,9 +59,9 @@ class UserEditsSummaryGoalListenerTest {
         tableTester.setSelectedRow(activeRow);
 
         tableTester.editCellAt(activeRow, 1);
-        tableTester.setEditorGoal(200);
+        tableTester.setEditorGoal(newGoal);
 
         String categoryNameToGet = TestDatabase.getTestCategories().get(activeRow).getName();
-        assertEquals(200F, goalStoreTester.getGoal(selectedMonth, categoryNameToGet));
+        assertEquals(expected, goalStoreTester.getGoal(selectedMonth, categoryNameToGet));
     }
 }

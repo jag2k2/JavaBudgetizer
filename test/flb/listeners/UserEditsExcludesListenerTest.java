@@ -32,7 +32,7 @@ class UserEditsExcludesListenerTest {
 
         this.expected = TestDatabase.getTestCategories();
 
-        categoryEditorImpl.addCategoryEditingListeners(nameFilter, new JFrame(), new MonthSelectorImpl());
+        categoryEditorImpl.addCategoryEditingListeners(nameFilter, new JFrame());
     }
 
     @AfterEach

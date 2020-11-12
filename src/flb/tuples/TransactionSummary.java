@@ -20,12 +20,12 @@ public class TransactionSummary {
             this.goal = new Maybe<>();
         }
         else {
-            this.goal = new Maybe<>(goalAmount);
+            this.goal = new Maybe<>(Math.abs(goalAmount));
         }
     }
 
     public void addSum(float transaction_sum){
-        this.transaction_sum = new Maybe<>(transaction_sum);
+        this.transaction_sum = new Maybe<>(Math.abs(transaction_sum));
     }
 
     public WhichMonth getMonth() {
@@ -63,7 +63,7 @@ public class TransactionSummary {
     }
 
     public float getCategoryBalance() {
-        return getGoalAmountWithDefault(0) + getSumWithDefault(0);
+        return getGoalAmountWithDefault(0) - getSumWithDefault(0);
     }
 
     @Override

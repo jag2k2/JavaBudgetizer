@@ -69,9 +69,7 @@ public class TransactionStoreImp implements TransactionStore {
                 Calendar date = new GregorianCalendar(localDate.getYear(), localDate.getMonthValue()-1, localDate.getDayOfMonth());
                 bankingTransactions.add(new BankingTransaction(reference, date, description, amount, categoryName, balance));
             }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
+        } catch (SQLException ex) {ex.printStackTrace();}
         return bankingTransactions;
     }
 
@@ -114,9 +112,7 @@ public class TransactionStoreImp implements TransactionStore {
                 Calendar date = new GregorianCalendar(localDate.getYear(), localDate.getMonthValue()-1, localDate.getDayOfMonth());
                 creditTransactions.add(new CreditTransaction(reference, date, description, amount, categoryName));
             }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
+        } catch (SQLException ex) {ex.printStackTrace();}
         return creditTransactions;
     }
 
@@ -158,9 +154,7 @@ public class TransactionStoreImp implements TransactionStore {
                     summary.addGoal(goal);
                 summaries.add(summary);
             }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
+        } catch (SQLException ex) {ex.printStackTrace();}
 
         return summaries;
     }

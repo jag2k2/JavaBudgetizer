@@ -30,7 +30,7 @@ class UserEditsDefaultGoalListenerTest {
         this.expected = TestDatabase.getTestCategories();
         categoryEditor.refreshAndKeepSelection("");
 
-        categoryEditor.addCategoryEditingListeners(nameFilter, new JFrame(), new MonthSelectorImpl());
+        categoryEditor.addCategoryEditingListeners(nameFilter, new JFrame());
     }
 
     @AfterEach

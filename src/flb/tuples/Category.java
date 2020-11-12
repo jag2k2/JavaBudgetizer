@@ -42,7 +42,7 @@ public class Category {
     }
 
     public void setDefaultGoal(Float defaultGoal) {
-        this.default_goal = new Maybe<>(Math.max(defaultGoal, 0));
+        this.default_goal = new Maybe<>(Math.abs(defaultGoal));
     }
 
     public void toggleExcludes(){

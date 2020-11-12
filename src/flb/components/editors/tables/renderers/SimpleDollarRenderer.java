@@ -11,13 +11,13 @@ public class SimpleDollarRenderer extends DefaultTableCellRenderer {
     @Override
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         Component rendererComponent = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-        if (value.equals(Float.NaN)) {
+        float amount = (float) value;
+        if (Float.isNaN(amount)) {
             setText("");
         }
         else{
             setText(formatter.format(value));
         }
-
         return rendererComponent;
     }
 }

@@ -3,6 +3,8 @@ package flb.components.editors;
 import static org.junit.jupiter.api.Assertions.*;
 
 import flb.components.editors.mock.SummarySelectorMock;
+import flb.components.monthselector.MonthSelectorImpl;
+import flb.components.monthselector.SpecificMonthSetter;
 import org.junit.jupiter.api.*;
 import flb.datastores.*;
 import flb.components.editors.tables.*;
@@ -15,13 +17,18 @@ class BankingEditorImplTest {
     private BankingEditorImpl bankingEditor;
     private BankingTableTester tableAutomator;
     private List<BankingTransaction> expected;
+    private SpecificMonthSetter monthSetter;
 
     @BeforeEach
     void setUp() {
         this.database = new TestDatabase();
         database.connect();
         TransactionStore transactionStore = new TransactionStoreImp(database);
-        this.bankingEditor = new BankingEditorImpl(transactionStore, new CategoryStoreImpl(database), new SummarySelectorMock());
+        MonthSelectorImpl monthSelectorImpl = new MonthSelectorImpl();
+        this.monthSetter = monthSelectorImpl;
+        monthSetter.setYear(2020);
+        monthSetter.setMonth(Calendar.OCTOBER);
+        this.bankingEditor = new BankingEditorImpl(transactionStore, new CategoryStoreImpl(database), monthSelectorImpl, new SummarySelectorMock());
         this.tableAutomator = bankingEditor.getTableTester();
 
         expected = TestDatabase.getTestBankingTransactions();
@@ -34,13 +41,14 @@ class BankingEditorImplTest {
 
     @Test
     void refresh() {
-        WhichMonth dateWithTransactions = new WhichMonth(2020, Calendar.OCTOBER);
-
-        bankingEditor.update(dateWithTransactions);
+        monthSetter.setYear(2020);
+        monthSetter.setMonth(Calendar.OCTOBER);
+        bankingEditor.update();
         assertEquals(expected, tableAutomator.getTransactions());
 
-        WhichMonth dateWithNoTransactions = new WhichMonth(2020, Calendar.JANUARY);
-        bankingEditor.update(dateWithNoTransactions);
+        monthSetter.setYear(2020);
+        monthSetter.setMonth(Calendar.JANUARY);
+        bankingEditor.update();
         expected.clear();
         assertEquals(expected, tableAutomator.getTransactions());
     }

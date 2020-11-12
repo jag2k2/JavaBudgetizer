@@ -1,21 +1,21 @@
 package flb.listeners;
 
 import flb.components.editors.DefaultGoalMaker;
-import flb.components.monthselector.MonthSelectorImpl;
+import flb.components.monthselector.*;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class UserCreatesDefaultGoals implements ActionListener {
     private final DefaultGoalMaker goalMaker;
-    private final MonthSelectorImpl monthSelector;
+    private final SelectedMonthGetter selectedMonthGetter;
 
-    public UserCreatesDefaultGoals(DefaultGoalMaker goalMaker, MonthSelectorImpl monthSelector)  {
+    public UserCreatesDefaultGoals(DefaultGoalMaker goalMaker, SelectedMonthGetter selectedMonthGetter)  {
         this.goalMaker = goalMaker;
-        this.monthSelector = monthSelector;
+        this.selectedMonthGetter = selectedMonthGetter;
     }
     @Override
     public void actionPerformed(ActionEvent e) {
-        goalMaker.createDefaultGoals(monthSelector.getSelectedMonth());
+        goalMaker.createDefaultGoals(selectedMonthGetter.getSelectedMonth());
     }
 }

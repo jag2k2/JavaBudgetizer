@@ -1,19 +1,19 @@
 package flb.components.menus;
 
 import flb.components.editors.DefaultGoalMaker;
-import flb.components.monthselector.MonthSelectorImpl;
+import flb.components.monthselector.*;
 import flb.listeners.UserCreatesDefaultGoals;
 import javax.swing.*;
 
 public class MenuBarImpl {
     private final JMenuBar menuBar;
     private final DefaultGoalMaker goalMaker;
-    private final MonthSelectorImpl monthSelector;
+    private final SelectedMonthGetter selectedMonthGetter;
 
-    public MenuBarImpl(DefaultGoalMaker goalMaker, MonthSelectorImpl monthSelector) {
+    public MenuBarImpl(DefaultGoalMaker goalMaker, SelectedMonthGetter selectedMonthGetter) {
         this.menuBar = new JMenuBar();
         this.goalMaker = goalMaker;
-        this.monthSelector = monthSelector;
+        this.selectedMonthGetter = selectedMonthGetter;
 
         layout();
     }
@@ -27,7 +27,7 @@ public class MenuBarImpl {
 
         JMenu budgetMenu = new JMenu("Budget");
         JMenuItem defaultGoalsMenuItem = new JMenuItem("Create Default Goals");
-        defaultGoalsMenuItem.addActionListener(new UserCreatesDefaultGoals(goalMaker, monthSelector));
+        defaultGoalsMenuItem.addActionListener(new UserCreatesDefaultGoals(goalMaker, selectedMonthGetter));
         budgetMenu.add(defaultGoalsMenuItem);
 
         menuBar.add(fileMenu);

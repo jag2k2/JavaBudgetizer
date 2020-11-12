@@ -4,19 +4,19 @@ import javax.swing.*;
 import javax.swing.border.*;
 import java.awt.*;
 import java.text.NumberFormat;
-
-import flb.components.editors.MonthChangeListener;
-import flb.components.editors.StoreChangeListener;
+import flb.components.editors.*;
+import flb.components.monthselector.*;
 import flb.datastores.*;
-import flb.util.WhichMonth;
 
-public class BalanceDisplayImpl implements MonthChangeListener, StoreChangeListener {
+public class BalanceDisplayImpl implements MonthChangeObserver, StoreChangeObserver {
     private final JFormattedTextField balance;
     private final JPanel panel;
     private final CategoryStore categoryStore;
+    private final SelectedMonthGetter selectedMonthGetter;
 
-    public BalanceDisplayImpl(CategoryStore categoryStore){
+    public BalanceDisplayImpl(CategoryStore categoryStore, SelectedMonthGetter selectedMonthGetter){
         this.categoryStore = categoryStore;
+        this.selectedMonthGetter = selectedMonthGetter;
         NumberFormat balanceFormat = NumberFormat.getCurrencyInstance();
         this.balance = new JFormattedTextField(balanceFormat);
         this.panel = new JPanel();
@@ -42,12 +42,12 @@ public class BalanceDisplayImpl implements MonthChangeListener, StoreChangeListe
     }
 
     @Override
-    public void update(WhichMonth selectedDate) {
-        balance.setValue(categoryStore.getBalance(selectedDate));
+    public void update() {
+        balance.setValue(categoryStore.getBalance(selectedMonthGetter.getSelectedMonth()));
     }
 
     @Override
-    public void updateAndKeepSelection(WhichMonth selectedDate) {
-        balance.setValue(categoryStore.getBalance(selectedDate));
+    public void updateAndKeepSelection() {
+        balance.setValue(categoryStore.getBalance(selectedMonthGetter.getSelectedMonth()));
     }
 }

@@ -5,10 +5,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import flb.components.editors.mock.SummarySelectorMock;
 import flb.listeners.UserCategorizesTransaction;
 import flb.datastores.*;
-import flb.components.editors.BankingEditorImpl;
-import flb.components.editors.CreditEditorImpl;
+import flb.components.editors.*;
+import flb.components.monthselector.*;
 import flb.tuples.*;
-import flb.util.WhichMonth;
 import org.junit.jupiter.api.*;
 import javax.swing.*;
 import java.util.*;
@@ -25,8 +24,11 @@ class UserCategorizesTransactionTest {
         database.connect();
         TransactionStore transactionStore = new TransactionStoreImp(database);
         CategoryStore categoryStore = new CategoryStoreImpl(database);
-        this.bankingEditor = new BankingEditorImpl(transactionStore, categoryStore, new SummarySelectorMock());
-        this.creditEditor = new CreditEditorImpl(transactionStore, categoryStore, new SummarySelectorMock());
+        MonthSelectorImpl monthSelectorImpl = new MonthSelectorImpl();
+        monthSelectorImpl.setYear(2020);
+        monthSelectorImpl.setMonth(Calendar.OCTOBER);
+        this.bankingEditor = new BankingEditorImpl(transactionStore, categoryStore, monthSelectorImpl, new SummarySelectorMock());
+        this.creditEditor = new CreditEditorImpl(transactionStore, categoryStore, monthSelectorImpl, new SummarySelectorMock());
 
         this.testButton = new JButton();
         testButton.setActionCommand("0,Name2");
@@ -40,8 +42,8 @@ class UserCategorizesTransactionTest {
     @Test
     void categorizeBankingRow() {
         testButton.addActionListener(new UserCategorizesTransaction(bankingEditor));
-        bankingEditor.update(new WhichMonth(2020,Calendar.OCTOBER));
-        bankingEditor.addStoreChangeListener(bankingEditor);
+        bankingEditor.update();
+        bankingEditor.addStoreChangeObserver(bankingEditor);
 
         testButton.doClick();
 
@@ -55,8 +57,8 @@ class UserCategorizesTransactionTest {
     @Test
     void categorizeCreditRow() {
         testButton.addActionListener(new UserCategorizesTransaction(creditEditor));
-        creditEditor.update(new WhichMonth(2020, Calendar.OCTOBER));
-        creditEditor.addStoreChangeListener(creditEditor);
+        creditEditor.update();
+        creditEditor.addStoreChangeObserver(creditEditor);
 
         testButton.doClick();
 

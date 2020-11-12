@@ -1,22 +1,21 @@
 package flb.components.monthselector.listeners;
 
-import flb.components.monthselector.MonthSelectorModelImpl;
-
+import flb.components.monthselector.*;
 import javax.swing.*;
 import java.awt.event.*;
 
 public class UserSelectsSpecificMonth implements ItemListener {
-    private MonthSelectorModelImpl monthSelectorModel;
+    private MonthSelectorImpl monthSelector;
 
-    public UserSelectsSpecificMonth(MonthSelectorModelImpl monthSelectorModel) {
-        this.monthSelectorModel = monthSelectorModel;
+    public UserSelectsSpecificMonth(MonthSelectorImpl monthSelector) {
+        this.monthSelector = monthSelector;
     }
 
     @Override
     public void itemStateChanged(ItemEvent e) {
         if(e.getStateChange() == ItemEvent.SELECTED){
             JComboBox selector = (JComboBox) e.getSource();
-            monthSelectorModel.setMonth(selector.getSelectedIndex());
+            monthSelector.setMonth(selector.getSelectedIndex());
         }
     }
 }

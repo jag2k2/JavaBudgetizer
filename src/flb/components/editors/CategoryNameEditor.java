@@ -6,5 +6,5 @@ import flb.util.WhichMonth;
 
 public interface CategoryNameEditor extends CategoryEditRefresher {
     Maybe<Category> getSelectedCategory();
-    void userRenamedCategory(String oldName, WhichMonth selectedMonth);
+    void userRenamedCategory(String oldName);
 }

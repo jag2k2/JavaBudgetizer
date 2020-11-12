@@ -153,7 +153,7 @@ class CategoryEditorImplTest {
 
         tableAutomator.editCellAt(1,0);
         tableAutomator.setEditorName("Name20");
-        categoryEditor.userRenamedCategory("Name2", new WhichMonth(2020, Calendar.OCTOBER));
+        categoryEditor.userRenamedCategory("Name2");
 
         assertEquals(expected, categoryStore.getCategories(""));
     }

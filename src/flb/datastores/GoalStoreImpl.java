@@ -102,7 +102,7 @@ public class GoalStoreImpl implements GoalStore, GoalStoreTester {
     }
 
     @Override
-    public float getGoal(WhichMonth whichMonth, String categoryName) {
+    public Maybe<Float> getGoal(WhichMonth whichMonth, String categoryName) {
         String query = "SELECT amount FROM goals " +
                 "LEFT JOIN categories ON goals.category_id = categories.id " +
                 "WHERE goals.year_mo = '$yrmo' AND categories.name = '$name'";
@@ -111,12 +111,13 @@ public class GoalStoreImpl implements GoalStore, GoalStoreTester {
 
         ResultSet results = dataStore.executeQuery(query);
 
-        float goalAmount = Float.NaN;
         try{
-            results.next();
-            goalAmount = results.getFloat(1);
+            if(results.next()){
+                float goalAmount = results.getFloat(1);
+                return new Maybe<>(goalAmount);
+            }
         } catch (SQLException ex) {ex.printStackTrace();}
 
-        return goalAmount;
+        return new Maybe<>();
     }
 }

@@ -5,13 +5,18 @@ import javax.swing.border.*;
 import java.awt.*;
 import java.text.*;
 import java.awt.event.ItemListener;
+import java.util.ArrayList;
+
+import flb.components.*;
 import flb.components.monthselector.listeners.*;
-import flb.components.editors.MonthChangeListener;
+import flb.components.editors.*;
 import flb.util.*;
 
-public class MonthSelectorImpl implements MonthChangeListener {
+public class MonthSelectorImpl implements CustomComponent, MonthChanger, SelectedMonthGetter, SpecificMonthSetter,
+        CurrentMonthSetter, MonthChangeObserver {
     private final JPanel datePane;
     private final MonthSelectorModelImpl monthModel;
+    private final ArrayList<MonthChangeObserver> monthChangeObservers;
     private final JButton prev;
     private final JButton next;
     private enum Months {January, February, March, April, May, June, July, August, September, October, November, December}
@@ -21,6 +26,7 @@ public class MonthSelectorImpl implements MonthChangeListener {
 
     public MonthSelectorImpl() {
         this.datePane = new JPanel();
+        this.monthChangeObservers = new ArrayList<>();
         this.prev = new JButton("Prev");
         this.month = new JComboBox<>(Months.values());
         NumberFormat yearFormat = NumberFormat.getIntegerInstance();
@@ -29,18 +35,7 @@ public class MonthSelectorImpl implements MonthChangeListener {
         this.yearField = new JFormattedTextField(yearFormat);
         this.next = new JButton("Next");
         this.monthModel = new MonthSelectorModelImpl();
-        this.userSelectsSpecificMonth = new UserSelectsSpecificMonth(monthModel);
-
-        prev.setActionCommand("decrement");
-        prev.addActionListener(new UserSpinsMonth(monthModel));
-
-        next.setActionCommand("increment");
-        next.addActionListener(new UserSpinsMonth(monthModel));
-
-        month.addItemListener(userSelectsSpecificMonth);
-        yearField.addActionListener(new UserSelectsSpecificYear(monthModel));
-
-        addMonthChangeListener(this);
+        this.userSelectsSpecificMonth = new UserSelectsSpecificMonth(this);
 
         layout();
     }
@@ -54,38 +49,75 @@ public class MonthSelectorImpl implements MonthChangeListener {
         datePane.add(month);
         datePane.add(yearField);
         datePane.add(next);
-    }
 
-    public void addMonthChangeListener(MonthChangeListener monthChangeListener) {
-        monthModel.addMonthChangeListener(monthChangeListener);
+        prev.setActionCommand("decrement");
+        prev.addActionListener(new UserSpinsMonth(this));
+
+        next.setActionCommand("increment");
+        next.addActionListener(new UserSpinsMonth(this));
+
+        month.addItemListener(userSelectsSpecificMonth);
+        yearField.addActionListener(new UserSelectsSpecificYear(this));
+
+        addMonthChangeObserver(this);
     }
 
     @Override
-    public void update(WhichMonth selectedDate) {
+    public void addMonthChangeObserver(MonthChangeObserver monthChangeObserver) {
+        monthChangeObservers.add(monthChangeObserver);
+    }
+
+    @Override
+    public void notifyMonthChange() {
+        for (MonthChangeObserver monthChangeObserver : monthChangeObservers){
+            monthChangeObserver.update();
+        }
+    }
+
+    @Override
+    public void update() {
         yearField.setText(Integer.toString(monthModel.getYear()));
         month.removeItemListener(userSelectsSpecificMonth);
         month.setSelectedIndex(monthModel.getMonth());
         month.addItemListener(userSelectsSpecificMonth);
     }
 
-    public JPanel getPane() {
+    @Override
+    public JPanel getPanel() {
         return datePane;
     }
 
+    @Override
     public void setToCurrentMonth() {
         monthModel.setToCurrentMonth();
+        notifyMonthChange();
     }
 
+    @Override
     public WhichMonth getSelectedMonth() {
         return monthModel.getSelectedMonth();
     }
 
+    @Override
     public void setMonth(int monthValue) {
         monthModel.setMonth(monthValue);
+        notifyMonthChange();
     }
 
-    public void setYearField(int yearValue) {
+    @Override
+    public void setYear(int yearValue) {
         monthModel.setYear(yearValue);
+        notifyMonthChange();
+    }
+
+    public void incrementMonth() {
+        monthModel.incrementMonth();
+        notifyMonthChange();
+    }
+
+    public void decrementMonth() {
+        monthModel.decrementMonth();
+        notifyMonthChange();
     }
 }
 

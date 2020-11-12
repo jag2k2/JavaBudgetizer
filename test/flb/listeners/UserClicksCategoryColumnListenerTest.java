@@ -4,6 +4,7 @@ import flb.components.menus.CategorizerMenuImpl;
 import flb.components.menus.MenuDisplayer;
 import flb.components.menus.MenuTester;
 import flb.components.editors.mock.SummarySelectorMock;
+import flb.components.monthselector.MonthSelectorImpl;
 import flb.datastores.*;
 import flb.components.editors.BankingEditorImpl;
 import flb.components.editors.TransactionCategorizer;
@@ -21,8 +22,11 @@ class UserClicksCategoryColumnListenerTest {
     void setUp() {
         TestDatabase database = new TestDatabase();
         TransactionStore transactionStore = new TransactionStoreImp(database);
+        MonthSelectorImpl monthSelectorImpl = new MonthSelectorImpl();
+        monthSelectorImpl.setYear(2020);
+        monthSelectorImpl.setMonth(Calendar.OCTOBER);
         CategoryStore categoryStore = new CategoryStoreImpl(database);
-        TransactionCategorizer transactionCategorizer = new BankingEditorImpl(transactionStore, categoryStore, new SummarySelectorMock());
+        TransactionCategorizer transactionCategorizer = new BankingEditorImpl(transactionStore, categoryStore, monthSelectorImpl, new SummarySelectorMock());
         CategorizerMenuImpl categoryMenu = new CategorizerMenuImpl(categoryStore, transactionCategorizer);
         MenuDisplayer menuDisplayer = new CategorizerMenuImpl(categoryStore, transactionCategorizer);
         this.menuTester = categoryMenu;

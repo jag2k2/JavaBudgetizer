@@ -16,9 +16,7 @@ public abstract class AbstractDatabase implements DataStore {
     public void connect() {
         try {
             connection = DriverManager.getConnection(url, user, password);
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
+        } catch (SQLException ex) { ex.printStackTrace();}
     }
 
     @Override
@@ -27,9 +25,7 @@ public abstract class AbstractDatabase implements DataStore {
         try {
             Statement statementExecutor = connection.createStatement();
             results = statementExecutor.executeQuery(query);
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
+        } catch (SQLException ex) { ex.printStackTrace();}
         return results;
     }
 
@@ -38,16 +34,12 @@ public abstract class AbstractDatabase implements DataStore {
         try {
             Statement statementExecutor = connection.createStatement();
             statementExecutor.executeUpdate(update);
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
+        } catch (SQLException ex) { ex.printStackTrace();}
     }
 
     public void close() {
         try {
             connection.close();
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
+        } catch (SQLException ex) { ex.printStackTrace();}
     }
 }

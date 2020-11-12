@@ -1,26 +1,32 @@
 package flb.components.editors;
 
 import flb.components.menus.*;
+import flb.components.monthselector.*;
 import flb.datastores.*;
+import flb.components.*;
 import flb.components.editors.tables.*;
 import flb.tuples.*;
-import flb.util.*;
+
 import javax.swing.*;
 import java.util.*;
 
-public class CreditEditorImpl implements CreditEditorTester, TransactionCategorizer, MonthChangeListener, StoreChangeListener, TableHighlighter {
+public class CreditEditorImpl implements CreditEditorTester, TransactionCategorizer, MonthChangeObserver,
+        StoreChanger, StoreChangeObserver, TableHighlighter {
     private final TransactionStore transactionStore;
     private final CreditTable creditTable;
     private final CreditTableTester tableAutomator;
-    private final ArrayList<StoreChangeListener> storeChangeListeners;
+    private final ArrayList<StoreChangeObserver> storeChangeObservers;
+    private final SelectedMonthGetter selectedMonthGetter;
 
-    public CreditEditorImpl(TransactionStore transactionStore, CategoryStore categoryStore, SummarySelector summarySelector){
+    public CreditEditorImpl(TransactionStore transactionStore, CategoryStore categoryStore, SelectedMonthGetter selectedMonthGetter,
+                            SummarySelector summarySelector){
         this.transactionStore = transactionStore;
+        this.selectedMonthGetter = selectedMonthGetter;
         CategorizerMenuImpl categoryMenu = new CategorizerMenuImpl(categoryStore, this);
         CreditTableImpl creditTableImpl = new CreditTableImpl(categoryMenu, summarySelector);
         this.creditTable = creditTableImpl;
         this.tableAutomator = creditTableImpl;
-        this.storeChangeListeners = new ArrayList<>();
+        this.storeChangeObservers = new ArrayList<>();
     }
 
     public JScrollPane getPane() { return creditTable.getPane(); }
@@ -30,29 +36,31 @@ public class CreditEditorImpl implements CreditEditorTester, TransactionCategori
     public void userCategorizesTransaction(int row, String categoryName){
         for (Transaction transaction : creditTable.getTransaction(row)) {
             transactionStore.categorizeTransaction(transaction, categoryName);
-            notifyStoreChange(transaction.getWhichMonth());
+            notifyStoreChange();
         }
-    }
-
-    protected void notifyStoreChange(WhichMonth selectedMonth) {
-        for(StoreChangeListener storeChangeListener : storeChangeListeners) {
-            storeChangeListener.updateAndKeepSelection(selectedMonth);
-        }
-    }
-
-    public void addStoreChangeListener(StoreChangeListener storeChangeListener) {
-        storeChangeListeners.add(storeChangeListener);
     }
 
     @Override
-    public void update(WhichMonth searchDate) {
-        ArrayList<CreditTransaction> creditTransactions = transactionStore.getCreditTransactions(searchDate);
+    public void notifyStoreChange() {
+        for(StoreChangeObserver storeChangeObserver : storeChangeObservers) {
+            storeChangeObserver.updateAndKeepSelection();
+        }
+    }
+
+    @Override
+    public void addStoreChangeObserver(StoreChangeObserver storeChangeObserver) {
+        storeChangeObservers.add(storeChangeObserver);
+    }
+
+    @Override
+    public void update() {
+        ArrayList<CreditTransaction> creditTransactions = transactionStore.getCreditTransactions(selectedMonthGetter.getSelectedMonth());
         creditTable.displayAndClearSelection(creditTransactions);
     }
 
     @Override
-    public void updateAndKeepSelection(WhichMonth selectedDate) {
-        ArrayList<CreditTransaction> creditTransactions = transactionStore.getCreditTransactions(selectedDate);
+    public void updateAndKeepSelection() {
+        ArrayList<CreditTransaction> creditTransactions = transactionStore.getCreditTransactions(selectedMonthGetter.getSelectedMonth());
         creditTable.displayAndClearSelection(creditTransactions);
     }
 
