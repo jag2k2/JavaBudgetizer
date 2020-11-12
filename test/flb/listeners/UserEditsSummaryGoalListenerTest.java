@@ -14,9 +14,11 @@ class UserEditsSummaryGoalListenerTest {
     private TestDatabase database;
     private GoalStoreTester goalStoreTester;
     private SummaryTableTester tableTester;
+    private WhichMonth selectedMonth;
 
     @BeforeEach
     void setUp() {
+        this.selectedMonth = new WhichMonth(2020, Calendar.OCTOBER);
         this.database = new TestDatabase();
         database.connect();
         GoalStoreImpl goalStore = new GoalStoreImpl(database);
@@ -25,7 +27,7 @@ class UserEditsSummaryGoalListenerTest {
         SummaryEditorImpl summaryEditor = new SummaryEditorImpl(transactionStore, goalStore, new JFrame());
         this.tableTester = summaryEditor.getTableTester();
         StoreChangeListener storeChangeListener = summaryEditor;
-        storeChangeListener.updateAndKeepSelection(new WhichMonth(2020, Calendar.OCTOBER));
+        storeChangeListener.updateAndKeepSelection(selectedMonth);
     }
 
     @AfterEach
@@ -40,16 +42,18 @@ class UserEditsSummaryGoalListenerTest {
         tableTester.editCellAt(1, 1);
         tableTester.setEditorGoal(200);
 
-        assertEquals(200F, goalStoreTester.getGoal(new WhichMonth(2020, Calendar.OCTOBER), "Name2"));
+        assertEquals(200F, goalStoreTester.getGoal(selectedMonth, "Name2"));
     }
 
     @Test
     void makeNewGoal() {
-        tableTester.setSelectedRow(0);
+        int activeRow = 0;
+        tableTester.setSelectedRow(activeRow);
 
-        tableTester.editCellAt(0, 1);
+        tableTester.editCellAt(activeRow, 1);
         tableTester.setEditorGoal(200);
 
-        assertEquals(200F, goalStoreTester.getGoal(new WhichMonth(2020, Calendar.OCTOBER), "Name1"));
+        String categoryNameToGet = TestDatabase.getTestCategories().get(activeRow).getName();
+        assertEquals(200F, goalStoreTester.getGoal(selectedMonth, categoryNameToGet));
     }
 }

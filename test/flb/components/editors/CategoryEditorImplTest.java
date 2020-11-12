@@ -35,7 +35,8 @@ class CategoryEditorImplTest {
     @Test
     void categoryAddable() {
         assertFalse(categoryEditor.categoryNameAddable(""));
-        assertFalse(categoryEditor.categoryNameAddable("Name1"));
+        String nameExists = TestDatabase.getTestCategories().get(0).getName();
+        assertFalse(categoryEditor.categoryNameAddable(nameExists));
         assertTrue(categoryEditor.categoryNameAddable("Name0"));
     }
 
@@ -57,7 +58,8 @@ class CategoryEditorImplTest {
 
     @Test
     void addingDuplicateCategory() {
-        categoryEditor.userAddCategory("Name1");
+        String duplicateName = TestDatabase.getTestCategories().get(0).getName();
+        categoryEditor.userAddCategory(duplicateName);
 
         assertEquals(expected, categoryStore.getCategories(""));
     }
@@ -84,9 +86,9 @@ class CategoryEditorImplTest {
         categoryEditor.refreshAndClearSelection("");
         tableAutomator = categoryEditor.getTableTester();
 
-        categoryEditor.userDeleteCategory(2, new JFrame());
+        categoryEditor.userDeleteCategory(3, new JFrame());
 
-        expected.remove(2);
+        expected.remove(3);
         assertEquals(expected, categoryStore.getCategories(""));
     }
 
@@ -158,10 +160,15 @@ class CategoryEditorImplTest {
 
     @Test
     void refresh(){
-        expected.remove(4);
-        expected.remove(3);
+        String filterText = "Name";
+        expected = new ArrayList<>();
+        for(Category category : TestDatabase.getTestCategories()){
+            if(category.getName().contains(filterText)){
+                expected.add(category);
+            }
+        }
 
-        categoryEditor.refreshAndClearSelection("Name");
+        categoryEditor.refreshAndClearSelection(filterText);
 
         assertEquals(-1, tableAutomator.getSelectedRow());
         assertEquals(expected, tableAutomator.getContents());
@@ -170,10 +177,16 @@ class CategoryEditorImplTest {
     @Test
     void refreshKeepSelections() {
         tableAutomator.setSelectedRow(2);
-        expected.remove(4);
-        expected.remove(3);
 
-        categoryEditor.refreshAndKeepSelection("Name");
+        String filterText = "Name";
+        expected = new ArrayList<>();
+        for(Category category : TestDatabase.getTestCategories()){
+            if(category.getName().contains(filterText)){
+                expected.add(category);
+            }
+        }
+
+        categoryEditor.refreshAndKeepSelection(filterText);
 
         assertEquals(2, tableAutomator.getSelectedRow());
         assertEquals(expected, tableAutomator.getContents());

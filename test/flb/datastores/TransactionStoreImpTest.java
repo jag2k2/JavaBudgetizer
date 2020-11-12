@@ -66,7 +66,7 @@ class TransactionStoreImpTest {
     @Test
     void getSummaries() {
         ArrayList<TransactionSummary> expected = new ArrayList<>();
-        TransactionSummary summary = new TransactionSummary(new WhichMonth(2020, Calendar.OCTOBER), new Category("Name1", false));
+        TransactionSummary summary = new TransactionSummary(new WhichMonth(2020, Calendar.OCTOBER), new Category("Income", false));
         summary.addGoal(70);
 
         assertEquals(expected, transactionStore.getTransactionSummaries(whichMonth));

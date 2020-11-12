@@ -34,10 +34,13 @@ class BankingEditorImplTest {
 
     @Test
     void refresh() {
-        bankingEditor.update(new WhichMonth(2020, Calendar.OCTOBER));
+        WhichMonth dateWithTransactions = new WhichMonth(2020, Calendar.OCTOBER);
+
+        bankingEditor.update(dateWithTransactions);
         assertEquals(expected, tableAutomator.getTransactions());
 
-        bankingEditor.update(new WhichMonth(2020, Calendar.JANUARY));
+        WhichMonth dateWithNoTransactions = new WhichMonth(2020, Calendar.JANUARY);
+        bankingEditor.update(dateWithNoTransactions);
         expected.clear();
         assertEquals(expected, tableAutomator.getTransactions());
     }

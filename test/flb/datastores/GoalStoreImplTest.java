@@ -94,26 +94,28 @@ class GoalStoreImplTest {
 
     @Test
     void getGoal() {
-        assertEquals(65, goalStoreTester.getGoal(selectedDate, "Name2"));
+        assertEquals(1000, goalStoreTester.getGoal(selectedDate, "Income"));
     }
 
     @Test
     void updateExistingGoalAmount() {
-        TransactionSummary summaryToUpdate = new TransactionSummary(selectedDate, new Category("Name2", false));
+        Category category = TestDatabase.getTestCategories().get(2);
+        TransactionSummary summaryToUpdate = new TransactionSummary(selectedDate, category);
         summaryToUpdate.addGoal(200);
 
         goalStore.updateGoalAmount(summaryToUpdate);
 
-        assertEquals(200, goalStoreTester.getGoal(selectedDate, "Name2"));
+        assertEquals(200, goalStoreTester.getGoal(selectedDate, category.getName()));
     }
 
     @Test
     void addGoal() {
-        TransactionSummary summaryToUpdate = new TransactionSummary(selectedDate, new Category("Name1", false));
+        Category categoryToAddTo = TestDatabase.getTestCategories().get(1);
+        TransactionSummary summaryToUpdate = new TransactionSummary(selectedDate, categoryToAddTo);
         summaryToUpdate.addGoal(200);
 
         goalStore.addGoal(summaryToUpdate);
 
-        assertEquals(200, goalStoreTester.getGoal(selectedDate, "Name1"));
+        assertEquals(200, goalStoreTester.getGoal(selectedDate, categoryToAddTo.getName()));
     }
 }

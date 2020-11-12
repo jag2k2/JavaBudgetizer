@@ -62,11 +62,12 @@ class UserAddsCategoryListenerTest {
 
     @Test
     void duplicateNameNotAdded() {
-        nameFilter.setText("Name1");
+        String filterString = "Name2";
+        nameFilter.setText(filterString);
 
         testButton.doClick();
 
         assertEquals(expected, categoryStore.getCategories(""));
-        assertEquals("Name1", nameFilter.getText());
+        assertEquals(filterString, nameFilter.getText());
     }
 }

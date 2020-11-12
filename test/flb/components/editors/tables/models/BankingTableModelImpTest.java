@@ -17,17 +17,24 @@ class BankingTableModelImpTest {
 
     @Test
     void getValueAt() {
-        String actualDate = (String)tableModel.getValueAt(0,0);
-        assertEquals("2020-10-25", actualDate);
+        int activeRow = 0;
+        BankingTransaction expectedTransaction = TestDatabase.getTestBankingTransactions().get(activeRow);
 
-        float actualAmount = (float)tableModel.getValueAt(0,1);
-        assertEquals(50F, actualAmount);
+        String expectedDate = expectedTransaction.getDateString();
+        String actualDate = (String)tableModel.getValueAt(activeRow,0);
+        assertEquals(expectedDate, actualDate);
 
-        String actualCategory = (String)tableModel.getValueAt(0,2);
-        assertEquals("Name1", actualCategory);
+        float expectedAmount = expectedTransaction.getAmount();
+        float actualAmount = (float)tableModel.getValueAt(activeRow,1);
+        assertEquals(expectedAmount, actualAmount);
 
-        String actualDescription = (String)tableModel.getValueAt(0,3);
-        assertEquals("Amazon", actualDescription);
+        String expectedName = expectedTransaction.getCategory();
+        String actualCategory = (String)tableModel.getValueAt(activeRow,2);
+        assertEquals(expectedName, actualCategory);
+
+        String expectedDescription = expectedTransaction.getDescription();
+        String actualDescription = (String)tableModel.getValueAt(activeRow,3);
+        assertEquals(expectedDescription, actualDescription);
     }
 
     @Test

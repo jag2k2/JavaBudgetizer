@@ -37,19 +37,25 @@ class CategoryTableModelImplTest {
 
     @Test
     void getValues() {
-        String actualName = (String)tableModel.getValueAt(0,0);
-        assertEquals("Name1", actualName);
+        int activeRow = 0;
+        Category expectedCategory = TestDatabase.getTestCategories().get(activeRow);
 
-        float actualValue = (float)tableModel.getValueAt(1,1);
-        assertEquals(200f, actualValue);
+        String expectedName = expectedCategory.getName();
+        String actualName = (String)tableModel.getValueAt(activeRow,0);
+        assertEquals(expectedName, actualName);
 
-        boolean actualBool = (boolean)tableModel.getValueAt(2,2);
-        assertFalse(actualBool);
+        float expectedAmount = expectedCategory.getDefaultGoalDisplay();
+        float actualValue = (float)tableModel.getValueAt(activeRow,1);
+        assertEquals(expectedAmount, actualValue);
+
+        boolean expectedExcludes = expectedCategory.getExclude();
+        boolean actualExcludes = (boolean)tableModel.getValueAt(activeRow,2);
+        assertEquals(expectedExcludes, actualExcludes);
     }
 
     @Test
     void setValues() {
-        expected = new Maybe<>(new Category("TestRename", 100,false));
+        expected = new Maybe<>(new Category("TestRename", 1000,false));
 
         tableModel.setValueAt("TestRename", 0, 0);
 

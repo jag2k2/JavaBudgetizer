@@ -1,8 +1,7 @@
 package flb.datastores;
 
 import flb.tuples.*;
-import flb.util.WhichMonth;
-
+import flb.util.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -32,7 +31,7 @@ public class TestDatabase extends AbstractDatabase {
         super.executeUpdate(update);
 
         update = "INSERT INTO categories (name, default_goal_amt, exclude) VALUES " +
-                "('Name1', '100', FALSE), " +
+                "('Income', '1000', FALSE), " +
                 "('Name2', '200', TRUE), " +
                 "('Name3', '300', FALSE), " +
                 "('Test1::sub1', NULL, FALSE), " +
@@ -58,7 +57,7 @@ public class TestDatabase extends AbstractDatabase {
                 "('2020-09', '1', 50), " +
                 "('2020-09', '2', 55), " +
                 "('2020-09', '3', 60), " +
-                "('2020-10', '2', 65), " +
+                "('2020-10', '1', 1000), " +
                 "('2020-10', '3', 70), " +
                 "('2020-10', '5', 75)";
         super.executeUpdate(update);
@@ -82,10 +81,10 @@ public class TestDatabase extends AbstractDatabase {
         super.executeUpdate(update);
 
         update = "INSERT INTO transactions (date, type, description, amount, category_id, balance, reference) VALUES " +
-                "('2020-10-25', 'banking', 'Amazon', '50.00', '1', '1000.00', '-1'), " +
+                "('2020-10-25', 'banking', 'Amazon', '50.00', '5', '1000.00', '-1'), " +
                 "('2020-10-26', 'banking', 'HEB', '40.00', '2', '960.00', '-1'), " +
                 "('2020-10-27', 'banking', 'Walmart', '30.00', '-1', '930.00', '-1'), " +
-                "('2020-10-25', 'credit', 'Shell', '20.00', '1', '-1', '3589048'), " +
+                "('2020-10-25', 'credit', 'Shell', '20.00', '3', '-1', '3589048'), " +
                 "('2020-10-26', 'credit', 'Papa Johns', '25.00', '-1', '2', '3589049'), " +
                 "('2020-10-27', 'credit', 'Torchys', '35.00', '-1', '-1', '3589050')";
         super.executeUpdate(update);
@@ -93,7 +92,7 @@ public class TestDatabase extends AbstractDatabase {
 
     static public ArrayList<Category> getTestCategories() {
         ArrayList<Category> testCategories = new ArrayList<>();
-        testCategories.add(new Category("Name1", 100, false));
+        testCategories.add(new Category("Income", 1000, false));
         testCategories.add(new Category("Name2", 200, true));
         testCategories.add(new Category("Name3", 300, false));
         testCategories.add(new Category("Test1::sub1", false));
@@ -107,15 +106,9 @@ public class TestDatabase extends AbstractDatabase {
         WhichMonth whichMonth0 = new WhichMonth(2020, Calendar.SEPTEMBER);
         WhichMonth whichMonth1 = new WhichMonth(2020, Calendar.OCTOBER);
 
-        TransactionSummary summary = new TransactionSummary(whichMonth0, getTestCategories().get(0));
-        summary.addGoal(50);
-        summary.addSum(100);
-        //summaries.add(new Goal(whichMonth0, 50));
-        //summaries.add(new Goal(whichMonth0, 55));
-        //summaries.add(new Goal(whichMonth0, 60));
-        //summaries.add(new Goal(whichMonth1, 65));
-        //summaries.add(new Goal(whichMonth1, 70));
-        //summaries.add(new Goal(whichMonth1, 75));
+        TransactionSummary summary = new TransactionSummary(whichMonth1, getTestCategories().get(0));
+        summary.addGoal(1000);
+        summary.addSum(50);
 
         return summaries;
     }
@@ -127,7 +120,7 @@ public class TestDatabase extends AbstractDatabase {
         Calendar date2 = new GregorianCalendar(2020, Calendar.OCTOBER, 26);
         Calendar date3 = new GregorianCalendar(2020, Calendar.OCTOBER, 27);
 
-        testTransactions.add(new BankingTransaction("1", date1, "Amazon", 50F, "Name1", 1000F));
+        testTransactions.add(new BankingTransaction("1", date1, "Amazon", 50F, "Test1::sub2", 1000F));
         testTransactions.add(new BankingTransaction("2", date2, "HEB", 40F, "Name2", 960F));
         testTransactions.add(new BankingTransaction("3", date3, "Walmart", 30F, "", 930F));
 
@@ -141,7 +134,7 @@ public class TestDatabase extends AbstractDatabase {
         Calendar date2 = new GregorianCalendar(2020,Calendar.OCTOBER,26);
         Calendar date3 = new GregorianCalendar(2020, Calendar.OCTOBER, 27);
 
-        testTransactions.add(new CreditTransaction("3589048", date1, "Shell", 20F, "Name1"));
+        testTransactions.add(new CreditTransaction("3589048", date1, "Shell", 20F, "Name3"));
         testTransactions.add(new CreditTransaction("3589049", date2, "Papa Johns", 25F, ""));
         testTransactions.add(new CreditTransaction("3589050", date3, "Torchys", 35F, ""));
 

@@ -40,13 +40,18 @@ class UserEditsDefaultGoalListenerTest {
 
     @Test
     void editCategoryGoal() {
+        int activeRow = 0;
+        float newDefaultGoal = 200;
+
         nameFilter.setText("Name");
-        tableAutomator.setSelectedRow(0);
+        tableAutomator.setSelectedRow(activeRow);
 
-        tableAutomator.editCellAt(0,1);
-        tableAutomator.setEditorGoal(200);
+        tableAutomator.editCellAt(activeRow,1);
+        tableAutomator.setEditorGoal(newDefaultGoal);
 
-        expected.set(0, new Category("Name1", 200, false));
+        Category category = TestDatabase.getTestCategories().get(activeRow);
+        category.setDefaultGoal(newDefaultGoal);
+        expected.set(0, category);
         assertEquals(expected, categoryStore.getCategories(""));
         assertEquals("Name", nameFilter.getText());
     }

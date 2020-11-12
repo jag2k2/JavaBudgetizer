@@ -26,7 +26,7 @@ class UserFiltersCategoriesListenerTest {
         this.tableAutomator = categoryEditor.getTableTester();
         this.nameFilter = new JTextField();
 
-        this.expected = TestDatabase.getTestCategories();
+        this.expected = new ArrayList<>();
 
         nameFilter.getDocument().addDocumentListener(new UserFiltersCategoriesListener(categoryEditor, nameFilter));
     }
@@ -37,19 +37,15 @@ class UserFiltersCategoriesListenerTest {
     }
 
     @Test
-    void insertUpdate() {
-        nameFilter.setText("N");
-        expected.remove(3);
-        expected.remove(3);
-        assertEquals(expected, tableAutomator.getContents());
-    }
-
-    @Test
     void removeUpdate() {
-        nameFilter.setText("Name1");
-        nameFilter.setText("Name");
-        expected.remove(3);
-        expected.remove(3);
+        String filterString = "Name";
+        nameFilter.setText(filterString);
+        for (Category category : TestDatabase.getTestCategories()){
+            if(category.getName().contains(filterString)){
+                expected.add(category);
+            }
+        }
+
         assertEquals(expected, tableAutomator.getContents());
     }
 }

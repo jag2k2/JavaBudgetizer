@@ -46,13 +46,13 @@ class UserDeletesCategoryListenerTest {
 
         testButton.addActionListener(new UserDeletesCategoryListener(categoryEditor, nameFilter, new JFrame()));
 
-        nameFilter.setText("Name");
-        testButton.setActionCommand("2");
+        nameFilter.setText("Test1");
+        testButton.setActionCommand("3");
         testButton.doClick();
 
-        expected.remove(2);
+        expected.remove(3);
         assertEquals(expected, categoryStore.getCategories(""));
-        assertEquals("Name", nameFilter.getText());
+        assertEquals("Test1", nameFilter.getText());
     }
 
     @Test

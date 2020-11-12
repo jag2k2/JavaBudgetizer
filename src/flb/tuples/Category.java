@@ -5,7 +5,7 @@ import flb.util.*;
 public class Category {
 
     private String name;
-    private final Boolean exclude;
+    private Boolean exclude;
     private Maybe<Float> default_goal;
 
     public Category(String name, Boolean exclude) {
@@ -43,6 +43,10 @@ public class Category {
 
     public void setDefaultGoal(Float defaultGoal) {
         this.default_goal = new Maybe<>(Math.max(defaultGoal, 0));
+    }
+
+    public void toggleExcludes(){
+        this.exclude = !exclude;
     }
 
     @Override

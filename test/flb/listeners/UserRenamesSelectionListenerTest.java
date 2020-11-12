@@ -41,15 +41,21 @@ class UserRenamesSelectionListenerTest {
 
     @Test
     void renameFirstCategory() {
-        nameFilter.setText("Name");
-        tableAutomator.setSelectedRow(0);
+        int activeRow = 0;
+        String newName = "Name10";
+        String filterString = "Name";
 
-        tableAutomator.editCellAt(0,0);
-        tableAutomator.setEditorName("Name10");
+        nameFilter.setText(filterString);
+        tableAutomator.setSelectedRow(activeRow);
 
-        expected.set(0, new Category("Name10", 100, false));
+        tableAutomator.editCellAt(activeRow,0);
+        tableAutomator.setEditorName(newName);
+
+        Category category = TestDatabase.getTestCategories().get(activeRow);
+        category.rename(newName);
+        expected.set(0, category);
         assertEquals(expected, categoryStore.getCategories(""));
-        assertEquals("Name", nameFilter.getText());
+        assertEquals(filterString, nameFilter.getText());
     }
 
     @Test

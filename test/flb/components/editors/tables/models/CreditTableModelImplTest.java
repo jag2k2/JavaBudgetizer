@@ -18,23 +18,32 @@ class CreditTableModelImplTest {
 
     @Test
     void getValueAt() {
-        String actualDate = (String)tableModel.getValueAt(0,0);
-        assertEquals("2020-10-25", actualDate);
+        int activeRow = 0;
+        CreditTransaction expectedTransaction = TestDatabase.getTestCreditTransactions().get(activeRow);
 
-        float actualAmount = (float)tableModel.getValueAt(0,1);
-        assertEquals(20F, actualAmount);
+        String expectedDate = expectedTransaction.getDateString();
+        String actualDate = (String)tableModel.getValueAt(activeRow,0);
+        assertEquals(expectedDate, actualDate);
 
-        String actualDescription = (String)tableModel.getValueAt(0,2);
-        assertEquals("Name1", actualDescription);
+        float expectedAmount = expectedTransaction.getAmount();
+        float actualAmount = (float)tableModel.getValueAt(activeRow,1);
+        assertEquals(expectedAmount, actualAmount);
 
-        String actualCategory = (String)tableModel.getValueAt(0,3);
-        assertEquals("Shell", actualCategory);
+        String expectedCategory = expectedTransaction.getCategory();
+        String actualCategory = (String)tableModel.getValueAt(0,2);
+        assertEquals(expectedCategory, actualCategory);
+
+        String expectedDescription = expectedTransaction.getDescription();
+        String actualDescription = (String)tableModel.getValueAt(activeRow,3);
+        assertEquals(expectedDescription, actualDescription);
     }
 
     @Test
     void getTransaction() {
-        Maybe<Transaction> expected = new Maybe<>(TestDatabase.getTestCreditTransactions().get(0));
-        Maybe<Transaction> actual = tableModel.getTransaction(0);
+        int activeRow = 0;
+
+        Maybe<Transaction> expected = new Maybe<>(TestDatabase.getTestCreditTransactions().get(activeRow));
+        Maybe<Transaction> actual = tableModel.getTransaction(activeRow);
         assertEquals(expected, actual);
 
         expected = new Maybe<>();

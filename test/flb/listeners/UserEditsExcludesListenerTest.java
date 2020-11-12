@@ -42,12 +42,16 @@ class UserEditsExcludesListenerTest {
 
     @Test
     void enableDisabledCategory() {
+        int activeRow = 0;
+
         nameFilter.setText("Name");
-        tableAutomator.setSelectedRow(0);
+        tableAutomator.setSelectedRow(activeRow);
 
         tableAutomator.toggleSelectedExcludes();
 
-        expected.set(0, new Category("Name1", 100, true));
+        Category category = TestDatabase.getTestCategories().get(activeRow);
+        category.toggleExcludes();
+        expected.set(0, category);
         assertEquals(expected, categoryStore.getCategories(""));
         assertEquals("Name", nameFilter.getText());
     }

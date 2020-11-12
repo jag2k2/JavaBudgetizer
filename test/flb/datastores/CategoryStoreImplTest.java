@@ -3,6 +3,7 @@ package flb.datastores;
 import java.util.*;
 
 import flb.tuples.Category;
+import flb.util.WhichMonth;
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -40,16 +41,17 @@ class CategoryStoreImplTest {
 
     @Test
     void countTransactions() {
-        int actual = categoryStore.getTransactionCountOfCategory("Name1");
-        assertEquals(2, actual);
+        String categoryName = TestDatabase.getTestCategories().get(1).getName();
+        int actual = categoryStore.getTransactionCountOfCategory(categoryName);
+        assertEquals(1, actual);
     }
 
     @Test
     void deleteCategory() {
-        expected.add(new Category("Name2", 200, true));
-        expected.add(new Category("Name3", 300, false));
+        Category categoryToDelete = TestDatabase.getTestCategories().get(1);
+        expected.add(TestDatabase.getTestCategories().get(2));
 
-        categoryStore.deleteCategory("Name1");
+        categoryStore.deleteCategory(categoryToDelete.getName());
 
         actual = categoryStore.getCategories("Name");
         assertEquals(expected, actual);
@@ -57,7 +59,8 @@ class CategoryStoreImplTest {
 
     @Test
     void categoryExist() {
-        boolean found = categoryStore.categoryExist("Name1");
+        String realName = TestDatabase.getTestCategories().get(0).getName();
+        boolean found = categoryStore.categoryExist(realName);
         assertTrue(found);
 
         found = categoryStore.categoryExist("NameNeverExist");
@@ -72,31 +75,31 @@ class CategoryStoreImplTest {
 
     @Test
     void getCategoriesExactMatch() {
-        expected.add(new Category("Name1", 100, false));
+        Category category = TestDatabase.getTestCategories().get(0);
+        expected.add(category);
 
-        ArrayList<Category> actual = categoryStore.getCategories("Name1");
+        ArrayList<Category> actual = categoryStore.getCategories(category.getName());
 
         assertEquals(expected, actual);
     }
 
     @Test
     void getCategoriesMultipleMatch() {
-        expected.add(new Category("Name1", 100, false));
-        expected.add(new Category("Name2", 200, true));
-        expected.add(new Category("Name3", 300, false));
+        String nameFilter = "Name";
+        for(Category category : TestDatabase.getTestCategories()){
+            if(category.getName().contains(nameFilter)){
+                expected.add(category);
+            }
+        }
 
-        actual = categoryStore.getCategories("Name");
+        actual = categoryStore.getCategories(nameFilter);
 
         assertEquals(expected, actual);
     }
 
     @Test
     void getAllCategories() {
-        expected.add(new Category("Name1", 100, false));
-        expected.add(new Category("Name2", 200, true));
-        expected.add(new Category("Name3", 300, false));
-        expected.add(new Category("Test1::sub1", false));
-        expected.add(new Category("Test1::sub2", 500, true));
+        expected = TestDatabase.getTestCategories();
 
         actual = categoryStore.getCategories("");
 
@@ -141,5 +144,10 @@ class CategoryStoreImplTest {
 
         actual = categoryStore.getCategories("Name5");
         assertEquals(expected, actual);
+    }
+
+    @Test
+    void getBalance() {
+        System.out.println(categoryStore.getBalance(new WhichMonth(2020, Calendar.OCTOBER)));
     }
 }
