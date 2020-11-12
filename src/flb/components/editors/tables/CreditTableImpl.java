@@ -17,7 +17,7 @@ public class CreditTableImpl implements CreditTable, CreditTableTester {
 
     public CreditTableImpl(MenuDisplayer menuDisplayer, SummarySelector summarySelector) {
         this.tableModel = new CreditTableModelImpl();
-        this.table = new HighlightableRowTable(tableModel, summarySelector);
+        this.table = new HighlightableRowTable(tableModel, 1, summarySelector);
         this.scrollPane = new JScrollPane(table);
 
         SimpleDollarRenderer dollarRenderer = new SimpleDollarRenderer();

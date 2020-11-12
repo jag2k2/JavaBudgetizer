@@ -31,6 +31,7 @@ public class CategoryTableImpl implements CategoryTable, CategoryTableTester {
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         table.setFillsViewportHeight(true);
         table.setRowSelectionAllowed(false);
+        table.getTableHeader().setReorderingAllowed(false);
         SimpleDollarRenderer dollarRenderer = new SimpleDollarRenderer();
         dollarRenderer.setHorizontalAlignment(JLabel.RIGHT);
         table.getColumnModel().getColumn(1).setCellRenderer(dollarRenderer);

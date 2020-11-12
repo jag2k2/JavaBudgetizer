@@ -17,7 +17,7 @@ public class BankingTableImpl implements BankingTable, BankingTableTester {
 
     public BankingTableImpl(MenuDisplayer menuDisplayer, SummarySelector summarySelector) {
         this.tableModel = new BankingTableModelImp();
-        this.table = new HighlightableRowTable(tableModel, summarySelector);
+        this.table = new HighlightableRowTable(tableModel, 1, summarySelector);
         this.scrollPane = new JScrollPane(table);
 
         table.setSelectionModel(new NullSelectionModel());

@@ -23,7 +23,7 @@ public class SummaryTableImp implements SummaryTable, SummarySelector, SummaryTa
 
     public SummaryTableImp() {
         this.tableModel = new SummaryTableModelImp();
-        this.table = new JTable(tableModel);
+        this.table = new GreenRowTable(tableModel, 3);
         this.scrollPane = new JScrollPane(table);
         this.tableHighlighters = new ArrayList<>();
 
@@ -34,6 +34,7 @@ public class SummaryTableImp implements SummaryTable, SummarySelector, SummaryTa
     protected void layout() {
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         table.setFillsViewportHeight(true);
+        table.getTableHeader().setReorderingAllowed(false);
         SimpleDollarRenderer dollarRenderer = new SimpleDollarRenderer();
         dollarRenderer.setHorizontalAlignment(JLabel.RIGHT);
         table.getColumnModel().getColumn(1).setCellRenderer(dollarRenderer);

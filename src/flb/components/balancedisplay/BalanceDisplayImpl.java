@@ -43,7 +43,14 @@ public class BalanceDisplayImpl implements MonthChangeObserver, StoreChangeObser
 
     @Override
     public void update() {
-        balance.setValue(categoryStore.getBalance(selectedMonthGetter.getSelectedMonth()));
+        float balanceAmount = categoryStore.getBalance(selectedMonthGetter.getSelectedMonth());
+        balance.setValue(balanceAmount);
+        if (balanceAmount > 0) {
+            balance.setBackground(new Color(207, 255, 207));
+        }
+        else {
+            balance.setBackground(null);
+        }
     }
 
     @Override
