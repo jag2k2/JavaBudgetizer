@@ -29,7 +29,7 @@ public class BankingTableModelImp extends AbstractTableModel implements Transact
         return switch (column) {
             case 0 -> tableContents.get(row).getDateString();
             case 1 -> tableContents.get(row).getAmount();
-            case 2 -> tableContents.get(row).getCategory();
+            case 2 -> tableContents.get(row).getCategoryName();
             case 3 -> tableContents.get(row).getDescription();
             default -> null;
         };

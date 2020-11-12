@@ -28,7 +28,7 @@ class BankingTableModelImpTest {
         float actualAmount = (float)tableModel.getValueAt(activeRow,1);
         assertEquals(expectedAmount, actualAmount);
 
-        String expectedName = expectedTransaction.getCategory();
+        String expectedName = expectedTransaction.getCategoryName();
         String actualCategory = (String)tableModel.getValueAt(activeRow,2);
         assertEquals(expectedName, actualCategory);
 

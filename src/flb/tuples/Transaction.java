@@ -1,7 +1,6 @@
 package flb.tuples;
 
 import flb.util.WhichMonth;
-
 import java.util.*;
 
 abstract public class Transaction {
@@ -41,7 +40,7 @@ abstract public class Transaction {
         return amount;
     }
 
-    public String getCategory(){
+    public String getCategoryName(){
         return categoryName;
     }
 

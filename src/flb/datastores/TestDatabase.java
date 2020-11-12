@@ -81,12 +81,12 @@ public class TestDatabase extends AbstractDatabase {
         super.executeUpdate(update);
 
         update = "INSERT INTO transactions (date, type, description, amount, category_id, balance, reference) VALUES " +
-                "('2020-10-25', 'banking', 'Amazon', '50.00', '5', '1000.00', '-1'), " +
-                "('2020-10-26', 'banking', 'HEB', '40.00', '2', '960.00', '-1'), " +
-                "('2020-10-27', 'banking', 'Walmart', '30.00', '-1', '930.00', '-1'), " +
-                "('2020-10-25', 'credit', 'Shell', '20.00', '3', '-1', '3589048'), " +
-                "('2020-10-26', 'credit', 'Papa Johns', '25.00', '-1', '2', '3589049'), " +
-                "('2020-10-27', 'credit', 'Torchys', '35.00', '-1', '-1', '3589050')";
+                "('2020-10-25', 'banking', 'Amazon', '-50.00', '5', '1000.00', '-1'), " +
+                "('2020-10-26', 'banking', 'HEB', '-40.00', '2', '960.00', '-1'), " +
+                "('2020-10-27', 'banking', 'Walmart', '-30.00', '-1', '930.00', '-1'), " +
+                "('2020-10-25', 'credit', 'Shell', '-20.00', '3', '-1', '3589048'), " +
+                "('2020-10-26', 'credit', 'Papa Johns', '-25.00', '-1', '2', '3589049'), " +
+                "('2020-10-27', 'credit', 'Torchys', '-35.00', '-1', '-1', '3589050')";
         super.executeUpdate(update);
     }
 
@@ -120,9 +120,9 @@ public class TestDatabase extends AbstractDatabase {
         Calendar date2 = new GregorianCalendar(2020, Calendar.OCTOBER, 26);
         Calendar date3 = new GregorianCalendar(2020, Calendar.OCTOBER, 27);
 
-        testTransactions.add(new BankingTransaction("1", date1, "Amazon", 50F, "Test1::sub2", 1000F));
-        testTransactions.add(new BankingTransaction("2", date2, "HEB", 40F, "Name2", 960F));
-        testTransactions.add(new BankingTransaction("3", date3, "Walmart", 30F, "", 930F));
+        testTransactions.add(new BankingTransaction("1", date1, "Amazon", -50F, "Test1::sub2", 1000F));
+        testTransactions.add(new BankingTransaction("2", date2, "HEB", -40F, "Name2", 960F));
+        testTransactions.add(new BankingTransaction("3", date3, "Walmart", -30F, "", 930F));
 
         return testTransactions;
     }
@@ -134,9 +134,9 @@ public class TestDatabase extends AbstractDatabase {
         Calendar date2 = new GregorianCalendar(2020,Calendar.OCTOBER,26);
         Calendar date3 = new GregorianCalendar(2020, Calendar.OCTOBER, 27);
 
-        testTransactions.add(new CreditTransaction("3589048", date1, "Shell", 20F, "Name3"));
-        testTransactions.add(new CreditTransaction("3589049", date2, "Papa Johns", 25F, ""));
-        testTransactions.add(new CreditTransaction("3589050", date3, "Torchys", 35F, ""));
+        testTransactions.add(new CreditTransaction("3589048", date1, "Shell", -20F, "Name3"));
+        testTransactions.add(new CreditTransaction("3589049", date2, "Papa Johns", -25F, ""));
+        testTransactions.add(new CreditTransaction("3589050", date3, "Torchys", -35F, ""));
 
         return testTransactions;
     }

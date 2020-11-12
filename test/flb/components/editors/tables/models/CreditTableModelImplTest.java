@@ -29,7 +29,7 @@ class CreditTableModelImplTest {
         float actualAmount = (float)tableModel.getValueAt(activeRow,1);
         assertEquals(expectedAmount, actualAmount);
 
-        String expectedCategory = expectedTransaction.getCategory();
+        String expectedCategory = expectedTransaction.getCategoryName();
         String actualCategory = (String)tableModel.getValueAt(0,2);
         assertEquals(expectedCategory, actualCategory);
 
