@@ -113,8 +113,8 @@ public class TestDatabase extends AbstractDatabase {
         return summaries;
     }
 
-    static public ArrayList<BankingTransaction> getTestBankingTransactions() {
-        ArrayList<BankingTransaction> testTransactions = new ArrayList<>();
+    static public ArrayList<Transaction> getTestBankingTransactions() {
+        ArrayList<Transaction> testTransactions = new ArrayList<>();
 
         Calendar date1 = new GregorianCalendar(2020, Calendar.OCTOBER, 25);
         Calendar date2 = new GregorianCalendar(2020, Calendar.OCTOBER, 26);
@@ -127,8 +127,8 @@ public class TestDatabase extends AbstractDatabase {
         return testTransactions;
     }
 
-    static public ArrayList<CreditTransaction> getTestCreditTransactions() {
-        ArrayList<CreditTransaction> testTransactions = new ArrayList<>();
+    static public ArrayList<Transaction> getTestCreditTransactions() {
+        ArrayList<Transaction> testTransactions = new ArrayList<>();
 
         Calendar date1 = new GregorianCalendar(2020, Calendar.OCTOBER, 25);
         Calendar date2 = new GregorianCalendar(2020,Calendar.OCTOBER,26);

@@ -10,7 +10,8 @@ import java.util.ArrayList;
 
 public interface TransactionStore {
     void categorizeTransaction(Transaction transaction, String categoryName);
-    ArrayList<BankingTransaction> getBankingTransactions (WhichMonth whichMonth);
-    ArrayList<CreditTransaction> getCreditTransactions (WhichMonth whichMonth);
+    void addTransactions(ArrayList<Transaction> transactions);
+    ArrayList<Transaction> getBankingTransactions (WhichMonth whichMonth);
+    ArrayList<Transaction> getCreditTransactions (WhichMonth whichMonth);
     ArrayList<TransactionSummary> getTransactionSummaries (WhichMonth whichMonth);
 }

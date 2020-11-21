@@ -12,7 +12,7 @@ import java.util.*;
 class CreditTableImplTest {
     private CreditTable creditTable;
     private CreditTableTester tableAutomator;
-    private ArrayList<CreditTransaction> expected;
+    private ArrayList<Transaction> expected;
 
     @BeforeEach
     void setUp() {

@@ -9,6 +9,6 @@ import javax.swing.*;
 
 public interface BankingTable extends TableHighlighter {
     JScrollPane getPane();
-    void display(ArrayList<BankingTransaction> tableContents);
     Maybe<Transaction> getTransaction(int row);
+    void display(ArrayList<Transaction> tableContents);
 }

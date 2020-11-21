@@ -8,7 +8,7 @@ import java.util.*;
 public class BankingTableModelImp extends AbstractTableModel implements TransactionTableModel {
 
     private final String[] columnNames = {"Date", "Amount", "Category", "Description"};
-    private ArrayList<BankingTransaction> tableContents;
+    private ArrayList<Transaction> tableContents;
 
     public BankingTableModelImp() {
         tableContents = new ArrayList<>();
@@ -51,11 +51,11 @@ public class BankingTableModelImp extends AbstractTableModel implements Transact
     }
 
     @Override
-    public ArrayList<BankingTransaction> getTransactions(){
+    public ArrayList<Transaction> getTransactions(){
         return tableContents;
     }
 
-    public void updateTransactions(ArrayList<BankingTransaction> tableContents) {
+    public void updateTransactions(ArrayList<Transaction> tableContents) {
         this.tableContents = tableContents;
         fireTableDataChanged();
     }

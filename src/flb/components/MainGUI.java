@@ -13,25 +13,20 @@ import java.awt.*;
 public class MainGUI {
     private final JFrame frame;
     private final MenuBarImpl menuBar;
-
-    private final CustomComponent monthSelectorComponent;
-    private final CurrentMonthSetter currentMonthSetter;
     private final MonthSelectorImpl monthSelector;
-
     private final BalanceDisplayImpl balanceDisplay;
+
     private final BankingEditorImpl bankingEditor;
     private final CreditEditorImpl creditEditor;
     private final CategoryEditorImpl categoryEditor;
     private final SummaryEditorImpl summaryEditor;
+
     private final JTextField nameFilter;
     private final JButton addButton;
 
     public MainGUI(TransactionStore transactionStore, CategoryStore categoryStore, GoalStore goalStore) {
         this.frame = new JFrame();
-        MonthSelectorImpl monthSelector = new MonthSelectorImpl();
-        this.currentMonthSetter = monthSelector;
-        this.monthSelectorComponent = monthSelector;
-        this.monthSelector = monthSelector;
+        this.monthSelector = new MonthSelectorImpl();
         this.summaryEditor = new SummaryEditorImpl(transactionStore, goalStore, monthSelector, frame);
         this.categoryEditor = new CategoryEditorImpl(categoryStore);
         this.bankingEditor = new BankingEditorImpl(transactionStore, categoryStore, monthSelector, summaryEditor);
@@ -49,10 +44,10 @@ public class MainGUI {
         Border greyBorder = new LineBorder(Color.LIGHT_GRAY);
 
         JPanel northLeftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        northLeftPanel.add(monthSelectorComponent.getPanel());
+        northLeftPanel.add(monthSelector);
 
         JPanel northRightPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        northRightPanel.add(balanceDisplay.getPane());
+        northRightPanel.add(balanceDisplay);
         northRightPanel.add(Box.createRigidArea(new Dimension(34,5)));
 
         JPanel northCategoryPanel = new JPanel();
@@ -128,7 +123,7 @@ public class MainGUI {
 
     public void launch(){
         categoryEditor.refreshAndClearSelection("");
-        currentMonthSetter.setToCurrentMonth();
+        monthSelector.setToCurrentMonth();
         frame.setVisible(true);
     }
 }

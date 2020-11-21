@@ -10,7 +10,8 @@ import javax.swing.*;
 
 public interface CreditTable extends TableHighlighter {
     JScrollPane getPane();
-    void displayAndClearSelection(ArrayList<CreditTransaction> tableContents);
-    void displayAndKeepSelection(ArrayList<CreditTransaction> tableContents);
     Maybe<Transaction> getTransaction(int row);
+    void displayAndClearSelection(ArrayList<Transaction> tableContents);
+    void displayAndKeepSelection(ArrayList<Transaction> tableContents);
+
 }

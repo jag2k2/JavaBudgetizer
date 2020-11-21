@@ -12,9 +12,8 @@ import flb.components.monthselector.listeners.*;
 import flb.components.editors.*;
 import flb.util.*;
 
-public class MonthSelectorImpl implements CustomComponent, MonthChanger, SelectedMonthGetter, SpecificMonthSetter,
+public class MonthSelectorImpl extends JPanel implements MonthChanger, SelectedMonthGetter, SpecificMonthSetter,
         CurrentMonthSetter, MonthChangeObserver {
-    private final JPanel datePane;
     private final MonthSelectorModelImpl monthModel;
     private final ArrayList<MonthChangeObserver> monthChangeObservers;
     private final JButton prev;
@@ -25,7 +24,6 @@ public class MonthSelectorImpl implements CustomComponent, MonthChanger, Selecte
     private final ItemListener userSelectsSpecificMonth;
 
     public MonthSelectorImpl() {
-        this.datePane = new JPanel();
         this.monthChangeObservers = new ArrayList<>();
         this.prev = new JButton("Prev");
         this.month = new JComboBox<>(Months.values());
@@ -37,18 +35,18 @@ public class MonthSelectorImpl implements CustomComponent, MonthChanger, Selecte
         this.monthModel = new MonthSelectorModelImpl();
         this.userSelectsSpecificMonth = new UserSelectsSpecificMonth(this);
 
-        layout();
+        arrange();
     }
 
-    protected void layout(){
+    protected void arrange(){
         yearField.setPreferredSize(new Dimension(50,25));
 
-        datePane.setBorder(new CompoundBorder(new LineBorder(Color.BLACK), new EmptyBorder(5,5,5,5)));
-        datePane.setLayout(new BoxLayout(datePane, BoxLayout.X_AXIS));
-        datePane.add(prev);
-        datePane.add(month);
-        datePane.add(yearField);
-        datePane.add(next);
+        setBorder(new CompoundBorder(new LineBorder(Color.BLACK), new EmptyBorder(5,5,5,5)));
+        setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+        add(prev);
+        add(month);
+        add(yearField);
+        add(next);
 
         prev.setActionCommand("decrement");
         prev.addActionListener(new UserSpinsMonth(this));
@@ -80,11 +78,6 @@ public class MonthSelectorImpl implements CustomComponent, MonthChanger, Selecte
         month.removeItemListener(userSelectsSpecificMonth);
         month.setSelectedIndex(monthModel.getMonth());
         month.addItemListener(userSelectsSpecificMonth);
-    }
-
-    @Override
-    public JPanel getPanel() {
-        return datePane;
     }
 
     @Override

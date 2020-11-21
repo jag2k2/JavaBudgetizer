@@ -18,7 +18,7 @@ class BankingTableModelImpTest {
     @Test
     void getValueAt() {
         int activeRow = 0;
-        BankingTransaction expectedTransaction = TestDatabase.getTestBankingTransactions().get(activeRow);
+        Transaction expectedTransaction = TestDatabase.getTestBankingTransactions().get(activeRow);
 
         String expectedDate = expectedTransaction.getDateString();
         String actualDate = (String)tableModel.getValueAt(activeRow,0);

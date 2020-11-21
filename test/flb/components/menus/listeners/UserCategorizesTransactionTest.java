@@ -49,7 +49,7 @@ class UserCategorizesTransactionTest {
 
         Calendar date = new GregorianCalendar(2020, Calendar.OCTOBER, 25);
         BankingTransaction expected = new BankingTransaction("1", date, "Amazon", -50, "Name2", 1000);
-        BankingTransaction actual = bankingEditor.getTableTester().getTransactions().get(0);
+        Transaction actual = bankingEditor.getTableTester().getTransactions().get(0);
 
         assertEquals(expected, actual);
     }
@@ -64,7 +64,7 @@ class UserCategorizesTransactionTest {
 
         Calendar date = new GregorianCalendar(2020, Calendar.OCTOBER, 25);
         CreditTransaction expected = new CreditTransaction("3589048", date, "Shell", -20, "Name2");
-        CreditTransaction actual = creditEditor.getTableAutomator().getTransactions().get(0);
+        Transaction actual = creditEditor.getTableAutomator().getTransactions().get(0);
 
         assertEquals(expected, actual);
     }

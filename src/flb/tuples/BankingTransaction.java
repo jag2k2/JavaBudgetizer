@@ -14,8 +14,19 @@ public class BankingTransaction extends Transaction{
         return "transactions.id";
     }
 
+    @Override
     public float getBalance() {
         return balance;
+    }
+
+    @Override
+    public String getTypeString(){
+        return "banking";
+    }
+
+    @Override
+    public String getTerribleTemporaryHackyCondition(){
+        return "trans.date = temp.date AND trans.description = temp.description AND trans.amount = temp.amount AND trans.balance = temp.balance";
     }
 
     @Override

@@ -32,6 +32,12 @@ abstract public class Transaction {
                 date.get(Calendar.DAY_OF_MONTH);
     }
 
+    abstract public String getTypeString();
+
+    abstract public float getBalance();
+
+    abstract public String getTerribleTemporaryHackyCondition();
+
     public String getDescription() {
         return description;
     }
@@ -48,9 +54,7 @@ abstract public class Transaction {
 
     @Override
     public String toString() {
-        return (reference + " | " +
-                date.get(Calendar.YEAR) + "-" + date.get(Calendar.MONTH) + "-" + date.get(Calendar.DAY_OF_MONTH) + " | "
-                + description + " | " + amount + " | " + categoryName);
+        return (reference + " | " + getDateString() + " | " + description + " | " + amount + " | " + categoryName);
     }
 
     @Override

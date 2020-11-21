@@ -19,7 +19,7 @@ class CreditTableModelImplTest {
     @Test
     void getValueAt() {
         int activeRow = 0;
-        CreditTransaction expectedTransaction = TestDatabase.getTestCreditTransactions().get(activeRow);
+        Transaction expectedTransaction = TestDatabase.getTestCreditTransactions().get(activeRow);
 
         String expectedDate = expectedTransaction.getDateString();
         String actualDate = (String)tableModel.getValueAt(activeRow,0);

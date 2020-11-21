@@ -15,7 +15,7 @@ class CreditEditorImplTest {
     private TestDatabase database;
     private CreditEditorImpl creditEditor;
     private CreditTableTester tableAutomator;
-    private List<CreditTransaction> expected;
+    private List<Transaction> expected;
     private SpecificMonthSetter monthSetter;
 
     @BeforeEach

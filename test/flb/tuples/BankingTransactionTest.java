@@ -11,7 +11,7 @@ class BankingTransactionTest {
 
     @BeforeEach
     void setup() {
-        this.date = new GregorianCalendar(2020,10,3);
+        this.date = new GregorianCalendar(2020,Calendar.OCTOBER,3);
         this.bankingTransaction = new BankingTransaction("EE6A3",
                 date, "Amazon", 100F,
                 "Misc", 1000F);

@@ -12,7 +12,7 @@ import java.util.*;
 class BankingTableImplTest {
     private BankingTable bankingTable;
     private BankingTableTester tableAutomator;
-    private ArrayList<BankingTransaction> expected;
+    private ArrayList<Transaction> expected;
 
     @BeforeEach
     void setUp() {

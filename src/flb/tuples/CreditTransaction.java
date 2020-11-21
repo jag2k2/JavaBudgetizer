@@ -12,6 +12,21 @@ public class CreditTransaction extends Transaction{
     }
 
     @Override
+    public String getTypeString(){
+        return "credit";
+    }
+
+    @Override
+    public float getBalance(){
+        return -1F;
+    }
+
+    @Override
+    public String getTerribleTemporaryHackyCondition(){
+        return "trans.reference = temp.reference";
+    }
+
+    @Override
     public String toString() {
         return super.toString();
     }

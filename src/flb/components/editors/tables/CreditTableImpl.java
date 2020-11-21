@@ -53,12 +53,12 @@ public class CreditTableImpl implements CreditTable, CreditTableTester {
     }
 
     @Override
-    public void displayAndClearSelection(ArrayList<CreditTransaction> tableContents){
+    public void displayAndClearSelection(ArrayList<Transaction> tableContents){
         tableModel.updateTransactions(tableContents);
     }
 
     @Override
-    public void displayAndKeepSelection(ArrayList<CreditTransaction> tableContents){
+    public void displayAndKeepSelection(ArrayList<Transaction> tableContents){
         int[] selectedRows = table.getSelectionModel().getSelectedIndices();
         tableModel.updateTransactions(tableContents);
     }
@@ -72,7 +72,7 @@ public class CreditTableImpl implements CreditTable, CreditTableTester {
     }
 
     @Override
-    public ArrayList<CreditTransaction> getTransactions() {
+    public ArrayList<Transaction> getTransactions() {
         return tableModel.getTransactions();
     }
 }

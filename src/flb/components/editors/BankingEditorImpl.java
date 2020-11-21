@@ -60,13 +60,13 @@ public class BankingEditorImpl implements BankingEditorTester, TransactionCatego
 
     @Override
     public void update() {
-        ArrayList<BankingTransaction> bankingTransactions = transactionStore.getBankingTransactions(selectedMonthGetter.getSelectedMonth());
+        ArrayList<Transaction> bankingTransactions = transactionStore.getBankingTransactions(selectedMonthGetter.getSelectedMonth());
         bankingTable.display(bankingTransactions);
     }
 
     @Override
     public void updateAndKeepSelection() {
-        ArrayList<BankingTransaction> bankingTransactions = transactionStore.getBankingTransactions(selectedMonthGetter.getSelectedMonth());
+        ArrayList<Transaction> bankingTransactions = transactionStore.getBankingTransactions(selectedMonthGetter.getSelectedMonth());
         bankingTable.display(bankingTransactions);
     }
 

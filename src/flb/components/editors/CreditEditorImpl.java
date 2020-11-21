@@ -54,13 +54,13 @@ public class CreditEditorImpl implements CreditEditorTester, TransactionCategori
 
     @Override
     public void update() {
-        ArrayList<CreditTransaction> creditTransactions = transactionStore.getCreditTransactions(selectedMonthGetter.getSelectedMonth());
+        ArrayList<Transaction> creditTransactions = transactionStore.getCreditTransactions(selectedMonthGetter.getSelectedMonth());
         creditTable.displayAndClearSelection(creditTransactions);
     }
 
     @Override
     public void updateAndKeepSelection() {
-        ArrayList<CreditTransaction> creditTransactions = transactionStore.getCreditTransactions(selectedMonthGetter.getSelectedMonth());
+        ArrayList<Transaction> creditTransactions = transactionStore.getCreditTransactions(selectedMonthGetter.getSelectedMonth());
         creditTable.displayAndClearSelection(creditTransactions);
     }
 

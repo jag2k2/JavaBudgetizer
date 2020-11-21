@@ -7,7 +7,7 @@ import java.util.*;
 
 public class CreditTableModelImpl extends AbstractTableModel implements TransactionTableModel {
     private final String[] columnNames = {"Date", "Amount", "Category", "Description", "Group"};
-    private ArrayList<CreditTransaction> tableContents;
+    private ArrayList<Transaction> tableContents;
 
     public CreditTableModelImpl() {
         tableContents = new ArrayList<>();
@@ -40,13 +40,13 @@ public class CreditTableModelImpl extends AbstractTableModel implements Transact
         return columnNames[column];
     }
 
-    public void updateTransactions(ArrayList<CreditTransaction> tableContents) {
+    public void updateTransactions(ArrayList<Transaction> tableContents) {
         this.tableContents = tableContents;
         fireTableDataChanged();
     }
 
     @Override
-    public ArrayList<CreditTransaction> getTransactions(){
+    public ArrayList<Transaction> getTransactions(){
         return tableContents;
     }
 

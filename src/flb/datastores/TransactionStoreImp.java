@@ -29,7 +29,79 @@ public class TransactionStoreImp implements TransactionStore {
         dataStore.executeUpdate(update);
     }
 
-    public ArrayList<BankingTransaction> getBankingTransactions (WhichMonth whichMonth) {
+    @Override
+    public void addTransactions(ArrayList<Transaction> transactions) {
+        String update = "CREATE TEMPORARY TABLE transactions_temp (" +
+                "date TIMESTAMP, " +
+                "type VARCHAR(255), " +
+                "description VARCHAR(255), " +
+                "amount FLOAT(9,2), " +
+                "category_id INT(11), " +
+                "balance FLOAT(9,2), " +
+                "reference VARCHAR(255))";
+
+        dataStore.executeUpdate(update);
+
+        StringBuilder multiValues = new StringBuilder();
+        int count = 0;
+        for (Transaction transaction : transactions){
+            String values = "('$date', '$type', '$desc', '$amt', '$cat_id', '$bal', '$ref')";
+            values = values.replace("$date", transaction.getDateString());
+            values = values.replace("$type", transaction.getTypeString());
+            values = values.replace("$desc", transaction.getDescription());
+            values = values.replace("$amt", Float.toString(transaction.getAmount()));
+            values = values.replace("$cat_id", "-1");
+            values = values.replace("$bal", Float.toString(transaction.getBalance()));
+            values = values.replace("$ref", transaction.getReference());
+            multiValues.append(values);
+
+            count++;
+            if (count < transactions.size())
+                multiValues.append(", ");
+        }
+
+        update = "INSERT INTO transactions_temp(date, type, description, amount, category_id, balance, reference) " +
+                "VALUES $multiValues";
+        update = update.replace("$multiValues", multiValues);
+
+        dataStore.executeUpdate(update);
+
+        update = "INSERT INTO transactions(date, type, description, amount, category_id, balance, reference) " +
+                "SELECT temp.date, temp.type, temp.description, temp.amount, temp.category_id, temp.balance, temp.reference " +
+                "FROM transactions_temp temp " +
+                "WHERE NOT EXISTS (" +
+                "SELECT 1 FROM transactions trans " +
+                "WHERE $cond)";
+        update = update.replace("$cond", transactions.get(0).getTerribleTemporaryHackyCondition());
+
+        dataStore.executeUpdate(update);
+
+        update = "DROP TABLE transactions_temp";
+
+        dataStore.executeUpdate(update);
+    }
+
+    public ArrayList<Transaction> getBankingTransactions (WhichMonth whichMonth) {
+        String query = getTransactionQueryTemplate(whichMonth);
+        query = query.replace("$uniquifier", "transactions.id");
+        query = query.replace("$type", "banking");
+
+        ResultSet results = dataStore.executeQuery(query);
+
+        return castResultsToBankingTransactions(results);
+    }
+
+    public ArrayList<Transaction> getCreditTransactions (WhichMonth whichMonth) {
+        String query = getTransactionQueryTemplate(whichMonth);
+        query = query.replace("$uniquifier", "transactions.reference");
+        query = query.replace("$type", "credit");
+
+        ResultSet results = dataStore.executeQuery(query);
+
+        return castResultsToCreditTransactions(results);
+    }
+
+    private String getTransactionQueryTemplate(WhichMonth whichMonth){
         String query = "SELECT $uniquifier, " +
                 "transactions.date, " +
                 "transactions.amount, " +
@@ -41,20 +113,12 @@ public class TransactionStoreImp implements TransactionStore {
                 "LEFT JOIN categories ON transactions.category_id = categories.id WHERE " +
                 "transactions.date LIKE '$yrmo-%' AND transactions.type = '$type' " +
                 "ORDER BY transactions.date ASC, transactions.id ASC";
-        String uniquifier = "transactions.id";
-        String dateString = whichMonth.toSQLString();
-        String type = "banking";
-        query = query.replace("$uniquifier", uniquifier);
-        query = query.replace("$yrmo", dateString);
-        query = query.replace("$type", type);
-
-        ResultSet results = dataStore.executeQuery(query);
-
-        return castResultsToBankingTransactions(results);
+        query = query.replace("$yrmo", whichMonth.toSQLString());
+        return query;
     }
 
-    private ArrayList<BankingTransaction> castResultsToBankingTransactions(ResultSet results) {
-        ArrayList<BankingTransaction> bankingTransactions = new ArrayList<>();
+    private ArrayList<Transaction> castResultsToBankingTransactions(ResultSet results) {
+        ArrayList<Transaction> bankingTransactions = new ArrayList<>();
         try {
             while (results.next()) {
                 Date sqlDate = results.getDate("transactions.date");
@@ -73,32 +137,8 @@ public class TransactionStoreImp implements TransactionStore {
         return bankingTransactions;
     }
 
-    public ArrayList<CreditTransaction> getCreditTransactions (WhichMonth whichMonth) {
-        String query = "SELECT $uniquifier, " +
-                "transactions.date, " +
-                "transactions.amount, " +
-                "transactions.description," +
-                "categories.name, " +
-                "transactions.reference, " +
-                "transactions.balance " +
-                "FROM transactions " +
-                "LEFT JOIN categories ON transactions.category_id = categories.id WHERE " +
-                "transactions.date LIKE '$yrmo-%' AND transactions.type = '$type' " +
-                "ORDER BY transactions.date ASC, transactions.id ASC";
-        String uniquifier = "transactions.reference";
-        String dateString = whichMonth.toSQLString();
-        String type = "credit";
-        query = query.replace("$uniquifier", uniquifier);
-        query = query.replace("$yrmo", dateString);
-        query = query.replace("$type", type);
-
-        ResultSet results = dataStore.executeQuery(query);
-
-        return castResultsToCreditTransactions(results);
-    }
-
-    private ArrayList<CreditTransaction> castResultsToCreditTransactions(ResultSet results) {
-        ArrayList<CreditTransaction> creditTransactions = new ArrayList<>();
+    private ArrayList<Transaction> castResultsToCreditTransactions(ResultSet results) {
+        ArrayList<Transaction> creditTransactions = new ArrayList<>();
         try {
             while (results.next()) {
                 Date sqlDate = results.getDate("transactions.date");
