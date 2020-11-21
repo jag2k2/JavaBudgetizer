@@ -12,8 +12,9 @@ import flb.components.monthselector.listeners.*;
 import flb.components.editors.*;
 import flb.util.*;
 
-public class MonthSelectorImpl extends JPanel implements MonthChanger, SelectedMonthGetter, SpecificMonthSetter,
+public class MonthSelectorImpl implements MonthChanger, SelectedMonthGetter, SpecificMonthSetter,
         CurrentMonthSetter, MonthChangeObserver {
+    private final JPanel panel;
     private final MonthSelectorModelImpl monthModel;
     private final ArrayList<MonthChangeObserver> monthChangeObservers;
     private final JButton prev;
@@ -24,6 +25,7 @@ public class MonthSelectorImpl extends JPanel implements MonthChanger, SelectedM
     private final ItemListener userSelectsSpecificMonth;
 
     public MonthSelectorImpl() {
+        this.panel = new JPanel();
         this.monthChangeObservers = new ArrayList<>();
         this.prev = new JButton("Prev");
         this.month = new JComboBox<>(Months.values());
@@ -41,12 +43,12 @@ public class MonthSelectorImpl extends JPanel implements MonthChanger, SelectedM
     protected void arrange(){
         yearField.setPreferredSize(new Dimension(50,25));
 
-        setBorder(new CompoundBorder(new LineBorder(Color.BLACK), new EmptyBorder(5,5,5,5)));
-        setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-        add(prev);
-        add(month);
-        add(yearField);
-        add(next);
+        panel.setBorder(new CompoundBorder(new LineBorder(Color.BLACK), new EmptyBorder(5,5,5,5)));
+        panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+        panel.add(prev);
+        panel.add(month);
+        panel.add(yearField);
+        panel.add(next);
 
         prev.setActionCommand("decrement");
         prev.addActionListener(new UserSpinsMonth(this));
@@ -58,6 +60,10 @@ public class MonthSelectorImpl extends JPanel implements MonthChanger, SelectedM
         yearField.addActionListener(new UserSelectsSpecificYear(this));
 
         addMonthChangeObserver(this);
+    }
+
+    public JPanel getPanel(){
+        return panel;
     }
 
     @Override

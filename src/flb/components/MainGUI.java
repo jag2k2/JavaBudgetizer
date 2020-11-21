@@ -44,10 +44,10 @@ public class MainGUI {
         Border greyBorder = new LineBorder(Color.LIGHT_GRAY);
 
         JPanel northLeftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        northLeftPanel.add(monthSelector);
+        northLeftPanel.add(monthSelector.getPanel());
 
         JPanel northRightPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        northRightPanel.add(balanceDisplay);
+        northRightPanel.add(balanceDisplay.getPanel());
         northRightPanel.add(Box.createRigidArea(new Dimension(34,5)));
 
         JPanel northCategoryPanel = new JPanel();

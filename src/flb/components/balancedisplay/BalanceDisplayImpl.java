@@ -8,31 +8,36 @@ import flb.components.editors.*;
 import flb.components.monthselector.*;
 import flb.datastores.*;
 
-public class BalanceDisplayImpl extends JPanel implements MonthChangeObserver, StoreChangeObserver {
+public class BalanceDisplayImpl implements MonthChangeObserver, StoreChangeObserver {
+    private final JPanel panel;
     private final JFormattedTextField balance;
     private final CategoryStore categoryStore;
     private final SelectedMonthGetter selectedMonthGetter;
 
     public BalanceDisplayImpl(CategoryStore categoryStore, SelectedMonthGetter selectedMonthGetter){
+        this.panel = new JPanel();
         this.categoryStore = categoryStore;
         this.selectedMonthGetter = selectedMonthGetter;
-        NumberFormat balanceFormat = NumberFormat.getCurrencyInstance();
-        this.balance = new JFormattedTextField(balanceFormat);
+        this.balance = new JFormattedTextField(NumberFormat.getCurrencyInstance());
 
-        arrange();
+        layout();
     }
 
-    protected void arrange() {
+    protected void layout() {
         JLabel balanceLabel = new JLabel("Balance");
         Border blackBorder = new LineBorder(Color.BLACK);
         Border margin = BorderFactory.createEmptyBorder(5,5,5,5);
-        setBorder(new CompoundBorder(blackBorder, margin));
-        setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-        add(balanceLabel);
+        panel.setBorder(new CompoundBorder(blackBorder, margin));
+        panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+        panel.add(balanceLabel);
         balance.setPreferredSize(new Dimension(100,28));
         balance.setEditable(false);
         balance.setHorizontalAlignment(SwingConstants.RIGHT);
-        add(balance);
+        panel.add(balance);
+    }
+
+    public JPanel getPanel(){
+        return panel;
     }
 
     @Override
