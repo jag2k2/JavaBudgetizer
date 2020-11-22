@@ -1,12 +1,8 @@
 package flb.tuples;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-
 import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.*;
+import java.util.*;
 
 class CreditTransactionTest {
     private CreditTransaction creditTransaction;
@@ -14,7 +10,7 @@ class CreditTransactionTest {
 
     @BeforeEach
     void setup() {
-        this.date = new GregorianCalendar(2020,10,3);
+        this.date = new GregorianCalendar(2020,Calendar.NOVEMBER,3);
         this.creditTransaction = new CreditTransaction("EE6A3",
                 date, "Amazon", 100F, "Misc");
     }
@@ -22,7 +18,7 @@ class CreditTransactionTest {
     @Test
     void testToString() {
         String actual = creditTransaction.toString();
-        String expected = "EE6A3 | 2020-10-3 | Amazon | 100.0 | Misc";
+        String expected = "EE6A3 | 2020-11-3 | Amazon | 100.0 | Misc";
         assertEquals(expected, actual);
     }
 

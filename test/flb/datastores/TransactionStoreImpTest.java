@@ -1,11 +1,10 @@
 package flb.datastores;
 
+import static org.junit.jupiter.api.Assertions.*;
 import flb.util.WhichMonth;
 import flb.tuples.*;
 import org.junit.jupiter.api.*;
-
 import java.util.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 class TransactionStoreImpTest {
     private TransactionStore transactionStore;
@@ -65,13 +64,16 @@ class TransactionStoreImpTest {
 
     @Test
     void addBankingTransactions() {
+        ArrayList<Transaction> expected = TestDatabase.getTestBankingTransactions();
         ArrayList<Transaction> transactionsToAppend = new ArrayList<>();
+
+        transactionStore.addTransactions(transactionsToAppend);
+        assertEquals(expected, transactionStore.getBankingTransactions(whichMonth));
+
         Transaction newTransaction1 = new BankingTransaction("7",
                 new GregorianCalendar(2020, Calendar.OCTOBER, 28),
                 "Taco Bell", 14.53F, "", 100F);
         transactionsToAppend.add(newTransaction1);
-
-        ArrayList<Transaction> expected = TestDatabase.getTestBankingTransactions();
         expected.add(newTransaction1);
 
         transactionStore.addTransactions(transactionsToAppend);
@@ -83,13 +85,16 @@ class TransactionStoreImpTest {
 
     @Test
     void addCreditTransactions() {
+        ArrayList<Transaction> expected = TestDatabase.getTestCreditTransactions();
         ArrayList<Transaction> transactionsToAppend = new ArrayList<>();
+
+        transactionStore.addTransactions(transactionsToAppend);
+        assertEquals(expected, transactionStore.getCreditTransactions(whichMonth));
+
         Transaction newTransaction1 = new CreditTransaction("202010281",
                 new GregorianCalendar(2020, Calendar.OCTOBER, 28),
                 "Taco Bell", 14.53F, "");
         transactionsToAppend.add(newTransaction1);
-
-        ArrayList<Transaction> expected = TestDatabase.getTestCreditTransactions();
         expected.add(newTransaction1);
 
         transactionStore.addTransactions(transactionsToAppend);

@@ -5,6 +5,7 @@ import flb.tuples.*;
 import java.sql.*;
 import java.time.*;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -30,55 +31,53 @@ public class TransactionStoreImp implements TransactionStore {
     }
 
     @Override
-    public void addTransactions(ArrayList<Transaction> transactions) {
-        String update = "CREATE TEMPORARY TABLE transactions_temp (" +
-                "date TIMESTAMP, " +
-                "type VARCHAR(255), " +
-                "description VARCHAR(255), " +
-                "amount FLOAT(9,2), " +
-                "category_id INT(11), " +
-                "balance FLOAT(9,2), " +
-                "reference VARCHAR(255))";
+    public void addTransactions(List<Transaction> transactions) {
+        if(transactions.size() > 0){
+            String update = "CREATE TEMPORARY TABLE transactions_temp (" +
+                    "date TIMESTAMP, " +
+                    "type VARCHAR(255), " +
+                    "description VARCHAR(255), " +
+                    "amount FLOAT(9,2), " +
+                    "category_id INT(11), " +
+                    "balance FLOAT(9,2), " +
+                    "reference VARCHAR(255))";
+            dataStore.executeUpdate(update);
 
-        dataStore.executeUpdate(update);
+            StringBuilder multiValues = new StringBuilder();
+            int count = 0;
+            for (Transaction transaction : transactions){
+                String values = "('$date', '$type', '$desc', '$amt', '$cat_id', '$bal', '$ref')";
+                values = values.replace("$date", transaction.getDateString());
+                values = values.replace("$type", transaction.getTypeString());
+                values = values.replace("$desc", transaction.getDescription());
+                values = values.replace("$amt", Float.toString(transaction.getAmount()));
+                values = values.replace("$cat_id", "-1");
+                values = values.replace("$bal", Float.toString(transaction.getBalance()));
+                values = values.replace("$ref", transaction.getReference());
+                multiValues.append(values);
 
-        StringBuilder multiValues = new StringBuilder();
-        int count = 0;
-        for (Transaction transaction : transactions){
-            String values = "('$date', '$type', '$desc', '$amt', '$cat_id', '$bal', '$ref')";
-            values = values.replace("$date", transaction.getDateString());
-            values = values.replace("$type", transaction.getTypeString());
-            values = values.replace("$desc", transaction.getDescription());
-            values = values.replace("$amt", Float.toString(transaction.getAmount()));
-            values = values.replace("$cat_id", "-1");
-            values = values.replace("$bal", Float.toString(transaction.getBalance()));
-            values = values.replace("$ref", transaction.getReference());
-            multiValues.append(values);
+                count++;
+                if (count < transactions.size())
+                    multiValues.append(", ");
+            }
 
-            count++;
-            if (count < transactions.size())
-                multiValues.append(", ");
+            update = "INSERT INTO transactions_temp(date, type, description, amount, category_id, balance, reference) " +
+                    "VALUES $multiValues";
+            update = update.replace("$multiValues", multiValues);
+            dataStore.executeUpdate(update);
+
+            update = "INSERT INTO transactions(date, type, description, amount, category_id, balance, reference) " +
+                    "SELECT temp.date, temp.type, temp.description, temp.amount, temp.category_id, temp.balance, temp.reference " +
+                    "FROM transactions_temp temp " +
+                    "WHERE NOT EXISTS (" +
+                    "SELECT 1 FROM transactions trans " +
+                    "WHERE $cond)";
+            update = update.replace("$cond", transactions.get(0).getTerribleTemporaryHackyCondition());
+            dataStore.executeUpdate(update);
+
+            update = "DROP TABLE transactions_temp";
+            dataStore.executeUpdate(update);
         }
-
-        update = "INSERT INTO transactions_temp(date, type, description, amount, category_id, balance, reference) " +
-                "VALUES $multiValues";
-        update = update.replace("$multiValues", multiValues);
-
-        dataStore.executeUpdate(update);
-
-        update = "INSERT INTO transactions(date, type, description, amount, category_id, balance, reference) " +
-                "SELECT temp.date, temp.type, temp.description, temp.amount, temp.category_id, temp.balance, temp.reference " +
-                "FROM transactions_temp temp " +
-                "WHERE NOT EXISTS (" +
-                "SELECT 1 FROM transactions trans " +
-                "WHERE $cond)";
-        update = update.replace("$cond", transactions.get(0).getTerribleTemporaryHackyCondition());
-
-        dataStore.executeUpdate(update);
-
-        update = "DROP TABLE transactions_temp";
-
-        dataStore.executeUpdate(update);
     }
 
     public ArrayList<Transaction> getBankingTransactions (WhichMonth whichMonth) {

@@ -1,0 +1,79 @@
+OFXHEADER:100
+DATA:OFXSGML
+VERSION:102
+SECURITY:NONE
+ENCODING:USASCII
+CHARSET:1252
+COMPRESSION:NONE
+OLDFILEUID:NONE
+NEWFILEUID:NONE
+
+<OFX>
+    <SIGNONMSGSRSV1>
+        <SONRS>
+            <STATUS>
+                <CODE>0
+                <SEVERITY>INFO
+            </STATUS>
+            <DTSERVER>20201120151806[0:UTC]
+            <LANGUAGE>ENG
+            <FI>
+                <ORG>Bank of America
+                <FID>5959
+            </FI>
+            <INTU.BID>6526
+        </SONRS>
+    </SIGNONMSGSRSV1>
+    <CREDITCARDMSGSRSV1>
+        <CCSTMTTRNRS>
+            <TRNUID>20201120151806[0:UTC]
+            <STATUS>
+                <CODE>0
+                <SEVERITY>INFO
+            </STATUS>
+            <CCSTMTRS>
+                <CURDEF>USD
+                <CCACCTFROM>
+                    <ACCTID>4400668628135222
+                </CCACCTFROM>
+                <BANKTRANLIST>
+                    <DTSTART>20201109170000[0:UTC]
+                    <DTEND>20201119170000[0:UTC]
+                    <STMTTRN>
+                        <TRNTYPE>PAYMENT
+                        <DTPOSTED>20201109170000[0:UTC]
+                        <TRNAMT>-21.43
+                        <FITID>202011091
+                        <CORRECTFITID>202011091
+                        <CORRECTACTION>REPLACE
+                        <NAME>EXXONMOBIL 47946819 AUSTIN TX
+                    </STMTTRN>
+                    <STMTTRN>
+                        <TRNTYPE>PAYMENT
+                        <DTPOSTED>20201109170000[0:UTC]
+                        <TRNAMT>-24.99
+                        <FITID>202011092
+                        <CORRECTFITID>202011092
+                        <CORRECTACTION>REPLACE
+                        <NAME>AMAZON.COM*2813C0KV1 AMZNAMZN.CO
+                        <MEMO>AMAZON.COM*2813C0KV1 AMZNAMZN.CO
+                    </STMTTRN>
+                    <STMTTRN>
+                        <TRNTYPE>PAYMENT
+                        <DTPOSTED>20201109170000[0:UTC]
+                        <TRNAMT>-74.28
+                        <FITID>202011093
+                        <CORRECTFITID>202011093
+                        <CORRECTACTION>REPLACE
+                        <NAME>MANDOLAS ITALIAN KITCHEN CEDAR P
+                        <MEMO>MANDOLAS ITALIAN KITCHEN CEDAR P
+                    </STMTTRN>
+                </BANKTRANLIST>
+                <LEDGERBAL>
+                    <BALAMT>-533.76
+                    <DTASOF>20201120151806[0:UTC]
+                </LEDGERBAL>
+            </CCSTMTRS>
+        </CCSTMTTRNRS>
+    </CREDITCARDMSGSRSV1>
+</OFX>

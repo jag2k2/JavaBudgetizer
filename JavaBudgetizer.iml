@@ -34,6 +34,6 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="library" name="org.swinglabs.swingx:swingx-all:1.6.5-1" level="project" />
+    <orderEntry type="library" name="com.webcohesion.ofx4j:ofx4j:1.27" level="project" />
   </component>
 </module>
