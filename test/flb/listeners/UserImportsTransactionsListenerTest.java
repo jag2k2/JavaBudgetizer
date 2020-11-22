@@ -19,7 +19,7 @@ class UserImportsTransactionsListenerTest {
         database = new TestDatabase();
         database.connect();
         TransactionStore transactionStore = new TransactionStoreImp(database);
-        TransactionImporter transactionImporter = new QfxImporter(new JFrame(), new JFileChooserMock(OfxParser.AccountType.CHECKING));
+        TransactionImporter transactionImporter = new QfxImporter(new JFileChooserMock(OfxParser.AccountType.CHECKING), new JFrame());
 
         testButton.addActionListener(new UserImportsTransactionsListener(transactionStore, transactionImporter));
     }

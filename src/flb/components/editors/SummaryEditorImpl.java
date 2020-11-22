@@ -10,13 +10,12 @@ import flb.util.*;
 import java.util.*;
 import javax.swing.*;
 
-public class SummaryEditorImpl implements MonthGoalEditor, MonthGoalClearer, DefaultGoalMaker, SummarySelector,
-        MonthChangeObserver, StoreChangeObserver, SummaryEditorTester{
+public class SummaryEditorImpl implements MonthGoalEditor, MonthGoalClearer, SummarySelector, MonthChangeObserver,
+        StoreChangeObserver, SummaryEditorTester{
     private final GoalStore goalStore;
     private final TransactionStore transactionStore;
     private final SummaryTable summaryTable;
     private final SummaryTableTester tableTester;
-    private final JFrame frame;
     private final SelectedMonthGetter selectedMonthGetter;
 
     public SummaryEditorImpl(TransactionStore transactionStore, GoalStore goalStore, SelectedMonthGetter selectedMonthGetter, JFrame frame){
@@ -26,7 +25,6 @@ public class SummaryEditorImpl implements MonthGoalEditor, MonthGoalClearer, Def
         SummaryTableImp goalTable = new SummaryTableImp();
         this.tableTester = goalTable;
         this.summaryTable = goalTable;
-        this.frame = frame;
 
         addListeners();
     }
@@ -42,25 +40,6 @@ public class SummaryEditorImpl implements MonthGoalEditor, MonthGoalClearer, Def
 
     public void addGoalSelectedListener(TableHighlighter tableHighlighter){
         summaryTable.addGoalSelectedObserver(tableHighlighter);
-    }
-
-    @Override
-    public void createDefaultGoals() {
-        int goalCount = goalStore.countGoals(selectedMonthGetter.getSelectedMonth());
-        if (goalCount > 0) {
-            int confirmation = getConfirmationFromDialog(goalCount, frame);
-            if(confirmation == JOptionPane.YES_OPTION) {
-                goalStore.createDefaultGoals(selectedMonthGetter.getSelectedMonth());
-            }
-        }
-        else {
-            goalStore.createDefaultGoals(selectedMonthGetter.getSelectedMonth());
-        }
-    }
-
-    protected int getConfirmationFromDialog(int goalCount, JFrame frame) {
-        return JOptionPane.showConfirmDialog(frame, "This operation will delete " + goalCount + " existing goals " +
-                "for the month.  Are you sure you want to continue?", "Confirm Operation", JOptionPane.YES_NO_OPTION);
     }
 
     @Override

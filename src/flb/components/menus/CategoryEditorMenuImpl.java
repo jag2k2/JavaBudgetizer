@@ -10,14 +10,12 @@ public class CategoryEditorMenuImpl implements MenuDisplayer {
     private final CategoryDeleter categoryDeleter;
     private final JPopupMenu popupMenu;
     private final JTextField nameFilter;
-    private final JFrame frame;
 
-    public CategoryEditorMenuImpl(CategoryEditorImpl categoryEditor, JTextField nameFilter, JFrame frame){
+    public CategoryEditorMenuImpl(CategoryEditorImpl categoryEditor, JTextField nameFilter){
         this.popupMenu = new JPopupMenu();
         this.categoryClearer = categoryEditor;
         this.categoryDeleter = categoryEditor;
         this.nameFilter = nameFilter;
-        this.frame = frame;
     }
 
     @Override
@@ -36,7 +34,7 @@ public class CategoryEditorMenuImpl implements MenuDisplayer {
         popupMenu.removeAll();
         if(activeColumn == 0) {
             JMenuItem deleteCategory = new JMenuItem("Delete Category");
-            deleteCategory.addActionListener(new UserDeletesCategoryListener(categoryDeleter, nameFilter, frame));
+            deleteCategory.addActionListener(new UserDeletesCategoryListener(categoryDeleter, nameFilter, popupMenu));
             deleteCategory.setActionCommand(Integer.toString(activeRow));
             popupMenu.add(deleteCategory);
         }

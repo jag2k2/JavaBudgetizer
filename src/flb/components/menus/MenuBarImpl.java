@@ -1,6 +1,5 @@
 package flb.components.menus;
 
-import flb.components.editors.DefaultGoalMaker;
 import flb.components.monthselector.SelectedMonthGetter;
 import flb.datastores.GoalStore;
 import flb.datastores.TransactionStore;
@@ -13,12 +12,14 @@ import javax.swing.*;
 public class MenuBarImpl {
     private final JMenuBar menuBar;
     private final TransactionStore transactionStore;
-    private final DefaultGoalMaker goalMaker;
+    private final GoalStore goalStore;
+    private final SelectedMonthGetter selectedMonthGetter;
 
-    public MenuBarImpl(TransactionStore transactionStore, DefaultGoalMaker goalMaker) {
+    public MenuBarImpl(TransactionStore transactionStore, GoalStore goalStore, SelectedMonthGetter selectedMonthGetter) {
         this.menuBar = new JMenuBar();
-        this.goalMaker = goalMaker;
+        this.goalStore = goalStore;
         this.transactionStore = transactionStore;
+        this.selectedMonthGetter = selectedMonthGetter;
 
         layout();
     }
@@ -27,7 +28,7 @@ public class MenuBarImpl {
         JMenu fileMenu = new JMenu("File");
         JMenuItem importMenuItem = new JMenuItem("Import Transactions");
         JFileChooser fileChooser = new JFileChooser();
-        QfxImporter qfxImporter = new QfxImporter(menuBar, fileChooser);
+        QfxImporter qfxImporter = new QfxImporter(fileChooser, menuBar);
         //importMenuItem.addActionListener(new UserImportsTransactionsListener(transactionStore, qfxImporter));
         JMenuItem exitMenuItem = new JMenuItem("Exit");
         fileMenu.add(importMenuItem);
@@ -35,7 +36,7 @@ public class MenuBarImpl {
 
         JMenu budgetMenu = new JMenu("Budget");
         JMenuItem defaultGoalsMenuItem = new JMenuItem("Create Default Goals");
-        defaultGoalsMenuItem.addActionListener(new UserCreatesDefaultGoals(goalMaker));
+        defaultGoalsMenuItem.addActionListener(new UserCreatesDefaultGoals(goalStore, selectedMonthGetter, menuBar));
         budgetMenu.add(defaultGoalsMenuItem);
 
         menuBar.add(fileMenu);

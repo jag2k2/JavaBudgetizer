@@ -17,7 +17,7 @@ public class QfxImporter implements TransactionImporter {
     private final JFileChooser fileChooser;
     private final Component parentComponent;
 
-    public QfxImporter(Component parentComponent, JFileChooser fileChooser) {
+    public QfxImporter(JFileChooser fileChooser, Component parentComponent) {
         this.parentComponent = parentComponent;
         this.fileChooser = fileChooser;
 

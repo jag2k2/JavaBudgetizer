@@ -20,7 +20,7 @@ public class QfxImporterTest {
     public void fileDebitChooserTest() {
         JFrame frame = new JFrame();
         JFileChooser fileChooser = new JFileChooserMock(OfxParser.AccountType.CHECKING);
-        QfxImporter qfxImporter = new QfxImporter(frame, fileChooser);
+        QfxImporter qfxImporter = new QfxImporter(fileChooser, frame);
 
         expected = ImportingTransactions.getDebitTransactions();
 
@@ -31,7 +31,7 @@ public class QfxImporterTest {
     public void fileCreditChooserTest() {
         JFrame frame = new JFrame();
         JFileChooser fileChooser = new JFileChooserMock(OfxParser.AccountType.CREDIT);
-        QfxImporter qfxImporter = new QfxImporter(frame, fileChooser);
+        QfxImporter qfxImporter = new QfxImporter(fileChooser, frame);
 
         expected = ImportingTransactions.getCreditTransactions();
 

@@ -1,7 +1,7 @@
 package flb.listeners;
 
 import flb.components.editors.CategoryDeleter;
-
+import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
@@ -9,18 +9,18 @@ import javax.swing.*;
 public class UserDeletesCategoryListener implements ActionListener {
     private final CategoryDeleter categoryDeleter;
     private final JTextField nameFilter;
-    private final JFrame frame;
+    private final Component component;
 
-    public UserDeletesCategoryListener(CategoryDeleter categoryDeleter, JTextField nameFilter, JFrame frame){
+    public UserDeletesCategoryListener(CategoryDeleter categoryDeleter, JTextField nameFilter, Component component){
         this.categoryDeleter = categoryDeleter;
         this.nameFilter = nameFilter;
-        this.frame = frame;
+        this.component = component;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         int activeRow = Integer.parseInt(e.getActionCommand());
-        categoryDeleter.userDeleteCategory(activeRow, frame);
+        categoryDeleter.userDeleteCategory(activeRow, component);
         categoryDeleter.refreshAndClearSelection(nameFilter.getText());
     }
 }

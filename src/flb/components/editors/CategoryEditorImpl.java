@@ -2,6 +2,7 @@ package flb.components.editors;
 
 import javax.swing.*;
 import java.util.*;
+import java.awt.*;
 import flb.listeners.*;
 import flb.components.menus.CategoryEditorMenuImpl;
 import flb.datastores.CategoryStore;
@@ -26,7 +27,7 @@ public class CategoryEditorImpl implements CategoryAdder, CategoryClearer, Categ
         categoryTable.addCategoryRenameListener(new UserRenamesCategoryListener(this, nameFilter));
         categoryTable.addGoalEditListener(new UserEditsDefaultGoalListener(this, nameFilter));
         categoryTable.addExcludesEditListener(new UserEditsExcludesListener(this, nameFilter));
-        categoryTable.addEditorMenu(new CategoryEditorMenuImpl(this, nameFilter, frame));
+        categoryTable.addEditorMenu(new CategoryEditorMenuImpl(this, nameFilter));
     }
 
     public JScrollPane getPane() {
@@ -51,33 +52,33 @@ public class CategoryEditorImpl implements CategoryAdder, CategoryClearer, Categ
     }
 
     @Override
-    public void userDeleteCategory(int row, JFrame frame) {
+    public void userDeleteCategory(int row, Component component) {
         for (Category selectedCategory : categoryTable.getCategory(row)) {
             String categoryNameToDelete = selectedCategory.getName();
-            int confirmation = getConfirmationFromDialog(categoryNameToDelete, frame);
+            int confirmation = getConfirmationFromDialog(categoryNameToDelete, component);
             if (confirmation == JOptionPane.YES_OPTION) {
                 int transactionCount = categoryStore.getTransactionCountOfCategory(categoryNameToDelete);
                 if (transactionCount == 0){
                     categoryStore.deleteCategory(categoryNameToDelete);
                 }
                 else {
-                    notifyUserWhyWontDelete(categoryNameToDelete, transactionCount, frame);
+                    notifyUserWhyWontDelete(categoryNameToDelete, transactionCount, component);
                 }
             }
         }
     }
 
-    protected int getConfirmationFromDialog(String categoryNameToDelete, JFrame frame) {
+    protected int getConfirmationFromDialog(String categoryNameToDelete, Component component) {
         return JOptionPane.showConfirmDialog(
-                frame, "Are you sure you want to delete " + categoryNameToDelete + "?",
+                component, "Are you sure you want to delete " + categoryNameToDelete + "?",
                 "Confirm Delete", JOptionPane.YES_NO_OPTION);
     }
 
-    protected void notifyUserWhyWontDelete(String categoryNameToDelete, int transactionCount, JFrame frame) {
+    protected void notifyUserWhyWontDelete(String categoryNameToDelete, int transactionCount, Component component) {
         String message = "Can not delete '$Name'.  There are $count transactions that have been assigned that category.";
         message = message.replace("$Name", categoryNameToDelete);
         message = message.replace("$count", Integer.toString(transactionCount));
-        JOptionPane.showMessageDialog(frame, message, "Can Not Delete", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(component, message, "Can Not Delete", JOptionPane.ERROR_MESSAGE);
     }
 
     @Override

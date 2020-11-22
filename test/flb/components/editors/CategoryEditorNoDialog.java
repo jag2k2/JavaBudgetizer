@@ -2,6 +2,7 @@ package flb.components.editors;
 
 import flb.datastores.CategoryStore;
 import javax.swing.*;
+import java.awt.*;
 
 public class CategoryEditorNoDialog extends CategoryEditorImpl {
     private final boolean alwaysConfirm;
@@ -12,7 +13,7 @@ public class CategoryEditorNoDialog extends CategoryEditorImpl {
     }
 
     @Override
-    protected int getConfirmationFromDialog(String categoryNameToDelete, JFrame frame){
+    protected int getConfirmationFromDialog(String categoryNameToDelete, Component component){
         if(alwaysConfirm) {
             return JOptionPane.YES_OPTION;
         }
@@ -22,5 +23,5 @@ public class CategoryEditorNoDialog extends CategoryEditorImpl {
     }
 
     @Override
-    protected void notifyUserWhyWontDelete(String categoryNameToDelete, int transactionCount, JFrame frame){}
+    protected void notifyUserWhyWontDelete(String categoryNameToDelete, int transactionCount, Component component){}
 }

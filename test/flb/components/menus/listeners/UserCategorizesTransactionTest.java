@@ -1,7 +1,6 @@
 package flb.components.menus.listeners;
 
 import static org.junit.jupiter.api.Assertions.*;
-
 import flb.components.editors.mock.SummarySelectorMock;
 import flb.databases.TestDatabase;
 import flb.listeners.UserCategorizesTransaction;

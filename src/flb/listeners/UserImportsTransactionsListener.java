@@ -4,7 +4,6 @@ import flb.datastores.TransactionStore;
 import flb.importers.TransactionImporter;
 import flb.tuples.Transaction;
 import java.util.List;
-
 import java.awt.event.*;
 
 public class UserImportsTransactionsListener implements ActionListener {

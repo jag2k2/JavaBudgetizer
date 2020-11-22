@@ -1,7 +1,7 @@
 package flb.components.editors;
 
-import javax.swing.*;
+import java.awt.*;
 
 public interface CategoryDeleter extends CategoryListChangeRefresher {
-    void userDeleteCategory(int row, JFrame frame);
+    void userDeleteCategory(int row, Component component);
 }
