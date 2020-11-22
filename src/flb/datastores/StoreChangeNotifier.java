@@ -1,8 +1,8 @@
-package flb.components;
+package flb.datastores;
 
 import flb.components.editors.StoreChangeObserver;
 
-public interface StoreChanger {
+public interface StoreChangeNotifier {
     void addStoreChangeObserver(StoreChangeObserver storeChangeObserver);
     void notifyStoreChange();
 }

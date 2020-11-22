@@ -3,7 +3,6 @@ package flb.components.editors;
 import javax.swing.*;
 import java.util.*;
 import flb.listeners.*;
-import flb.components.*;
 import flb.components.menus.CategoryEditorMenuImpl;
 import flb.datastores.CategoryStore;
 import flb.components.editors.tables.*;
@@ -11,18 +10,16 @@ import flb.util.*;
 import flb.tuples.*;
 
 public class CategoryEditorImpl implements CategoryAdder, CategoryClearer, CategoryDeleter, CategoryExcludeEditor,
-        CategoryGoalEditor, CategoryNameEditor, CategoryEditorTester, StoreChanger {
+        CategoryGoalEditor, CategoryNameEditor, CategoryEditorTester {
     private final CategoryStore categoryStore;
     private final CategoryTable categoryTable;
     private final CategoryTableTester tableAutomator;
-    private final ArrayList<StoreChangeObserver> storeChangeObservers;
 
     public CategoryEditorImpl(CategoryStore categoryStore){
         this.categoryStore = categoryStore;
         CategoryTableImpl categoryTableImpl = new CategoryTableImpl();
         this.categoryTable = categoryTableImpl;
         this.tableAutomator = categoryTableImpl;
-        this.storeChangeObservers = new ArrayList<>();
     }
 
     public void addCategoryEditingListeners(JTextField nameFilter, JFrame frame) {
@@ -30,18 +27,6 @@ public class CategoryEditorImpl implements CategoryAdder, CategoryClearer, Categ
         categoryTable.addGoalEditListener(new UserEditsDefaultGoalListener(this, nameFilter));
         categoryTable.addExcludesEditListener(new UserEditsExcludesListener(this, nameFilter));
         categoryTable.addEditorMenu(new CategoryEditorMenuImpl(this, nameFilter, frame));
-    }
-
-    @Override
-    public void addStoreChangeObserver(StoreChangeObserver storeChangeObserver) {
-        storeChangeObservers.add(storeChangeObserver);
-    }
-
-    @Override
-    public void notifyStoreChange() {
-        for (StoreChangeObserver storeChangeObserver : storeChangeObservers) {
-            storeChangeObserver.updateAndKeepSelection();
-        }
     }
 
     public JScrollPane getPane() {
@@ -100,7 +85,6 @@ public class CategoryEditorImpl implements CategoryAdder, CategoryClearer, Categ
         for (Category selectedCategory : categoryTable.getCategory(row)) {
             String categoryToClear = selectedCategory.getName();
             categoryStore.updateAmount(categoryToClear, Float.NaN);
-            notifyStoreChange();
         }
     }
 
@@ -109,7 +93,6 @@ public class CategoryEditorImpl implements CategoryAdder, CategoryClearer, Categ
         for (Category selectedCategory : categoryTable.getSelectedCategory()) {
             String selectedName = selectedCategory.getName();
             categoryStore.toggleExclusion(selectedName);
-            notifyStoreChange();
         }
     }
 
@@ -119,7 +102,6 @@ public class CategoryEditorImpl implements CategoryAdder, CategoryClearer, Categ
             String categoryToUpdate = selectedCategory.getName();
             for (float newAmount : selectedCategory.getDefaultGoal()) {
                 categoryStore.updateAmount(categoryToUpdate, newAmount);
-                notifyStoreChange();
             }
         }
     }
@@ -134,7 +116,6 @@ public class CategoryEditorImpl implements CategoryAdder, CategoryClearer, Categ
         for (Category selectedCategory : categoryTable.getSelectedCategory()) {
             String newName = selectedCategory.getName();
             categoryStore.renameCategory(oldName, newName);
-            notifyStoreChange();
         }
     }
 

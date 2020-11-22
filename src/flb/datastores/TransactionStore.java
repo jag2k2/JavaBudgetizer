@@ -5,7 +5,7 @@ import flb.tuples.TransactionSummary;
 import flb.util.WhichMonth;
 import java.util.*;
 
-public interface TransactionStore {
+public interface TransactionStore extends StoreChangeNotifier {
     void categorizeTransaction(Transaction transaction, String categoryName);
     void addTransactions(List<Transaction> transactions);
     ArrayList<Transaction> getBankingTransactions (WhichMonth whichMonth);

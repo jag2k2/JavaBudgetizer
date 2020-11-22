@@ -36,6 +36,19 @@ public class MainGUI {
         this.nameFilter = new JTextField();
         this.menuBar = new MenuBarImpl(transactionStore, summaryEditor);
 
+        transactionStore.addStoreChangeObserver(bankingEditor);
+        transactionStore.addStoreChangeObserver(creditEditor);
+        transactionStore.addStoreChangeObserver(summaryEditor);
+        transactionStore.addStoreChangeObserver(balanceDisplay);
+
+        categoryStore.addStoreChangeObserver(bankingEditor);
+        categoryStore.addStoreChangeObserver(creditEditor);
+        categoryStore.addStoreChangeObserver(summaryEditor);
+        categoryStore.addStoreChangeObserver(balanceDisplay);
+
+        goalStore.addStoreChangeObserver(summaryEditor);
+        goalStore.addStoreChangeObserver(balanceDisplay);
+
         addListeners();
         layout();
     }
@@ -96,22 +109,6 @@ public class MainGUI {
         monthSelector.addMonthChangeObserver(creditEditor);
         monthSelector.addMonthChangeObserver(summaryEditor);
         monthSelector.addMonthChangeObserver(balanceDisplay);
-
-        bankingEditor.addStoreChangeObserver(bankingEditor);
-        bankingEditor.addStoreChangeObserver(summaryEditor);
-        bankingEditor.addStoreChangeObserver(balanceDisplay);
-
-        creditEditor.addStoreChangeObserver(creditEditor);
-        creditEditor.addStoreChangeObserver(summaryEditor);
-        creditEditor.addStoreChangeObserver(balanceDisplay);
-
-        categoryEditor.addStoreChangeObserver(bankingEditor);
-        categoryEditor.addStoreChangeObserver(creditEditor);
-        categoryEditor.addStoreChangeObserver(summaryEditor);
-        categoryEditor.addStoreChangeObserver(balanceDisplay);
-
-        summaryEditor.addStoreChangeObserver(summaryEditor);
-        summaryEditor.addStoreChangeObserver(balanceDisplay);
 
         summaryEditor.addGoalSelectedListener(bankingEditor);
         summaryEditor.addGoalSelectedListener(creditEditor);

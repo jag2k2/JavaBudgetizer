@@ -6,7 +6,7 @@ import flb.util.WhichMonth;
 import java.util.*;
 import java.sql.*;
 
-public class CategoryStoreImpl implements CategoryStore {
+public class CategoryStoreImpl extends AbstractDataStore implements CategoryStore {
 
     private final SQLExecutor SQLExecutor;
 
@@ -19,6 +19,7 @@ public class CategoryStoreImpl implements CategoryStore {
         update = update.replace("$name", name);
 
         SQLExecutor.executeUpdate(update);
+        notifyStoreChange();
     }
 
     public int getTransactionCountOfCategory(String categoryNameToDelete) {
@@ -41,6 +42,7 @@ public class CategoryStoreImpl implements CategoryStore {
         update = update.replace("$name", name);
 
         SQLExecutor.executeUpdate(update);
+        notifyStoreChange();
     }
 
     public void updateAmount(String name, float amount) {
@@ -53,12 +55,14 @@ public class CategoryStoreImpl implements CategoryStore {
         update = update.replace("$def_goal", amountString);
 
         SQLExecutor.executeUpdate(update);
+        notifyStoreChange();
     }
 
     public void toggleExclusion(String name) {
         String update = "UPDATE categories SET exclude = !exclude WHERE name = '$name'";
         update = update.replace("$name", name);
         SQLExecutor.executeUpdate(update);
+        notifyStoreChange();
     }
 
     public void renameCategory(String oldName, String newName) {
@@ -66,6 +70,7 @@ public class CategoryStoreImpl implements CategoryStore {
         update = update.replace("$newName", newName);
         update = update.replace("$oldName", oldName);
         SQLExecutor.executeUpdate(update);
+        notifyStoreChange();
     }
 
     public boolean categoryExist(String name) {
@@ -154,5 +159,4 @@ public class CategoryStoreImpl implements CategoryStore {
 
         return income - expenses;
     }
-
 }

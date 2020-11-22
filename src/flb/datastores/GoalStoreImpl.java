@@ -6,7 +6,7 @@ import flb.databases.SQLExecutor;
 import flb.tuples.*;
 import flb.util.*;
 
-public class GoalStoreImpl implements GoalStore, GoalStoreTester {
+public class GoalStoreImpl extends AbstractDataStore implements GoalStore, GoalStoreTester {
     private final SQLExecutor SQLExecutor;
 
     public GoalStoreImpl(SQLExecutor SQLExecutor) {
@@ -25,6 +25,7 @@ public class GoalStoreImpl implements GoalStore, GoalStoreTester {
                 "WHERE default_goal_amt IS NOT NULL";
         update = update.replace("$yrmo", whichMonth.toSQLString());
         SQLExecutor.executeUpdate(update);
+        notifyStoreChange();
     }
 
     @Override
@@ -73,6 +74,7 @@ public class GoalStoreImpl implements GoalStore, GoalStoreTester {
             update = update.replace("$amt", Float.toString(goalAmount));
 
             SQLExecutor.executeUpdate(update);
+            notifyStoreChange();
         }
     }
 
@@ -88,6 +90,7 @@ public class GoalStoreImpl implements GoalStore, GoalStoreTester {
             update = update.replace("$amt", Float.toString(goalAmount));
 
             SQLExecutor.executeUpdate(update);
+            notifyStoreChange();
         }
     }
 
@@ -100,6 +103,7 @@ public class GoalStoreImpl implements GoalStore, GoalStoreTester {
         update = update.replace("$name", summary.getName());
 
         SQLExecutor.executeUpdate(update);
+        notifyStoreChange();
     }
 
     @Override

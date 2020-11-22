@@ -3,7 +3,7 @@ package flb.datastores;
 import flb.util.*;
 import flb.tuples.*;
 
-public interface GoalStore {
+public interface GoalStore extends StoreChangeNotifier{
     void createDefaultGoals(WhichMonth whichMonth);
     int countGoals(WhichMonth selectedMonth);
     void addGoal(TransactionSummary summary);

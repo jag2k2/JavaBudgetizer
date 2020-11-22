@@ -30,6 +30,8 @@ class UserCategorizesTransactionTest {
         monthSelectorImpl.setMonth(Calendar.OCTOBER);
         this.bankingEditor = new BankingEditorImpl(transactionStore, categoryStore, monthSelectorImpl, new SummarySelectorMock());
         this.creditEditor = new CreditEditorImpl(transactionStore, categoryStore, monthSelectorImpl, new SummarySelectorMock());
+        transactionStore.addStoreChangeObserver(bankingEditor);
+        transactionStore.addStoreChangeObserver(creditEditor);
 
         this.testButton = new JButton();
         testButton.setActionCommand("0,Name2");
@@ -44,7 +46,6 @@ class UserCategorizesTransactionTest {
     void categorizeBankingRow() {
         testButton.addActionListener(new UserCategorizesTransaction(bankingEditor));
         bankingEditor.update();
-        bankingEditor.addStoreChangeObserver(bankingEditor);
 
         testButton.doClick();
 
@@ -59,7 +60,6 @@ class UserCategorizesTransactionTest {
     void categorizeCreditRow() {
         testButton.addActionListener(new UserCategorizesTransaction(creditEditor));
         creditEditor.update();
-        creditEditor.addStoreChangeObserver(creditEditor);
 
         testButton.doClick();
 

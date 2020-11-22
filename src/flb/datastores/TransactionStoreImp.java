@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-public class TransactionStoreImp implements TransactionStore {
+public class TransactionStoreImp extends AbstractDataStore implements TransactionStore {
     private final SQLExecutor SQLExecutor;
 
     public TransactionStoreImp(SQLExecutor SQLExecutor){
@@ -29,6 +29,7 @@ public class TransactionStoreImp implements TransactionStore {
         update = update.replace("$ref", reference);
 
         SQLExecutor.executeUpdate(update);
+        notifyStoreChange();
     }
 
     @Override
@@ -78,6 +79,7 @@ public class TransactionStoreImp implements TransactionStore {
 
             update = "DROP TABLE transactions_temp";
             SQLExecutor.executeUpdate(update);
+            notifyStoreChange();
         }
     }
 
