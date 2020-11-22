@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import flb.components.editors.*;
 import flb.components.editors.tables.SummaryTableTester;
 import flb.components.monthselector.MonthSelectorImpl;
+import flb.databases.TestDatabase;
 import flb.util.*;
 import org.junit.jupiter.api.*;
 import flb.datastores.*;

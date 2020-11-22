@@ -1,5 +1,6 @@
 package flb.datastores;
 
+import flb.databases.SQLExecutor;
 import flb.tuples.*;
 import flb.util.WhichMonth;
 import java.util.*;
@@ -7,17 +8,17 @@ import java.sql.*;
 
 public class CategoryStoreImpl implements CategoryStore {
 
-    private final DataStore dataStore;
+    private final SQLExecutor SQLExecutor;
 
-    public CategoryStoreImpl(DataStore dataStore) {
-        this.dataStore = dataStore;
+    public CategoryStoreImpl(SQLExecutor SQLExecutor) {
+        this.SQLExecutor = SQLExecutor;
     }
 
     public void addCategory(String name) {
         String update = "INSERT INTO categories (name, default_goal_amt, exclude) VALUES ('$name', NULL, FALSE)";
         update = update.replace("$name", name);
 
-        dataStore.executeUpdate(update);
+        SQLExecutor.executeUpdate(update);
     }
 
     public int getTransactionCountOfCategory(String categoryNameToDelete) {
@@ -26,7 +27,7 @@ public class CategoryStoreImpl implements CategoryStore {
                 "WHERE categories.name = '$name'";
         query = query.replace("$name", categoryNameToDelete);
 
-        ResultSet resultSet = dataStore.executeQuery(query);
+        ResultSet resultSet = SQLExecutor.executeQuery(query);
         int transactionCount = 0;
         try {
             resultSet.next();
@@ -39,7 +40,7 @@ public class CategoryStoreImpl implements CategoryStore {
         String update = "DELETE FROM categories WHERE name = '$name'";
         update = update.replace("$name", name);
 
-        dataStore.executeUpdate(update);
+        SQLExecutor.executeUpdate(update);
     }
 
     public void updateAmount(String name, float amount) {
@@ -51,27 +52,27 @@ public class CategoryStoreImpl implements CategoryStore {
         update = update.replace("$name", name);
         update = update.replace("$def_goal", amountString);
 
-        dataStore.executeUpdate(update);
+        SQLExecutor.executeUpdate(update);
     }
 
     public void toggleExclusion(String name) {
         String update = "UPDATE categories SET exclude = !exclude WHERE name = '$name'";
         update = update.replace("$name", name);
-        dataStore.executeUpdate(update);
+        SQLExecutor.executeUpdate(update);
     }
 
     public void renameCategory(String oldName, String newName) {
         String update = "UPDATE categories SET name = '$newName' WHERE name = '$oldName'";
         update = update.replace("$newName", newName);
         update = update.replace("$oldName", oldName);
-        dataStore.executeUpdate(update);
+        SQLExecutor.executeUpdate(update);
     }
 
     public boolean categoryExist(String name) {
         String query = "SELECT * FROM categories WHERE name = '$name'";
         query = query.replace("$name", name);
 
-        ResultSet results = dataStore.executeQuery(query);
+        ResultSet results = SQLExecutor.executeQuery(query);
         ArrayList<Category> categories = castResultsToCategories(results);
 
         return !categories.isEmpty();
@@ -84,7 +85,7 @@ public class CategoryStoreImpl implements CategoryStore {
         else { condition = condition.replace("$name", nameFilter); }
         query = query.replace("$condition", condition);
 
-        ResultSet results = dataStore.executeQuery(query);
+        ResultSet results = SQLExecutor.executeQuery(query);
 
         return castResultsToCategories(results);
     }
@@ -135,8 +136,8 @@ public class CategoryStoreImpl implements CategoryStore {
         String expenseQuery = query.replace("$inv", "-1");
         expenseQuery = expenseQuery.replace("$cond", "cat_id != '1' AND cat_id != '2'");
 
-        ResultSet incomeResults = dataStore.executeQuery(incomeQuery);
-        ResultSet expenseResults = dataStore.executeQuery(expenseQuery);
+        ResultSet incomeResults = SQLExecutor.executeQuery(incomeQuery);
+        ResultSet expenseResults = SQLExecutor.executeQuery(expenseQuery);
 
         float income = Float.NaN;
         try{

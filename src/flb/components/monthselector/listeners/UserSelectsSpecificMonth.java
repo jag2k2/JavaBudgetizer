@@ -5,7 +5,7 @@ import javax.swing.*;
 import java.awt.event.*;
 
 public class UserSelectsSpecificMonth implements ItemListener {
-    private MonthSelectorImpl monthSelector;
+    private final MonthSelectorImpl monthSelector;
 
     public UserSelectsSpecificMonth(MonthSelectorImpl monthSelector) {
         this.monthSelector = monthSelector;

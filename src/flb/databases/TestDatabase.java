@@ -1,4 +1,4 @@
-package flb.datastores;
+package flb.databases;
 
 import flb.tuples.*;
 import flb.util.*;

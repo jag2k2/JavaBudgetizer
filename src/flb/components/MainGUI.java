@@ -34,7 +34,7 @@ public class MainGUI {
         this.balanceDisplay = new BalanceDisplayImpl(categoryStore, monthSelector);
         this.addButton = new JButton("Add");
         this.nameFilter = new JTextField();
-        this.menuBar = new MenuBarImpl(summaryEditor, monthSelector);
+        this.menuBar = new MenuBarImpl(transactionStore, summaryEditor);
 
         addListeners();
         layout();

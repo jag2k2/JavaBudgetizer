@@ -60,17 +60,17 @@ public class SummaryEditorImpl implements MonthGoalEditor, MonthGoalClearer, Def
     }
 
     @Override
-    public void createDefaultGoals(WhichMonth selectedMonth) {
-        int goalCount = goalStore.countGoals(selectedMonth);
+    public void createDefaultGoals() {
+        int goalCount = goalStore.countGoals(selectedMonthGetter.getSelectedMonth());
         if (goalCount > 0) {
             int confirmation = getConfirmationFromDialog(goalCount, frame);
             if(confirmation == JOptionPane.YES_OPTION) {
-                goalStore.createDefaultGoals(selectedMonth);
+                goalStore.createDefaultGoals(selectedMonthGetter.getSelectedMonth());
                 notifyStoreChange();
             }
         }
         else {
-            goalStore.createDefaultGoals(selectedMonth);
+            goalStore.createDefaultGoals(selectedMonthGetter.getSelectedMonth());
             notifyStoreChange();
         }
     }

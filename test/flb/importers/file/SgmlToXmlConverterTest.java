@@ -14,7 +14,13 @@ public class SgmlToXmlConverterTest {
         testLine = "<Hello>";
         assertTrue(SgmlToXmlConverter.detectMarkup(testLine));
 
+        testLine = "    <Hello>";
+        assertTrue(SgmlToXmlConverter.detectMarkup(testLine));
+
         testLine = "</Hello>";
+        assertTrue(SgmlToXmlConverter.detectMarkup(testLine));
+
+        testLine = "    </Hello>";
         assertTrue(SgmlToXmlConverter.detectMarkup(testLine));
 
         testLine = "<Hello>World";
@@ -27,6 +33,9 @@ public class SgmlToXmlConverterTest {
     @Test
     public void selfClosingTagDetector(){
         String testLine = "<Hello>World";
+        assertTrue(SgmlToXmlConverter.detectSelfClosingTag(testLine));
+
+        testLine = "     <Hello>World";
         assertTrue(SgmlToXmlConverter.detectSelfClosingTag(testLine));
 
         testLine = "<Hello>";
@@ -42,6 +51,9 @@ public class SgmlToXmlConverterTest {
     @Test
     public void openTagExtractor(){
         String testLine = "<Hello>";
+        assertEquals("Hello", SgmlToXmlConverter.openTagNameExtractor(testLine));
+
+        testLine = "     <Hello>";
         assertEquals("Hello", SgmlToXmlConverter.openTagNameExtractor(testLine));
 
         testLine = "<Hello>World";

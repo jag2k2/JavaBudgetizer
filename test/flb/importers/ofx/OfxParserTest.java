@@ -3,7 +3,6 @@ package flb.importers.ofx;
 import static org.junit.jupiter.api.Assertions.*;
 
 import flb.importers.ImportingTransactions;
-import flb.importers.ofx.OfxParser;
 import flb.tuples.*;
 import flb.util.*;
 import org.junit.jupiter.api.*;

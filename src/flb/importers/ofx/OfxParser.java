@@ -9,7 +9,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 public class OfxParser {
-    protected enum AccountType { CHECKING, CREDIT }
+    public enum AccountType { CHECKING, CREDIT }
 
     static public List<Transaction> parseTransactions(Document document){
         List<Transaction> transactions = new ArrayList<>();

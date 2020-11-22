@@ -1,8 +1,8 @@
-package flb.datastores;
+package flb.databases;
 
 import java.sql.ResultSet;
 
-public interface DataStore {
+public interface SQLExecutor {
     ResultSet executeQuery(String query);
     void executeUpdate(String update);
 }

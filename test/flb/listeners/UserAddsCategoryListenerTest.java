@@ -1,6 +1,8 @@
 package flb.listeners;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import flb.databases.TestDatabase;
 import flb.datastores.CategoryStore;
 import flb.components.editors.CategoryEditorImpl;
 import flb.components.editors.CategoryAdder;

@@ -1,6 +1,8 @@
 package flb.components.editors;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import flb.databases.TestDatabase;
 import org.junit.jupiter.api.*;
 import flb.datastores.*;
 import flb.components.editors.tables.*;

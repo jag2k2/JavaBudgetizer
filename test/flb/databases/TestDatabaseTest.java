@@ -1,4 +1,4 @@
-package flb.datastores;
+package flb.databases;
 
 import org.junit.jupiter.api.*;
 import java.sql.*;

@@ -1,5 +1,6 @@
 package flb.datastores;
 
+import flb.databases.SQLExecutor;
 import flb.util.WhichMonth;
 import flb.tuples.*;
 import java.sql.*;
@@ -10,10 +11,10 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 public class TransactionStoreImp implements TransactionStore {
-    private final DataStore dataStore;
+    private final SQLExecutor SQLExecutor;
 
-    public TransactionStoreImp(DataStore dataStore){
-        this.dataStore = dataStore;
+    public TransactionStoreImp(SQLExecutor SQLExecutor){
+        this.SQLExecutor = SQLExecutor;
     }
 
     @Override
@@ -27,7 +28,7 @@ public class TransactionStoreImp implements TransactionStore {
         update = update.replace("$uniquifier", uniquifier);
         update = update.replace("$ref", reference);
 
-        dataStore.executeUpdate(update);
+        SQLExecutor.executeUpdate(update);
     }
 
     @Override
@@ -41,7 +42,7 @@ public class TransactionStoreImp implements TransactionStore {
                     "category_id INT(11), " +
                     "balance FLOAT(9,2), " +
                     "reference VARCHAR(255))";
-            dataStore.executeUpdate(update);
+            SQLExecutor.executeUpdate(update);
 
             StringBuilder multiValues = new StringBuilder();
             int count = 0;
@@ -64,7 +65,7 @@ public class TransactionStoreImp implements TransactionStore {
             update = "INSERT INTO transactions_temp(date, type, description, amount, category_id, balance, reference) " +
                     "VALUES $multiValues";
             update = update.replace("$multiValues", multiValues);
-            dataStore.executeUpdate(update);
+            SQLExecutor.executeUpdate(update);
 
             update = "INSERT INTO transactions(date, type, description, amount, category_id, balance, reference) " +
                     "SELECT temp.date, temp.type, temp.description, temp.amount, temp.category_id, temp.balance, temp.reference " +
@@ -73,10 +74,10 @@ public class TransactionStoreImp implements TransactionStore {
                     "SELECT 1 FROM transactions trans " +
                     "WHERE $cond)";
             update = update.replace("$cond", transactions.get(0).getTerribleTemporaryHackyCondition());
-            dataStore.executeUpdate(update);
+            SQLExecutor.executeUpdate(update);
 
             update = "DROP TABLE transactions_temp";
-            dataStore.executeUpdate(update);
+            SQLExecutor.executeUpdate(update);
         }
     }
 
@@ -85,7 +86,7 @@ public class TransactionStoreImp implements TransactionStore {
         query = query.replace("$uniquifier", "transactions.id");
         query = query.replace("$type", "banking");
 
-        ResultSet results = dataStore.executeQuery(query);
+        ResultSet results = SQLExecutor.executeQuery(query);
 
         return castResultsToBankingTransactions(results);
     }
@@ -95,7 +96,7 @@ public class TransactionStoreImp implements TransactionStore {
         query = query.replace("$uniquifier", "transactions.reference");
         query = query.replace("$type", "credit");
 
-        ResultSet results = dataStore.executeQuery(query);
+        ResultSet results = SQLExecutor.executeQuery(query);
 
         return castResultsToCreditTransactions(results);
     }
@@ -172,7 +173,7 @@ public class TransactionStoreImp implements TransactionStore {
 
         query = query.replace("$yrmo", whichMonth.toSQLString());
 
-        ResultSet results = dataStore.executeQuery(query);
+        ResultSet results = SQLExecutor.executeQuery(query);
 
         return castResultsToSummaries(results, whichMonth);
     }

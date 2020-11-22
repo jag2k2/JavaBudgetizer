@@ -1,8 +1,8 @@
-package flb.datastores;
+package flb.databases;
 
 import java.sql.*;
 
-public abstract class AbstractDatabase implements DataStore {
+public abstract class AbstractDatabase implements SQLExecutor {
 
     private Connection connection;
     private String url = "jdbc:mysql://localhost/$name";

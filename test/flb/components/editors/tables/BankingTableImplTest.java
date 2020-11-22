@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import flb.components.menus.mock.*;
 import flb.components.editors.mock.*;
 import org.junit.jupiter.api.*;
-import flb.datastores.TestDatabase;
+import flb.databases.TestDatabase;
 import flb.tuples.*;
 import java.util.*;
 
