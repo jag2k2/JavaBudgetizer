@@ -13,23 +13,20 @@ import javax.swing.*;
 import java.util.*;
 
 class UserFiltersCategoriesListenerTest {
-    private JTextField nameFilter;
     private ArrayList<Category> expected;
     private CategoryTableTester tableAutomator;
+    private CategoryEditorImpl categoryEditor;
     private TestDatabase database;
 
     @BeforeEach
     void setUp() {
-        this.database = new TestDatabase();
+        database = new TestDatabase();
         database.connect();
         CategoryStore categoryStore = new CategoryStoreImpl(database);
-        CategoryEditorImpl categoryEditor = new CategoryEditorImpl(categoryStore);
-        this.tableAutomator = categoryEditor.getTableTester();
-        this.nameFilter = new JTextField();
+        categoryEditor = new CategoryEditorImpl(categoryStore);
+        tableAutomator = categoryEditor.getTableTester();
 
-        this.expected = new ArrayList<>();
-
-        nameFilter.getDocument().addDocumentListener(new UserFiltersCategoriesListener(categoryEditor, nameFilter));
+        expected = new ArrayList<>();
     }
 
     @AfterEach
@@ -40,7 +37,7 @@ class UserFiltersCategoriesListenerTest {
     @Test
     void removeUpdate() {
         String filterString = "Name";
-        nameFilter.setText(filterString);
+        categoryEditor.setNameFilter(filterString);
         for (Category category : TestDatabase.getTestCategories()){
             if(category.getName().contains(filterString)){
                 expected.add(category);

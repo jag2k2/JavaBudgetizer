@@ -1,5 +1,5 @@
 package flb.components.editors;
 
-public interface MonthChangeObserver {
+public interface ViewChangeObserver {
     void update();
 }

@@ -4,7 +4,7 @@ import flb.components.menus.CategorizerMenuImpl;
 import flb.components.menus.MenuDisplayer;
 import flb.components.menus.MenuTester;
 import flb.components.editors.mock.SummarySelectorMock;
-import flb.components.monthselector.MonthSelectorImpl;
+import flb.components.monthselector.ViewSelectorImpl;
 import flb.databases.TestDatabase;
 import flb.datastores.*;
 import flb.components.editors.BankingEditorImpl;
@@ -23,17 +23,17 @@ class UserClicksCategoryColumnListenerTest {
     void setUp() {
         TestDatabase database = new TestDatabase();
         TransactionStore transactionStore = new TransactionStoreImp(database);
-        MonthSelectorImpl monthSelectorImpl = new MonthSelectorImpl();
+        ViewSelectorImpl monthSelectorImpl = new ViewSelectorImpl();
         monthSelectorImpl.setYear(2020);
         monthSelectorImpl.setMonth(Calendar.OCTOBER);
         CategoryStore categoryStore = new CategoryStoreImpl(database);
         TransactionCategorizer transactionCategorizer = new BankingEditorImpl(transactionStore, categoryStore, monthSelectorImpl, new SummarySelectorMock());
         CategorizerMenuImpl categoryMenu = new CategorizerMenuImpl(categoryStore, transactionCategorizer);
         MenuDisplayer menuDisplayer = new CategorizerMenuImpl(categoryStore, transactionCategorizer);
-        this.menuTester = categoryMenu;
-        this.userClicksCategoryColumnListener = new UserClicksCategoryColumnListener(menuDisplayer);
+        menuTester = categoryMenu;
+        userClicksCategoryColumnListener = new UserClicksCategoryColumnListener(menuDisplayer);
 
-        this.expected = new ArrayList<>();
+        expected = new ArrayList<>();
         for (Category category : TestDatabase.getTestCategories()) {
             expected.add(category.getName());
         }

@@ -8,7 +8,7 @@ class CategoryTest {
 
     @BeforeEach
     void setUp() {
-        this.category = new Category("Name1", 100, false);
+        category = new Category("Name1", 100, false);
     }
 
     @Test

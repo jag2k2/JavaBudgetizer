@@ -1,7 +1,6 @@
 package flb.components.editors;
 
 import static org.junit.jupiter.api.Assertions.*;
-
 import flb.databases.TestDatabase;
 import org.junit.jupiter.api.*;
 import flb.datastores.*;
@@ -20,13 +19,15 @@ class CategoryEditorImplTest {
 
     @BeforeEach
     void setUp() {
-        this.database = new TestDatabase();
+        database = new TestDatabase();
         database.connect();
-        this.categoryStore = new CategoryStoreImpl(database);
-        this.categoryEditor = new CategoryEditorImpl(categoryStore);
-        this.tableAutomator = categoryEditor.getTableTester();
-        categoryEditor.refreshAndClearSelection("");
-        this.expected = TestDatabase.getTestCategories();
+        categoryStore = new CategoryStoreImpl(database);
+        categoryEditor = new CategoryEditorImpl(categoryStore);
+        categoryStore.addStoreChangeObserver(categoryEditor);
+        categoryEditor.update();
+
+        tableAutomator = categoryEditor.getTableTester();
+        expected = TestDatabase.getTestCategories();
     }
 
     @AfterEach
@@ -37,23 +38,28 @@ class CategoryEditorImplTest {
     @Test
     void categoryAddable() {
         assertFalse(categoryEditor.categoryNameAddable(""));
+
         String nameExists = TestDatabase.getTestCategories().get(0).getName();
         assertFalse(categoryEditor.categoryNameAddable(nameExists));
+
         assertTrue(categoryEditor.categoryNameAddable("Name0"));
     }
 
     @Test
     void addingCategoryWithNoName() {
-        categoryEditor.userAddCategory("");
+        categoryEditor.setNameFilter("");
+        categoryEditor.userAddCategory();
 
         assertEquals(expected, categoryStore.getCategories(""));
     }
 
     @Test
     void addingNewCategory() {
-        expected.add(new Category("Test2", false));
+        String nameFiltertext = "Test2";
+        categoryEditor.setNameFilter(nameFiltertext);
+        expected.add(new Category(nameFiltertext, false));
 
-        categoryEditor.userAddCategory("Test2");
+        categoryEditor.userAddCategory();
 
         assertEquals(expected, categoryStore.getCategories(""));
     }
@@ -61,7 +67,8 @@ class CategoryEditorImplTest {
     @Test
     void addingDuplicateCategory() {
         String duplicateName = TestDatabase.getTestCategories().get(0).getName();
-        categoryEditor.userAddCategory(duplicateName);
+        categoryEditor.setNameFilter(duplicateName);
+        categoryEditor.userAddCategory();
 
         assertEquals(expected, categoryStore.getCategories(""));
     }
@@ -85,7 +92,7 @@ class CategoryEditorImplTest {
     @Test
     void deleteSelectedGoalWithConfirmAndCategoryUnused() {
         categoryEditor = new CategoryEditorNoDialog(categoryStore, true);
-        categoryEditor.refreshAndClearSelection("");
+        categoryEditor.update();
         tableAutomator = categoryEditor.getTableTester();
 
         categoryEditor.userDeleteCategory(3, new JFrame());
@@ -97,7 +104,6 @@ class CategoryEditorImplTest {
     @Test
     void deleteSelectedGoalWithConfirmButCategoryUsed() {
         categoryEditor = new CategoryEditorNoDialog(categoryStore, true);
-        categoryEditor.refreshAndClearSelection("");
         tableAutomator = categoryEditor.getTableTester();
 
         categoryEditor.userDeleteCategory(1, new JFrame());
@@ -163,6 +169,7 @@ class CategoryEditorImplTest {
     @Test
     void refresh(){
         String filterText = "Name";
+        categoryEditor.setNameFilter(filterText);
         expected = new ArrayList<>();
         for(Category category : TestDatabase.getTestCategories()){
             if(category.getName().contains(filterText)){
@@ -170,7 +177,7 @@ class CategoryEditorImplTest {
             }
         }
 
-        categoryEditor.refreshAndClearSelection(filterText);
+        categoryEditor.update();
 
         assertEquals(-1, tableAutomator.getSelectedRow());
         assertEquals(expected, tableAutomator.getContents());
@@ -178,9 +185,10 @@ class CategoryEditorImplTest {
 
     @Test
     void refreshKeepSelections() {
-        tableAutomator.setSelectedRow(2);
-
         String filterText = "Name";
+        categoryEditor.setNameFilter(filterText);
+
+        tableAutomator.setSelectedRow(2);
         expected = new ArrayList<>();
         for(Category category : TestDatabase.getTestCategories()){
             if(category.getName().contains(filterText)){
@@ -188,7 +196,7 @@ class CategoryEditorImplTest {
             }
         }
 
-        categoryEditor.refreshAndKeepSelection(filterText);
+        categoryEditor.updateAndKeepSelection();
 
         assertEquals(2, tableAutomator.getSelectedRow());
         assertEquals(expected, tableAutomator.getContents());

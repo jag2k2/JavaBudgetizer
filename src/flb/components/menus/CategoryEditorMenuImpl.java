@@ -34,13 +34,13 @@ public class CategoryEditorMenuImpl implements MenuDisplayer {
         popupMenu.removeAll();
         if(activeColumn == 0) {
             JMenuItem deleteCategory = new JMenuItem("Delete Category");
-            deleteCategory.addActionListener(new UserDeletesCategoryListener(categoryDeleter, nameFilter, popupMenu));
+            deleteCategory.addActionListener(new UserDeletesCategoryListener(categoryDeleter, popupMenu));
             deleteCategory.setActionCommand(Integer.toString(activeRow));
             popupMenu.add(deleteCategory);
         }
         else if (activeColumn == 1) {
             JMenuItem clearCategory = new JMenuItem("Clear Default Goal");
-            clearCategory.addActionListener(new UserClearsDefaultGoalListener(categoryClearer, nameFilter));
+            clearCategory.addActionListener(new UserClearsDefaultGoalListener(categoryClearer));
             clearCategory.setActionCommand(Integer.toString(activeRow));
             popupMenu.add(clearCategory);
         }

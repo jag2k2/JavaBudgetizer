@@ -14,24 +14,21 @@ import javax.swing.*;
 import java.util.*;
 
 class UserDeletesCategoryListenerTest {
-    private JTextField nameFilter;
     private JButton testButton;
     private ArrayList<Category> expected;
     private TestDatabase database;
     private CategoryStore categoryStore;
-    private CategoryTableTester tableAutomator;
     private CategoryEditorImpl categoryEditor;
 
     @BeforeEach
     void setUp() {
-        this.database = new TestDatabase();
+        database = new TestDatabase();
         database.connect();
-        this.categoryStore = new CategoryStoreImpl(database);
+        categoryStore = new CategoryStoreImpl(database);
 
-        this.nameFilter = new JTextField();
-        this.testButton = new JButton();
+        testButton = new JButton();
 
-        this.expected = TestDatabase.getTestCategories();
+        expected = TestDatabase.getTestCategories();
     }
 
     @AfterEach
@@ -42,64 +39,63 @@ class UserDeletesCategoryListenerTest {
     @Test
     void userConfirmsDeleteAndCategoryUnused() {
         categoryEditor = new CategoryEditorNoDialog(categoryStore, true);
-        categoryEditor.refreshAndClearSelection("");
-        this.tableAutomator = categoryEditor.getTableTester();
+        categoryEditor.update();
 
-        testButton.addActionListener(new UserDeletesCategoryListener(categoryEditor, nameFilter, new JFrame()));
+        testButton.addActionListener(new UserDeletesCategoryListener(categoryEditor, new JFrame()));
 
-        nameFilter.setText("Test1");
-        testButton.setActionCommand("3");
+        String nameFilterText = "Test1";
+        categoryEditor.setNameFilter(nameFilterText);
+        testButton.setActionCommand("0");
         testButton.doClick();
 
         expected.remove(3);
         assertEquals(expected, categoryStore.getCategories(""));
-        assertEquals("Test1", nameFilter.getText());
+        assertEquals(nameFilterText, categoryEditor.getNameFilter());
     }
 
     @Test
     void userConfirmsDeleteButCategoryUsed() {
         categoryEditor = new CategoryEditorNoDialog(categoryStore, true);
-        categoryEditor.refreshAndClearSelection("");
-        this.tableAutomator = categoryEditor.getTableTester();
+        categoryEditor.update();
 
-        testButton.addActionListener(new UserDeletesCategoryListener(categoryEditor, nameFilter, new JFrame()));
+        testButton.addActionListener(new UserDeletesCategoryListener(categoryEditor, new JFrame()));
 
-        nameFilter.setText("Name");
+        String nameFilterText = "Name";
+        categoryEditor.setNameFilter(nameFilterText);
         testButton.setActionCommand("1");
         testButton.doClick();
 
         assertEquals(expected, categoryStore.getCategories(""));
-        assertEquals("Name", nameFilter.getText());
+        assertEquals(nameFilterText, categoryEditor.getNameFilter());
     }
 
     @Test
     void userRefusesDelete() {
-        categoryEditor = new CategoryEditorNoDialog(categoryStore, false);
-        categoryEditor.refreshAndClearSelection("");
-        this.tableAutomator = categoryEditor.getTableTester();
+        categoryEditor = new CategoryEditorNoDialog(categoryStore, false);;
 
-        testButton.addActionListener(new UserDeletesCategoryListener(categoryEditor, nameFilter, new JFrame()));
+        testButton.addActionListener(new UserDeletesCategoryListener(categoryEditor, new JFrame()));
 
-        nameFilter.setText("Name");
+        String nameFilterText = "Name";
+        categoryEditor.setNameFilter(nameFilterText);
         testButton.setActionCommand("1");
         testButton.doClick();
 
         assertEquals(expected, categoryStore.getCategories(""));
-        assertEquals("Name", nameFilter.getText());
+        assertEquals(nameFilterText, categoryEditor.getNameFilter());
     }
 
     @Test
     void userDeletesWithNoSelected() {
         categoryEditor = new CategoryEditorImpl(categoryStore);
-        this.tableAutomator = categoryEditor.getTableTester();
 
-        testButton.addActionListener(new UserDeletesCategoryListener(categoryEditor, nameFilter, new JFrame()));
+        testButton.addActionListener(new UserDeletesCategoryListener(categoryEditor, new JFrame()));
 
-        nameFilter.setText("Name");
+        String nameFilterText = "Name";
+        categoryEditor.setNameFilter(nameFilterText);
         testButton.setActionCommand("-1");
         testButton.doClick();
 
         assertEquals(expected, categoryStore.getCategories(""));
-        assertEquals("Name", nameFilter.getText());
+        assertEquals(nameFilterText, categoryEditor.getNameFilter());
     }
 }

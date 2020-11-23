@@ -10,8 +10,8 @@ class CreditTransactionTest {
 
     @BeforeEach
     void setup() {
-        this.date = new GregorianCalendar(2020,Calendar.NOVEMBER,3);
-        this.creditTransaction = new CreditTransaction("EE6A3",
+        date = new GregorianCalendar(2020,Calendar.NOVEMBER,3);
+        creditTransaction = new CreditTransaction("EE6A3",
                 date, "Amazon", 100F, "Misc");
     }
 

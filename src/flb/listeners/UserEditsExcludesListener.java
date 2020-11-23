@@ -7,11 +7,9 @@ import javax.swing.event.*;
 
 public class UserEditsExcludesListener implements CellEditorListener {
     private final CategoryExcludeEditor excludeEditor;
-    private final JTextField nameFilter;
 
-    public UserEditsExcludesListener(CategoryExcludeEditor excludeEditor, JTextField nameFilter){
+    public UserEditsExcludesListener(CategoryExcludeEditor excludeEditor){
         this.excludeEditor = excludeEditor;
-        this.nameFilter = nameFilter;
     }
 
     @Override
@@ -21,6 +19,5 @@ public class UserEditsExcludesListener implements CellEditorListener {
     @Override
     public void editingStopped(ChangeEvent e) {
         excludeEditor.userEditsSelectedExcludes();
-        excludeEditor.refreshAndKeepSelection(nameFilter.getText());
     }
 }

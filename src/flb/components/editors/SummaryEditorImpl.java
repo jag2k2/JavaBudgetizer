@@ -10,7 +10,7 @@ import flb.util.*;
 import java.util.*;
 import javax.swing.*;
 
-public class SummaryEditorImpl implements MonthGoalEditor, MonthGoalClearer, SummarySelector, MonthChangeObserver,
+public class SummaryEditorImpl implements MonthGoalEditor, MonthGoalClearer, SummarySelector, ViewChangeObserver,
         StoreChangeObserver, SummaryEditorTester{
     private final GoalStore goalStore;
     private final TransactionStore transactionStore;

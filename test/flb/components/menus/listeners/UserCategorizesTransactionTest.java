@@ -20,19 +20,19 @@ class UserCategorizesTransactionTest {
 
     @BeforeEach
     void setUp() {
-        this.database = new TestDatabase();
+        database = new TestDatabase();
         database.connect();
         TransactionStore transactionStore = new TransactionStoreImp(database);
         CategoryStore categoryStore = new CategoryStoreImpl(database);
-        MonthSelectorImpl monthSelectorImpl = new MonthSelectorImpl();
+        ViewSelectorImpl monthSelectorImpl = new ViewSelectorImpl();
         monthSelectorImpl.setYear(2020);
         monthSelectorImpl.setMonth(Calendar.OCTOBER);
-        this.bankingEditor = new BankingEditorImpl(transactionStore, categoryStore, monthSelectorImpl, new SummarySelectorMock());
-        this.creditEditor = new CreditEditorImpl(transactionStore, categoryStore, monthSelectorImpl, new SummarySelectorMock());
+        bankingEditor = new BankingEditorImpl(transactionStore, categoryStore, monthSelectorImpl, new SummarySelectorMock());
+        creditEditor = new CreditEditorImpl(transactionStore, categoryStore, monthSelectorImpl, new SummarySelectorMock());
         transactionStore.addStoreChangeObserver(bankingEditor);
         transactionStore.addStoreChangeObserver(creditEditor);
 
-        this.testButton = new JButton();
+        testButton = new JButton();
         testButton.setActionCommand("0,Name2");
     }
 

@@ -12,11 +12,11 @@ import flb.components.monthselector.listeners.*;
 import flb.components.editors.*;
 import flb.util.*;
 
-public class MonthSelectorImpl implements MonthChanger, SelectedMonthGetter, SpecificMonthSetter,
-        CurrentMonthSetter, MonthChangeObserver {
+public class ViewSelectorImpl implements ViewChangeNotifier, SelectedMonthGetter, SpecificMonthSetter,
+        CurrentMonthSetter, ViewChangeObserver {
     private final JPanel panel;
     private final MonthSelectorModelImpl monthModel;
-    private final ArrayList<MonthChangeObserver> monthChangeObservers;
+    private final ArrayList<ViewChangeObserver> viewChangeObservers;
     private final JButton prev;
     private final JButton next;
     private enum Months {January, February, March, April, May, June, July, August, September, October, November, December}
@@ -24,9 +24,9 @@ public class MonthSelectorImpl implements MonthChanger, SelectedMonthGetter, Spe
     private final JFormattedTextField yearField;
     private final ItemListener userSelectsSpecificMonth;
 
-    public MonthSelectorImpl() {
+    public ViewSelectorImpl() {
         this.panel = new JPanel();
-        this.monthChangeObservers = new ArrayList<>();
+        this.viewChangeObservers = new ArrayList<>();
         this.prev = new JButton("Prev");
         this.month = new JComboBox<>(Months.values());
         NumberFormat yearFormat = NumberFormat.getIntegerInstance();
@@ -59,7 +59,7 @@ public class MonthSelectorImpl implements MonthChanger, SelectedMonthGetter, Spe
         month.addItemListener(userSelectsSpecificMonth);
         yearField.addActionListener(new UserSelectsSpecificYear(this));
 
-        addMonthChangeObserver(this);
+        addViewChangeObserver(this);
     }
 
     public JPanel getPanel(){
@@ -67,14 +67,14 @@ public class MonthSelectorImpl implements MonthChanger, SelectedMonthGetter, Spe
     }
 
     @Override
-    public void addMonthChangeObserver(MonthChangeObserver monthChangeObserver) {
-        monthChangeObservers.add(monthChangeObserver);
+    public void addViewChangeObserver(ViewChangeObserver viewChangeObserver) {
+        viewChangeObservers.add(viewChangeObserver);
     }
 
     @Override
-    public void notifyMonthChange() {
-        for (MonthChangeObserver monthChangeObserver : monthChangeObservers){
-            monthChangeObserver.update();
+    public void notifyViewChange() {
+        for (ViewChangeObserver viewChangeObserver : viewChangeObservers){
+            viewChangeObserver.update();
         }
     }
 
@@ -89,7 +89,7 @@ public class MonthSelectorImpl implements MonthChanger, SelectedMonthGetter, Spe
     @Override
     public void setToCurrentMonth() {
         monthModel.setToCurrentMonth();
-        notifyMonthChange();
+        notifyViewChange();
     }
 
     @Override
@@ -100,23 +100,23 @@ public class MonthSelectorImpl implements MonthChanger, SelectedMonthGetter, Spe
     @Override
     public void setMonth(int monthValue) {
         monthModel.setMonth(monthValue);
-        notifyMonthChange();
+        notifyViewChange();
     }
 
     @Override
     public void setYear(int yearValue) {
         monthModel.setYear(yearValue);
-        notifyMonthChange();
+        notifyViewChange();
     }
 
     public void incrementMonth() {
         monthModel.incrementMonth();
-        notifyMonthChange();
+        notifyViewChange();
     }
 
     public void decrementMonth() {
         monthModel.decrementMonth();
-        notifyMonthChange();
+        notifyViewChange();
     }
 }
 

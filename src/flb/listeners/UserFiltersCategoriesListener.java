@@ -1,16 +1,13 @@
 package flb.listeners;
 
-import flb.components.editors.CategoryListChangeRefresher;
-import javax.swing.*;
+import flb.components.editors.ViewChangeObserver;
 import javax.swing.event.*;
 
 public class UserFiltersCategoriesListener implements DocumentListener {
-    private final CategoryListChangeRefresher changeRefresher;
-    private final JTextField nameFilter;
+    private final ViewChangeObserver changeObserver;
 
-    public UserFiltersCategoriesListener(CategoryListChangeRefresher changeRefresher, JTextField nameFilter) {
-        this.changeRefresher = changeRefresher;
-        this.nameFilter = nameFilter;
+    public UserFiltersCategoriesListener(ViewChangeObserver changeObserver) {
+        this.changeObserver = changeObserver;
     }
 
     @Override
@@ -19,12 +16,12 @@ public class UserFiltersCategoriesListener implements DocumentListener {
 
     @Override
     public void insertUpdate(DocumentEvent e) {
-        changeRefresher.refreshAndClearSelection(nameFilter.getText());
+        changeObserver.update();
     }
 
     @Override
     public void removeUpdate(DocumentEvent e){
-        changeRefresher.refreshAndClearSelection(nameFilter.getText());
+        changeObserver.update();
     }
 }
 

@@ -8,7 +8,7 @@ import flb.components.editors.*;
 import flb.components.monthselector.*;
 import flb.datastores.*;
 
-public class BalanceDisplayImpl implements MonthChangeObserver, StoreChangeObserver {
+public class BalanceDisplayImpl implements ViewChangeObserver, StoreChangeObserver {
     private final JPanel panel;
     private final JFormattedTextField balance;
     private final CategoryStore categoryStore;

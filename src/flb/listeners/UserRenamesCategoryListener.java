@@ -7,12 +7,10 @@ import java.beans.*;
 
 public class UserRenamesCategoryListener implements PropertyChangeListener {
     private final CategoryNameEditor nameEditor;
-    private final JTextField nameFilter;
     private String oldName;
 
-    public UserRenamesCategoryListener(CategoryNameEditor nameEditor, JTextField nameFilter) {
+    public UserRenamesCategoryListener(CategoryNameEditor nameEditor) {
         this.nameEditor = nameEditor;
-        this.nameFilter = nameFilter;
         this.oldName = "";
     }
 
@@ -27,7 +25,6 @@ public class UserRenamesCategoryListener implements PropertyChangeListener {
             }
             else if (table.getEditingColumn() == 0) {
                 nameEditor.userRenamedCategory(oldName);
-                nameEditor.refreshAndKeepSelection(nameFilter.getText());
             }
         }
     }

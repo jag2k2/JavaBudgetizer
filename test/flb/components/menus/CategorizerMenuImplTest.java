@@ -3,7 +3,7 @@ package flb.components.menus;
 import static org.junit.jupiter.api.Assertions.*;
 
 import flb.components.editors.mock.SummarySelectorMock;
-import flb.components.monthselector.MonthSelectorImpl;
+import flb.components.monthselector.ViewSelectorImpl;
 import flb.databases.TestDatabase;
 import flb.datastores.*;
 import flb.components.editors.BankingEditorImpl;
@@ -20,18 +20,18 @@ class CategorizerMenuImplTest {
 
     @BeforeEach
     void setUp() {
-        this.database = new TestDatabase();
+        database = new TestDatabase();
         database.connect();
         CategoryStore categoryStore = new CategoryStoreImpl(database);
         TransactionStore transactionStore = new TransactionStoreImp(database);
-        MonthSelectorImpl monthSelectorImpl = new MonthSelectorImpl();
+        ViewSelectorImpl monthSelectorImpl = new ViewSelectorImpl();
         monthSelectorImpl.setYear(2020);
         monthSelectorImpl.setMonth(Calendar.OCTOBER);
         TransactionCategorizer bankingEditor = new BankingEditorImpl(transactionStore, new CategoryStoreImpl(database), monthSelectorImpl, new SummarySelectorMock());
-        this.categoryMenu = new CategorizerMenuImpl(categoryStore, bankingEditor);
-        this.menuTester = categoryMenu;
+        categoryMenu = new CategorizerMenuImpl(categoryStore, bankingEditor);
+        menuTester = categoryMenu;
 
-        this.expected = new ArrayList<>();
+        expected = new ArrayList<>();
         for (Category category : TestDatabase.getTestCategories()) {
             expected.add(category.getName());
         }

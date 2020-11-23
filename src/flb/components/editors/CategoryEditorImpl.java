@@ -11,27 +11,47 @@ import flb.util.*;
 import flb.tuples.*;
 
 public class CategoryEditorImpl implements CategoryAdder, CategoryClearer, CategoryDeleter, CategoryExcludeEditor,
-        CategoryGoalEditor, CategoryNameEditor, CategoryEditorTester {
+        CategoryGoalEditor, CategoryNameEditor, CategoryEditorTester, StoreChangeObserver, ViewChangeObserver {
     private final CategoryStore categoryStore;
     private final CategoryTable categoryTable;
     private final CategoryTableTester tableAutomator;
+    private final JTextField nameFilter;
+    private final JButton addButton;
+    private final JPanel panel;
 
     public CategoryEditorImpl(CategoryStore categoryStore){
         this.categoryStore = categoryStore;
         CategoryTableImpl categoryTableImpl = new CategoryTableImpl();
         this.categoryTable = categoryTableImpl;
         this.tableAutomator = categoryTableImpl;
+        this.addButton = new JButton("Add");
+        this.nameFilter = new JTextField();
+        this.panel = new JPanel(new BorderLayout());
+
+        JPanel northCategoryPanel = new JPanel();
+        northCategoryPanel.setLayout(new BoxLayout(northCategoryPanel, BoxLayout.X_AXIS));
+        northCategoryPanel.add(nameFilter);
+        northCategoryPanel.add(addButton);
+
+        panel.add(BorderLayout.NORTH, northCategoryPanel);
+        panel.add(BorderLayout.CENTER, categoryTable.getPane());
+
+        addCategoryEditingListeners();
     }
 
-    public void addCategoryEditingListeners(JTextField nameFilter, JFrame frame) {
-        categoryTable.addCategoryRenameListener(new UserRenamesCategoryListener(this, nameFilter));
-        categoryTable.addGoalEditListener(new UserEditsDefaultGoalListener(this, nameFilter));
-        categoryTable.addExcludesEditListener(new UserEditsExcludesListener(this, nameFilter));
+
+
+    private void addCategoryEditingListeners() {
+        categoryTable.addCategoryRenameListener(new UserRenamesCategoryListener(this));
+        categoryTable.addGoalEditListener(new UserEditsDefaultGoalListener(this));
+        categoryTable.addExcludesEditListener(new UserEditsExcludesListener(this));
         categoryTable.addEditorMenu(new CategoryEditorMenuImpl(this, nameFilter));
+        addButton.addActionListener(new UserAddsCategoryListener(this));
+        nameFilter.getDocument().addDocumentListener(new UserFiltersCategoriesListener(this));
     }
 
-    public JScrollPane getPane() {
-        return categoryTable.getPane();
+    public JPanel getPanel() {
+        return panel;
     }
 
     @Override
@@ -40,14 +60,27 @@ public class CategoryEditorImpl implements CategoryAdder, CategoryClearer, Categ
     }
 
     @Override
+    public void setNameFilter(String nameText) {
+        nameFilter.setText(nameText);
+        update();
+    }
+
+    @Override
+    public String getNameFilter() {
+        return nameFilter.getText();
+    }
+
+    @Override
     public boolean categoryNameAddable(String categoryToAdd) {
         return (!categoryToAdd.equals("") && !categoryStore.categoryExist(categoryToAdd));
     }
 
     @Override
-    public void userAddCategory(String categoryToAdd) {
-        if (categoryNameAddable(categoryToAdd)) {
-            categoryStore.addCategory(categoryToAdd);
+    public void userAddCategory() {
+        String nameToAdd = nameFilter.getText();
+        if (categoryNameAddable(nameToAdd)) {
+            categoryStore.addCategory(nameToAdd);
+            nameFilter.setText("");
         }
     }
 
@@ -121,14 +154,14 @@ public class CategoryEditorImpl implements CategoryAdder, CategoryClearer, Categ
     }
 
     @Override
-    public void refreshAndClearSelection(String nameFilter) {
-        ArrayList<Category> categories = categoryStore.getCategories(nameFilter);
+    public void update() {
+        ArrayList<Category> categories = categoryStore.getCategories(nameFilter.getText());
         categoryTable.displayAndClearSelection(categories);
     }
 
     @Override
-    public void refreshAndKeepSelection(String nameFilter) {
-        ArrayList<Category> categories = categoryStore.getCategories(nameFilter);
+    public void updateAndKeepSelection() {
+        ArrayList<Category> categories = categoryStore.getCategories(nameFilter.getText());
         categoryTable.displayAndKeepSelection(categories);
     }
 }

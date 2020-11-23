@@ -8,7 +8,7 @@ import flb.tuples.*;
 import javax.swing.*;
 import java.util.*;
 
-public class BankingEditorImpl implements BankingEditorTester, TransactionCategorizer, MonthChangeObserver,
+public class BankingEditorImpl implements BankingEditorTester, TransactionCategorizer, ViewChangeObserver,
         StoreChangeObserver, TableHighlighter {
     private final TransactionStore transactionStore;
     private final SelectedMonthGetter selectedMonthGetter;

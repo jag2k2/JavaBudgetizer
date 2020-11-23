@@ -13,25 +13,21 @@ import javax.swing.*;
 import java.util.*;
 
 class UserEditsDefaultGoalListenerTest {
-    private JTextField nameFilter;
     private ArrayList<Category> expected;
     private CategoryTableTester tableAutomator;
+    private CategoryEditorImpl categoryEditor;
     private TestDatabase database;
     private CategoryStore categoryStore;
 
     @BeforeEach
     void setUp() {
-        this.database = new TestDatabase();
+        database = new TestDatabase();
         database.connect();
-        this.categoryStore = new CategoryStoreImpl(database);
-        CategoryEditorImpl categoryEditor = new CategoryEditorImpl(categoryStore);
-        this.tableAutomator = categoryEditor.getTableTester();
-        this.nameFilter = new JTextField();
+        categoryStore = new CategoryStoreImpl(database);
+        categoryEditor = new CategoryEditorImpl(categoryStore);
+        tableAutomator = categoryEditor.getTableTester();
 
-        this.expected = TestDatabase.getTestCategories();
-        categoryEditor.refreshAndKeepSelection("");
-
-        categoryEditor.addCategoryEditingListeners(nameFilter, new JFrame());
+        expected = TestDatabase.getTestCategories();
     }
 
     @AfterEach
@@ -42,18 +38,19 @@ class UserEditsDefaultGoalListenerTest {
     @Test
     void editCategoryGoal() {
         int activeRow = 0;
-        float newDefaultGoal = 200;
+        float newDefaultGoal = 543;
 
-        nameFilter.setText("Name");
+        String nameFilterText = "Name";
+        categoryEditor.setNameFilter(nameFilterText);
         tableAutomator.setSelectedRow(activeRow);
 
         tableAutomator.editCellAt(activeRow,1);
         tableAutomator.setEditorGoal(newDefaultGoal);
 
-        Category category = TestDatabase.getTestCategories().get(activeRow);
+        Category category = TestDatabase.getTestCategories().get(1);
         category.setDefaultGoal(newDefaultGoal);
-        expected.set(0, category);
+        expected.set(1, category);
         assertEquals(expected, categoryStore.getCategories(""));
-        assertEquals("Name", nameFilter.getText());
+        assertEquals(nameFilterText, categoryEditor.getNameFilter());
     }
 }

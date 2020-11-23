@@ -11,8 +11,8 @@ class MaybeTest {
 
     @BeforeEach
     void setUp() {
-        this.definitelySomething = new Maybe<>(new Category("Name1", 100, false));
-        this.nothing = new Maybe<>();
+        definitelySomething = new Maybe<>(new Category("Name1", 100, false));
+        nothing = new Maybe<>();
     }
 
     @Test

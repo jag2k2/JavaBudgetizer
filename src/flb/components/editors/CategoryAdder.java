@@ -1,6 +1,6 @@
 package flb.components.editors;
 
-public interface CategoryAdder extends CategoryListChangeRefresher {
+public interface CategoryAdder {
     boolean categoryNameAddable(String categoryToAdd);
-    void userAddCategory(String categoryToAdd);
+    void userAddCategory();
 }

@@ -1,5 +1,5 @@
 package flb.components.editors;
 
-public interface CategoryExcludeEditor extends CategoryEditRefresher {
+public interface CategoryExcludeEditor {
     void userEditsSelectedExcludes();
 }

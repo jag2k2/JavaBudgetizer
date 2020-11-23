@@ -13,25 +13,22 @@ import javax.swing.*;
 import java.util.*;
 
 class UserRenamesCategoryListenerTest {
-    private JTextField nameFilter;
     private ArrayList<Category> expected;
     private CategoryTableTester tableAutomator;
+    private CategoryEditorImpl categoryEditor;
     private TestDatabase database;
     private CategoryStore categoryStore;
 
     @BeforeEach
     void setUp() {
-        this.database = new TestDatabase();
+        database = new TestDatabase();
         database.connect();
-        this.categoryStore = new CategoryStoreImpl(database);
-        CategoryEditorImpl categoryEditor = new CategoryEditorImpl(categoryStore);
-        this.tableAutomator = categoryEditor.getTableTester();
-        this.nameFilter = new JTextField();
-        categoryEditor.refreshAndClearSelection("");
+        categoryStore = new CategoryStoreImpl(database);
+        categoryEditor = new CategoryEditorImpl(categoryStore);
+        categoryEditor.update();
+        tableAutomator = categoryEditor.getTableTester();
 
-        this.expected = TestDatabase.getTestCategories();
-
-        categoryEditor.addCategoryEditingListeners(nameFilter, new JFrame());
+        expected = TestDatabase.getTestCategories();
     }
 
     @AfterEach
@@ -42,32 +39,36 @@ class UserRenamesCategoryListenerTest {
     @Test
     void renameFirstCategory() {
         int activeRow = 0;
-        String newName = "Name10";
         String filterString = "Name";
+        String newName = "Name10";
 
-        nameFilter.setText(filterString);
+        categoryEditor.setNameFilter(filterString);
         tableAutomator.setSelectedRow(activeRow);
 
         tableAutomator.editCellAt(activeRow,0);
         tableAutomator.setEditorName(newName);
 
-        Category category = TestDatabase.getTestCategories().get(activeRow);
+        Category category = TestDatabase.getTestCategories().get(1);
         category.rename(newName);
-        expected.set(0, category);
+        expected.set(1, category);
         assertEquals(expected, categoryStore.getCategories(""));
-        assertEquals(filterString, nameFilter.getText());
+        assertEquals(filterString, categoryEditor.getNameFilter());
     }
 
     @Test
     void renameLastCategory() {
-        nameFilter.setText("Name");
-        tableAutomator.setSelectedRow(4);
+        String filterString = "Test";
+        String newName = "Test20";
+        int activeRow = 1;
 
-        tableAutomator.editCellAt(4,0);
-        tableAutomator.setEditorName("Test20");
+        categoryEditor.setNameFilter(filterString);
+        tableAutomator.setSelectedRow(activeRow);
 
-        expected.set(4, new Category("Test20", 500, true));
+        tableAutomator.editCellAt(activeRow,0);
+        tableAutomator.setEditorName(newName);
+
+        expected.set(4, new Category(newName, 500, true));
         assertEquals(expected, categoryStore.getCategories(""));
-        assertEquals("Name", nameFilter.getText());
+        assertEquals(filterString, categoryEditor.getNameFilter());
     }
 }

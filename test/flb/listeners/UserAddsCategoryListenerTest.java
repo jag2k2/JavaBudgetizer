@@ -13,25 +13,23 @@ import javax.swing.*;
 import java.util.*;
 
 class UserAddsCategoryListenerTest {
-    private JTextField nameFilter;
     private JButton testButton;
     private ArrayList<Category> expected;
     private TestDatabase database;
     private CategoryStore categoryStore;
+    private CategoryEditorImpl categoryEditor;
 
     @BeforeEach
     void setUp() {
-        this.database = new TestDatabase();
+        database = new TestDatabase();
         database.connect();
-        this.categoryStore = new CategoryStoreImpl(database);
-        CategoryAdder categoryAdder = new CategoryEditorImpl(categoryStore);
+        categoryStore = new CategoryStoreImpl(database);
+        categoryEditor = new CategoryEditorImpl(categoryStore);
+        testButton = new JButton();
 
-        this.nameFilter = new JTextField();
-        this.testButton = new JButton();
+        expected = TestDatabase.getTestCategories();
 
-        this.expected = TestDatabase.getTestCategories();
-
-        testButton.addActionListener(new UserAddsCategoryListener(categoryAdder, nameFilter));
+        testButton.addActionListener(new UserAddsCategoryListener(categoryEditor));
     }
 
     @AfterEach
@@ -41,33 +39,35 @@ class UserAddsCategoryListenerTest {
 
     @Test
     void categoryAdded() {
-        expected.add(new Category("Test2", false));
-        nameFilter.setText("Test2");
+        String nameFilterText = "Test2";
+        expected.add(new Category(nameFilterText, false));
+        categoryEditor.setNameFilter(nameFilterText);
 
         testButton.doClick();
 
         assertEquals(expected, categoryStore.getCategories(""));
-        assertEquals("", nameFilter.getText());
+        assertEquals("", categoryEditor.getNameFilter());
     }
 
     @Test
     void emptyNameNotAdded() {
-        nameFilter.setText("");
+        String nameFilterText = "";
+        categoryEditor.setNameFilter(nameFilterText);
 
         testButton.doClick();
 
         assertEquals(expected, categoryStore.getCategories(""));
-        assertEquals("", nameFilter.getText());
+        assertEquals(nameFilterText, categoryEditor.getNameFilter());
     }
 
     @Test
     void duplicateNameNotAdded() {
-        String filterString = "Name2";
-        nameFilter.setText(filterString);
+        String nameFilterText = "Name2";
+        categoryEditor.setNameFilter(nameFilterText);
 
         testButton.doClick();
 
         assertEquals(expected, categoryStore.getCategories(""));
-        assertEquals(filterString, nameFilter.getText());
+        assertEquals(nameFilterText, categoryEditor.getNameFilter());
     }
 }

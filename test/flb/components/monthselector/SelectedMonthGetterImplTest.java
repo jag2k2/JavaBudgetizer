@@ -6,11 +6,11 @@ import java.util.*;
 import flb.util.*;
 
 class SelectedMonthGetterImplTest {
-    private MonthSelectorImpl monthSelector;
+    private ViewSelectorImpl monthSelector;
 
     @BeforeEach
     void setUp() {
-        this.monthSelector = new MonthSelectorImpl();
+        monthSelector = new ViewSelectorImpl();
     }
 
     @Test

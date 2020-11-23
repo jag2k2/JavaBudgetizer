@@ -18,7 +18,7 @@ class TransactionStoreImpTest {
         dataBase = new TestDatabase();
         dataBase.connect();
         transactionStore = new TransactionStoreImp(dataBase);
-        this.whichMonth = new WhichMonth(2020, Calendar.OCTOBER);
+        whichMonth = new WhichMonth(2020, Calendar.OCTOBER);
     }
 
     @AfterEach

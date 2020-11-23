@@ -12,7 +12,7 @@ class TransactionSummaryTest {
 
     @BeforeEach
     void setUp() {
-        this.transactionSummary = new TransactionSummary(new WhichMonth(2020, Calendar.OCTOBER), new Category("Name1", false));
+        transactionSummary = new TransactionSummary(new WhichMonth(2020, Calendar.OCTOBER), new Category("Name1", false));
     }
 
     @Test

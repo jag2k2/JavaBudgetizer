@@ -21,14 +21,14 @@ class CreditEditorImplTest {
 
     @BeforeEach
     void setUp() {
-        this.database = new TestDatabase();
+        database = new TestDatabase();
         database.connect();
         TransactionStore transactionStore = new TransactionStoreImp(database);
-        MonthSelectorImpl monthSelectorImpl = new MonthSelectorImpl();
-        this.monthSetter = monthSelectorImpl;
+        ViewSelectorImpl monthSelectorImpl = new ViewSelectorImpl();
+        monthSetter = monthSelectorImpl;
 
-        this.creditEditor = new CreditEditorImpl(transactionStore, new CategoryStoreImpl(database), monthSelectorImpl, new SummarySelectorMock());
-        this.tableAutomator = creditEditor.getTableAutomator();
+        creditEditor = new CreditEditorImpl(transactionStore, new CategoryStoreImpl(database), monthSelectorImpl, new SummarySelectorMock());
+        tableAutomator = creditEditor.getTableAutomator();
 
         expected = TestDatabase.getTestCreditTransactions();
     }

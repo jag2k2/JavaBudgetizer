@@ -2,6 +2,7 @@ package flb.listeners;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import flb.components.editors.CategoryEditorTester;
 import flb.databases.TestDatabase;
 import flb.datastores.*;
 import flb.datastores.CategoryStore;
@@ -13,27 +14,27 @@ import javax.swing.*;
 import java.util.*;
 
 class UserClearsDefaultGoalListenerTest {
-    private JTextField nameFilter;
     private JButton testButton;
     private ArrayList<Category> expected;
     private CategoryTableTester tableAutomator;
+    private CategoryEditorTester editorTester;
     private TestDatabase database;
     private CategoryStore categoryStore;
 
     @BeforeEach
     void setUp() {
-        this.database = new TestDatabase();
+        database = new TestDatabase();
         database.connect();
-        this.categoryStore = new CategoryStoreImpl(database);
+        categoryStore = new CategoryStoreImpl(database);
         CategoryEditorImpl categoryEditor = new CategoryEditorImpl(categoryStore);
-        categoryEditor.refreshAndKeepSelection("");
-        this.tableAutomator = categoryEditor.getTableTester();
+        categoryEditor.update();
+        editorTester = categoryEditor;
+        tableAutomator = categoryEditor.getTableTester();
 
-        this.nameFilter = new JTextField();
-        this.testButton = new JButton();
-        testButton.addActionListener(new UserClearsDefaultGoalListener(categoryEditor, nameFilter));
+        testButton = new JButton();
+        testButton.addActionListener(new UserClearsDefaultGoalListener(categoryEditor));
 
-        this.expected = TestDatabase.getTestCategories();
+        expected = TestDatabase.getTestCategories();
     }
 
     @AfterEach
@@ -43,22 +44,25 @@ class UserClearsDefaultGoalListenerTest {
 
     @Test
     void clearSelected() {
-        nameFilter.setText("Name");
-        testButton.setActionCommand("1");
+        String nameFilterText = "Name";
+        editorTester.setNameFilter(nameFilterText);
+
+        testButton.setActionCommand("0");
         testButton.doClick();
 
         expected.set(1, new Category("Name2", true));
         assertEquals(expected, categoryStore.getCategories(""));
-        assertEquals("Name", nameFilter.getText());
+        assertEquals(nameFilterText, editorTester.getNameFilter());
     }
 
     @Test
     void nothingSelected() {
-        nameFilter.setText("Name");
+        String nameFilterText = "Name";
+        editorTester.setNameFilter(nameFilterText);
         testButton.setActionCommand("-1");
         testButton.doClick();
 
         assertEquals(expected, categoryStore.getCategories(""));
-        assertEquals("Name", nameFilter.getText());
+        assertEquals(nameFilterText, editorTester.getNameFilter());
     }
 }
