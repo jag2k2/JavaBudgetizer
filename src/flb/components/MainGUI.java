@@ -3,10 +3,14 @@ package flb.components;
 import javax.swing.*;
 import javax.swing.border.*;
 import flb.components.balancedisplay.BalanceDisplayImpl;
+import flb.components.editor.transaction.banking.BankingEditorImpl;
+import flb.components.editor.category.CategoryEditorImpl;
+import flb.components.editor.transaction.credit.CreditEditorImpl;
+import flb.components.editor.summary.SummaryEditorImpl;
 import flb.components.menus.MenuBarImpl;
 import flb.components.monthselector.*;
 import flb.datastores.*;
-import flb.components.editors.*;
+
 import java.awt.*;
 
 public class MainGUI {
@@ -23,7 +27,7 @@ public class MainGUI {
     public MainGUI(TransactionStore transactionStore, CategoryStore categoryStore, GoalStore goalStore) {
         this.frame = new JFrame();
         this.monthSelector = new ViewSelectorImpl();
-        this.summaryEditor = new SummaryEditorImpl(transactionStore, goalStore, monthSelector, frame);
+        this.summaryEditor = new SummaryEditorImpl(transactionStore, goalStore, monthSelector);
         this.categoryEditor = new CategoryEditorImpl(categoryStore);
         this.bankingEditor = new BankingEditorImpl(transactionStore, categoryStore, monthSelector, summaryEditor);
         this.creditEditor = new CreditEditorImpl(transactionStore, categoryStore, monthSelector, summaryEditor);
@@ -44,7 +48,15 @@ public class MainGUI {
         goalStore.addStoreChangeObserver(summaryEditor);
         goalStore.addStoreChangeObserver(balanceDisplay);
 
-        addListeners();
+        monthSelector.addViewChangeObserver(bankingEditor);
+        monthSelector.addViewChangeObserver(creditEditor);
+        monthSelector.addViewChangeObserver(summaryEditor);
+        monthSelector.addViewChangeObserver(balanceDisplay);
+        monthSelector.addViewChangeObserver(categoryEditor);
+
+        summaryEditor.addGoalSelectedListener(bankingEditor);
+        summaryEditor.addGoalSelectedListener(creditEditor);
+
         layout();
     }
 
@@ -88,17 +100,6 @@ public class MainGUI {
         frame.setMinimumSize(new Dimension(1200, 500));
         frame.setPreferredSize(new Dimension(1200, 500));
         frame.pack();
-    }
-
-    protected void addListeners() {
-        monthSelector.addViewChangeObserver(bankingEditor);
-        monthSelector.addViewChangeObserver(creditEditor);
-        monthSelector.addViewChangeObserver(summaryEditor);
-        monthSelector.addViewChangeObserver(balanceDisplay);
-        monthSelector.addViewChangeObserver(categoryEditor);
-
-        summaryEditor.addGoalSelectedListener(bankingEditor);
-        summaryEditor.addGoalSelectedListener(creditEditor);
     }
 
     public void launch(){

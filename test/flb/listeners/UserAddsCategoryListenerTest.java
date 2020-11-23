@@ -3,9 +3,7 @@ package flb.listeners;
 import static org.junit.jupiter.api.Assertions.*;
 
 import flb.databases.TestDatabase;
-import flb.datastores.CategoryStore;
-import flb.components.editors.CategoryEditorImpl;
-import flb.components.editors.CategoryAdder;
+import flb.components.editor.category.CategoryEditorImpl;
 import flb.tuples.*;
 import flb.datastores.*;
 import org.junit.jupiter.api.*;

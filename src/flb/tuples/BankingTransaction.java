@@ -10,10 +10,6 @@ public class BankingTransaction extends Transaction{
         this.balance = balance;
     }
 
-    public String getUniquifier(){
-        return "transactions.id";
-    }
-
     @Override
     public float getBalance() {
         return balance;
@@ -22,11 +18,6 @@ public class BankingTransaction extends Transaction{
     @Override
     public String getTypeString(){
         return "banking";
-    }
-
-    @Override
-    public String getTerribleTemporaryHackyCondition(){
-        return "trans.date = temp.date AND trans.description = temp.description AND trans.amount = temp.amount AND trans.balance = temp.balance";
     }
 
     @Override

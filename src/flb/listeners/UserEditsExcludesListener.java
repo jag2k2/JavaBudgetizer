@@ -1,8 +1,7 @@
 package flb.listeners;
 
-import flb.components.editors.CategoryExcludeEditor;
+import flb.components.editor.category.CategoryExcludeEditor;
 
-import javax.swing.*;
 import javax.swing.event.*;
 
 public class UserEditsExcludesListener implements CellEditorListener {

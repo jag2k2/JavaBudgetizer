@@ -11,24 +11,22 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 public class TransactionStoreImp extends AbstractDataStore implements TransactionStore {
-    private final SQLExecutor SQLExecutor;
+    private final SQLExecutor sqlExecutor;
 
-    public TransactionStoreImp(SQLExecutor SQLExecutor){
-        this.SQLExecutor = SQLExecutor;
+    public TransactionStoreImp(SQLExecutor sqlExecutor){
+        this.sqlExecutor = sqlExecutor;
     }
 
     @Override
     public void categorizeTransaction(Transaction transaction, String categoryName) {
         String update = "UPDATE transactions " +
                 "SET category_id = (SELECT categories.id FROM categories WHERE categories.name = '$name') " +
-                "WHERE $uniquifier = '$ref'";
-        String uniquifier = transaction.getUniquifier();
+                "WHERE reference = '$ref'";
         String reference = transaction.getReference();
         update = update.replace("$name", categoryName);
-        update = update.replace("$uniquifier", uniquifier);
         update = update.replace("$ref", reference);
 
-        SQLExecutor.executeUpdate(update);
+        sqlExecutor.executeUpdate(update);
         notifyStoreChange();
     }
 
@@ -43,7 +41,7 @@ public class TransactionStoreImp extends AbstractDataStore implements Transactio
                     "category_id INT(11), " +
                     "balance FLOAT(9,2), " +
                     "reference VARCHAR(255))";
-            SQLExecutor.executeUpdate(update);
+            sqlExecutor.executeUpdate(update);
 
             StringBuilder multiValues = new StringBuilder();
             int count = 0;
@@ -51,7 +49,7 @@ public class TransactionStoreImp extends AbstractDataStore implements Transactio
                 String values = "('$date', '$type', '$desc', '$amt', '$cat_id', '$bal', '$ref')";
                 values = values.replace("$date", transaction.getDateString());
                 values = values.replace("$type", transaction.getTypeString());
-                values = values.replace("$desc", transaction.getDescription());
+                values = values.replace("$desc", transaction.getDescriptionWithEscapes());
                 values = values.replace("$amt", Float.toString(transaction.getAmount()));
                 values = values.replace("$cat_id", "-1");
                 values = values.replace("$bal", Float.toString(transaction.getBalance()));
@@ -66,19 +64,18 @@ public class TransactionStoreImp extends AbstractDataStore implements Transactio
             update = "INSERT INTO transactions_temp(date, type, description, amount, category_id, balance, reference) " +
                     "VALUES $multiValues";
             update = update.replace("$multiValues", multiValues);
-            SQLExecutor.executeUpdate(update);
+            sqlExecutor.executeUpdate(update);
 
             update = "INSERT INTO transactions(date, type, description, amount, category_id, balance, reference) " +
                     "SELECT temp.date, temp.type, temp.description, temp.amount, temp.category_id, temp.balance, temp.reference " +
                     "FROM transactions_temp temp " +
                     "WHERE NOT EXISTS (" +
                     "SELECT 1 FROM transactions trans " +
-                    "WHERE $cond)";
-            update = update.replace("$cond", transactions.get(0).getTerribleTemporaryHackyCondition());
-            SQLExecutor.executeUpdate(update);
+                    "WHERE trans.reference = temp.reference)";
+            sqlExecutor.executeUpdate(update);
 
             update = "DROP TABLE transactions_temp";
-            SQLExecutor.executeUpdate(update);
+            sqlExecutor.executeUpdate(update);
             notifyStoreChange();
         }
     }
@@ -88,7 +85,7 @@ public class TransactionStoreImp extends AbstractDataStore implements Transactio
         query = query.replace("$uniquifier", "transactions.id");
         query = query.replace("$type", "banking");
 
-        ResultSet results = SQLExecutor.executeQuery(query);
+        ResultSet results = sqlExecutor.executeQuery(query);
 
         return castResultsToBankingTransactions(results);
     }
@@ -98,7 +95,7 @@ public class TransactionStoreImp extends AbstractDataStore implements Transactio
         query = query.replace("$uniquifier", "transactions.reference");
         query = query.replace("$type", "credit");
 
-        ResultSet results = SQLExecutor.executeQuery(query);
+        ResultSet results = sqlExecutor.executeQuery(query);
 
         return castResultsToCreditTransactions(results);
     }
@@ -129,7 +126,7 @@ public class TransactionStoreImp extends AbstractDataStore implements Transactio
                 String categoryName = results.getString("categories.name");
                 if (results.wasNull())
                     categoryName = "";
-                String reference = results.getString("transactions.id");
+                String reference = results.getString("transactions.reference");
                 float balance = results.getFloat("transactions.balance");
                 LocalDate localDate = sqlDate.toLocalDate();
                 Calendar date = new GregorianCalendar(localDate.getYear(), localDate.getMonthValue()-1, localDate.getDayOfMonth());
@@ -175,7 +172,7 @@ public class TransactionStoreImp extends AbstractDataStore implements Transactio
 
         query = query.replace("$yrmo", whichMonth.toSQLString());
 
-        ResultSet results = SQLExecutor.executeQuery(query);
+        ResultSet results = sqlExecutor.executeQuery(query);
 
         return castResultsToSummaries(results, whichMonth);
     }
@@ -199,5 +196,16 @@ public class TransactionStoreImp extends AbstractDataStore implements Transactio
         } catch (SQLException ex) {ex.printStackTrace();}
 
         return summaries;
+    }
+
+    public int getAffectedRows(){
+        String query = "SELECT ROW_COUNT()";
+        ResultSet results = sqlExecutor.executeQuery((query));
+        int affectedRows = -1;
+        try {
+            results.next();
+            affectedRows = results.getInt(1);
+        } catch (Exception ex) {ex.printStackTrace();}
+        return affectedRows;
     }
 }

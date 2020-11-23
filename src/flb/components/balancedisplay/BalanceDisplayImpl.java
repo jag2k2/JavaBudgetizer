@@ -4,7 +4,7 @@ import javax.swing.*;
 import javax.swing.border.*;
 import java.awt.*;
 import java.text.NumberFormat;
-import flb.components.editors.*;
+import flb.components.editor.*;
 import flb.components.monthselector.*;
 import flb.datastores.*;
 

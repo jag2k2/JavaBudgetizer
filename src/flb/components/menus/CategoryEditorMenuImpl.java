@@ -2,20 +2,21 @@ package flb.components.menus;
 
 import javax.swing.*;
 import java.awt.*;
-import flb.components.editors.*;
+
+import flb.components.editor.category.CategoryClearer;
+import flb.components.editor.category.CategoryDeleter;
+import flb.components.editor.category.CategoryEditorImpl;
 import flb.listeners.*;
 
 public class CategoryEditorMenuImpl implements MenuDisplayer {
     private final CategoryClearer categoryClearer;
     private final CategoryDeleter categoryDeleter;
     private final JPopupMenu popupMenu;
-    private final JTextField nameFilter;
 
-    public CategoryEditorMenuImpl(CategoryEditorImpl categoryEditor, JTextField nameFilter){
+    public CategoryEditorMenuImpl(CategoryEditorImpl categoryEditor){
         this.popupMenu = new JPopupMenu();
         this.categoryClearer = categoryEditor;
         this.categoryDeleter = categoryEditor;
-        this.nameFilter = nameFilter;
     }
 
     @Override

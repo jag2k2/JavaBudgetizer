@@ -9,11 +9,11 @@ import java.util.ArrayList;
 
 import flb.components.*;
 import flb.components.monthselector.listeners.*;
-import flb.components.editors.*;
+import flb.components.editor.*;
 import flb.util.*;
 
 public class ViewSelectorImpl implements ViewChangeNotifier, SelectedMonthGetter, SpecificMonthSetter,
-        CurrentMonthSetter, ViewChangeObserver {
+        ViewChangeObserver {
     private final JPanel panel;
     private final MonthSelectorModelImpl monthModel;
     private final ArrayList<ViewChangeObserver> viewChangeObservers;
@@ -86,7 +86,6 @@ public class ViewSelectorImpl implements ViewChangeNotifier, SelectedMonthGetter
         month.addItemListener(userSelectsSpecificMonth);
     }
 
-    @Override
     public void setToCurrentMonth() {
         monthModel.setToCurrentMonth();
         notifyViewChange();

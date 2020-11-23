@@ -1,11 +1,11 @@
 package flb.listeners;
 
-import flb.components.editors.TableHighlighter;
+import flb.components.editor.transaction.TableHighlighter;
 import java.util.*;
 import javax.swing.event.*;
 
 public class UserSelectsGoalListener implements ListSelectionListener {
-    ArrayList<TableHighlighter> tableHighlighters;
+    private final ArrayList<TableHighlighter> tableHighlighters;
 
     public UserSelectsGoalListener(ArrayList<TableHighlighter> tableHighlighters){
         this.tableHighlighters = tableHighlighters;

@@ -1,6 +1,6 @@
 package flb.components.menus;
 
-import flb.components.editors.*;
+import flb.components.editor.summary.MonthGoalClearer;
 import flb.listeners.UserClearsSummaryGoalListener;
 
 import javax.swing.*;
@@ -8,7 +8,7 @@ import java.awt.*;
 
 public class GoalEditorMenuImpl implements MenuDisplayer {
     private final MonthGoalClearer goalClearer;
-    private JPopupMenu popupMenu;
+    private final JPopupMenu popupMenu;
 
     public GoalEditorMenuImpl(MonthGoalClearer goalClearer){
         this.goalClearer = goalClearer;

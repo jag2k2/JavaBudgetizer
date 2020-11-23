@@ -2,7 +2,7 @@ package flb.components.menus;
 
 import flb.listeners.UserCategorizesTransaction;
 import flb.datastores.CategoryStore;
-import flb.components.editors.TransactionCategorizer;
+import flb.components.editor.transaction.TransactionCategorizer;
 import flb.tuples.*;
 import javax.swing.*;
 import java.awt.*;

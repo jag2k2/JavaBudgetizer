@@ -1,7 +1,7 @@
 package flb.listeners;
 
 import java.awt.event.*;
-import flb.components.editors.TransactionCategorizer;
+import flb.components.editor.transaction.TransactionCategorizer;
 
 public class UserCategorizesTransaction implements ActionListener {
     private final TransactionCategorizer transactionCategorizer;

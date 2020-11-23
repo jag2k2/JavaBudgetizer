@@ -1,6 +1,6 @@
 package flb.datastores;
 
-import flb.components.editors.StoreChangeObserver;
+import flb.components.editor.StoreChangeObserver;
 import java.util.ArrayList;
 
 abstract public class AbstractDataStore implements StoreChangeNotifier {

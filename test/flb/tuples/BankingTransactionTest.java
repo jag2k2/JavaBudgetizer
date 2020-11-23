@@ -20,7 +20,7 @@ class BankingTransactionTest {
     @Test
     void testToString() {
         String actual = bankingTransaction.toString();
-        String expected = "EE6A3 | 2020-10-3 | Amazon | 100.0 | Misc | 1000.0";
+        String expected = "EE6A3 | 2020-10-03 | Amazon | 100.0 | Misc | 1000.0";
         assertEquals(expected, actual);
     }
 

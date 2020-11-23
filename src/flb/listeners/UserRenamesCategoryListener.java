@@ -1,6 +1,6 @@
 package flb.listeners;
 
-import flb.components.editors.CategoryNameEditor;
+import flb.components.editor.category.CategoryNameEditor;
 import flb.tuples.*;
 import javax.swing.*;
 import java.beans.*;

@@ -1,7 +1,7 @@
 package flb.listeners;
 
-import flb.components.editors.CategoryClearer;
-import javax.swing.*;
+import flb.components.editor.category.CategoryClearer;
+
 import java.awt.event.*;
 
 public class UserClearsDefaultGoalListener implements ActionListener {

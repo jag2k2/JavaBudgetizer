@@ -1,6 +1,6 @@
 package flb.listeners;
 
-import flb.components.editors.ViewChangeObserver;
+import flb.components.editor.ViewChangeObserver;
 import javax.swing.event.*;
 
 public class UserFiltersCategoriesListener implements DocumentListener {

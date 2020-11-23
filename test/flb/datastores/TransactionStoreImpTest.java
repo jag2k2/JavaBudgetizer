@@ -45,7 +45,7 @@ class TransactionStoreImpTest {
         ArrayList<Transaction> expected = TestDatabase.getTestBankingTransactions();
         Transaction bankingTransaction = expected.get(0);
         Calendar date1 = new GregorianCalendar(2020, Calendar.OCTOBER, 25);
-        expected.set(0, new BankingTransaction("1", date1, "Amazon", -50F, "Name2", 1000F));
+        expected.set(0, new BankingTransaction("123", date1, "Amazon", -50F, "Name2", 1000F));
 
         transactionStore.categorizeTransaction(bankingTransaction, "Name2");
 
@@ -95,7 +95,7 @@ class TransactionStoreImpTest {
 
         Transaction newTransaction1 = new CreditTransaction("202010281",
                 new GregorianCalendar(2020, Calendar.OCTOBER, 28),
-                "Taco Bell", 14.53F, "");
+                "Torchy's", 14.53F, "");
         transactionsToAppend.add(newTransaction1);
         expected.add(newTransaction1);
 

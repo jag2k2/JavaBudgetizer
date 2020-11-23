@@ -1,6 +1,6 @@
 package flb.listeners;
 
-import flb.components.editors.MonthGoalEditor;
+import flb.components.editor.summary.MonthGoalEditor;
 import javax.swing.event.*;
 
 public class UserEditsSummaryGoalListener implements TableModelListener {

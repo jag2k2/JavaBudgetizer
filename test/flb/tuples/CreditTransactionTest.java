@@ -18,7 +18,7 @@ class CreditTransactionTest {
     @Test
     void testToString() {
         String actual = creditTransaction.toString();
-        String expected = "EE6A3 | 2020-11-3 | Amazon | 100.0 | Misc";
+        String expected = "EE6A3 | 2020-11-03 | Amazon | 100.0 | Misc";
         assertEquals(expected, actual);
     }
 

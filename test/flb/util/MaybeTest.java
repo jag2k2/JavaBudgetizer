@@ -16,10 +16,6 @@ class MaybeTest {
     }
 
     @Test
-    void iterator() {
-    }
-
-    @Test
     void testToString() {
         String expected = "[Name1 | [100.0] | false]";
         assertEquals(expected, definitelySomething.toString());

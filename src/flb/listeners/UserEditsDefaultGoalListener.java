@@ -1,6 +1,6 @@
 package flb.listeners;
 
-import flb.components.editors.CategoryGoalEditor;
+import flb.components.editor.category.CategoryGoalEditor;
 import javax.swing.event.*;
 
 public class UserEditsDefaultGoalListener implements TableModelListener {

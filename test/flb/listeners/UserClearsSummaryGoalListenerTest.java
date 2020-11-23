@@ -2,11 +2,11 @@ package flb.listeners;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import flb.components.editor.summary.SummaryEditorImpl;
 import flb.components.monthselector.ViewSelectorImpl;
 import flb.databases.TestDatabase;
 import flb.util.WhichMonth;
 import org.junit.jupiter.api.*;
-import flb.components.editors.*;
 import flb.datastores.*;
 import flb.tuples.*;
 import javax.swing.*;
@@ -34,7 +34,7 @@ class UserClearsSummaryGoalListenerTest {
         GoalStoreImpl goalStoreImpl = new GoalStoreImpl(database);
         goalStore = goalStoreImpl;
 
-        SummaryEditorImpl summaryEditor = new SummaryEditorImpl(transactionStore, goalStoreImpl, monthSelectorImpl, new JFrame());
+        SummaryEditorImpl summaryEditor = new SummaryEditorImpl(transactionStore, goalStoreImpl, monthSelectorImpl);
         summaryEditor.update();
 
         testButton.addActionListener(new UserClearsSummaryGoalListener(summaryEditor));

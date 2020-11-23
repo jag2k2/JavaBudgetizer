@@ -2,12 +2,12 @@ package flb.components.menus;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import flb.components.editors.mock.SummarySelectorMock;
+import flb.components.editor.summary.SummarySelectorMock;
 import flb.components.monthselector.ViewSelectorImpl;
 import flb.databases.TestDatabase;
 import flb.datastores.*;
-import flb.components.editors.BankingEditorImpl;
-import flb.components.editors.TransactionCategorizer;
+import flb.components.editor.transaction.banking.BankingEditorImpl;
+import flb.components.editor.transaction.TransactionCategorizer;
 import flb.tuples.*;
 import org.junit.jupiter.api.*;
 import java.util.*;

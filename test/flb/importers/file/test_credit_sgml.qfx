@@ -41,29 +41,29 @@ NEWFILEUID:NONE
                     <DTEND>20201119170000[0:UTC]
                     <STMTTRN>
                         <TRNTYPE>PAYMENT
-                        <DTPOSTED>20201109170000[0:UTC]
+                        <DTPOSTED>20201009170000[0:UTC]
                         <TRNAMT>-21.43
-                        <FITID>202011091
-                        <CORRECTFITID>202011091
+                        <FITID>202010091
+                        <CORRECTFITID>202010091
                         <CORRECTACTION>REPLACE
                         <NAME>EXXONMOBIL 47946819 AUSTIN TX
                     </STMTTRN>
                     <STMTTRN>
                         <TRNTYPE>PAYMENT
-                        <DTPOSTED>20201109170000[0:UTC]
+                        <DTPOSTED>20201009170000[0:UTC]
                         <TRNAMT>-24.99
-                        <FITID>202011092
-                        <CORRECTFITID>202011092
+                        <FITID>202010092
+                        <CORRECTFITID>202010092
                         <CORRECTACTION>REPLACE
                         <NAME>AMAZON.COM*2813C0KV1 AMZNAMZN.CO
                         <MEMO>AMAZON.COM*2813C0KV1 AMZNAMZN.CO
                     </STMTTRN>
                     <STMTTRN>
                         <TRNTYPE>PAYMENT
-                        <DTPOSTED>20201109170000[0:UTC]
+                        <DTPOSTED>20201009170000[0:UTC]
                         <TRNAMT>-74.28
-                        <FITID>202011093
-                        <CORRECTFITID>202011093
+                        <FITID>202010093
+                        <CORRECTFITID>202010093
                         <CORRECTACTION>REPLACE
                         <NAME>MANDOLAS ITALIAN KITCHEN CEDAR P
                         <MEMO>MANDOLAS ITALIAN KITCHEN CEDAR P

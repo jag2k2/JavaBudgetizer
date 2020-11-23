@@ -7,10 +7,6 @@ public class CreditTransaction extends Transaction{
         super(reference, date, description, amount, categoryName);
     }
 
-    public String getUniquifier() {
-        return "transactions.reference";
-    }
-
     @Override
     public String getTypeString(){
         return "credit";
@@ -19,16 +15,6 @@ public class CreditTransaction extends Transaction{
     @Override
     public float getBalance(){
         return -1F;
-    }
-
-    @Override
-    public String getTerribleTemporaryHackyCondition(){
-        return "trans.reference = temp.reference";
-    }
-
-    @Override
-    public String toString() {
-        return super.toString();
     }
 
     @Override

@@ -81,7 +81,7 @@ class GoalStoreImplTest {
     void updateExistingGoalAmount() {
         Category category = TestDatabase.getTestCategories().get(2);
         TransactionSummary summaryToUpdate = new TransactionSummary(whichMonth, category);
-        Float newGoal = 200F;
+        float newGoal = 200F;
         summaryToUpdate.addGoal(newGoal);
 
         goalStore.updateGoalAmount(summaryToUpdate);
@@ -94,7 +94,7 @@ class GoalStoreImplTest {
     void addGoal() {
         Category categoryToAddTo = TestDatabase.getTestCategories().get(1);
         TransactionSummary summaryToUpdate = new TransactionSummary(whichMonth, categoryToAddTo);
-        Float newGoal = 200F;
+        float newGoal = 200F;
         summaryToUpdate.addGoal(newGoal);
 
         goalStore.addGoal(summaryToUpdate);

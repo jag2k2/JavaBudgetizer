@@ -1,6 +1,6 @@
 package flb.listeners;
 
-import flb.components.editors.MonthGoalClearer;
+import flb.components.editor.summary.MonthGoalClearer;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

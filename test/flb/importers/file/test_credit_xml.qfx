@@ -31,29 +31,29 @@
                     <DTEND>20201119170000[0:UTC]</DTEND>
                     <STMTTRN>
                         <TRNTYPE>PAYMENT</TRNTYPE>
-                        <DTPOSTED>20201109170000[0:UTC]</DTPOSTED>
+                        <DTPOSTED>20201009170000[0:UTC]</DTPOSTED>
                         <TRNAMT>-21.43</TRNAMT>
-                        <FITID>202011091</FITID>
-                        <CORRECTFITID>202011091</CORRECTFITID>
+                        <FITID>202010091</FITID>
+                        <CORRECTFITID>202010091</CORRECTFITID>
                         <CORRECTACTION>REPLACE</CORRECTACTION>
                         <NAME>EXXONMOBIL 47946819 AUSTIN TX</NAME>
                     </STMTTRN>
                     <STMTTRN>
                         <TRNTYPE>PAYMENT</TRNTYPE>
-                        <DTPOSTED>20201109170000[0:UTC]</DTPOSTED>
+                        <DTPOSTED>20201009170000[0:UTC]</DTPOSTED>
                         <TRNAMT>-24.99</TRNAMT>
-                        <FITID>202011092</FITID>
-                        <CORRECTFITID>202011092</CORRECTFITID>
+                        <FITID>202010092</FITID>
+                        <CORRECTFITID>202010092</CORRECTFITID>
                         <CORRECTACTION>REPLACE</CORRECTACTION>
                         <NAME>AMAZON.COM*2813C0KV1 AMZNAMZN.CO</NAME>
                         <MEMO>AMAZON.COM*2813C0KV1 AMZNAMZN.CO</MEMO>
                     </STMTTRN>
                     <STMTTRN>
                         <TRNTYPE>PAYMENT</TRNTYPE>
-                        <DTPOSTED>20201109170000[0:UTC]</DTPOSTED>
+                        <DTPOSTED>20201009170000[0:UTC]</DTPOSTED>
                         <TRNAMT>-74.28</TRNAMT>
-                        <FITID>202011093</FITID>
-                        <CORRECTFITID>202011093</CORRECTFITID>
+                        <FITID>202010093</FITID>
+                        <CORRECTFITID>202010093</CORRECTFITID>
                         <CORRECTACTION>REPLACE</CORRECTACTION>
                         <NAME>MANDOLAS ITALIAN KITCHEN CEDAR P</NAME>
                         <MEMO>MANDOLAS ITALIAN KITCHEN CEDAR P</MEMO>

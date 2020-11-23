@@ -3,13 +3,12 @@ package flb.listeners;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import flb.databases.TestDatabase;
-import flb.datastores.CategoryStore;
-import flb.components.editors.CategoryEditorImpl;
-import flb.components.editors.tables.CategoryTableTester;
+import flb.components.editor.category.CategoryEditorImpl;
+import flb.components.editor.category.CategoryTableTester;
 import flb.tuples.*;
 import flb.datastores.*;
 import org.junit.jupiter.api.*;
-import javax.swing.*;
+
 import java.util.*;
 
 class UserEditsDefaultGoalListenerTest {

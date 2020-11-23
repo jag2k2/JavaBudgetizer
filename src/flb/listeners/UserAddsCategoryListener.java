@@ -1,7 +1,7 @@
 package flb.listeners;
 
-import flb.components.editors.CategoryAdder;
-import javax.swing.*;
+import flb.components.editor.category.CategoryAdder;
+
 import java.awt.event.*;
 
 public class UserAddsCategoryListener implements ActionListener {

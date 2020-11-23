@@ -2,11 +2,9 @@ package flb.listeners;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import flb.components.editors.CategoryEditorNoDialog;
+import flb.components.editor.category.CategoryEditorNoDialog;
 import flb.databases.TestDatabase;
-import flb.datastores.CategoryStore;
-import flb.components.editors.CategoryEditorImpl;
-import flb.components.editors.tables.CategoryTableTester;
+import flb.components.editor.category.CategoryEditorImpl;
 import flb.tuples.*;
 import flb.datastores.*;
 import org.junit.jupiter.api.*;
@@ -71,7 +69,7 @@ class UserDeletesCategoryListenerTest {
 
     @Test
     void userRefusesDelete() {
-        categoryEditor = new CategoryEditorNoDialog(categoryStore, false);;
+        categoryEditor = new CategoryEditorNoDialog(categoryStore, false);
 
         testButton.addActionListener(new UserDeletesCategoryListener(categoryEditor, new JFrame()));
 

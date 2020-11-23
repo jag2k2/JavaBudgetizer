@@ -28,18 +28,20 @@ abstract public class Transaction {
 
     public String getDateString() {
         return date.get(Calendar.YEAR) + "-" +
-                (1+date.get(Calendar.MONTH)) + "-" +
-                date.get(Calendar.DAY_OF_MONTH);
+                String.format("%02d", (1+date.get(Calendar.MONTH))) + "-" +
+                String.format("%02d", date.get(Calendar.DAY_OF_MONTH));
     }
 
     abstract public String getTypeString();
 
     abstract public float getBalance();
 
-    abstract public String getTerribleTemporaryHackyCondition();
-
     public String getDescription() {
         return description;
+    }
+
+    public String getDescriptionWithEscapes() {
+        return description.replace("'", "''");
     }
 
     public float getAmount() {
@@ -49,8 +51,6 @@ abstract public class Transaction {
     public String getCategoryName(){
         return categoryName;
     }
-
-    abstract public String getUniquifier();
 
     @Override
     public String toString() {

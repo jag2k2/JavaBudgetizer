@@ -24,7 +24,7 @@ public class OfxBoASandbox {
 
             BankAccount account = financialInstitution.loadBankAccount(bankAccountDetails, "jag2k2", "moneY1229");
 
-            Date startDate = new Date(2020, 11, 01);
+            Date startDate = new Date(2020, 11, 1);
             Date endDate = new Date(2020, 11, 21);
 
             AccountStatement statement = account.readStatement(startDate, endDate);

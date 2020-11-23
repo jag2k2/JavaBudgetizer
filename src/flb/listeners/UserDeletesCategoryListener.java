@@ -1,9 +1,8 @@
 package flb.listeners;
 
-import flb.components.editors.CategoryDeleter;
+import flb.components.editor.category.CategoryDeleter;
 import java.awt.*;
 import java.awt.event.*;
-import javax.swing.*;
 
 
 public class UserDeletesCategoryListener implements ActionListener {
