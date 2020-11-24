@@ -76,7 +76,7 @@ public class MainGUI {
         tabbedCategoryPane.setBorder(new CompoundBorder(greyBorder, BorderFactory.createEmptyBorder(2,5,5,5)));
 
         JTabbedPane tabbedTransactionPane = new JTabbedPane();
-        tabbedTransactionPane.addTab(" Banking ", bankingEditor.getPane());
+        tabbedTransactionPane.addTab(" Banking ", bankingEditor.getPanel());
         tabbedTransactionPane.addTab(" Credit ", creditEditor.getPanel());
         tabbedTransactionPane.setBorder(new CompoundBorder(greyBorder, BorderFactory.createEmptyBorder(2,5,5,5)));
 

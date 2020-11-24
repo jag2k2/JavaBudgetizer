@@ -14,8 +14,8 @@ public class BankingEditorImpl implements TransactionCategorizer, ViewChangeObse
         StoreChangeObserver, TableHighlighter {
     private final TransactionStore transactionStore;
     private final MonthDisplay monthDisplay;
-    private final BankingTable bankingTable;
-    private final BankingTableTester tableAutomator;
+    private final TransactionTable bankingTable;
+    private final TransactionTableTester tableAutomator;
 
     public BankingEditorImpl(TransactionStore transactionStore, CategoryStore categoryStore, MonthDisplay monthDisplay,
                              SummarySelector summarySelector) {
@@ -27,11 +27,11 @@ public class BankingEditorImpl implements TransactionCategorizer, ViewChangeObse
         this.tableAutomator = bankingTableImpl;
     }
 
-    public JScrollPane getPane() {
-        return bankingTable.getPane();
+    public JPanel getPanel() {
+        return bankingTable.getPanel();
     }
 
-    public BankingTableTester getTableTester() {
+    public TransactionTableTester getTableTester() {
         return tableAutomator;
     }
 

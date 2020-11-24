@@ -3,6 +3,8 @@ package flb.components.editor.transaction.banking;
 import static org.junit.jupiter.api.Assertions.*;
 
 import flb.components.editor.summary.SummarySelectorMock;
+import flb.components.editor.transaction.TransactionTable;
+import flb.components.editor.transaction.TransactionTableTester;
 import flb.components.menus.mock.*;
 import org.junit.jupiter.api.*;
 import flb.databases.TestDatabase;
@@ -10,8 +12,8 @@ import flb.tuples.*;
 import java.util.*;
 
 class BankingTableImplTest {
-    private BankingTable bankingTable;
-    private BankingTableTester tableAutomator;
+    private TransactionTable bankingTable;
+    private TransactionTableTester tableAutomator;
     private ArrayList<Transaction> expected;
 
     @BeforeEach

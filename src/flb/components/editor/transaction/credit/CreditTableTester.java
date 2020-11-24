@@ -1,8 +1,9 @@
 package flb.components.editor.transaction.credit;
 
-import flb.tuples.*;
-import java.util.ArrayList;
+import flb.components.editor.transaction.TransactionTableTester;
 
-public interface CreditTableTester {
-    ArrayList<Transaction> getTransactions();
+public interface CreditTableTester extends TransactionTableTester {
+    void setSelectedRows(int[] selectedRows);
+    int[] getSelectedRows();
+    String getStatusText();
 }

@@ -42,7 +42,7 @@ public class CreditEditorImpl implements TransactionCategorizer, ViewChangeObser
     @Override
     public void update() {
         ArrayList<Transaction> creditTransactions = transactionStore.getCreditTransactions(monthDisplay.getMonth());
-        creditTable.displayAndClearSelection(creditTransactions);
+        creditTable.display(creditTransactions);
     }
 
     @Override

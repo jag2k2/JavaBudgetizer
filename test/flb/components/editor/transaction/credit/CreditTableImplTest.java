@@ -1,7 +1,6 @@
 package flb.components.editor.transaction.credit;
 
 import static org.junit.jupiter.api.Assertions.*;
-
 import flb.components.menus.mock.MenuDisplayerMock;
 import flb.components.editor.summary.SummarySelectorMock;
 import org.junit.jupiter.api.*;
@@ -11,25 +10,49 @@ import java.util.*;
 
 class CreditTableImplTest {
     private CreditTable creditTable;
-    private CreditTableTester tableAutomator;
+    private CreditTableTester tableTester;
+    private StatusDisplayer statusDisplayer;
     private ArrayList<Transaction> expected;
 
     @BeforeEach
     void setUp() {
         CreditTableImpl creditTableImpl = new CreditTableImpl(new MenuDisplayerMock(), new SummarySelectorMock());
         this.creditTable = creditTableImpl;
-        this.tableAutomator = creditTableImpl;
+        this.tableTester = creditTableImpl;
+        this.statusDisplayer = creditTableImpl;
 
         expected = TestDatabase.getTestCreditTransactions();
     }
 
     @Test
     void displayAndClearSelection() {
-        creditTable.displayAndClearSelection(expected);
-        assertEquals(expected, tableAutomator.getTransactions());
+        creditTable.display(expected);
+        assertEquals(expected, tableTester.getTransactions());
 
         expected = new ArrayList<>();
-        creditTable.displayAndClearSelection(expected);
-        assertEquals(expected, tableAutomator.getTransactions());
+        creditTable.display(expected);
+        assertEquals(expected, tableTester.getTransactions());
+    }
+
+    @Test
+    void displayAndKeepSelection() {
+        creditTable.display(expected);
+        int[] selectedRows = {0,2};
+        tableTester.setSelectedRows(selectedRows);
+
+        creditTable.displayAndKeepSelection(TestDatabase.getTestCreditTransactions());
+
+        assertTrue(Arrays.equals(selectedRows, tableTester.getSelectedRows()));
+    }
+
+    @Test
+    void statusBarTest() {
+        creditTable.display(expected);
+        int[] selectedRows = {0,2};
+        tableTester.setSelectedRows(selectedRows);
+
+        statusDisplayer.displaySelectionStatus();
+
+        assertEquals("Count: 2     Sum: -55.00", tableTester.getStatusText());
     }
 }

@@ -3,22 +3,26 @@ package flb.components.editor.transaction.banking;
 import flb.components.editor.SimpleDollarRenderer;
 import flb.components.editor.summary.SummarySelector;
 import flb.components.editor.transaction.HighlightableRowTable;
+import flb.components.editor.transaction.TransactionTable;
+import flb.components.editor.transaction.TransactionTableTester;
 import flb.components.menus.*;
 import flb.listeners.*;
 import flb.tuples.*;
+
+import java.awt.*;
 import java.util.*;
 import flb.util.*;
 import javax.swing.*;
 
-public class BankingTableImpl implements BankingTable, BankingTableTester {
+public class BankingTableImpl implements TransactionTable, TransactionTableTester {
     private final BankingTableModelImp tableModel;
     private final HighlightableRowTable table;
-    private final JScrollPane scrollPane;
+    private final JPanel panel;
 
     public BankingTableImpl(MenuDisplayer menuDisplayer, SummarySelector summarySelector) {
         this.tableModel = new BankingTableModelImp();
         this.table = new HighlightableRowTable(tableModel, 1, summarySelector);
-        this.scrollPane = new JScrollPane(table);
+        this.panel = new JPanel(new BorderLayout());
 
         table.setSelectionModel(new NullSelectionModel());
         SimpleDollarRenderer dollarRenderer = new SimpleDollarRenderer();
@@ -43,13 +47,15 @@ public class BankingTableImpl implements BankingTable, BankingTableTester {
         table.getColumnModel().getColumn(2).setMaxWidth(170);
         table.getColumnModel().getColumn(3).setMinWidth(120);
 
+        JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        panel.add(scrollPane, BorderLayout.CENTER);
     }
 
     @Override
-    public JScrollPane getPane() {
-        return scrollPane;
+    public JPanel getPanel() {
+        return panel;
     }
 
     @Override

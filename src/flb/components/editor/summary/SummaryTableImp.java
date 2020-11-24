@@ -9,6 +9,7 @@ import flb.listeners.UserSelectsGoalListener;
 import flb.tuples.TransactionSummary;
 import flb.util.*;
 import javax.swing.*;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableCellEditor;
 import java.awt.*;
@@ -18,16 +19,14 @@ public class SummaryTableImp implements SummaryTable, SummarySelector, SummaryTa
     private final SummaryTableModelImp tableModel;
     private final JTable table;
     private final JScrollPane scrollPane;
-    private final ArrayList<TableHighlighter> tableHighlighters;
+
 
     public SummaryTableImp() {
         this.tableModel = new SummaryTableModelImp();
         this.table = new GreenRowTable(tableModel, 3);
         this.scrollPane = new JScrollPane(table);
-        this.tableHighlighters = new ArrayList<>();
 
         layout();
-        addListeners();
     }
 
     protected void layout() {
@@ -55,13 +54,9 @@ public class SummaryTableImp implements SummaryTable, SummarySelector, SummaryTa
         scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
     }
 
-    protected void addListeners(){
-        table.getSelectionModel().addListSelectionListener(new UserSelectsGoalListener(tableHighlighters));
-    }
-
     @Override
-    public void addGoalSelectedObserver(TableHighlighter tableHighlighter){
-        tableHighlighters.add(tableHighlighter);
+    public void addGoalSelectionListener(ListSelectionListener listSelectionListener){
+        table.getSelectionModel().addListSelectionListener(listSelectionListener);
     }
 
     @Override

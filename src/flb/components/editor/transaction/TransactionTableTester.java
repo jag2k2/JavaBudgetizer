@@ -1,8 +1,8 @@
-package flb.components.editor.transaction.banking;
+package flb.components.editor.transaction;
 
 import flb.tuples.*;
 import java.util.ArrayList;
 
-public interface BankingTableTester {
+public interface TransactionTableTester {
     ArrayList<Transaction> getTransactions();
 }

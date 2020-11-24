@@ -2,12 +2,11 @@ package flb.components.editor.transaction.credit;
 
 import flb.components.editor.SimpleDollarRenderer;
 import flb.components.editor.summary.SummarySelector;
-import flb.components.editor.transaction.HighlightableRowTable;
+import flb.components.editor.transaction.*;
 import flb.listeners.*;
 import flb.components.menus.MenuDisplayer;
 import flb.tuples.*;
 import flb.util.*;
-
 import java.awt.*;
 import java.util.*;
 import javax.swing.*;
@@ -65,7 +64,7 @@ public class CreditTableImpl implements CreditTable, CreditTableTester, StatusDi
     }
 
     @Override
-    public void displayAndClearSelection(ArrayList<Transaction> tableContents){
+    public void display(ArrayList<Transaction> tableContents){
         tableModel.updateTransactions(tableContents);
     }
 
@@ -73,9 +72,7 @@ public class CreditTableImpl implements CreditTable, CreditTableTester, StatusDi
     public void displayAndKeepSelection(ArrayList<Transaction> tableContents){
         int[] selectedRows = table.getSelectedRows();
         tableModel.updateTransactions(tableContents);
-        for (int row : selectedRows){
-            table.getSelectionModel().addSelectionInterval(row, row);
-        }
+        setSelectedRows(selectedRows);
     }
 
     @Override
@@ -103,5 +100,22 @@ public class CreditTableImpl implements CreditTable, CreditTableTester, StatusDi
     @Override
     public ArrayList<Transaction> getTransactions() {
         return tableModel.getTransactions();
+    }
+
+    @Override
+    public void setSelectedRows(int[] selectedRows) {
+        for (int row : selectedRows){
+            table.getSelectionModel().addSelectionInterval(row, row);
+        }
+    }
+
+    @Override
+    public int[] getSelectedRows() {
+        return table.getSelectedRows();
+    }
+
+    @Override
+    public String getStatusText() {
+        return statusBar.getText();
     }
 }

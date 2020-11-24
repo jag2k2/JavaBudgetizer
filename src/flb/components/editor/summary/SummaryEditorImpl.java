@@ -12,12 +12,13 @@ import java.util.*;
 import javax.swing.*;
 
 public class SummaryEditorImpl implements MonthGoalEditor, MonthGoalClearer, SummarySelector, ViewChangeObserver,
-        StoreChangeObserver, SummaryEditorTester{
+        StoreChangeObserver, SummaryEditorTester, GoalSelectedNotifier{
     private final GoalStore goalStore;
     private final TransactionStore transactionStore;
     private final SummaryTable summaryTable;
     private final SummaryTableTester tableTester;
     private final MonthDisplay monthDisplay;
+    private final List<TableHighlighter> tableHighlighters;
 
     public SummaryEditorImpl(TransactionStore transactionStore, GoalStore goalStore, MonthDisplay monthDisplay){
         this.goalStore = goalStore;
@@ -26,6 +27,7 @@ public class SummaryEditorImpl implements MonthGoalEditor, MonthGoalClearer, Sum
         SummaryTableImp goalTable = new SummaryTableImp();
         this.tableTester = goalTable;
         this.summaryTable = goalTable;
+        this.tableHighlighters = new ArrayList<>();
 
         addListeners();
     }
@@ -33,14 +35,23 @@ public class SummaryEditorImpl implements MonthGoalEditor, MonthGoalClearer, Sum
     protected void addListeners() {
         summaryTable.addEditorMenu(new GoalEditorMenuImpl(this));
         summaryTable.addGoalEditedListener(new UserEditsSummaryGoalListener(this));
+        summaryTable.addGoalSelectionListener(new UserSelectsGoalListener(this));
     }
 
     public JScrollPane getPane() {
         return summaryTable.getPane();
     }
 
-    public void addGoalSelectedListener(TableHighlighter tableHighlighter){
-        summaryTable.addGoalSelectedObserver(tableHighlighter);
+    @Override
+    public void addGoalSelectedObserver(TableHighlighter tableHighlighter){
+        tableHighlighters.add(tableHighlighter);
+    }
+
+    @Override
+    public void notifyGoalSelected(){
+        for(TableHighlighter tableHighlighter : tableHighlighters){
+            tableHighlighter.highlightRows();
+        }
     }
 
     @Override

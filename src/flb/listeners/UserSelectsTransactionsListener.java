@@ -1,9 +1,7 @@
 package flb.listeners;
 
 import flb.components.editor.transaction.credit.StatusDisplayer;
-
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
+import javax.swing.event.*;
 
 public class UserSelectsTransactionsListener implements ListSelectionListener {
     private final StatusDisplayer statusDisplayer;

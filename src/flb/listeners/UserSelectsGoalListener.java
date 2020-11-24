@@ -1,22 +1,19 @@
 package flb.listeners;
 
-import flb.components.editor.transaction.TableHighlighter;
-import java.util.*;
+import flb.components.editor.summary.GoalSelectedNotifier;
 import javax.swing.event.*;
 
 public class UserSelectsGoalListener implements ListSelectionListener {
-    private final ArrayList<TableHighlighter> tableHighlighters;
+    private final GoalSelectedNotifier goalSelectedNotifier;
 
-    public UserSelectsGoalListener(ArrayList<TableHighlighter> tableHighlighters){
-        this.tableHighlighters = tableHighlighters;
+    public UserSelectsGoalListener(GoalSelectedNotifier goalSelectedNotifier){
+        this.goalSelectedNotifier = goalSelectedNotifier;
     }
 
     @Override
     public void valueChanged(ListSelectionEvent e) {
         if (!e.getValueIsAdjusting()) {
-            for (TableHighlighter tableHighlighter : tableHighlighters){
-                tableHighlighter.highlightRows();
-            }
+            goalSelectedNotifier.notifyGoalSelected();
         }
     }
 }

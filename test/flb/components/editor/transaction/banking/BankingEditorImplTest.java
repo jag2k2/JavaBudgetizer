@@ -3,6 +3,7 @@ package flb.components.editor.transaction.banking;
 import static org.junit.jupiter.api.Assertions.*;
 
 import flb.components.editor.summary.SummarySelectorMock;
+import flb.components.editor.transaction.TransactionTableTester;
 import flb.components.monthselector.MonthSelectorImpl;
 import flb.components.monthselector.MonthSelector;
 import flb.databases.TestDatabase;
@@ -15,7 +16,7 @@ import java.util.*;
 class BankingEditorImplTest {
     private TestDatabase database;
     private BankingEditorImpl bankingEditor;
-    private BankingTableTester tableAutomator;
+    private TransactionTableTester tableAutomator;
     private List<Transaction> expected;
     private MonthSelector monthSetter;
 
