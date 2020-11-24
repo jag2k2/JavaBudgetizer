@@ -32,7 +32,7 @@ public class OfxParser {
                     String transactionType = transaction.getElementsByTagName("TRNTYPE").item(0).getTextContent();
 
                     if(type == AccountType.CREDIT){
-                        transactions.add(new CreditTransaction(reference, date, description, amount, ""));
+                        transactions.add(new CreditTransaction(reference, date, description, amount, "", ""));
                     }
 
                     if(type == AccountType.CHECKING) {

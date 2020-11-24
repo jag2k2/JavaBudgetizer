@@ -57,10 +57,21 @@ class TransactionStoreImpTest {
         ArrayList<Transaction> expected = TestDatabase.getTestCreditTransactions();
         Transaction creditTransaction = expected.get(0);
         Calendar date1 = new GregorianCalendar(2020, Calendar.OCTOBER, 25);
-        expected.set(0, new CreditTransaction("3589048", date1, "Shell", -20F, "Name2"));
+        expected.set(0, new CreditTransaction("3589048", date1, "Shell", -20F, "Name2", ""));
 
         transactionStore.categorizeTransaction(creditTransaction, "Name2");
 
+        assertEquals(expected, transactionStore.getCreditTransactions(whichMonth));
+    }
+
+    @Test
+    void groupTransactionsTest() {
+        List<Transaction> selected = TestDatabase.getTestCreditTransactions();
+        selected.remove(1);
+
+        transactionStore.labelGroup(selected, "TestGroupName");
+
+        List<Transaction> expected = TestDatabase.getTestCreditTransactions();
         assertEquals(expected, transactionStore.getCreditTransactions(whichMonth));
     }
 
@@ -87,15 +98,15 @@ class TransactionStoreImpTest {
 
     @Test
     void addCreditTransactions() {
-        ArrayList<Transaction> expected = TestDatabase.getTestCreditTransactions();
+        List<Transaction> expected = TestDatabase.getTestCreditTransactions();
         ArrayList<Transaction> transactionsToAppend = new ArrayList<>();
 
         transactionStore.addTransactions(transactionsToAppend);
         assertEquals(expected, transactionStore.getCreditTransactions(whichMonth));
 
-        Transaction newTransaction1 = new CreditTransaction("202010281",
+        CreditTransaction newTransaction1 = new CreditTransaction("202010281",
                 new GregorianCalendar(2020, Calendar.OCTOBER, 28),
-                "Torchy's", 14.53F, "");
+                "Torchy's", 14.53F, "", "");
         transactionsToAppend.add(newTransaction1);
         expected.add(newTransaction1);
 

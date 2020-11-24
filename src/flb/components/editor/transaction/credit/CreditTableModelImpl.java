@@ -35,7 +35,7 @@ public class CreditTableModelImpl extends AbstractTableModel implements Transact
         } else if (column == 3) {
             return tableContents.get(row).getDescription();
         } else if (column == 4) {
-            return "";
+            return tableContents.get(row).getPayGroup();
         } else {
             return null;
         }

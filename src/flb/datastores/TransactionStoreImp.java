@@ -31,6 +31,28 @@ public class TransactionStoreImp extends AbstractDataStore implements Transactio
     }
 
     @Override
+    public void labelGroup(List<Transaction> transactions, String groupName){
+        String update = "UPDATE transactions " +
+                "SET pay_group = '$name' " +
+                "WHERE reference IN ($refList)";
+        StringBuilder refList = new StringBuilder();
+        int count = 0;
+        for(Transaction transaction : transactions){
+            refList.append("'").append(transaction.getReference()).append("'");
+            count++;
+            if (count < transactions.size()){
+                refList.append(", ");
+            }
+        }
+
+        update = update.replace("$name", groupName);
+        update = update.replace("$refList", refList.toString());
+
+        sqlExecutor.executeUpdate(update);
+        notifyStoreChange();
+    }
+
+    @Override
     public void addTransactions(List<Transaction> transactions) {
         if(transactions.size() > 0){
             String update = "CREATE TEMPORARY TABLE transactions_temp (" +
@@ -82,7 +104,6 @@ public class TransactionStoreImp extends AbstractDataStore implements Transactio
 
     public ArrayList<Transaction> getBankingTransactions (WhichMonth whichMonth) {
         String query = getTransactionQueryTemplate(whichMonth);
-        query = query.replace("$uniquifier", "transactions.id");
         query = query.replace("$type", "banking");
 
         ResultSet results = sqlExecutor.executeQuery(query);
@@ -92,7 +113,6 @@ public class TransactionStoreImp extends AbstractDataStore implements Transactio
 
     public ArrayList<Transaction> getCreditTransactions (WhichMonth whichMonth) {
         String query = getTransactionQueryTemplate(whichMonth);
-        query = query.replace("$uniquifier", "transactions.reference");
         query = query.replace("$type", "credit");
 
         ResultSet results = sqlExecutor.executeQuery(query);
@@ -101,13 +121,14 @@ public class TransactionStoreImp extends AbstractDataStore implements Transactio
     }
 
     private String getTransactionQueryTemplate(WhichMonth whichMonth){
-        String query = "SELECT $uniquifier, " +
+        String query = "SELECT " +
                 "transactions.date, " +
                 "transactions.amount, " +
                 "transactions.description," +
                 "categories.name, " +
                 "transactions.reference, " +
-                "transactions.balance " +
+                "transactions.balance, " +
+                "transactions.pay_group " +
                 "FROM transactions " +
                 "LEFT JOIN categories ON transactions.category_id = categories.id WHERE " +
                 "transactions.date LIKE '$yrmo-%' AND transactions.type = '$type' " +
@@ -147,9 +168,12 @@ public class TransactionStoreImp extends AbstractDataStore implements Transactio
                 if (results.wasNull())
                     categoryName = "";
                 String reference = results.getString("transactions.reference");
+                String payGroup = results.getString("transactions.pay_group");
+                if (results.wasNull())
+                    payGroup = "";
                 LocalDate localDate = sqlDate.toLocalDate();
                 Calendar date = new GregorianCalendar(localDate.getYear(), localDate.getMonthValue()-1, localDate.getDayOfMonth());
-                creditTransactions.add(new CreditTransaction(reference, date, description, amount, categoryName));
+                creditTransactions.add(new CreditTransaction(reference, date, description, amount, categoryName, payGroup));
             }
         } catch (SQLException ex) {ex.printStackTrace();}
         return creditTransactions;

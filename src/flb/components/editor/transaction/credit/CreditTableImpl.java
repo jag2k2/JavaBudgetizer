@@ -8,6 +8,7 @@ import flb.components.menus.MenuDisplayer;
 import flb.tuples.*;
 import flb.util.*;
 import java.awt.*;
+import java.util.List;
 import java.util.*;
 import javax.swing.*;
 
@@ -17,7 +18,7 @@ public class CreditTableImpl implements CreditTable, CreditTableTester, StatusDi
     private final JPanel panel;
     private final JTextField statusBar;
 
-    public CreditTableImpl(MenuDisplayer menuDisplayer, SummarySelector summarySelector) {
+    public CreditTableImpl(MenuDisplayer categorizeMenu, MenuDisplayer payGroupMenu, SummarySelector summarySelector) {
         this.tableModel = new CreditTableModelImpl();
         this.table = new HighlightableRowTable(tableModel, 1, summarySelector);
         this.panel = new JPanel(new BorderLayout());
@@ -26,8 +27,10 @@ public class CreditTableImpl implements CreditTable, CreditTableTester, StatusDi
         SimpleDollarRenderer dollarRenderer = new SimpleDollarRenderer();
         dollarRenderer.setHorizontalAlignment(JLabel.RIGHT);
         table.getColumnModel().getColumn(1).setCellRenderer(dollarRenderer);
-        table.add(menuDisplayer.getPopup());
-        table.addMouseListener(new UserClicksCategoryColumnListener(menuDisplayer));
+        table.add(categorizeMenu.getPopup());
+        table.add(payGroupMenu.getPopup());
+        table.addMouseListener(new UserClicksCategoryColumnListener(categorizeMenu));
+        table.addMouseListener(new UserRightClicksCreditTransactions(payGroupMenu));
         table.getSelectionModel().addListSelectionListener(new UserSelectsTransactionsListener(this));
 
         layout();
@@ -77,16 +80,25 @@ public class CreditTableImpl implements CreditTable, CreditTableTester, StatusDi
 
     @Override
     public void displaySelectionStatus() {
-        float sum = 0F;
-        int count = 0;
-        for (int selectedRow : table.getSelectedRows()){
+        String status = "Count: " + table.getSelectedRows().length + "     Sum: " + String.format("%.2f", getSelectedSum());
+        statusBar.setText(status);
+    }
+
+    @Override
+    public float getSelectedSum(){
+        float sum = Float.NaN;
+        for (int selectedRow : table.getSelectedRows()) {
             for (Transaction transaction : tableModel.getTransaction(selectedRow)){
-                count++;
-                sum += transaction.getAmount();
+                if (Float.isNaN(sum)){
+                    sum = transaction.getAmount();
+                }
+                else {
+                    sum += transaction.getAmount();
+                }
+
             }
         }
-        String status = "Count: " + count + "     Sum: " + String.format("%.2f", sum);
-        statusBar.setText(status);
+        return sum;
     }
 
     @Override
@@ -100,6 +112,17 @@ public class CreditTableImpl implements CreditTable, CreditTableTester, StatusDi
     @Override
     public ArrayList<Transaction> getTransactions() {
         return tableModel.getTransactions();
+    }
+
+    @Override
+    public List<Transaction> getSelectedTransactions(){
+        List<Transaction> selectedTransactions = new ArrayList<>();
+        for (int row : table.getSelectedRows()){
+            for (Transaction transaction : tableModel.getTransaction(row)){
+                selectedTransactions.add(transaction);
+            }
+        }
+        return selectedTransactions;
     }
 
     @Override

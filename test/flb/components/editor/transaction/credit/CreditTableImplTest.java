@@ -16,7 +16,7 @@ class CreditTableImplTest {
 
     @BeforeEach
     void setUp() {
-        CreditTableImpl creditTableImpl = new CreditTableImpl(new MenuDisplayerMock(), new SummarySelectorMock());
+        CreditTableImpl creditTableImpl = new CreditTableImpl(new MenuDisplayerMock(), new MenuDisplayerMock(), new SummarySelectorMock());
         this.creditTable = creditTableImpl;
         this.tableTester = creditTableImpl;
         this.statusDisplayer = creditTableImpl;

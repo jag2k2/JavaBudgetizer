@@ -36,6 +36,8 @@ abstract public class Transaction {
 
     abstract public float getBalance();
 
+    abstract public String getPayGroup();
+
     public String getDescription() {
         return description;
     }

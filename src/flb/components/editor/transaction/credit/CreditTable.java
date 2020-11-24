@@ -7,4 +7,6 @@ import java.util.*;
 
 public interface CreditTable extends TransactionTable {
     void displayAndKeepSelection(ArrayList<Transaction> tableContents);
+    List<Transaction> getSelectedTransactions();
+    float getSelectedSum();
 }

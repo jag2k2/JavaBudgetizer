@@ -32,11 +32,11 @@ public class ImportingTransactions {
     static public List<Transaction> getCreditTransactions(){
         List<Transaction> transactions = new ArrayList<>();
         Transaction credit0 = new CreditTransaction("202010091", new GregorianCalendar(2020, Calendar.OCTOBER, 9),
-                "EXXONMOBIL 47946819 AUSTIN TX", -21.43F, "");
+                "EXXONMOBIL 47946819 AUSTIN TX", -21.43F, "", "");
         Transaction credit1 = new CreditTransaction("202010092", new GregorianCalendar(2020, Calendar.OCTOBER, 9),
-                "AMAZON.COM*2813C0KV1 AMZNAMZN.CO", -24.99F, "");
+                "AMAZON.COM*2813C0KV1 AMZNAMZN.CO", -24.99F, "", "");
         Transaction credit2 = new CreditTransaction("202010093", new GregorianCalendar(2020, Calendar.OCTOBER, 9),
-                "MANDOLAS ITALIAN KITCHEN CEDAR P", -74.28F, "");
+                "MANDOLAS ITALIAN KITCHEN CEDAR P", -74.28F, "", "");
         transactions.add(credit0);
         transactions.add(credit1);
         transactions.add(credit2);
