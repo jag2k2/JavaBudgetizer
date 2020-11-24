@@ -17,19 +17,19 @@ public class CreditEditorImpl implements TransactionCategorizer, ViewChangeObser
     private final TransactionStore transactionStore;
     private final CreditTable creditTable;
     private final CreditTableTester tableAutomator;
-    private final SelectedMonthGetter selectedMonthGetter;
+    private final MonthDisplay monthDisplay;
 
-    public CreditEditorImpl(TransactionStore transactionStore, CategoryStore categoryStore, SelectedMonthGetter selectedMonthGetter,
+    public CreditEditorImpl(TransactionStore transactionStore, CategoryStore categoryStore, MonthDisplay monthDisplay,
                             SummarySelector summarySelector){
         this.transactionStore = transactionStore;
-        this.selectedMonthGetter = selectedMonthGetter;
+        this.monthDisplay = monthDisplay;
         CategorizerMenuImpl categoryMenu = new CategorizerMenuImpl(categoryStore, this);
         CreditTableImpl creditTableImpl = new CreditTableImpl(categoryMenu, summarySelector);
         this.creditTable = creditTableImpl;
         this.tableAutomator = creditTableImpl;
     }
 
-    public JScrollPane getPane() { return creditTable.getPane(); }
+    public JPanel getPanel() { return creditTable.getPanel(); }
 
     public CreditTableTester getTableAutomator() { return tableAutomator; }
 
@@ -41,14 +41,14 @@ public class CreditEditorImpl implements TransactionCategorizer, ViewChangeObser
 
     @Override
     public void update() {
-        ArrayList<Transaction> creditTransactions = transactionStore.getCreditTransactions(selectedMonthGetter.getSelectedMonth());
+        ArrayList<Transaction> creditTransactions = transactionStore.getCreditTransactions(monthDisplay.getMonth());
         creditTable.displayAndClearSelection(creditTransactions);
     }
 
     @Override
     public void updateAndKeepSelection() {
-        ArrayList<Transaction> creditTransactions = transactionStore.getCreditTransactions(selectedMonthGetter.getSelectedMonth());
-        creditTable.displayAndClearSelection(creditTransactions);
+        ArrayList<Transaction> creditTransactions = transactionStore.getCreditTransactions(monthDisplay.getMonth());
+        creditTable.displayAndKeepSelection(creditTransactions);
     }
 
     @Override

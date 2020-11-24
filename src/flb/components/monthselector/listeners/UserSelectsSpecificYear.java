@@ -5,9 +5,9 @@ import javax.swing.*;
 import java.awt.event.*;
 
 public class UserSelectsSpecificYear implements ActionListener {
-    private final ViewSelectorImpl monthSelector;
+    private final MonthSelectorImpl monthSelector;
 
-    public UserSelectsSpecificYear(ViewSelectorImpl monthSelector) {
+    public UserSelectsSpecificYear(MonthSelectorImpl monthSelector) {
         this.monthSelector = monthSelector;
     }
 

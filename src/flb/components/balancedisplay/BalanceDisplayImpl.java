@@ -12,12 +12,12 @@ public class BalanceDisplayImpl implements ViewChangeObserver, StoreChangeObserv
     private final JPanel panel;
     private final JFormattedTextField balance;
     private final CategoryStore categoryStore;
-    private final SelectedMonthGetter selectedMonthGetter;
+    private final MonthDisplay monthDisplay;
 
-    public BalanceDisplayImpl(CategoryStore categoryStore, SelectedMonthGetter selectedMonthGetter){
+    public BalanceDisplayImpl(CategoryStore categoryStore, MonthDisplay monthDisplay){
         this.panel = new JPanel();
         this.categoryStore = categoryStore;
-        this.selectedMonthGetter = selectedMonthGetter;
+        this.monthDisplay = monthDisplay;
         this.balance = new JFormattedTextField(NumberFormat.getCurrencyInstance());
 
         layout();
@@ -42,7 +42,7 @@ public class BalanceDisplayImpl implements ViewChangeObserver, StoreChangeObserv
 
     @Override
     public void update() {
-        float balanceAmount = categoryStore.getBalance(selectedMonthGetter.getSelectedMonth());
+        float balanceAmount = categoryStore.getBalance(monthDisplay.getMonth());
         balance.setValue(balanceAmount);
         if (balanceAmount > 0) {
             balance.setBackground(new Color(207, 255, 207));
@@ -54,6 +54,6 @@ public class BalanceDisplayImpl implements ViewChangeObserver, StoreChangeObserv
 
     @Override
     public void updateAndKeepSelection() {
-        balance.setValue(categoryStore.getBalance(selectedMonthGetter.getSelectedMonth()));
+        balance.setValue(categoryStore.getBalance(monthDisplay.getMonth()));
     }
 }

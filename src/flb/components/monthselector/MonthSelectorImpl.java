@@ -12,7 +12,7 @@ import flb.components.monthselector.listeners.*;
 import flb.components.editor.*;
 import flb.util.*;
 
-public class ViewSelectorImpl implements ViewChangeNotifier, SelectedMonthGetter, SpecificMonthSetter,
+public class MonthSelectorImpl implements ViewChangeNotifier, MonthDisplay, MonthSelector,
         ViewChangeObserver {
     private final JPanel panel;
     private final MonthSelectorModelImpl monthModel;
@@ -24,7 +24,7 @@ public class ViewSelectorImpl implements ViewChangeNotifier, SelectedMonthGetter
     private final JFormattedTextField yearField;
     private final ItemListener userSelectsSpecificMonth;
 
-    public ViewSelectorImpl() {
+    public MonthSelectorImpl() {
         this.panel = new JPanel();
         this.viewChangeObservers = new ArrayList<>();
         this.prev = new JButton("Prev");
@@ -86,13 +86,14 @@ public class ViewSelectorImpl implements ViewChangeNotifier, SelectedMonthGetter
         month.addItemListener(userSelectsSpecificMonth);
     }
 
+    @Override
     public void setToCurrentMonth() {
         monthModel.setToCurrentMonth();
         notifyViewChange();
     }
 
     @Override
-    public WhichMonth getSelectedMonth() {
+    public WhichMonth getMonth() {
         return monthModel.getSelectedMonth();
     }
 

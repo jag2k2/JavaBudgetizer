@@ -4,9 +4,9 @@ import flb.components.monthselector.*;
 import java.awt.event.*;
 
 public class UserSpinsMonth implements ActionListener {
-    private final ViewSelectorImpl monthSelector;
+    private final MonthSelectorImpl monthSelector;
 
-    public UserSpinsMonth(ViewSelectorImpl monthSelector){
+    public UserSpinsMonth(MonthSelectorImpl monthSelector){
         this.monthSelector = monthSelector;
     }
 

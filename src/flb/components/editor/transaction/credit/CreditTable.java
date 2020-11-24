@@ -9,7 +9,7 @@ import flb.util.*;
 import javax.swing.*;
 
 public interface CreditTable extends TableHighlighter {
-    JScrollPane getPane();
+    JPanel getPanel();
     Maybe<Transaction> getTransaction(int row);
     void displayAndClearSelection(ArrayList<Transaction> tableContents);
     void displayAndKeepSelection(ArrayList<Transaction> tableContents);

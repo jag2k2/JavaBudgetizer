@@ -26,7 +26,7 @@ class UserCategorizesTransactionTest {
         database.connect();
         TransactionStore transactionStore = new TransactionStoreImp(database);
         CategoryStore categoryStore = new CategoryStoreImpl(database);
-        ViewSelectorImpl monthSelectorImpl = new ViewSelectorImpl();
+        MonthSelectorImpl monthSelectorImpl = new MonthSelectorImpl();
         monthSelectorImpl.setYear(2020);
         monthSelectorImpl.setMonth(Calendar.OCTOBER);
         bankingEditor = new BankingEditorImpl(transactionStore, categoryStore, monthSelectorImpl, new SummarySelectorMock());

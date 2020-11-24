@@ -3,7 +3,7 @@ package flb.listeners;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import flb.components.editor.summary.SummaryEditorImpl;
 import flb.components.editor.summary.SummaryTableTester;
-import flb.components.monthselector.ViewSelectorImpl;
+import flb.components.monthselector.MonthSelectorImpl;
 import flb.databases.TestDatabase;
 import flb.util.*;
 import org.junit.jupiter.api.*;
@@ -27,7 +27,7 @@ class UserEditsSummaryGoalListenerTest {
         GoalStoreImpl goalStore = new GoalStoreImpl(database);
         goalStoreTester = goalStore;
         TransactionStore transactionStore = new TransactionStoreImp(database);
-        ViewSelectorImpl monthSelectorImpl = new ViewSelectorImpl();
+        MonthSelectorImpl monthSelectorImpl = new MonthSelectorImpl();
         monthSelectorImpl.setYear(2020);
         monthSelectorImpl.setMonth(Calendar.OCTOBER);
         SummaryEditorImpl summaryEditor = new SummaryEditorImpl(transactionStore, goalStore, monthSelectorImpl);

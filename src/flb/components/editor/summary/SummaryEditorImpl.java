@@ -17,12 +17,12 @@ public class SummaryEditorImpl implements MonthGoalEditor, MonthGoalClearer, Sum
     private final TransactionStore transactionStore;
     private final SummaryTable summaryTable;
     private final SummaryTableTester tableTester;
-    private final SelectedMonthGetter selectedMonthGetter;
+    private final MonthDisplay monthDisplay;
 
-    public SummaryEditorImpl(TransactionStore transactionStore, GoalStore goalStore, SelectedMonthGetter selectedMonthGetter){
+    public SummaryEditorImpl(TransactionStore transactionStore, GoalStore goalStore, MonthDisplay monthDisplay){
         this.goalStore = goalStore;
         this.transactionStore = transactionStore;
-        this.selectedMonthGetter = selectedMonthGetter;
+        this.monthDisplay = monthDisplay;
         SummaryTableImp goalTable = new SummaryTableImp();
         this.tableTester = goalTable;
         this.summaryTable = goalTable;
@@ -45,13 +45,13 @@ public class SummaryEditorImpl implements MonthGoalEditor, MonthGoalClearer, Sum
 
     @Override
     public void update() {
-        ArrayList<TransactionSummary> transactionSummaries = transactionStore.getTransactionSummaries(selectedMonthGetter.getSelectedMonth());
+        ArrayList<TransactionSummary> transactionSummaries = transactionStore.getTransactionSummaries(monthDisplay.getMonth());
         summaryTable.display(transactionSummaries);
     }
 
     @Override
     public void updateAndKeepSelection() {
-        ArrayList<TransactionSummary> transactionSummaries = transactionStore.getTransactionSummaries(selectedMonthGetter.getSelectedMonth());
+        ArrayList<TransactionSummary> transactionSummaries = transactionStore.getTransactionSummaries(monthDisplay.getMonth());
         summaryTable.displayAndKeepSelection(transactionSummaries);
     }
 

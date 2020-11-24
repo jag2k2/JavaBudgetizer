@@ -13,14 +13,14 @@ import java.util.*;
 public class BankingEditorImpl implements TransactionCategorizer, ViewChangeObserver,
         StoreChangeObserver, TableHighlighter {
     private final TransactionStore transactionStore;
-    private final SelectedMonthGetter selectedMonthGetter;
+    private final MonthDisplay monthDisplay;
     private final BankingTable bankingTable;
     private final BankingTableTester tableAutomator;
 
-    public BankingEditorImpl(TransactionStore transactionStore, CategoryStore categoryStore, SelectedMonthGetter selectedMonthGetter,
+    public BankingEditorImpl(TransactionStore transactionStore, CategoryStore categoryStore, MonthDisplay monthDisplay,
                              SummarySelector summarySelector) {
         this.transactionStore = transactionStore;
-        this.selectedMonthGetter = selectedMonthGetter;
+        this.monthDisplay = monthDisplay;
         CategorizerMenuImpl categoryMenu = new CategorizerMenuImpl(categoryStore, this);
         BankingTableImpl bankingTableImpl = new BankingTableImpl(categoryMenu, summarySelector);
         this.bankingTable = bankingTableImpl;
@@ -44,13 +44,13 @@ public class BankingEditorImpl implements TransactionCategorizer, ViewChangeObse
 
     @Override
     public void update() {
-        ArrayList<Transaction> bankingTransactions = transactionStore.getBankingTransactions(selectedMonthGetter.getSelectedMonth());
+        ArrayList<Transaction> bankingTransactions = transactionStore.getBankingTransactions(monthDisplay.getMonth());
         bankingTable.display(bankingTransactions);
     }
 
     @Override
     public void updateAndKeepSelection() {
-        ArrayList<Transaction> bankingTransactions = transactionStore.getBankingTransactions(selectedMonthGetter.getSelectedMonth());
+        ArrayList<Transaction> bankingTransactions = transactionStore.getBankingTransactions(monthDisplay.getMonth());
         bankingTable.display(bankingTransactions);
     }
 

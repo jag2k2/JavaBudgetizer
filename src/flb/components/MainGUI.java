@@ -16,7 +16,7 @@ import java.awt.*;
 public class MainGUI {
     private final JFrame frame;
     private final MenuBarImpl menuBar;
-    private final ViewSelectorImpl monthSelector;
+    private final MonthSelectorImpl monthSelector;
     private final BalanceDisplayImpl balanceDisplay;
 
     private final BankingEditorImpl bankingEditor;
@@ -26,7 +26,7 @@ public class MainGUI {
 
     public MainGUI(TransactionStore transactionStore, CategoryStore categoryStore, GoalStore goalStore) {
         this.frame = new JFrame();
-        this.monthSelector = new ViewSelectorImpl();
+        this.monthSelector = new MonthSelectorImpl();
         this.summaryEditor = new SummaryEditorImpl(transactionStore, goalStore, monthSelector);
         this.categoryEditor = new CategoryEditorImpl(categoryStore);
         this.bankingEditor = new BankingEditorImpl(transactionStore, categoryStore, monthSelector, summaryEditor);
@@ -77,7 +77,7 @@ public class MainGUI {
 
         JTabbedPane tabbedTransactionPane = new JTabbedPane();
         tabbedTransactionPane.addTab(" Banking ", bankingEditor.getPane());
-        tabbedTransactionPane.addTab(" Credit ", creditEditor.getPane());
+        tabbedTransactionPane.addTab(" Credit ", creditEditor.getPanel());
         tabbedTransactionPane.setBorder(new CompoundBorder(greyBorder, BorderFactory.createEmptyBorder(2,5,5,5)));
 
         JPanel leftPane = new JPanel(new BorderLayout());

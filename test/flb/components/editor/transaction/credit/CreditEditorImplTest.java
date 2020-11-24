@@ -16,14 +16,14 @@ class CreditEditorImplTest {
     private CreditEditorImpl creditEditor;
     private CreditTableTester tableAutomator;
     private List<Transaction> expected;
-    private SpecificMonthSetter monthSetter;
+    private MonthSelector monthSetter;
 
     @BeforeEach
     void setUp() {
         database = new TestDatabase();
         database.connect();
         TransactionStore transactionStore = new TransactionStoreImp(database);
-        ViewSelectorImpl monthSelectorImpl = new ViewSelectorImpl();
+        MonthSelectorImpl monthSelectorImpl = new MonthSelectorImpl();
         monthSetter = monthSelectorImpl;
 
         creditEditor = new CreditEditorImpl(transactionStore, new CategoryStoreImpl(database), monthSelectorImpl, new SummarySelectorMock());

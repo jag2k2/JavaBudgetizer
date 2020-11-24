@@ -3,8 +3,8 @@ package flb.components.editor.transaction.banking;
 import static org.junit.jupiter.api.Assertions.*;
 
 import flb.components.editor.summary.SummarySelectorMock;
-import flb.components.monthselector.ViewSelectorImpl;
-import flb.components.monthselector.SpecificMonthSetter;
+import flb.components.monthselector.MonthSelectorImpl;
+import flb.components.monthselector.MonthSelector;
 import flb.databases.TestDatabase;
 import org.junit.jupiter.api.*;
 import flb.datastores.*;
@@ -17,14 +17,14 @@ class BankingEditorImplTest {
     private BankingEditorImpl bankingEditor;
     private BankingTableTester tableAutomator;
     private List<Transaction> expected;
-    private SpecificMonthSetter monthSetter;
+    private MonthSelector monthSetter;
 
     @BeforeEach
     void setUp() {
         database = new TestDatabase();
         database.connect();
         TransactionStore transactionStore = new TransactionStoreImp(database);
-        ViewSelectorImpl monthSelectorImpl = new ViewSelectorImpl();
+        MonthSelectorImpl monthSelectorImpl = new MonthSelectorImpl();
         monthSetter = monthSelectorImpl;
         monthSetter.setYear(2020);
         monthSetter.setMonth(Calendar.OCTOBER);

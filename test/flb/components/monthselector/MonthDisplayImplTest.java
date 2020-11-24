@@ -5,12 +5,12 @@ import org.junit.jupiter.api.*;
 import java.util.*;
 import flb.util.*;
 
-class SelectedMonthGetterImplTest {
-    private ViewSelectorImpl monthSelector;
+class MonthDisplayImplTest {
+    private MonthSelectorImpl monthSelector;
 
     @BeforeEach
     void setUp() {
-        monthSelector = new ViewSelectorImpl();
+        monthSelector = new MonthSelectorImpl();
     }
 
     @Test
@@ -18,7 +18,7 @@ class SelectedMonthGetterImplTest {
         Calendar now = new GregorianCalendar();
         WhichMonth expected = new WhichMonth(now.get(Calendar.YEAR), now.get(Calendar.MONTH));
 
-        WhichMonth actual = monthSelector.getSelectedMonth();
+        WhichMonth actual = monthSelector.getMonth();
 
         assertEquals(expected, actual);
     }
