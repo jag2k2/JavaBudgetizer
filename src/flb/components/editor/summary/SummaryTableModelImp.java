@@ -31,13 +31,17 @@ public class SummaryTableModelImp extends AbstractTableModel implements SummaryT
     @Override
     public Object getValueAt(int row, int column) {
         TransactionSummary transactionSummary = tableContents.get(row);
-        return switch (column) {
-            case 0 -> transactionSummary.getName();
-            case 1 -> transactionSummary.getGoalAmountWithDefault(Float.NaN);
-            case 2 -> transactionSummary.getSumWithDefault(Float.NaN);
-            case 3 -> transactionSummary.getCategoryBalance();
-            default -> null;
-        };
+        if (column == 0) {
+            return transactionSummary.getName();
+        } else if (column == 1) {
+            return transactionSummary.getGoalAmountWithDefault(Float.NaN);
+        } else if (column == 2) {
+            return transactionSummary.getSumWithDefault(Float.NaN);
+        } else if (column == 3) {
+            return transactionSummary.getCategoryBalance();
+        } else {
+            return null;
+        }
     }
 
     @Override

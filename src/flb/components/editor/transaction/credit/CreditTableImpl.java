@@ -59,7 +59,7 @@ public class CreditTableImpl implements CreditTable, CreditTableTester {
 
     @Override
     public void displayAndKeepSelection(ArrayList<Transaction> tableContents){
-        int[] selectedRows = table.getSelectionModel().getSelectedIndices();
+        //int[] selectedRows = table.getSelectionModel().getSelectedIndices();
         tableModel.updateTransactions(tableContents);
     }
 

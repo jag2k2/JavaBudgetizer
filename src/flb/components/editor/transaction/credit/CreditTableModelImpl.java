@@ -26,14 +26,19 @@ public class CreditTableModelImpl extends AbstractTableModel implements Transact
 
     @Override
     public Object getValueAt(int row, int column) {
-        return switch (column) {
-            case 0 -> tableContents.get(row).getDateString();
-            case 1 -> tableContents.get(row).getAmount();
-            case 2 -> tableContents.get(row).getCategoryName();
-            case 3 -> tableContents.get(row).getDescription();
-            case 4 -> "";
-            default -> null;
-        };
+        if (column == 0) {
+            return tableContents.get(row).getDateString();
+        } else if (column == 1) {
+            return tableContents.get(row).getAmount();
+        } else if (column == 2) {
+            return tableContents.get(row).getCategoryName();
+        } else if (column == 3) {
+            return tableContents.get(row).getDescription();
+        } else if (column == 4) {
+            return "";
+        } else {
+            return null;
+        }
     }
 
     @Override
