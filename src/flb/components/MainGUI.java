@@ -54,8 +54,8 @@ public class MainGUI {
         monthSelector.addViewChangeObserver(balanceDisplay);
         monthSelector.addViewChangeObserver(categoryEditor);
 
-        summaryEditor.addGoalSelectedListener(bankingEditor);
-        summaryEditor.addGoalSelectedListener(creditEditor);
+        summaryEditor.addGoalSelectedObserver(bankingEditor);
+        summaryEditor.addGoalSelectedObserver(creditEditor);
 
         layout();
     }
