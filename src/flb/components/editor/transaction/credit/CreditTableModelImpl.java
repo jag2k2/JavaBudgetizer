@@ -8,7 +8,7 @@ import java.util.*;
 
 public class CreditTableModelImpl extends AbstractTableModel implements TransactionTableModel {
     private final String[] columnNames = {"Date", "Amount", "Category", "Description", "Group"};
-    private ArrayList<Transaction> tableContents;
+    private ArrayList<CreditTransaction> tableContents;
 
     public CreditTableModelImpl() {
         tableContents = new ArrayList<>();
@@ -46,18 +46,18 @@ public class CreditTableModelImpl extends AbstractTableModel implements Transact
         return columnNames[column];
     }
 
-    public void updateTransactions(ArrayList<Transaction> tableContents) {
+    public void updateTransactions(ArrayList<CreditTransaction> tableContents) {
         this.tableContents = tableContents;
         fireTableDataChanged();
     }
 
     @Override
-    public ArrayList<Transaction> getTransactions(){
+    public ArrayList<CreditTransaction> getTransactions(){
         return tableContents;
     }
 
     @Override
-    public Maybe<Transaction> getTransaction(int row){
+    public Maybe<CreditTransaction> getTransaction(int row){
         if (row >= 0 && row < getRowCount()) {
             return new Maybe<>(tableContents.get(row));
         }

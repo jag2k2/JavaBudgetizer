@@ -4,5 +4,5 @@ import flb.tuples.*;
 import java.util.ArrayList;
 
 public interface TransactionTableTester {
-    ArrayList<Transaction> getTransactions();
+    ArrayList<? extends Transaction> getTransactions();
 }

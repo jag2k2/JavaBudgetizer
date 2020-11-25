@@ -31,7 +31,7 @@ public class TransactionStoreImp extends AbstractDataStore implements Transactio
     }
 
     @Override
-    public void labelGroup(List<Transaction> transactions, String groupName){
+    public void labelGroup(List<? extends Transaction> transactions, String groupName){
         String update = "UPDATE transactions " +
                 "SET pay_group = '$name' " +
                 "WHERE reference IN ($refList)";
@@ -53,7 +53,7 @@ public class TransactionStoreImp extends AbstractDataStore implements Transactio
     }
 
     @Override
-    public void addTransactions(List<Transaction> transactions) {
+    public void addTransactions(List<? extends Transaction> transactions) {
         if(transactions.size() > 0){
             String update = "CREATE TEMPORARY TABLE transactions_temp (" +
                     "date TIMESTAMP, " +
@@ -102,7 +102,7 @@ public class TransactionStoreImp extends AbstractDataStore implements Transactio
         }
     }
 
-    public ArrayList<Transaction> getBankingTransactions (WhichMonth whichMonth) {
+    public ArrayList<BankingTransaction> getBankingTransactions (WhichMonth whichMonth) {
         String query = getTransactionQueryTemplate(whichMonth);
         query = query.replace("$type", "banking");
 
@@ -111,7 +111,7 @@ public class TransactionStoreImp extends AbstractDataStore implements Transactio
         return castResultsToBankingTransactions(results);
     }
 
-    public ArrayList<Transaction> getCreditTransactions (WhichMonth whichMonth) {
+    public ArrayList<CreditTransaction> getCreditTransactions (WhichMonth whichMonth) {
         String query = getTransactionQueryTemplate(whichMonth);
         query = query.replace("$type", "credit");
 
@@ -137,8 +137,8 @@ public class TransactionStoreImp extends AbstractDataStore implements Transactio
         return query;
     }
 
-    private ArrayList<Transaction> castResultsToBankingTransactions(ResultSet results) {
-        ArrayList<Transaction> bankingTransactions = new ArrayList<>();
+    private ArrayList<BankingTransaction> castResultsToBankingTransactions(ResultSet results) {
+        ArrayList<BankingTransaction> bankingTransactions = new ArrayList<>();
         try {
             while (results.next()) {
                 Date sqlDate = results.getDate("transactions.date");
@@ -157,8 +157,8 @@ public class TransactionStoreImp extends AbstractDataStore implements Transactio
         return bankingTransactions;
     }
 
-    private ArrayList<Transaction> castResultsToCreditTransactions(ResultSet results) {
-        ArrayList<Transaction> creditTransactions = new ArrayList<>();
+    private ArrayList<CreditTransaction> castResultsToCreditTransactions(ResultSet results) {
+        ArrayList<CreditTransaction> creditTransactions = new ArrayList<>();
         try {
             while (results.next()) {
                 Date sqlDate = results.getDate("transactions.date");

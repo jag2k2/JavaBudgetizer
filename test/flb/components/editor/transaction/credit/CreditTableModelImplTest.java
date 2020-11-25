@@ -44,8 +44,8 @@ class CreditTableModelImplTest {
     void getTransaction() {
         int activeRow = 0;
 
-        Maybe<Transaction> expected = new Maybe<>(TestDatabase.getTestCreditTransactions().get(activeRow));
-        Maybe<Transaction> actual = tableModel.getTransaction(activeRow);
+        Maybe<CreditTransaction> expected = new Maybe<>(TestDatabase.getTestCreditTransactions().get(activeRow));
+        Maybe<CreditTransaction> actual = tableModel.getTransaction(activeRow);
         assertEquals(expected, actual);
 
         expected = new Maybe<>();

@@ -21,9 +21,6 @@ public class BankingTransaction extends Transaction{
     }
 
     @Override
-    public String getPayGroup(){ return ""; }
-
-    @Override
     public String toString() {
         return super.toString() + " | " + balance;
     }

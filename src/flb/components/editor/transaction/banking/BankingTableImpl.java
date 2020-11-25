@@ -16,7 +16,7 @@ import java.util.List;
 import flb.util.*;
 import javax.swing.*;
 
-public class BankingTableImpl implements TransactionTable, TransactionTableTester {
+public class BankingTableImpl implements BankingTable, TransactionTableTester {
     private final BankingTableModelImp tableModel;
     private final HighlightableRowTable table;
     private final JPanel panel;
@@ -62,7 +62,7 @@ public class BankingTableImpl implements TransactionTable, TransactionTableTeste
     }
 
     @Override
-    public void display(ArrayList<Transaction> tableContents){
+    public void display(ArrayList<BankingTransaction> tableContents){
         tableModel.updateTransactions(tableContents);
     }
 
@@ -72,12 +72,12 @@ public class BankingTableImpl implements TransactionTable, TransactionTableTeste
     }
 
     @Override
-    public Maybe<Transaction> getTransaction(int row){
+    public Maybe<BankingTransaction> getTransaction(int row){
         return tableModel.getTransaction(row);
     }
 
     @Override
-    public ArrayList<Transaction> getTransactions() {
+    public ArrayList<BankingTransaction> getTransactions() {
         return tableModel.getTransactions();
     }
 }

@@ -9,7 +9,7 @@ import java.util.*;
 public class BankingTableModelImp extends AbstractTableModel implements TransactionTableModel {
 
     private final String[] columnNames = {"Date", "Amount", "Category", "Description"};
-    private ArrayList<Transaction> tableContents;
+    private ArrayList<BankingTransaction> tableContents;
 
     public BankingTableModelImp() {
         tableContents = new ArrayList<>();
@@ -46,7 +46,7 @@ public class BankingTableModelImp extends AbstractTableModel implements Transact
     }
 
     @Override
-    public Maybe<Transaction> getTransaction(int row) {
+    public Maybe<BankingTransaction> getTransaction(int row) {
         if (row >= 0 && row < getRowCount()) {
             return new Maybe<>(tableContents.get(row));
         }
@@ -56,11 +56,11 @@ public class BankingTableModelImp extends AbstractTableModel implements Transact
     }
 
     @Override
-    public ArrayList<Transaction> getTransactions(){
+    public ArrayList<BankingTransaction> getTransactions(){
         return tableContents;
     }
 
-    public void updateTransactions(ArrayList<Transaction> tableContents) {
+    public void updateTransactions(ArrayList<BankingTransaction> tableContents) {
         this.tableContents = tableContents;
         fireTableDataChanged();
     }

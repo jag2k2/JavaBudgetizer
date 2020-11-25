@@ -12,7 +12,7 @@ class CreditTableImplTest {
     private CreditTable creditTable;
     private CreditTableTester tableTester;
     private StatusDisplayer statusDisplayer;
-    private ArrayList<Transaction> expected;
+    private ArrayList<CreditTransaction> expected;
 
     @BeforeEach
     void setUp() {

@@ -5,6 +5,6 @@ import flb.tuples.*;
 import java.util.ArrayList;
 
 public interface TransactionTableModel {
-    Maybe<Transaction> getTransaction(int row);
-    ArrayList<Transaction> getTransactions();
+    Maybe<? extends Transaction> getTransaction(int row);
+    ArrayList<? extends Transaction> getTransactions();
 }

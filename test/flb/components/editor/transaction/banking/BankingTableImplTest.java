@@ -12,9 +12,9 @@ import flb.tuples.*;
 import java.util.*;
 
 class BankingTableImplTest {
-    private TransactionTable bankingTable;
+    private BankingTable bankingTable;
     private TransactionTableTester tableAutomator;
-    private ArrayList<Transaction> expected;
+    private ArrayList<BankingTransaction> expected;
 
     @BeforeEach
     void setUp() {

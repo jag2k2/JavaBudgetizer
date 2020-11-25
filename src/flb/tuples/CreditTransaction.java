@@ -15,7 +15,6 @@ public class CreditTransaction extends Transaction{
         return "credit";
     }
 
-    @Override
     public String getPayGroup() {
         return payGroup;
     }

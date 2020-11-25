@@ -2,7 +2,6 @@ package flb.components.editor.transaction.banking;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import flb.components.editor.transaction.banking.BankingTableModelImp;
 import org.junit.jupiter.api.*;
 import flb.databases.TestDatabase;
 import flb.tuples.*;
@@ -41,8 +40,8 @@ class BankingTableModelImpTest {
 
     @Test
     void getTransaction() {
-        Maybe<Transaction> expected = new Maybe<>(TestDatabase.getTestBankingTransactions().get(0));
-        Maybe<Transaction> actual = tableModel.getTransaction(0);
+        Maybe<BankingTransaction> expected = new Maybe<>(TestDatabase.getTestBankingTransactions().get(0));
+        Maybe<BankingTransaction> actual = tableModel.getTransaction(0);
         assertEquals(expected, actual);
 
         expected = new Maybe<>();

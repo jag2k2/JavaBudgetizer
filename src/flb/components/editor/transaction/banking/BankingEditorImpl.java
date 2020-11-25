@@ -14,7 +14,7 @@ public class BankingEditorImpl implements TransactionCategorizer, ViewChangeObse
         StoreChangeObserver, TableHighlighter {
     private final TransactionStore transactionStore;
     private final MonthDisplay monthDisplay;
-    private final TransactionTable bankingTable;
+    private final BankingTable bankingTable;
     private final TransactionTableTester tableAutomator;
 
     public BankingEditorImpl(TransactionStore transactionStore, CategoryStore categoryStore, MonthDisplay monthDisplay,
@@ -44,13 +44,13 @@ public class BankingEditorImpl implements TransactionCategorizer, ViewChangeObse
 
     @Override
     public void update() {
-        ArrayList<Transaction> bankingTransactions = transactionStore.getBankingTransactions(monthDisplay.getMonth());
+        ArrayList<BankingTransaction> bankingTransactions = transactionStore.getBankingTransactions(monthDisplay.getMonth());
         bankingTable.display(bankingTransactions);
     }
 
     @Override
     public void updateAndKeepSelection() {
-        ArrayList<Transaction> bankingTransactions = transactionStore.getBankingTransactions(monthDisplay.getMonth());
+        ArrayList<BankingTransaction> bankingTransactions = transactionStore.getBankingTransactions(monthDisplay.getMonth());
         bankingTable.display(bankingTransactions);
     }
 

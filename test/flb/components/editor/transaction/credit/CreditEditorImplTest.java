@@ -15,7 +15,7 @@ class CreditEditorImplTest {
     private TestDatabase database;
     private CreditEditorImpl creditEditor;
     private CreditTableTester tableTester;
-    private List<Transaction> expected;
+    private List<CreditTransaction> expected;
     private MonthSelector monthSetter;
 
     @BeforeEach
@@ -63,7 +63,7 @@ class CreditEditorImplTest {
 
         creditEditor.groupSelectedTransactions(date);
 
-        List<Transaction> expected = TestDatabase.getTestCreditTransactions();
+        List<CreditTransaction> expected = TestDatabase.getTestCreditTransactions();
         assertEquals(expected, tableTester.getTransactions());
     }
 

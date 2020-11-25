@@ -6,7 +6,8 @@ import flb.tuples.*;
 import java.util.*;
 
 public interface CreditTable extends TransactionTable {
-    void displayAndKeepSelection(ArrayList<Transaction> tableContents);
-    List<Transaction> getSelectedTransactions();
+    void display(ArrayList<CreditTransaction> tableContents);
+    void displayAndKeepSelection(ArrayList<CreditTransaction> tableContents);
+    List<CreditTransaction> getSelectedTransactions();
     float getSelectedSum();
 }

@@ -17,7 +17,7 @@ class BankingEditorImplTest {
     private TestDatabase database;
     private BankingEditorImpl bankingEditor;
     private TransactionTableTester tableAutomator;
-    private List<Transaction> expected;
+    private List<BankingTransaction> expected;
     private MonthSelector monthSetter;
 
     @BeforeEach

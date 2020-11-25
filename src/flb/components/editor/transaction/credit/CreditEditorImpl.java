@@ -8,7 +8,6 @@ import flb.components.menus.*;
 import flb.components.monthselector.*;
 import flb.datastores.*;
 import flb.tuples.*;
-import flb.util.WhichMonth;
 
 import javax.swing.*;
 import java.util.*;
@@ -61,13 +60,13 @@ public class CreditEditorImpl implements TransactionCategorizer, TransactionGrou
 
     @Override
     public void update() {
-        ArrayList<Transaction> creditTransactions = transactionStore.getCreditTransactions(monthDisplay.getMonth());
+        ArrayList<CreditTransaction> creditTransactions = transactionStore.getCreditTransactions(monthDisplay.getMonth());
         creditTable.display(creditTransactions);
     }
 
     @Override
     public void updateAndKeepSelection() {
-        ArrayList<Transaction> creditTransactions = transactionStore.getCreditTransactions(monthDisplay.getMonth());
+        ArrayList<CreditTransaction> creditTransactions = transactionStore.getCreditTransactions(monthDisplay.getMonth());
         creditTable.displayAndKeepSelection(creditTransactions);
     }
 
