@@ -29,8 +29,10 @@ public class CreditTableImpl implements CreditTable, CreditTableTester, StatusDi
         table.getColumnModel().getColumn(1).setCellRenderer(dollarRenderer);
         table.add(categorizeMenu.getPopup());
         table.add(payGroupMenu.getPopup());
-        table.addMouseListener(new UserClicksCategoryColumnListener(categorizeMenu));
-        table.addMouseListener(new UserRightClicksCreditTransactions(payGroupMenu));
+        List<Integer> validCategorizeColumns = new ArrayList<>(Collections.singletonList(2));
+        table.addMouseListener(new UserRightClicksTableListener(categorizeMenu, validCategorizeColumns));
+        List<Integer> validGroupingColumns = new ArrayList<>(Arrays.asList(0,1,3,4));
+        table.addMouseListener(new UserRightClicksTableListener(payGroupMenu, validGroupingColumns));
         table.getSelectionModel().addListSelectionListener(new UserSelectsTransactionsListener(this));
 
         layout();

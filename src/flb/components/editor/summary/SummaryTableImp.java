@@ -2,10 +2,8 @@ package flb.components.editor.summary;
 
 import flb.components.editor.SimpleDollarRenderer;
 import flb.components.editor.transaction.GreenRowTable;
-import flb.components.editor.transaction.TableHighlighter;
 import flb.components.menus.MenuDisplayer;
-import flb.listeners.UserRightCicksMonthGoalListener;
-import flb.listeners.UserSelectsGoalListener;
+import flb.listeners.UserRightClicksTableListener;
 import flb.tuples.TransactionSummary;
 import flb.util.*;
 import javax.swing.*;
@@ -14,6 +12,8 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.TableCellEditor;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class SummaryTableImp implements SummaryTable, SummarySelector, SummaryTableTester {
     private final SummaryTableModelImp tableModel;
@@ -119,6 +119,7 @@ public class SummaryTableImp implements SummaryTable, SummarySelector, SummaryTa
     @Override
     public void addEditorMenu(MenuDisplayer menuDisplayer) {
         table.add(menuDisplayer.getPopup());
-        table.addMouseListener(new UserRightCicksMonthGoalListener(menuDisplayer));
+        List<Integer> validGroupingColumns = new ArrayList<>(Collections.singletonList(1));
+        table.addMouseListener(new UserRightClicksTableListener(menuDisplayer, validGroupingColumns));
     }
 }

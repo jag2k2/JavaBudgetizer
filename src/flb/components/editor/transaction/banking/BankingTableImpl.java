@@ -11,6 +11,8 @@ import flb.tuples.*;
 
 import java.awt.*;
 import java.util.*;
+import java.util.List;
+
 import flb.util.*;
 import javax.swing.*;
 
@@ -19,7 +21,7 @@ public class BankingTableImpl implements TransactionTable, TransactionTableTeste
     private final HighlightableRowTable table;
     private final JPanel panel;
 
-    public BankingTableImpl(MenuDisplayer menuDisplayer, SummarySelector summarySelector) {
+    public BankingTableImpl(MenuDisplayer categorizeMenu, SummarySelector summarySelector) {
         this.tableModel = new BankingTableModelImp();
         this.table = new HighlightableRowTable(tableModel, 1, summarySelector);
         this.panel = new JPanel(new BorderLayout());
@@ -28,8 +30,9 @@ public class BankingTableImpl implements TransactionTable, TransactionTableTeste
         SimpleDollarRenderer dollarRenderer = new SimpleDollarRenderer();
         dollarRenderer.setHorizontalAlignment(JLabel.RIGHT);
         table.getColumnModel().getColumn(1).setCellRenderer(dollarRenderer);
-        table.add(menuDisplayer.getPopup());
-        table.addMouseListener(new UserClicksCategoryColumnListener(menuDisplayer));
+        table.add(categorizeMenu.getPopup());
+        List<Integer> validCategorizeColumns = new ArrayList<>(Collections.singletonList(2));
+        table.addMouseListener(new UserRightClicksTableListener(categorizeMenu, validCategorizeColumns));
 
         layout();
     }

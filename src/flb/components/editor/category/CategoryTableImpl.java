@@ -11,6 +11,7 @@ import javax.swing.table.*;
 import java.awt.*;
 import java.beans.*;
 import java.util.*;
+import java.util.List;
 
 public class CategoryTableImpl implements CategoryTable, CategoryTableTester {
     private final CategoryTableModel tableModel;
@@ -65,7 +66,8 @@ public class CategoryTableImpl implements CategoryTable, CategoryTableTester {
     @Override
     public void addEditorMenu (MenuDisplayer menuDisplayer) {
         table.add(menuDisplayer.getPopup());
-        table.addMouseListener(new UserRightClicksCategoryListener(menuDisplayer));
+        List<Integer> validGroupingColumns = new ArrayList<>(Arrays.asList(0,1,2));
+        table.addMouseListener(new UserRightClicksTableListener(menuDisplayer, validGroupingColumns));
     }
 
     @Override
