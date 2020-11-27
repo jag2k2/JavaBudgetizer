@@ -13,7 +13,7 @@ class MaybeTest {
 
     @BeforeEach
     void setUp() {
-        testCategory = CategoryFactory.makeCategory(0);
+        testCategory = CategoryFactory.makeCategory("Income");
         definitelySomething = new Maybe<>(testCategory);
         nothing = new Maybe<>();
     }

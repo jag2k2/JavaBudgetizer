@@ -56,11 +56,12 @@ class CategoryTableModelImplTest {
     @Test
     void setNameValue() {
         int rowToSet = 0;
+        String categoryName = CategoryFactory.getNames()[rowToSet];
         String newName = "TestRename";
 
         tableModel.setValueAt(newName, rowToSet, 0);
 
-        expected = new Maybe<>(CategoryFactory.makeCategoryWithNewName(rowToSet, newName));
+        expected = new Maybe<>(CategoryFactory.makeCategoryWithNewName(categoryName, newName));
         assertEquals(expected, tableModel.getCategory(rowToSet));
 
 
@@ -70,11 +71,12 @@ class CategoryTableModelImplTest {
     @Test
     void setAmountValue() {
         int rowToSet = 1;
+        String categoryName = CategoryFactory.getNames()[rowToSet];
         float newAmount = 2000;
 
         tableModel.setValueAt(newAmount, rowToSet, 1);
 
-        expected = new Maybe<>(CategoryFactory.makeCategoryWithNewAmount(rowToSet, newAmount));
+        expected = new Maybe<>(CategoryFactory.makeCategoryWithNewAmount(categoryName, newAmount));
         assertEquals(expected, tableModel.getCategory(1));
 
     }

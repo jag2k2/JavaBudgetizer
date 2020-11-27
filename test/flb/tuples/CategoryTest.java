@@ -6,11 +6,11 @@ import flb.databases.*;
 
 class CategoryTest {
     private Category category;
-    private final int categoryIndex = 0;
+    private final String categoryName = "Income";
 
     @BeforeEach
     void setUp() {
-        category = CategoryFactory.makeCategory(categoryIndex);
+        category = CategoryFactory.makeCategory(categoryName);
     }
 
     @Test
@@ -22,16 +22,16 @@ class CategoryTest {
 
     @Test
     void testEquals() {
-        Category categoryToCompare = CategoryFactory.makeCategory(categoryIndex);
+        Category categoryToCompare = CategoryFactory.makeCategory(categoryName);
         assertEquals(categoryToCompare, category);
 
-        categoryToCompare = CategoryFactory.makeCategoryWithNewName(categoryIndex, "Name2");
+        categoryToCompare = CategoryFactory.makeCategoryWithNewName(categoryName, "Name2");
         assertNotEquals(categoryToCompare, category);
 
-        categoryToCompare = CategoryFactory.makeCategoryWithNewAmount(categoryIndex, 200);
+        categoryToCompare = CategoryFactory.makeCategoryWithNewAmount(categoryName, 200);
         assertNotEquals(categoryToCompare, category);
 
-        categoryToCompare = CategoryFactory.makeCategoryWithNewExcluded(categoryIndex, true);
+        categoryToCompare = CategoryFactory.makeCategoryWithNewExcluded(categoryName, true);
         assertNotEquals(categoryToCompare, category);
     }
 }
