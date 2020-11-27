@@ -2,6 +2,7 @@ package flb.tuples;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import flb.databases.CategoryFactory;
 import flb.util.WhichMonth;
 import org.junit.jupiter.api.*;
 
@@ -12,7 +13,7 @@ class TransactionSummaryTest {
 
     @BeforeEach
     void setUp() {
-        transactionSummary = new TransactionSummary(new WhichMonth(2020, Calendar.OCTOBER), new Category("Name1", false));
+        transactionSummary = new TransactionSummary(new WhichMonth(2020, Calendar.OCTOBER), CategoryFactory.makeIncludedCategory("Name1"));
     }
 
     @Test
@@ -29,27 +30,27 @@ class TransactionSummaryTest {
         this.transactionSummary.addGoal(100);
         this.transactionSummary.addSum(115);
 
-        TransactionSummary summaryToCompare = new TransactionSummary(new WhichMonth(2020, Calendar.OCTOBER), new Category("Name1", false));
+        TransactionSummary summaryToCompare = new TransactionSummary(new WhichMonth(2020, Calendar.OCTOBER), CategoryFactory.makeIncludedCategory("Name1"));
         summaryToCompare.addGoal(100);
         summaryToCompare.addSum(115);
         assertEquals(transactionSummary, summaryToCompare);
 
 
-        summaryToCompare = new TransactionSummary(new WhichMonth(2020, Calendar.SEPTEMBER), new Category("Name1", false));
+        summaryToCompare = new TransactionSummary(new WhichMonth(2020, Calendar.SEPTEMBER), CategoryFactory.makeIncludedCategory("Name1"));
         summaryToCompare.addGoal(100);
         summaryToCompare.addSum(115);
         assertNotEquals(transactionSummary, summaryToCompare);
 
-        summaryToCompare = new TransactionSummary(new WhichMonth(2020, Calendar.OCTOBER), new Category("Name2", false));
+        summaryToCompare = new TransactionSummary(new WhichMonth(2020, Calendar.OCTOBER), CategoryFactory.makeIncludedCategory("Name2"));
         summaryToCompare.addGoal(100);
         summaryToCompare.addSum(115);
         assertNotEquals(transactionSummary, summaryToCompare);
 
-        summaryToCompare = new TransactionSummary(new WhichMonth(2020, Calendar.OCTOBER), new Category("Name1", false));
+        summaryToCompare = new TransactionSummary(new WhichMonth(2020, Calendar.OCTOBER), CategoryFactory.makeIncludedCategory("Name1"));
         summaryToCompare.addSum(115);
         assertNotEquals(transactionSummary, summaryToCompare);
 
-        summaryToCompare = new TransactionSummary(new WhichMonth(2020, Calendar.OCTOBER), new Category("Name1", false));
+        summaryToCompare = new TransactionSummary(new WhichMonth(2020, Calendar.OCTOBER), CategoryFactory.makeIncludedCategory("Name1"));
         summaryToCompare.addGoal(100);
         assertNotEquals(transactionSummary, summaryToCompare);
     }

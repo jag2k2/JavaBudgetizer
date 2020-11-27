@@ -30,13 +30,12 @@ class CategoryStoreImplTest {
 
     @Test
     void addCategory() {
-        Category categoryToAdd = new Category("Name4", false);
-        expected.add(categoryToAdd);
+        String newName = "Name4";
 
-        categoryStore.addCategory("Name4");
+        categoryStore.addCategory(newName);
 
-        actual = categoryStore.getCategories("Name4");
-        assertEquals(expected, actual);
+        expected.add(CategoryFactory.makeIncludedCategory(newName));
+        assertEquals(expected, categoryStore.getCategories(newName));
     }
 
     @Test

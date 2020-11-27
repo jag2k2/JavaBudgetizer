@@ -37,7 +37,7 @@ class UserAddsCategoryListenerTest {
     @Test
     void categoryAdded() {
         String nameFilterText = "Test2";
-        expected.add(new Category(nameFilterText, false));
+        expected.add(CategoryFactory.makeIncludedCategory(nameFilterText));
         categoryEditor.setNameFilter(nameFilterText);
 
         testButton.doClick();

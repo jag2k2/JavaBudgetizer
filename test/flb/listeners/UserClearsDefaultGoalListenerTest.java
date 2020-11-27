@@ -26,8 +26,6 @@ class UserClearsDefaultGoalListenerTest {
 
         testButton = new JButton();
         testButton.addActionListener(new UserClearsDefaultGoalListener(categoryEditor));
-
-        expected = CategoryListFactory.makeDefaultCategories();
     }
 
     @AfterEach
@@ -43,7 +41,7 @@ class UserClearsDefaultGoalListenerTest {
         testButton.setActionCommand("0");
         testButton.doClick();
 
-        expected.set(1, new Category("Name2", true));
+        expected = CategoryListFactory.makeDefaultCategoriesWithOneCleared("Name2");
         assertEquals(expected, categoryStore.getCategories(""));
         assertEquals(nameFilterText, categoryEditor.getNameFilter());
     }
@@ -55,6 +53,7 @@ class UserClearsDefaultGoalListenerTest {
         testButton.setActionCommand("-1");
         testButton.doClick();
 
+        expected = CategoryListFactory.makeDefaultCategories();
         assertEquals(expected, categoryStore.getCategories(""));
         assertEquals(nameFilterText, categoryEditor.getNameFilter());
     }
