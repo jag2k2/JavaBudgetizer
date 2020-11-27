@@ -1,12 +1,11 @@
 package flb.listeners;
 
 import static org.junit.jupiter.api.Assertions.*;
-
+import org.junit.jupiter.api.*;
 import flb.components.editor.summary.SummaryEditorImpl;
 import flb.components.monthselector.MonthSelectorImpl;
-import flb.databases.TestDatabase;
+import flb.databases.*;
 import flb.util.WhichMonth;
-import org.junit.jupiter.api.*;
 import flb.datastores.*;
 import flb.tuples.*;
 import javax.swing.*;
@@ -49,7 +48,7 @@ class UserClearsSummaryGoalListenerTest {
 
     @Test
     void actionPerformed() {
-        Category categoryWithGoal = TestDatabase.getTestCategories().get(categoryRowWithGoal);
+        Category categoryWithGoal = CategoryListFactory.makeDefaultCategories().get(categoryRowWithGoal);
         TransactionSummary summaryWithGoal = new TransactionSummary(whichMonth, categoryWithGoal);
 
         testButton.doClick();

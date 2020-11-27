@@ -1,12 +1,13 @@
 package flb.listeners;
 
 import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.*;
 import flb.databases.TestDatabase;
 import flb.components.editor.category.CategoryEditorImpl;
 import flb.components.editor.category.CategoryTableTester;
+import flb.databases.CategoryListFactory;
 import flb.tuples.*;
 import flb.datastores.*;
-import org.junit.jupiter.api.*;
 
 import java.util.*;
 
@@ -26,7 +27,7 @@ class UserRenamesCategoryListenerTest {
         categoryEditor.update();
         tableAutomator = categoryEditor.getTableTester();
 
-        expected = TestDatabase.getTestCategories();
+        expected = CategoryListFactory.makeDefaultCategories();
     }
 
     @AfterEach
@@ -46,7 +47,7 @@ class UserRenamesCategoryListenerTest {
         tableAutomator.editCellAt(activeRow,0);
         tableAutomator.setEditorName(newName);
 
-        Category category = TestDatabase.getTestCategories().get(1);
+        Category category = CategoryListFactory.makeDefaultCategories().get(1);
         category.rename(newName);
         expected.set(1, category);
         assertEquals(expected, categoryStore.getCategories(""));
@@ -62,10 +63,15 @@ class UserRenamesCategoryListenerTest {
         categoryEditor.setNameFilter(filterString);
         tableAutomator.setSelectedRow(activeRow);
 
+        String selectedCategory = "";
+        for(Category category : categoryEditor.getSelectedCategory()){
+            selectedCategory = category.getName();
+        }
+
         tableAutomator.editCellAt(activeRow,0);
         tableAutomator.setEditorName(newName);
 
-        expected.set(4, new Category(newName, 500, true));
+        expected = CategoryListFactory.makeDefaultCategoriesWithOneRenamed(selectedCategory, newName);
         assertEquals(expected, categoryStore.getCategories(""));
         assertEquals(filterString, categoryEditor.getNameFilter());
     }

@@ -1,17 +1,21 @@
 package flb.datastores;
 
 import static org.junit.jupiter.api.Assertions.*;
-
-import flb.databases.TestDatabase;
-import flb.util.WhichMonth;
-import flb.tuples.*;
 import org.junit.jupiter.api.*;
-import java.util.*;
+import flb.components.editor.transaction.credit.GroupNameFactory;
+import flb.databases.*;
+import flb.util.TransactionsImpl;
+import flb.util.WhichMonth;
+import flb.util.Transactions;
+import flb.tuples.*;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 class TransactionStoreImpTest {
     private TransactionStore transactionStore;
     private TestDatabase dataBase;
     private WhichMonth whichMonth;
+    private Calendar date20201029;
 
     @BeforeEach
     void setUp(){
@@ -19,6 +23,7 @@ class TransactionStoreImpTest {
         dataBase.connect();
         transactionStore = new TransactionStoreImp(dataBase);
         whichMonth = new WhichMonth(2020, Calendar.OCTOBER);
+        date20201029 = new GregorianCalendar(2020, Calendar.OCTOBER, 29);
     }
 
     @AfterEach
@@ -28,57 +33,58 @@ class TransactionStoreImpTest {
 
     @Test
     void getBankingTransactions() {
-        ArrayList<BankingTransaction> expected = TestDatabase.getTestBankingTransactions();
+        Transactions<BankingTransaction> expected = DebitFactory.makeTransactions();
 
         assertEquals(expected, transactionStore.getBankingTransactions(whichMonth));
     }
 
     @Test
     void getCreditTransactions() {
-        ArrayList<CreditTransaction> expected = TestDatabase.getTestCreditTransactions();
+        Transactions<CreditTransaction> expected = CreditFactory.makeTransactions();
 
         assertEquals(expected, transactionStore.getCreditTransactions(whichMonth));
     }
 
     @Test
     void categorizeBankingTransaction() {
-        ArrayList<BankingTransaction> expected = TestDatabase.getTestBankingTransactions();
-        Transaction bankingTransaction = expected.get(0);
-        Calendar date1 = new GregorianCalendar(2020, Calendar.OCTOBER, 25);
-        expected.set(0, new BankingTransaction("123", date1, "Amazon", -50F, "Name2", 1000F));
+        int rowToCategorize = 0;
+        String newName = "Name2";
+        BankingTransaction bankingTransaction = DebitFactory.makeTransactions().get(rowToCategorize);
 
-        transactionStore.categorizeTransaction(bankingTransaction, "Name2");
+        transactionStore.categorizeTransaction(bankingTransaction, newName);
 
+        Transactions<BankingTransaction> expected = DebitFactory.makeTransactionsWithCategorizedEntry(rowToCategorize, newName);
         assertEquals(expected, transactionStore.getBankingTransactions(whichMonth));
     }
 
     @Test
     void categorizeCreditTransaction() {
-        ArrayList<CreditTransaction> expected = TestDatabase.getTestCreditTransactions();
-        Transaction creditTransaction = expected.get(0);
-        Calendar date1 = new GregorianCalendar(2020, Calendar.OCTOBER, 25);
-        expected.set(0, new CreditTransaction("3589048", date1, "Shell", -20F, "Name2", ""));
+        int rowToCategorize = 0;
+        String newName = "Name2";
+        CreditTransaction creditTransaction = CreditFactory.makeTransactions().get(rowToCategorize);
 
-        transactionStore.categorizeTransaction(creditTransaction, "Name2");
+        transactionStore.categorizeTransaction(creditTransaction, newName);
 
+        Transactions<CreditTransaction> expected = CreditFactory.makeTransactionsWithCategorizedEntry(rowToCategorize, newName);
         assertEquals(expected, transactionStore.getCreditTransactions(whichMonth));
     }
 
     @Test
     void groupTransactionsTest() {
-        List<CreditTransaction> selected = TestDatabase.getTestCreditTransactions();
-        selected.remove(1);
+        int[] selectedRows = {0,2};
+        Transactions<CreditTransaction> selected = CreditFactory.makeTransactions(selectedRows);
 
-        transactionStore.labelGroup(selected, "TestGroupName");
+        float sum = CreditFactory.getTransactionSum(selectedRows);
+        transactionStore.labelGroup(selected, GroupNameFactory.createGroupName(date20201029, sum));
 
-        List<CreditTransaction> expected = TestDatabase.getTestCreditTransactions();
+        Transactions<CreditTransaction> expected = CreditFactory.makeGroupedTransactions(selectedRows, date20201029);
         assertEquals(expected, transactionStore.getCreditTransactions(whichMonth));
     }
 
     @Test
     void addBankingTransactions() {
-        ArrayList<BankingTransaction> expected = TestDatabase.getTestBankingTransactions();
-        ArrayList<Transaction> transactionsToAppend = new ArrayList<>();
+        Transactions<BankingTransaction> expected = DebitFactory.makeTransactions();
+        Transactions<Transaction> transactionsToAppend = new TransactionsImpl<>();
 
         transactionStore.addTransactions(transactionsToAppend);
         assertEquals(expected, transactionStore.getBankingTransactions(whichMonth));
@@ -98,8 +104,8 @@ class TransactionStoreImpTest {
 
     @Test
     void addCreditTransactions() {
-        List<CreditTransaction> expected = TestDatabase.getTestCreditTransactions();
-        ArrayList<Transaction> transactionsToAppend = new ArrayList<>();
+        Transactions<CreditTransaction> expected = CreditFactory.makeTransactions();
+        Transactions<CreditTransaction> transactionsToAppend = new TransactionsImpl<>();
 
         transactionStore.addTransactions(transactionsToAppend);
         assertEquals(expected, transactionStore.getCreditTransactions(whichMonth));
@@ -115,12 +121,5 @@ class TransactionStoreImpTest {
 
         transactionStore.addTransactions(transactionsToAppend);
         assertEquals(expected, transactionStore.getCreditTransactions(whichMonth));
-    }
-
-    @Test
-    void getSummaries() {
-        ArrayList<TransactionSummary> expected = new ArrayList<>();
-
-        System.out.println(transactionStore.getTransactionSummaries(whichMonth));
     }
 }

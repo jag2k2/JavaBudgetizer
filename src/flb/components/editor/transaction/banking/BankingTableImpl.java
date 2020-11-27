@@ -62,7 +62,7 @@ public class BankingTableImpl implements BankingTable, TransactionTableTester {
     }
 
     @Override
-    public void display(ArrayList<BankingTransaction> tableContents){
+    public void display(Transactions<BankingTransaction> tableContents){
         tableModel.updateTransactions(tableContents);
     }
 
@@ -77,7 +77,7 @@ public class BankingTableImpl implements BankingTable, TransactionTableTester {
     }
 
     @Override
-    public ArrayList<BankingTransaction> getTransactions() {
+    public Transactions<BankingTransaction> getTransactions() {
         return tableModel.getTransactions();
     }
 }

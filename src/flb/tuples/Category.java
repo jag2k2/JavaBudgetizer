@@ -16,7 +16,12 @@ public class Category {
 
     public Category(String name, float default_goal, Boolean exclude){
         this.name = name;
-        this.default_goal = new Maybe<>(default_goal);
+        if (Float.isNaN(default_goal)){
+            this.default_goal = new Maybe<>();
+        }
+        else{
+            this.default_goal = new Maybe<>(default_goal);
+        }
         this.exclude = exclude;
     }
 

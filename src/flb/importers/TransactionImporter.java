@@ -1,8 +1,8 @@
 package flb.importers;
 
+import flb.util.Transactions;
 import flb.tuples.Transaction;
-import java.util.List;
 
 public interface TransactionImporter {
-    List<Transaction> getTransactionsToImport();
+    Transactions<Transaction> getTransactionsToImport();
 }

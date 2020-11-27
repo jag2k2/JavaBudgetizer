@@ -3,7 +3,7 @@ package flb.listeners;
 import flb.datastores.TransactionStore;
 import flb.importers.TransactionImporter;
 import flb.tuples.Transaction;
-import java.util.List;
+import flb.util.Transactions;
 import java.awt.event.*;
 
 public class UserImportsTransactionsListener implements ActionListener {
@@ -17,7 +17,7 @@ public class UserImportsTransactionsListener implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        List<Transaction> transactionsToImport = transactionImporter.getTransactionsToImport();
+        Transactions<Transaction> transactionsToImport = transactionImporter.getTransactionsToImport();
         transactionStore.addTransactions(transactionsToImport);
     }
 }

@@ -1,12 +1,8 @@
 package flb.components.editor.category;
 
 import static org.junit.jupiter.api.Assertions.*;
-
-import flb.components.editor.category.CategoryTable;
-import flb.components.editor.category.CategoryTableImpl;
-import flb.components.editor.category.CategoryTableTester;
 import org.junit.jupiter.api.*;
-import flb.databases.TestDatabase;
+import flb.databases.CategoryListFactory;
 import flb.tuples.*;
 import flb.util.*;
 import java.util.*;
@@ -22,7 +18,7 @@ class CategoryTableImplTest {
         this.categoryTable = categoryTableImpl;
         this.tableAutomator = categoryTableImpl;
 
-        expectedDisplay = TestDatabase.getTestCategories();
+        expectedDisplay = CategoryListFactory.makeDefaultCategories();
         categoryTable.displayAndClearSelection(expectedDisplay);
     }
 
@@ -32,10 +28,10 @@ class CategoryTableImplTest {
         Maybe<Category> expected = new Maybe<>();
         assertEquals(expected, categoryTable.getSelectedCategory());
 
-        int testCategoryCount = TestDatabase.getTestCategories().size();
+        int testCategoryCount = CategoryListFactory.makeDefaultCategories().size();
         for (int i = 0; i < testCategoryCount; i++) {
             tableAutomator.setSelectedRow(i);
-            expected = new Maybe<>(TestDatabase.getTestCategories().get(i));
+            expected = new Maybe<>(CategoryListFactory.makeDefaultCategories().get(i));
             assertEquals(expected, categoryTable.getSelectedCategory());
         }
 

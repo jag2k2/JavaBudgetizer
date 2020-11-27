@@ -2,6 +2,8 @@ package flb.datastores;
 
 import flb.databases.SQLExecutor;
 import flb.util.WhichMonth;
+import flb.util.Transactions;
+import flb.util.TransactionsImpl;
 import flb.tuples.*;
 import java.sql.*;
 import java.time.*;
@@ -31,7 +33,7 @@ public class TransactionStoreImp extends AbstractDataStore implements Transactio
     }
 
     @Override
-    public void labelGroup(List<? extends Transaction> transactions, String groupName){
+    public void labelGroup(Transactions<? extends Transaction> transactions, String groupName){
         String update = "UPDATE transactions " +
                 "SET pay_group = '$name' " +
                 "WHERE reference IN ($refList)";
@@ -53,7 +55,7 @@ public class TransactionStoreImp extends AbstractDataStore implements Transactio
     }
 
     @Override
-    public void addTransactions(List<? extends Transaction> transactions) {
+    public void addTransactions(Transactions<? extends Transaction> transactions) {
         if(transactions.size() > 0){
             String update = "CREATE TEMPORARY TABLE transactions_temp (" +
                     "date TIMESTAMP, " +
@@ -102,7 +104,7 @@ public class TransactionStoreImp extends AbstractDataStore implements Transactio
         }
     }
 
-    public ArrayList<BankingTransaction> getBankingTransactions (WhichMonth whichMonth) {
+    public Transactions<BankingTransaction> getBankingTransactions (WhichMonth whichMonth) {
         String query = getTransactionQueryTemplate(whichMonth);
         query = query.replace("$type", "banking");
 
@@ -111,7 +113,7 @@ public class TransactionStoreImp extends AbstractDataStore implements Transactio
         return castResultsToBankingTransactions(results);
     }
 
-    public ArrayList<CreditTransaction> getCreditTransactions (WhichMonth whichMonth) {
+    public Transactions<CreditTransaction> getCreditTransactions (WhichMonth whichMonth) {
         String query = getTransactionQueryTemplate(whichMonth);
         query = query.replace("$type", "credit");
 
@@ -137,8 +139,8 @@ public class TransactionStoreImp extends AbstractDataStore implements Transactio
         return query;
     }
 
-    private ArrayList<BankingTransaction> castResultsToBankingTransactions(ResultSet results) {
-        ArrayList<BankingTransaction> bankingTransactions = new ArrayList<>();
+    private Transactions<BankingTransaction> castResultsToBankingTransactions(ResultSet results) {
+        Transactions<BankingTransaction> bankingTransactions = new TransactionsImpl<>();
         try {
             while (results.next()) {
                 Date sqlDate = results.getDate("transactions.date");
@@ -157,8 +159,8 @@ public class TransactionStoreImp extends AbstractDataStore implements Transactio
         return bankingTransactions;
     }
 
-    private ArrayList<CreditTransaction> castResultsToCreditTransactions(ResultSet results) {
-        ArrayList<CreditTransaction> creditTransactions = new ArrayList<>();
+    private Transactions<CreditTransaction> castResultsToCreditTransactions(ResultSet results) {
+        Transactions<CreditTransaction> creditTransactions = new TransactionsImpl<>();
         try {
             while (results.next()) {
                 Date sqlDate = results.getDate("transactions.date");

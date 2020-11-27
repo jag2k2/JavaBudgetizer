@@ -2,12 +2,12 @@ package flb.components.editor.transaction.credit;
 
 
 import flb.components.editor.transaction.TransactionTable;
+import flb.util.Transactions;
 import flb.tuples.*;
-import java.util.*;
 
 public interface CreditTable extends TransactionTable {
-    void display(ArrayList<CreditTransaction> tableContents);
-    void displayAndKeepSelection(ArrayList<CreditTransaction> tableContents);
-    List<CreditTransaction> getSelectedTransactions();
+    void display(Transactions<CreditTransaction> tableContents);
+    void displayAndKeepSelection(Transactions<CreditTransaction> tableContents);
+    Transactions<CreditTransaction> getSelectedTransactions();
     float getSelectedSum();
 }

@@ -2,22 +2,25 @@ package flb.util;
 
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.*;
+import flb.databases.*;
 import flb.tuples.*;
 
 
 class MaybeTest {
     private Maybe<Category> definitelySomething;
     private Maybe<Category> nothing;
+    private Category testCategory;
 
     @BeforeEach
     void setUp() {
-        definitelySomething = new Maybe<>(new Category("Name1", 100, false));
+        testCategory = CategoryFactory.makeCategory(0);
+        definitelySomething = new Maybe<>(testCategory);
         nothing = new Maybe<>();
     }
 
     @Test
     void testToString() {
-        String expected = "[Name1 | [100.0] | false]";
+        String expected = "[" + testCategory + "]";
         assertEquals(expected, definitelySomething.toString());
 
         expected = "[]";
@@ -26,7 +29,7 @@ class MaybeTest {
 
     @Test
     void testEquals() {
-        Maybe<Category> maybeToCompare = new Maybe<>(new Category("Name1", 100, false));
+        Maybe<Category> maybeToCompare = new Maybe<>(testCategory);
         assertEquals(maybeToCompare, definitelySomething);
 
         assertNotEquals(maybeToCompare, nothing);

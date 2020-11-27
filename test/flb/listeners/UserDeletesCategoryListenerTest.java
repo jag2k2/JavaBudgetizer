@@ -1,13 +1,12 @@
 package flb.listeners;
 
 import static org.junit.jupiter.api.Assertions.*;
-
+import org.junit.jupiter.api.*;
 import flb.components.editor.category.CategoryEditorNoDialog;
-import flb.databases.TestDatabase;
+import flb.databases.*;
 import flb.components.editor.category.CategoryEditorImpl;
 import flb.tuples.*;
 import flb.datastores.*;
-import org.junit.jupiter.api.*;
 import javax.swing.*;
 import java.util.*;
 
@@ -26,7 +25,7 @@ class UserDeletesCategoryListenerTest {
 
         testButton = new JButton();
 
-        expected = TestDatabase.getTestCategories();
+        expected = CategoryListFactory.makeDefaultCategories();
     }
 
     @AfterEach

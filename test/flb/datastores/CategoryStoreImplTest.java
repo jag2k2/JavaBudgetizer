@@ -1,12 +1,11 @@
 package flb.datastores;
 
-import java.util.*;
-
-import flb.databases.TestDatabase;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.*;
+import flb.databases.*;
 import flb.tuples.Category;
 import flb.util.WhichMonth;
-import org.junit.jupiter.api.*;
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.*;
 
 class CategoryStoreImplTest {
     private TestDatabase database;
@@ -42,15 +41,15 @@ class CategoryStoreImplTest {
 
     @Test
     void countTransactions() {
-        String categoryName = TestDatabase.getTestCategories().get(1).getName();
+        String categoryName = CategoryListFactory.makeDefaultCategories().get(1).getName();
         int actual = categoryStore.getTransactionCountOfCategory(categoryName);
         assertEquals(1, actual);
     }
 
     @Test
     void deleteCategory() {
-        Category categoryToDelete = TestDatabase.getTestCategories().get(1);
-        expected.add(TestDatabase.getTestCategories().get(2));
+        Category categoryToDelete = CategoryListFactory.makeDefaultCategories().get(1);
+        expected.add(CategoryListFactory.makeDefaultCategories().get(2));
 
         categoryStore.deleteCategory(categoryToDelete.getName());
 
@@ -60,7 +59,7 @@ class CategoryStoreImplTest {
 
     @Test
     void categoryExist() {
-        String realName = TestDatabase.getTestCategories().get(0).getName();
+        String realName = CategoryListFactory.makeDefaultCategories().get(0).getName();
         boolean found = categoryStore.categoryExist(realName);
         assertTrue(found);
 
@@ -76,7 +75,7 @@ class CategoryStoreImplTest {
 
     @Test
     void getCategoriesExactMatch() {
-        Category category = TestDatabase.getTestCategories().get(0);
+        Category category = CategoryListFactory.makeDefaultCategories().get(0);
         expected.add(category);
 
         ArrayList<Category> actual = categoryStore.getCategories(category.getName());
@@ -87,7 +86,7 @@ class CategoryStoreImplTest {
     @Test
     void getCategoriesMultipleMatch() {
         String nameFilter = "Name";
-        for(Category category : TestDatabase.getTestCategories()){
+        for(Category category : CategoryListFactory.makeDefaultCategories()){
             if(category.getName().contains(nameFilter)){
                 expected.add(category);
             }
@@ -100,7 +99,7 @@ class CategoryStoreImplTest {
 
     @Test
     void getAllCategories() {
-        expected = TestDatabase.getTestCategories();
+        expected = CategoryListFactory.makeDefaultCategories();
 
         actual = categoryStore.getCategories("");
 
@@ -109,42 +108,44 @@ class CategoryStoreImplTest {
 
     @Test
     void updateCategoryAmount() {
-        expected.add(new Category("Name2", 100, true));
+        String categoryToUpdate = "Name2";
+        float newAmount = 100;
 
-        categoryStore.updateAmount("Name2", 100);
+        categoryStore.updateAmount(categoryToUpdate, newAmount);
 
-        actual = categoryStore.getCategories("Name2");
-        assertEquals(expected, actual);
+        expected = CategoryListFactory.makeDefaultCategoriesWithOneAmountChanged(categoryToUpdate, newAmount);
+        assertEquals(expected, categoryStore.getCategories(""));
     }
 
     @Test
     void clearCategoryAmount() {
-        expected.add(new Category("Name2", true));
+        String categoryToUpdate = "Name2";
 
-        categoryStore.updateAmount("Name2", Float.NaN);
+        categoryStore.updateAmount(categoryToUpdate, Float.NaN);
 
-        actual = categoryStore.getCategories("Name2");
-        assertEquals(expected, actual);
+        expected = CategoryListFactory.makeDefaultCategoriesWithOneCleared(categoryToUpdate);
+        assertEquals(expected, categoryStore.getCategories(""));
     }
 
     @Test
     void toggleExclusion() {
-        expected.add(new Category("Name2", 200, false));
+        String selectedCategory = "Name2";
 
-        categoryStore.toggleExclusion("Name2");
+        categoryStore.toggleExclusion(selectedCategory);
 
-        actual = categoryStore.getCategories("Name2");
-        assertEquals(expected, actual);
+        expected = CategoryListFactory.makeDefaultCategoriesWithOneExcludesChanged(selectedCategory, false);
+        assertEquals(expected, categoryStore.getCategories(""));
     }
 
     @Test
     void renameCategory() {
-        expected.add(new Category("Name5", 200, true));
+        String oldName = "Name2";
+        String newName = "Name20";
 
-        categoryStore.renameCategory("Name2", "Name5");
+        categoryStore.renameCategory(oldName, newName);
 
-        actual = categoryStore.getCategories("Name5");
-        assertEquals(expected, actual);
+        expected = CategoryListFactory.makeDefaultCategoriesWithOneRenamed(oldName, newName);
+        assertEquals(expected, categoryStore.getCategories(""));
     }
 
     @Test

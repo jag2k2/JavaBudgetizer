@@ -1,10 +1,10 @@
 package flb.components.editor.transaction;
 
-import flb.util.*;
-import flb.tuples.*;
-import java.util.ArrayList;
+import flb.util.Maybe;
+import flb.util.Transactions;
+import flb.tuples.Transaction;
 
 public interface TransactionTableModel {
     Maybe<? extends Transaction> getTransaction(int row);
-    ArrayList<? extends Transaction> getTransactions();
+    Transactions<? extends Transaction> getTransactions();
 }

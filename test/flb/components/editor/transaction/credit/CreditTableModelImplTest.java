@@ -1,10 +1,8 @@
 package flb.components.editor.transaction.credit;
 
 import static org.junit.jupiter.api.Assertions.*;
-
-import flb.components.editor.transaction.credit.CreditTableModelImpl;
 import org.junit.jupiter.api.*;
-import flb.databases.TestDatabase;
+import flb.databases.*;
 import flb.tuples.*;
 import flb.util.*;
 
@@ -15,13 +13,13 @@ class CreditTableModelImplTest {
     @BeforeEach
     void setUp() {
         tableModel = new CreditTableModelImpl();
-        tableModel.updateTransactions(TestDatabase.getTestCreditTransactions());
+        tableModel.updateTransactions(CreditFactory.makeTransactions());
     }
 
     @Test
     void getValueAt() {
         int activeRow = 0;
-        Transaction expectedTransaction = TestDatabase.getTestCreditTransactions().get(activeRow);
+        Transaction expectedTransaction = CreditFactory.makeTransactions().get(activeRow);
 
         String expectedDate = expectedTransaction.getDateString();
         String actualDate = (String)tableModel.getValueAt(activeRow,0);
@@ -44,7 +42,7 @@ class CreditTableModelImplTest {
     void getTransaction() {
         int activeRow = 0;
 
-        Maybe<CreditTransaction> expected = new Maybe<>(TestDatabase.getTestCreditTransactions().get(activeRow));
+        Maybe<CreditTransaction> expected = new Maybe<>(CreditFactory.makeTransactions().get(activeRow));
         Maybe<CreditTransaction> actual = tableModel.getTransaction(activeRow);
         assertEquals(expected, actual);
 

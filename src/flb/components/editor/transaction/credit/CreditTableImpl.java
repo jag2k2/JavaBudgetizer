@@ -69,12 +69,12 @@ public class CreditTableImpl implements CreditTable, CreditTableTester, StatusDi
     }
 
     @Override
-    public void display(ArrayList<CreditTransaction> tableContents){
+    public void display(Transactions<CreditTransaction> tableContents){
         tableModel.updateTransactions(tableContents);
     }
 
     @Override
-    public void displayAndKeepSelection(ArrayList<CreditTransaction> tableContents){
+    public void displayAndKeepSelection(Transactions<CreditTransaction> tableContents){
         int[] selectedRows = table.getSelectedRows();
         tableModel.updateTransactions(tableContents);
         setSelectedRows(selectedRows);
@@ -112,13 +112,13 @@ public class CreditTableImpl implements CreditTable, CreditTableTester, StatusDi
     }
 
     @Override
-    public ArrayList<CreditTransaction> getTransactions() {
+    public Transactions<CreditTransaction> getTransactions() {
         return tableModel.getTransactions();
     }
 
     @Override
-    public List<CreditTransaction> getSelectedTransactions(){
-        List<CreditTransaction> selectedTransactions = new ArrayList<>();
+    public Transactions<CreditTransaction> getSelectedTransactions(){
+        Transactions<CreditTransaction> selectedTransactions = new TransactionsImpl<>();
         for (int row : table.getSelectedRows()){
             for (CreditTransaction transaction : tableModel.getTransaction(row)){
                 selectedTransactions.add(transaction);

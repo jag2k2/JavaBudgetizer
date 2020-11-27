@@ -1,12 +1,11 @@
 package flb.listeners;
 
 import static org.junit.jupiter.api.Assertions.*;
-
-import flb.databases.TestDatabase;
+import org.junit.jupiter.api.*;
+import flb.databases.*;
 import flb.datastores.*;
 import flb.components.editor.category.CategoryEditorImpl;
 import flb.tuples.*;
-import org.junit.jupiter.api.*;
 import javax.swing.*;
 import java.util.*;
 
@@ -28,7 +27,7 @@ class UserClearsDefaultGoalListenerTest {
         testButton = new JButton();
         testButton.addActionListener(new UserClearsDefaultGoalListener(categoryEditor));
 
-        expected = TestDatabase.getTestCategories();
+        expected = CategoryListFactory.makeDefaultCategories();
     }
 
     @AfterEach

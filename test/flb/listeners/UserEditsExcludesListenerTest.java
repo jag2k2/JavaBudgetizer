@@ -1,14 +1,12 @@
 package flb.listeners;
 
 import static org.junit.jupiter.api.Assertions.*;
-
-import flb.databases.TestDatabase;
+import org.junit.jupiter.api.*;
+import flb.databases.*;
 import flb.components.editor.category.CategoryEditorImpl;
 import flb.components.editor.category.CategoryTableTester;
 import flb.tuples.*;
 import flb.datastores.*;
-import org.junit.jupiter.api.*;
-
 import java.util.*;
 
 class UserEditsExcludesListenerTest {
@@ -27,7 +25,7 @@ class UserEditsExcludesListenerTest {
         categoryEditor.update();
         tableAutomator = categoryEditor.getTableTester();
 
-        expected = TestDatabase.getTestCategories();
+        expected = CategoryListFactory.makeDefaultCategories();
     }
 
     @AfterEach
@@ -45,7 +43,7 @@ class UserEditsExcludesListenerTest {
 
         tableAutomator.toggleSelectedExcludes();
 
-        Category category = TestDatabase.getTestCategories().get(1);
+        Category category = CategoryListFactory.makeDefaultCategories().get(1);
         category.toggleExcludes();
         expected.set(1, category);
         assertEquals(expected, categoryStore.getCategories(""));
@@ -58,9 +56,14 @@ class UserEditsExcludesListenerTest {
         categoryEditor.setNameFilter(nameFilterText);
         tableAutomator.setSelectedRow(0);
 
+        String categorySelected = "";
+        for(Category category : categoryEditor.getSelectedCategory()){
+            categorySelected = category.getName();
+        }
+
         tableAutomator.toggleSelectedExcludes();
 
-        expected.set(1, new Category("Name2", 200, false));
+        expected = CategoryListFactory.makeDefaultCategoriesWithOneExcludesChanged(categorySelected, false);
         assertEquals(expected, categoryStore.getCategories(""));
         assertEquals(nameFilterText, categoryEditor.getNameFilter());
     }

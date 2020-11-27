@@ -1,9 +1,9 @@
 package flb.components.editor.transaction.banking;
 
+import flb.util.Transactions;
 import flb.tuples.BankingTransaction;
 import flb.components.editor.transaction.*;
-import java.util.ArrayList;
 
 public interface BankingTable extends TransactionTable{
-    void display(ArrayList<BankingTransaction> tableContents);
+    void display(Transactions<BankingTransaction> tableContents);
 }

@@ -9,10 +9,10 @@ import java.util.*;
 public class BankingTableModelImp extends AbstractTableModel implements TransactionTableModel {
 
     private final String[] columnNames = {"Date", "Amount", "Category", "Description"};
-    private ArrayList<BankingTransaction> tableContents;
+    private Transactions<BankingTransaction> tableContents;
 
     public BankingTableModelImp() {
-        tableContents = new ArrayList<>();
+        tableContents = new TransactionsImpl<>();
     }
 
     @Override
@@ -56,11 +56,11 @@ public class BankingTableModelImp extends AbstractTableModel implements Transact
     }
 
     @Override
-    public ArrayList<BankingTransaction> getTransactions(){
+    public Transactions<BankingTransaction> getTransactions(){
         return tableContents;
     }
 
-    public void updateTransactions(ArrayList<BankingTransaction> tableContents) {
+    public void updateTransactions(Transactions<BankingTransaction> tableContents) {
         this.tableContents = tableContents;
         fireTableDataChanged();
     }

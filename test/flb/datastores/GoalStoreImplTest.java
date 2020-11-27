@@ -1,9 +1,8 @@
 package flb.datastores;
 
 import static org.junit.jupiter.api.Assertions.*;
-
-import flb.databases.TestDatabase;
 import org.junit.jupiter.api.*;
+import flb.databases.*;
 import flb.util.*;
 import flb.tuples.*;
 import java.util.*;
@@ -32,14 +31,14 @@ class GoalStoreImplTest {
 
         goalStore.createDefaultGoals(septemberDate);
 
-        for (Category category : TestDatabase.getTestCategories()){
+        for (Category category : CategoryListFactory.makeDefaultCategories()){
             assertEquals(category.getDefaultGoal(), goalStore.getGoal(septemberDate, category.getName()));
         }
     }
 
     @Test
     void deleteGoalDoesntExist() {
-        Category categoryWithoutGoal = TestDatabase.getTestCategories().get(1);
+        Category categoryWithoutGoal = CategoryListFactory.makeDefaultCategories().get(1);
         TransactionSummary summaryWithoutGoal = new TransactionSummary(whichMonth, categoryWithoutGoal);
 
         goalStore.deleteGoal(summaryWithoutGoal);
@@ -50,7 +49,7 @@ class GoalStoreImplTest {
 
     @Test
     void deleteGoalDoesExist() {
-        Category categoryWithGoal = TestDatabase.getTestCategories().get(0);
+        Category categoryWithGoal = CategoryListFactory.makeDefaultCategories().get(0);
         TransactionSummary summaryWithGoal = new TransactionSummary(whichMonth, categoryWithGoal);
 
         goalStore.deleteGoal(summaryWithGoal);
@@ -61,12 +60,12 @@ class GoalStoreImplTest {
 
     @Test
     void goalExists() {
-        Category categoryWithGoal = TestDatabase.getTestCategories().get(0);
+        Category categoryWithGoal = CategoryListFactory.makeDefaultCategories().get(0);
         TransactionSummary summaryWithGoal = new TransactionSummary(whichMonth, categoryWithGoal);
 
         assertTrue(goalStore.goalExists(summaryWithGoal));
 
-        Category categoryWithoutGoal = TestDatabase.getTestCategories().get(1);
+        Category categoryWithoutGoal = CategoryListFactory.makeDefaultCategories().get(1);
         TransactionSummary summaryWithNoGoal = new TransactionSummary(whichMonth, categoryWithoutGoal);
         assertFalse(goalStore.goalExists(summaryWithNoGoal));
     }
@@ -79,7 +78,7 @@ class GoalStoreImplTest {
 
     @Test
     void updateExistingGoalAmount() {
-        Category category = TestDatabase.getTestCategories().get(2);
+        Category category = CategoryListFactory.makeDefaultCategories().get(2);
         TransactionSummary summaryToUpdate = new TransactionSummary(whichMonth, category);
         float newGoal = 200F;
         summaryToUpdate.addGoal(newGoal);
@@ -92,7 +91,7 @@ class GoalStoreImplTest {
 
     @Test
     void addGoal() {
-        Category categoryToAddTo = TestDatabase.getTestCategories().get(1);
+        Category categoryToAddTo = CategoryListFactory.makeDefaultCategories().get(1);
         TransactionSummary summaryToUpdate = new TransactionSummary(whichMonth, categoryToAddTo);
         float newGoal = 200F;
         summaryToUpdate.addGoal(newGoal);

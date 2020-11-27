@@ -1,12 +1,12 @@
 package flb.listeners;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.*;
 import flb.components.editor.summary.SummaryEditorImpl;
 import flb.components.editor.summary.SummaryTableTester;
 import flb.components.monthselector.MonthSelectorImpl;
-import flb.databases.TestDatabase;
+import flb.databases.*;
 import flb.util.*;
-import org.junit.jupiter.api.*;
 import flb.datastores.*;
 import java.util.Calendar;
 
@@ -60,7 +60,7 @@ class UserEditsSummaryGoalListenerTest {
         tableTester.editCellAt(activeRow, 1);
         tableTester.setEditorGoal(newGoal);
 
-        String categoryNameToGet = TestDatabase.getTestCategories().get(activeRow).getName();
+        String categoryNameToGet = CategoryListFactory.makeDefaultCategories().get(activeRow).getName();
         assertEquals(expected, goalStoreTester.getGoal(selectedMonth, categoryNameToGet));
     }
 }

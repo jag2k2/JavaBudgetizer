@@ -3,16 +3,14 @@ package flb.importers.ofx;
 import flb.util.*;
 import flb.tuples.*;
 import org.w3c.dom.*;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.List;
 
 public class OfxParser {
     public enum AccountType { CHECKING, CREDIT }
 
-    static public List<Transaction> parseTransactions(Document document){
-        List<Transaction> transactions = new ArrayList<>();
+    static public Transactions<Transaction> parseTransactions(Document document){
+        Transactions<Transaction> transactions = new TransactionsImpl<>();
         Maybe<AccountType> accountType = getAccountType(document);
 
         for(AccountType type : accountType){

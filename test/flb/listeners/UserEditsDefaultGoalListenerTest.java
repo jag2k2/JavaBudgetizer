@@ -1,14 +1,12 @@
 package flb.listeners;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import flb.databases.TestDatabase;
+import org.junit.jupiter.api.*;
+import flb.databases.*;
 import flb.components.editor.category.CategoryEditorImpl;
 import flb.components.editor.category.CategoryTableTester;
 import flb.tuples.*;
 import flb.datastores.*;
-import org.junit.jupiter.api.*;
-
 import java.util.*;
 
 class UserEditsDefaultGoalListenerTest {
@@ -26,7 +24,7 @@ class UserEditsDefaultGoalListenerTest {
         categoryEditor = new CategoryEditorImpl(categoryStore);
         tableAutomator = categoryEditor.getTableTester();
 
-        expected = TestDatabase.getTestCategories();
+        expected = CategoryListFactory.makeDefaultCategories();
     }
 
     @AfterEach
@@ -46,7 +44,7 @@ class UserEditsDefaultGoalListenerTest {
         tableAutomator.editCellAt(activeRow,1);
         tableAutomator.setEditorGoal(newDefaultGoal);
 
-        Category category = TestDatabase.getTestCategories().get(1);
+        Category category = CategoryListFactory.makeDefaultCategories().get(1);
         category.setDefaultGoal(newDefaultGoal);
         expected.set(1, category);
         assertEquals(expected, categoryStore.getCategories(""));

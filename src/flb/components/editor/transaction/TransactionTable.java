@@ -1,7 +1,7 @@
 package flb.components.editor.transaction;
 
-import flb.tuples.*;
-import flb.util.*;
+import flb.util.Maybe;
+import flb.tuples.Transaction;
 import javax.swing.*;
 
 public interface TransactionTable extends TableHighlighter {

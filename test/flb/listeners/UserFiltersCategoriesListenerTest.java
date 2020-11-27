@@ -1,13 +1,13 @@
 package flb.listeners;
 
 import static org.junit.jupiter.api.Assertions.*;
-
-import flb.databases.TestDatabase;
+import org.junit.jupiter.api.*;
+import flb.databases.*;
 import flb.components.editor.category.CategoryEditorImpl;
 import flb.components.editor.category.CategoryTableTester;
 import flb.tuples.*;
 import flb.datastores.*;
-import org.junit.jupiter.api.*;
+
 
 import java.util.*;
 
@@ -37,7 +37,7 @@ class UserFiltersCategoriesListenerTest {
     void removeUpdate() {
         String filterString = "Name";
         categoryEditor.setNameFilter(filterString);
-        for (Category category : TestDatabase.getTestCategories()){
+        for (Category category : CategoryListFactory.makeDefaultCategories()){
             if(category.getName().contains(filterString)){
                 expected.add(category);
             }

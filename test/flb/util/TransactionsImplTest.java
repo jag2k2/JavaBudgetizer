@@ -1,11 +1,10 @@
 package flb.util;
 
-import flb.databases.TestDatabase;
+import org.junit.jupiter.api.*;
+import flb.databases.DebitFactory;
 import flb.tuples.BankingTransaction;
 import flb.tuples.CreditTransaction;
 import flb.tuples.Transaction;
-import org.junit.jupiter.api.*;
-
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -22,7 +21,7 @@ class TransactionsImplTest {
     @Test
     void assignments() {
         transactions1 = new TransactionsImpl<>();
-        Transaction banking0 = TestDatabase.getTestBankingTransactions().get(0);
+        Transaction banking0 = DebitFactory.makeTransactions().get(0);
         transactions1.add(banking0);
 
         transactions2 = new TransactionsImpl<>();

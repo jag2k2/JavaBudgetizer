@@ -2,9 +2,9 @@ package flb.importers;
 
 import flb.importers.file.*;
 import flb.tuples.*;
+import flb.util.Transactions;
+import flb.util.TransactionsImpl;
 import java.io.*;
-import java.util.List;
-import java.util.*;
 
 public class QfxImporter implements TransactionImporter {
     private final FileLoader fileLoader;
@@ -13,8 +13,8 @@ public class QfxImporter implements TransactionImporter {
         this.fileLoader = fileLoader;
     }
 
-    public List<Transaction> getTransactionsToImport(){
-        List<Transaction> transactions = new ArrayList<>();
+    public Transactions<Transaction> getTransactionsToImport(){
+        Transactions<Transaction> transactions = new TransactionsImpl<>();
         for (File file : fileLoader.getFileToImport()){
             String xmlString = XmlTransactionParser.convertFileToProperXMLString(file);
             transactions = XmlTransactionParser.parseTransactionsFromXml(xmlString);

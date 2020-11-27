@@ -1,20 +1,20 @@
 package flb.components.editor.transaction.banking;
 
 import static org.junit.jupiter.api.Assertions.*;
-
+import org.junit.jupiter.api.*;
+import flb.databases.DebitFactory;
+import flb.util.Transactions;
 import flb.components.editor.summary.SummarySelectorMock;
-import flb.components.editor.transaction.TransactionTable;
 import flb.components.editor.transaction.TransactionTableTester;
 import flb.components.menus.mock.*;
-import org.junit.jupiter.api.*;
-import flb.databases.TestDatabase;
+import flb.util.TransactionsImpl;
 import flb.tuples.*;
-import java.util.*;
+
 
 class BankingTableImplTest {
     private BankingTable bankingTable;
     private TransactionTableTester tableAutomator;
-    private ArrayList<BankingTransaction> expected;
+    private Transactions<BankingTransaction> expected;
 
     @BeforeEach
     void setUp() {
@@ -22,7 +22,7 @@ class BankingTableImplTest {
         this.bankingTable = bankingTable;
         this.tableAutomator = bankingTable;
 
-        expected = TestDatabase.getTestBankingTransactions();
+        expected = DebitFactory.makeTransactions();
         bankingTable.display(expected);
     }
 
@@ -31,7 +31,7 @@ class BankingTableImplTest {
         bankingTable.display(expected);
         assertEquals(expected, tableAutomator.getTransactions());
 
-        expected = new ArrayList<>();
+        expected = new TransactionsImpl<>();
         bankingTable.display(expected);
         assertEquals(expected, tableAutomator.getTransactions());
     }

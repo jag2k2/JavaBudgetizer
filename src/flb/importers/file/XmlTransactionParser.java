@@ -1,7 +1,9 @@
 package flb.importers.file;
 
 import flb.importers.ofx.OfxParser;
+import flb.util.Transactions;
 import flb.tuples.Transaction;
+import flb.util.TransactionsImpl;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
@@ -11,8 +13,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.List;
 
 public class XmlTransactionParser {
     static public String convertFileToProperXMLString(File file){
@@ -29,8 +29,8 @@ public class XmlTransactionParser {
         return contentsAsXml.toString();
     }
 
-    static public List<Transaction> parseTransactionsFromXml(String xmlString){
-        List<Transaction> transactions = new ArrayList<>();
+    static public Transactions<Transaction> parseTransactionsFromXml(String xmlString){
+        Transactions<Transaction> transactions = new TransactionsImpl<>();
         try{
             DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             Document xmlDocument = builder.parse(new InputSource(new StringReader(xmlString)));

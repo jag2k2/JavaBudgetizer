@@ -2,34 +2,36 @@ package flb.tuples;
 
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.*;
+import flb.databases.*;
 
 class CategoryTest {
     private Category category;
+    private final int categoryIndex = 0;
 
     @BeforeEach
     void setUp() {
-        category = new Category("Name1", 100, false);
+        category = CategoryFactory.makeCategory(categoryIndex);
     }
 
     @Test
     void testToString() {
-        String expected = "Name1 | [100.0] | false";
+        String expected = "Income | [1000.0] | false";
         String actual = category.toString();
         assertEquals(expected, actual);
     }
 
     @Test
     void testEquals() {
-        Category categoryToCompare = new Category("Name1", 100, false);
+        Category categoryToCompare = CategoryFactory.makeCategory(categoryIndex);
         assertEquals(categoryToCompare, category);
 
-        categoryToCompare = new Category("Name2", 100, false);
+        categoryToCompare = CategoryFactory.makeCategoryWithNewName(categoryIndex, "Name2");
         assertNotEquals(categoryToCompare, category);
 
-        categoryToCompare = new Category("Name1", 200, false);
+        categoryToCompare = CategoryFactory.makeCategoryWithNewAmount(categoryIndex, 200);
         assertNotEquals(categoryToCompare, category);
 
-        categoryToCompare = new Category("Name1", 100, true);
+        categoryToCompare = CategoryFactory.makeCategoryWithNewExcluded(categoryIndex, true);
         assertNotEquals(categoryToCompare, category);
     }
 }

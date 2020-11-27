@@ -7,8 +7,8 @@ import flb.components.menus.*;
 import flb.components.monthselector.*;
 import flb.datastores.*;
 import flb.tuples.*;
+import flb.util.Transactions;
 import javax.swing.*;
-import java.util.*;
 
 public class BankingEditorImpl implements TransactionCategorizer, ViewChangeObserver,
         StoreChangeObserver, TableHighlighter {
@@ -44,13 +44,13 @@ public class BankingEditorImpl implements TransactionCategorizer, ViewChangeObse
 
     @Override
     public void update() {
-        ArrayList<BankingTransaction> bankingTransactions = transactionStore.getBankingTransactions(monthDisplay.getMonth());
+        Transactions<BankingTransaction> bankingTransactions = transactionStore.getBankingTransactions(monthDisplay.getMonth());
         bankingTable.display(bankingTransactions);
     }
 
     @Override
     public void updateAndKeepSelection() {
-        ArrayList<BankingTransaction> bankingTransactions = transactionStore.getBankingTransactions(monthDisplay.getMonth());
+        Transactions<BankingTransaction> bankingTransactions = transactionStore.getBankingTransactions(monthDisplay.getMonth());
         bankingTable.display(bankingTransactions);
     }
 

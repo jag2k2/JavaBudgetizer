@@ -3,16 +3,18 @@ package flb.components.editor.transaction.credit;
 import static org.junit.jupiter.api.Assertions.*;
 import flb.components.menus.mock.MenuDisplayerMock;
 import flb.components.editor.summary.SummarySelectorMock;
+import flb.databases.*;
+import flb.util.TransactionsImpl;
 import org.junit.jupiter.api.*;
-import flb.databases.TestDatabase;
 import flb.tuples.*;
-import java.util.*;
+import flb.util.Transactions;
+import java.util.Arrays;
 
 class CreditTableImplTest {
     private CreditTable creditTable;
     private CreditTableTester tableTester;
     private StatusDisplayer statusDisplayer;
-    private ArrayList<CreditTransaction> expected;
+    private Transactions<CreditTransaction> expected;
 
     @BeforeEach
     void setUp() {
@@ -21,7 +23,7 @@ class CreditTableImplTest {
         this.tableTester = creditTableImpl;
         this.statusDisplayer = creditTableImpl;
 
-        expected = TestDatabase.getTestCreditTransactions();
+        expected = CreditFactory.makeTransactions();
     }
 
     @Test
@@ -29,7 +31,7 @@ class CreditTableImplTest {
         creditTable.display(expected);
         assertEquals(expected, tableTester.getTransactions());
 
-        expected = new ArrayList<>();
+        expected = new TransactionsImpl<>();
         creditTable.display(expected);
         assertEquals(expected, tableTester.getTransactions());
     }
@@ -40,7 +42,7 @@ class CreditTableImplTest {
         int[] selectedRows = {0,2};
         tableTester.setSelectedRows(selectedRows);
 
-        creditTable.displayAndKeepSelection(TestDatabase.getTestCreditTransactions());
+        creditTable.displayAndKeepSelection(CreditFactory.makeTransactions());
 
         assertTrue(Arrays.equals(selectedRows, tableTester.getSelectedRows()));
     }

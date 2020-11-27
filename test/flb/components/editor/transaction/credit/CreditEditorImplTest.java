@@ -1,21 +1,21 @@
 package flb.components.editor.transaction.credit;
 
 import static org.junit.jupiter.api.Assertions.*;
-
-import flb.components.editor.summary.SummarySelectorMock;
-import flb.databases.TestDatabase;
 import org.junit.jupiter.api.*;
+import flb.components.editor.summary.SummarySelectorMock;
+import flb.databases.*;
+import flb.util.Transactions;
 import flb.datastores.*;
 import flb.components.monthselector.*;
 import flb.tuples.*;
-
-import java.util.*;
+import java.util.GregorianCalendar;
+import java.util.Calendar;
 
 class CreditEditorImplTest {
     private TestDatabase database;
     private CreditEditorImpl creditEditor;
     private CreditTableTester tableTester;
-    private List<CreditTransaction> expected;
+    private Transactions<CreditTransaction> expected;
     private MonthSelector monthSetter;
 
     @BeforeEach
@@ -31,7 +31,7 @@ class CreditEditorImplTest {
 
         tableTester = creditEditor.getTableAutomator();
 
-        expected = TestDatabase.getTestCreditTransactions();
+        expected = CreditFactory.makeTransactions();
     }
 
     @AfterEach
@@ -63,23 +63,7 @@ class CreditEditorImplTest {
 
         creditEditor.groupSelectedTransactions(date);
 
-        List<CreditTransaction> expected = TestDatabase.getTestCreditTransactions();
+        Transactions<CreditTransaction> expected = CreditFactory.makeGroupedTransactions(selectedRows, date);
         assertEquals(expected, tableTester.getTransactions());
-    }
-
-    @Test
-    void testGroupNameCreator(){
-        Calendar date = new GregorianCalendar(2020, Calendar.MAY, 1, 2, 3);
-        float sum = -42F;
-        String expected = "2020-05-01-0203:-42.00";
-
-        String actual = creditEditor.createGroupName(date, sum);
-        assertEquals(expected, actual);
-
-        date = new GregorianCalendar(2020, Calendar.MAY, 1, 14, 3);
-        expected = "2020-05-01-1403:-42.00";
-
-        actual = creditEditor.createGroupName(date, sum);
-        assertEquals(expected, actual);
     }
 }

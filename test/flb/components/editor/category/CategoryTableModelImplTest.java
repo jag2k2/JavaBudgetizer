@@ -1,10 +1,8 @@
 package flb.components.editor.category;
 
 import static org.junit.jupiter.api.Assertions.*;
-
-import flb.components.editor.category.CategoryTableModelImpl;
 import org.junit.jupiter.api.*;
-import flb.databases.TestDatabase;
+import flb.databases.*;
 import flb.tuples.*;
 import flb.util.*;
 
@@ -16,7 +14,7 @@ class CategoryTableModelImplTest {
     @BeforeEach
     void setUp() {
         tableModel = new CategoryTableModelImpl();
-        tableModel.updateCategories(TestDatabase.getTestCategories());
+        tableModel.updateCategories(CategoryListFactory.makeDefaultCategories());
     }
 
     @Test
@@ -25,9 +23,9 @@ class CategoryTableModelImplTest {
         actual = tableModel.getCategory(-1);
         assertEquals(expected, actual);
 
-        int testCategoryCount = TestDatabase.getTestCategories().size();
+        int testCategoryCount = CategoryListFactory.makeDefaultCategories().size();
         for(int i= 0; i < testCategoryCount; i++) {
-            expected = new Maybe<>(TestDatabase.getTestCategories().get(i));
+            expected = new Maybe<>(CategoryListFactory.makeDefaultCategories().get(i));
             actual = tableModel.getCategory(i);
             assertEquals(expected, actual);
         }
@@ -40,7 +38,7 @@ class CategoryTableModelImplTest {
     @Test
     void getValues() {
         int activeRow = 0;
-        Category expectedCategory = TestDatabase.getTestCategories().get(activeRow);
+        Category expectedCategory = CategoryListFactory.makeDefaultCategories().get(activeRow);
 
         String expectedName = expectedCategory.getName();
         String actualName = (String)tableModel.getValueAt(activeRow,0);
@@ -56,20 +54,28 @@ class CategoryTableModelImplTest {
     }
 
     @Test
-    void setValues() {
-        expected = new Maybe<>(new Category("TestRename", 1000,false));
+    void setNameValue() {
+        int rowToSet = 0;
+        String newName = "TestRename";
 
-        tableModel.setValueAt("TestRename", 0, 0);
+        tableModel.setValueAt(newName, rowToSet, 0);
 
-        actual = tableModel.getCategory(0);
-        assertEquals(expected, actual);
+        expected = new Maybe<>(CategoryFactory.makeCategoryWithNewName(rowToSet, newName));
+        assertEquals(expected, tableModel.getCategory(rowToSet));
 
 
-        expected = new Maybe<>(new Category("Name2", 2000, true));
 
-        tableModel.setValueAt(2000F, 1, 1);
+    }
 
-        actual = tableModel.getCategory(1);
-        assertEquals(expected, actual);
+    @Test
+    void setAmountValue() {
+        int rowToSet = 1;
+        float newAmount = 2000;
+
+        tableModel.setValueAt(newAmount, rowToSet, 1);
+
+        expected = new Maybe<>(CategoryFactory.makeCategoryWithNewAmount(rowToSet, newAmount));
+        assertEquals(expected, tableModel.getCategory(1));
+
     }
 }

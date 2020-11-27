@@ -1,23 +1,23 @@
 package flb.components.editor.transaction.banking;
 
 import static org.junit.jupiter.api.Assertions.*;
-
+import org.junit.jupiter.api.*;
+import flb.databases.DebitFactory;
+import flb.databases.TestDatabase;
+import flb.util.Transactions;
 import flb.components.editor.summary.SummarySelectorMock;
 import flb.components.editor.transaction.TransactionTableTester;
 import flb.components.monthselector.MonthSelectorImpl;
 import flb.components.monthselector.MonthSelector;
-import flb.databases.TestDatabase;
-import org.junit.jupiter.api.*;
 import flb.datastores.*;
 import flb.tuples.*;
-
-import java.util.*;
+import java.util.Calendar;
 
 class BankingEditorImplTest {
     private TestDatabase database;
     private BankingEditorImpl bankingEditor;
     private TransactionTableTester tableAutomator;
-    private List<BankingTransaction> expected;
+    private Transactions<BankingTransaction> expected;
     private MonthSelector monthSetter;
 
     @BeforeEach
@@ -32,7 +32,7 @@ class BankingEditorImplTest {
         bankingEditor = new BankingEditorImpl(transactionStore, new CategoryStoreImpl(database), monthSelectorImpl, new SummarySelectorMock());
         tableAutomator = bankingEditor.getTableTester();
 
-        expected = TestDatabase.getTestBankingTransactions();
+        expected = DebitFactory.makeTransactions();
     }
 
     @AfterEach
