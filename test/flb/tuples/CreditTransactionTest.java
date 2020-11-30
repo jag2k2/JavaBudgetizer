@@ -1,6 +1,8 @@
 package flb.tuples;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import flb.databases.CreditFactory;
 import org.junit.jupiter.api.*;
 import java.util.*;
 
@@ -10,38 +12,35 @@ class CreditTransactionTest {
 
     @BeforeEach
     void setup() {
-        date = new GregorianCalendar(2020,Calendar.NOVEMBER,3);
-        creditTransaction = new CreditTransaction("EE6A3",
-                date, "Amazon", 100F, "Misc", "group");
+        creditTransaction = CreditFactory.makeDefaultTransaction("3589048");
     }
 
     @Test
     void testToString() {
         String actual = creditTransaction.toString();
-        String expected = "EE6A3 | 2020-11-03 | Amazon | 100.0 | Misc | group";
+        String expected = "3589048 | 2020-10-25 | Shell | -20.0 | Name3 | ";
         assertEquals(expected, actual);
     }
 
     @Test
     void testEquals() {
-        CreditTransaction transactionToCompare = new CreditTransaction("EE6A3",
-                date, "Amazon", 100F, "Misc", "group");
+        CreditTransaction transactionToCompare = CreditFactory.makeDefaultTransaction("3589048");
         assertEquals(transactionToCompare, creditTransaction);
 
-        transactionToCompare = new CreditTransaction("EE6A4",
-                date, "Amazon", 100F, "Misc", "group");
+        transactionToCompare = CreditFactory.makeTransactionWithNewRef("3589048", "11111");
         assertNotEquals(transactionToCompare, creditTransaction);
 
-        transactionToCompare = new CreditTransaction("EE6A3",
-                date, "HEB", 100F, "Misc", "group");
+        Calendar date = new GregorianCalendar(2020, Calendar.OCTOBER, 1);
+        transactionToCompare = CreditFactory.makeTransactionWithNewDate("3589048", date);
         assertNotEquals(transactionToCompare, creditTransaction);
 
-        transactionToCompare = new CreditTransaction("EE6A3",
-                date, "Amazon", 200F, "Misc", "group");
+        transactionToCompare = CreditFactory.makeTransactionWithNewDescription("3589048", "NewDescription");
         assertNotEquals(transactionToCompare, creditTransaction);
 
-        transactionToCompare = new CreditTransaction("EE6A3",
-                date, "Amazon", 100F, "Groceries", "group");
+        transactionToCompare = CreditFactory.makeTransactionWithNewAmount("3589048", 42);
+        assertNotEquals(transactionToCompare, creditTransaction);
+
+        transactionToCompare = CreditFactory.makeTransactionWithNewPayGroup("3589048", "TestPayGroup");
         assertNotEquals(transactionToCompare, creditTransaction);
     }
 }

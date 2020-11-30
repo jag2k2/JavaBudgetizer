@@ -31,7 +31,7 @@ class CreditEditorImplTest {
 
         tableTester = creditEditor.getTableAutomator();
 
-        expected = CreditFactory.makeTransactions();
+        expected = CreditListFactory.makeDefaultTransactions();
     }
 
     @AfterEach
@@ -59,11 +59,14 @@ class CreditEditorImplTest {
         creditEditor.update();
 
         int[] selectedRows = {0,2};
+        String[] selectedRefs = CreditFactory.getDefaultRefs(selectedRows);
+        float sum = CreditFactory.getSelectedSum(selectedRows);
+        String payGroup = GroupNameFactory.createGroupName(date, sum);
         tableTester.setSelectedRows(selectedRows);
 
         creditEditor.groupSelectedTransactions(date);
 
-        Transactions<CreditTransaction> expected = CreditFactory.makeGroupedTransactions(selectedRows, date);
+        Transactions<CreditTransaction> expected = CreditListFactory.makeGroupedTransactions(selectedRefs, payGroup);
         assertEquals(expected, tableTester.getTransactions());
     }
 }

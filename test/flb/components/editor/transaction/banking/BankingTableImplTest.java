@@ -2,7 +2,7 @@ package flb.components.editor.transaction.banking;
 
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.*;
-import flb.databases.DebitFactory;
+import flb.databases.DebitListFactory;
 import flb.util.Transactions;
 import flb.components.editor.summary.SummarySelectorMock;
 import flb.components.editor.transaction.TransactionTableTester;
@@ -22,7 +22,7 @@ class BankingTableImplTest {
         this.bankingTable = bankingTable;
         this.tableAutomator = bankingTable;
 
-        expected = DebitFactory.makeTransactions();
+        expected = DebitListFactory.makeDefaultTransactions();
         bankingTable.display(expected);
     }
 

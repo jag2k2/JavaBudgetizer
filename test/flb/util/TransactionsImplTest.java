@@ -1,41 +1,49 @@
 package flb.util;
 
+import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.*;
 import flb.databases.DebitFactory;
+import flb.databases.DebitListFactory;
 import flb.tuples.BankingTransaction;
-import flb.tuples.CreditTransaction;
-import flb.tuples.Transaction;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 
 class TransactionsImplTest {
-    private Transactions<Transaction> transactions1;
-    private Transactions<BankingTransaction> transactions2;
-    private Transactions<CreditTransaction> transactions3;
+    private Transactions<BankingTransaction> bankingTransactions;
+    private WhichMonth whichMonth;
 
     @BeforeEach
     void setUp() {
-
+        whichMonth = new WhichMonth(2020, Calendar.OCTOBER);
     }
 
     @Test
-    void assignments() {
-        transactions1 = new TransactionsImpl<>();
-        Transaction banking0 = DebitFactory.makeTransactions().get(0);
-        transactions1.add(banking0);
+    void transactionsCanReportSize() {
+        bankingTransactions = DebitListFactory.makeDefaultTransactions();
+        int expected = DebitFactory.getDefaultRefs().length;
+        assertEquals(expected, bankingTransactions.size());
+    }
 
-        transactions2 = new TransactionsImpl<>();
-        BankingTransaction banking1 = new BankingTransaction("1", new GregorianCalendar(2020, Calendar.OCTOBER, 5),
-                "", 100F, "", 100F);
-        transactions2.add(banking1);
+    @Test
+    void transactionsCanBeAddedOnto() {
+        bankingTransactions = DebitListFactory.makeDefaultTransactions();
+        BankingTransaction banking0 = DebitFactory.makeNewTransaction(whichMonth);
+        bankingTransactions.add(banking0);
+        int expected = DebitFactory.getDefaultRefs().length + 1;
+        assertEquals(expected, bankingTransactions.size());
+    }
 
-        transactions3 = new TransactionsImpl<>();
-        CreditTransaction credit0 = new CreditTransaction("1", new GregorianCalendar(2020, Calendar.OCTOBER, 5),
-                "", 100F, "", "");
-        transactions3.add(credit0);
+    @Test
+    void transactionsCanBeCleared() {
+        bankingTransactions = DebitListFactory.makeDefaultTransactions();
+        bankingTransactions.clear();
+        assertEquals(0, bankingTransactions.size());
+    }
 
-        //transactions1 = transactions3;
-
+    @Test
+    void canGetTransactionByIndex() {
+        bankingTransactions = DebitListFactory.makeDefaultTransactions();
+        BankingTransaction expected = DebitFactory.makeDefaultTransaction("123");
+        assertEquals(expected, bankingTransactions.get(0));
     }
 
     @Test

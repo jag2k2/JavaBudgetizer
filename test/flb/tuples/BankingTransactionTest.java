@@ -1,59 +1,47 @@
 package flb.tuples;
 
-import org.junit.jupiter.api.*;
-import java.util.*;
-
 import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.*;
+import flb.databases.DebitFactory;
+import java.util.*;
 
 class BankingTransactionTest {
     private BankingTransaction bankingTransaction;
-    private Calendar date;
 
     @BeforeEach
     void setup() {
-        date = new GregorianCalendar(2020,Calendar.OCTOBER,3);
-        bankingTransaction = new BankingTransaction("EE6A3",
-                date, "Amazon", 100F,
-                "Misc", 1000F);
+        bankingTransaction = DebitFactory.makeDefaultTransaction("123");
     }
 
     @Test
     void testToString() {
         String actual = bankingTransaction.toString();
-        String expected = "EE6A3 | 2020-10-03 | Amazon | 100.0 | Misc | 1000.0";
+        String expected = "123 | 2020-10-25 | Amazon | -50.0 | Test1::sub2 | 1000.0";
         assertEquals(expected, actual);
     }
 
     @Test
     void testEquals() {
-        BankingTransaction transactionToCompare = new BankingTransaction("EE6A3",
-                date, "Amazon", 100F,
-                "Misc", 1000F);
+        BankingTransaction transactionToCompare = DebitFactory.makeDefaultTransaction("123");
         assertEquals(transactionToCompare, bankingTransaction);
 
-        transactionToCompare = new BankingTransaction("EE6A4",
-                date, "Amazon", 100F,
-                "Misc", 1000F);
+        transactionToCompare = DebitFactory.makeTransactionWithNewRef("123", "ABC");
         assertNotEquals(transactionToCompare, bankingTransaction);
 
-        transactionToCompare = new BankingTransaction("EE6A3",
-                date, "HEB", 100F,
-                "Misc", 1000F);
+        Calendar date = new GregorianCalendar(2020, Calendar.NOVEMBER, 7);
+        transactionToCompare = DebitFactory.makeTransactionWithNewDate("123", date);
         assertNotEquals(transactionToCompare, bankingTransaction);
 
-        transactionToCompare = new BankingTransaction("EE6A3",
-                date, "Amazon", 200F,
-                "Misc", 1000F);
+        transactionToCompare = DebitFactory.makeTransactionWithNewDescription("123", "Blockbuster");
         assertNotEquals(transactionToCompare, bankingTransaction);
 
-        transactionToCompare = new BankingTransaction("EE6A3",
-                date, "Amazon", 100F,
-                "Groceries", 1000F);
+        transactionToCompare = DebitFactory.makeTransactionWithNewAmount("123", 42);
         assertNotEquals(transactionToCompare, bankingTransaction);
 
-        transactionToCompare = new BankingTransaction("EE6A3",
-                date, "Amazon", 100F,
-                "Misc", 2000F);
+        transactionToCompare = DebitFactory.makeTransactionWithCategory("123", "TestCategory");
+        assertNotEquals(transactionToCompare, bankingTransaction);
+
+        transactionToCompare = DebitFactory.makeTransactionWithNewBalance("123", 2000);
         assertNotEquals(transactionToCompare, bankingTransaction);
     }
 }

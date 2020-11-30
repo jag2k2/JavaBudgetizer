@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import flb.components.editor.transaction.banking.BankingEditorImpl;
 import flb.components.editor.transaction.credit.CreditEditorImpl;
 import flb.components.editor.summary.SummarySelectorMock;
+import flb.databases.CreditFactory;
+import flb.databases.DebitFactory;
 import flb.databases.TestDatabase;
 import flb.listeners.UserCategorizesTransaction;
 import flb.datastores.*;
@@ -50,8 +52,7 @@ class UserCategorizesTransactionTest {
 
         testButton.doClick();
 
-        Calendar date = new GregorianCalendar(2020, Calendar.OCTOBER, 25);
-        BankingTransaction expected = new BankingTransaction("123", date, "Amazon", -50, "Name2", 1000);
+        BankingTransaction expected = DebitFactory.makeTransactionWithCategory("123", "Name2");
         Transaction actual = bankingEditor.getTableTester().getTransactions().get(0);
 
         assertEquals(expected, actual);
@@ -64,8 +65,7 @@ class UserCategorizesTransactionTest {
 
         testButton.doClick();
 
-        Calendar date = new GregorianCalendar(2020, Calendar.OCTOBER, 25);
-        CreditTransaction expected = new CreditTransaction("3589048", date, "Shell", -20, "Name2", "");
+        CreditTransaction expected = CreditFactory.makeTransactionWithCategory("3589048", "Name2");
         Transaction actual = creditEditor.getTableAutomator().getTransactions().get(0);
 
         assertEquals(expected, actual);

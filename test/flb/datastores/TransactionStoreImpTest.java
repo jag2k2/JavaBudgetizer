@@ -33,14 +33,14 @@ class TransactionStoreImpTest {
 
     @Test
     void getBankingTransactions() {
-        Transactions<BankingTransaction> expected = DebitFactory.makeTransactions();
+        Transactions<BankingTransaction> expected = DebitListFactory.makeDefaultTransactions();
 
         assertEquals(expected, transactionStore.getBankingTransactions(whichMonth));
     }
 
     @Test
     void getCreditTransactions() {
-        Transactions<CreditTransaction> expected = CreditFactory.makeTransactions();
+        Transactions<CreditTransaction> expected = CreditListFactory.makeDefaultTransactions();
 
         assertEquals(expected, transactionStore.getCreditTransactions(whichMonth));
     }
@@ -49,11 +49,12 @@ class TransactionStoreImpTest {
     void categorizeBankingTransaction() {
         int rowToCategorize = 0;
         String newName = "Name2";
-        BankingTransaction bankingTransaction = DebitFactory.makeTransactions().get(rowToCategorize);
+        BankingTransaction bankingTransaction = DebitListFactory.makeDefaultTransactions().get(rowToCategorize);
 
         transactionStore.categorizeTransaction(bankingTransaction, newName);
 
-        Transactions<BankingTransaction> expected = DebitFactory.makeTransactionsWithCategorizedEntry(rowToCategorize, newName);
+        String reference = bankingTransaction.getReference();
+        Transactions<BankingTransaction> expected = DebitListFactory.makeTransactionsWithCategorizedEntry(reference, newName);
         assertEquals(expected, transactionStore.getBankingTransactions(whichMonth));
     }
 
@@ -61,37 +62,38 @@ class TransactionStoreImpTest {
     void categorizeCreditTransaction() {
         int rowToCategorize = 0;
         String newName = "Name2";
-        CreditTransaction creditTransaction = CreditFactory.makeTransactions().get(rowToCategorize);
+        CreditTransaction creditTransaction = CreditListFactory.makeDefaultTransactions().get(rowToCategorize);
 
         transactionStore.categorizeTransaction(creditTransaction, newName);
 
-        Transactions<CreditTransaction> expected = CreditFactory.makeTransactionsWithCategorizedEntry(rowToCategorize, newName);
+        String reference = creditTransaction.getReference();
+        Transactions<CreditTransaction> expected = CreditListFactory.makeTransactionsWithCategorizedEntry(reference, newName);
         assertEquals(expected, transactionStore.getCreditTransactions(whichMonth));
     }
 
     @Test
     void groupTransactionsTest() {
         int[] selectedRows = {0,2};
-        Transactions<CreditTransaction> selected = CreditFactory.makeTransactions(selectedRows);
+        String[] selectedRefs = CreditFactory.getDefaultRefs(selectedRows);
+        Transactions<CreditTransaction> selected = CreditListFactory.makeDefaultTransactions(selectedRefs);
+        float sum = CreditFactory.getSelectedSum(selectedRows);
+        String payGroup = GroupNameFactory.createGroupName(date20201029, sum);
 
-        float sum = CreditFactory.getTransactionSum(selectedRows);
-        transactionStore.labelGroup(selected, GroupNameFactory.createGroupName(date20201029, sum));
+        transactionStore.labelGroup(selected, payGroup);
 
-        Transactions<CreditTransaction> expected = CreditFactory.makeGroupedTransactions(selectedRows, date20201029);
+        Transactions<CreditTransaction> expected = CreditListFactory.makeGroupedTransactions(selectedRefs, payGroup);
         assertEquals(expected, transactionStore.getCreditTransactions(whichMonth));
     }
 
     @Test
     void addBankingTransactions() {
-        Transactions<BankingTransaction> expected = DebitFactory.makeTransactions();
+        Transactions<BankingTransaction> expected = DebitListFactory.makeDefaultTransactions();
         Transactions<Transaction> transactionsToAppend = new TransactionsImpl<>();
 
         transactionStore.addTransactions(transactionsToAppend);
         assertEquals(expected, transactionStore.getBankingTransactions(whichMonth));
 
-        BankingTransaction newTransaction1 = new BankingTransaction("7",
-                new GregorianCalendar(2020, Calendar.OCTOBER, 28),
-                "Taco Bell", 14.53F, "", 100F);
+        BankingTransaction newTransaction1 = DebitFactory.makeNewTransaction(whichMonth);
         transactionsToAppend.add(newTransaction1);
         expected.add(newTransaction1);
 
@@ -104,15 +106,13 @@ class TransactionStoreImpTest {
 
     @Test
     void addCreditTransactions() {
-        Transactions<CreditTransaction> expected = CreditFactory.makeTransactions();
+        Transactions<CreditTransaction> expected = CreditListFactory.makeDefaultTransactions();
         Transactions<CreditTransaction> transactionsToAppend = new TransactionsImpl<>();
 
         transactionStore.addTransactions(transactionsToAppend);
         assertEquals(expected, transactionStore.getCreditTransactions(whichMonth));
 
-        CreditTransaction newTransaction1 = new CreditTransaction("202010281",
-                new GregorianCalendar(2020, Calendar.OCTOBER, 28),
-                "Torchy's", 14.53F, "", "");
+        CreditTransaction newTransaction1 = CreditFactory.makeNewTransaction(whichMonth);
         transactionsToAppend.add(newTransaction1);
         expected.add(newTransaction1);
 

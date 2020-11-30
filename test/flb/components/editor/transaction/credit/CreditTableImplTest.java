@@ -23,7 +23,7 @@ class CreditTableImplTest {
         this.tableTester = creditTableImpl;
         this.statusDisplayer = creditTableImpl;
 
-        expected = CreditFactory.makeTransactions();
+        expected = CreditListFactory.makeDefaultTransactions();
     }
 
     @Test
@@ -42,7 +42,7 @@ class CreditTableImplTest {
         int[] selectedRows = {0,2};
         tableTester.setSelectedRows(selectedRows);
 
-        creditTable.displayAndKeepSelection(CreditFactory.makeTransactions());
+        creditTable.displayAndKeepSelection(CreditListFactory.makeDefaultTransactions());
 
         assertTrue(Arrays.equals(selectedRows, tableTester.getSelectedRows()));
     }

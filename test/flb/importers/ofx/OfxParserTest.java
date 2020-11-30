@@ -1,11 +1,10 @@
 package flb.importers.ofx;
 
 import static org.junit.jupiter.api.Assertions.*;
-
-import flb.importers.ImportingTransactionsTest;
+import org.junit.jupiter.api.*;
+import flb.databases.*;
 import flb.tuples.*;
 import flb.util.*;
-import org.junit.jupiter.api.*;
 import org.w3c.dom.Document;
 import javax.xml.parsers.*;
 import java.io.*;
@@ -29,7 +28,7 @@ class OfxParserTest {
 
     @Test
     void parseDebitTransactions() {
-        expected = ImportingTransactionsTest.getDebitTransactions();
+        expected = DebitListFactory.makeImportingTransactions();
 
         Transactions<Transaction> actual = OfxParser.parseTransactions(debitDocument);
 
@@ -38,7 +37,7 @@ class OfxParserTest {
 
     @Test
     void parseCreditTransactions() {
-        expected = ImportingTransactionsTest.getCreditTransactions();
+        expected = CreditListFactory.makeImportingTransactions();
 
         Transactions<Transaction> actual = OfxParser.parseTransactions(creditDocument);
 

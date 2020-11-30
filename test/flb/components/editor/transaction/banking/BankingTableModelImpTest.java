@@ -2,7 +2,7 @@ package flb.components.editor.transaction.banking;
 
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.*;
-import flb.databases.DebitFactory;
+import flb.databases.DebitListFactory;
 import flb.tuples.*;
 import flb.util.*;
 
@@ -12,13 +12,13 @@ class BankingTableModelImpTest {
     @BeforeEach
     void setUp() {
         tableModel = new BankingTableModelImp();
-        tableModel.updateTransactions(DebitFactory.makeTransactions());
+        tableModel.updateTransactions(DebitListFactory.makeDefaultTransactions());
     }
 
     @Test
     void getValueAt() {
         int activeRow = 0;
-        Transaction expectedTransaction = DebitFactory.makeTransactions().get(activeRow);
+        Transaction expectedTransaction = DebitListFactory.makeDefaultTransactions().get(activeRow);
 
         String expectedDate = expectedTransaction.getDateString();
         String actualDate = (String)tableModel.getValueAt(activeRow,0);
@@ -39,7 +39,7 @@ class BankingTableModelImpTest {
 
     @Test
     void getTransaction() {
-        Maybe<BankingTransaction> expected = new Maybe<>(DebitFactory.makeTransactions().get(0));
+        Maybe<BankingTransaction> expected = new Maybe<>(DebitListFactory.makeDefaultTransactions().get(0));
         Maybe<BankingTransaction> actual = tableModel.getTransaction(0);
         assertEquals(expected, actual);
 

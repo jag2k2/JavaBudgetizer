@@ -1,8 +1,8 @@
 package flb.databases;
 
+import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.*;
 import java.sql.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 class TestDatabaseTest {
     private TestDatabase database;

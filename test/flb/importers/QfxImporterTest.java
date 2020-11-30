@@ -1,14 +1,14 @@
 package flb.importers;
 
 import static org.junit.jupiter.api.Assertions.*;
-
+import org.junit.jupiter.api.*;
+import flb.databases.*;
 import flb.util.Transactions;
 import flb.importers.file.FileLoader;
 import flb.importers.file.JFileChooserMock;
 import flb.importers.file.UserChoosesFileLoader;
 import flb.importers.ofx.OfxParser;
 import flb.util.TransactionsImpl;
-import org.junit.jupiter.api.*;
 import javax.swing.*;
 import flb.tuples.*;
 
@@ -22,7 +22,7 @@ public class QfxImporterTest {
         FileLoader fileLoader = new UserChoosesFileLoader(fileChooser, frame);
         QfxImporter qfxImporter = new QfxImporter(fileLoader);
 
-        expected = ImportingTransactionsTest.getDebitTransactions();
+        expected = DebitListFactory.makeImportingTransactions();
 
         assertEquals(expected, qfxImporter.getTransactionsToImport());
     }
@@ -34,7 +34,7 @@ public class QfxImporterTest {
         FileLoader fileLoader = new UserChoosesFileLoader(fileChooser, frame);
         QfxImporter qfxImporter = new QfxImporter(fileLoader);
 
-        expected = ImportingTransactionsTest.getCreditTransactions();
+        expected = CreditListFactory.makeImportingTransactions();
 
         assertEquals(expected, qfxImporter.getTransactionsToImport());
     }
