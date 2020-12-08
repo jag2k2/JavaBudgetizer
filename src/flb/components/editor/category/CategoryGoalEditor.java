@@ -1,5 +1,5 @@
 package flb.components.editor.category;
 
 public interface CategoryGoalEditor {
-    void UpdateSelectedGoalAmount();
+    void updateSelectedGoalAmount();
 }

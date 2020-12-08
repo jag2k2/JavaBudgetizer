@@ -47,7 +47,7 @@ class CategoryEditorImplTest {
     @Test
     void addingCategoryWithNoName() {
         categoryEditor.setNameFilter("");
-        categoryEditor.userAddCategory();
+        categoryEditor.addCategory();
 
         assertEquals(expected, categoryStore.getCategories(""));
     }
@@ -58,7 +58,7 @@ class CategoryEditorImplTest {
         categoryEditor.setNameFilter(nameFilterText);
         expected.add(CategoryFactory.makeIncludedCategory(nameFilterText));
 
-        categoryEditor.userAddCategory();
+        categoryEditor.addCategory();
 
         assertEquals(expected, categoryStore.getCategories(""));
     }
@@ -67,7 +67,7 @@ class CategoryEditorImplTest {
     void addingDuplicateCategory() {
         String duplicateName = CategoryListFactory.makeDefaultCategories().get(0).getName();
         categoryEditor.setNameFilter(duplicateName);
-        categoryEditor.userAddCategory();
+        categoryEditor.addCategory();
 
         assertEquals(expected, categoryStore.getCategories(""));
     }
@@ -75,7 +75,7 @@ class CategoryEditorImplTest {
     @Test
     void clearSelectedGoal() {
         int rowToClear = 1;
-        categoryEditor.userClearGoalAmount(rowToClear);
+        categoryEditor.clearGoalAmount(rowToClear);
 
         String selectedCategory = tableAutomator.getContents().get(rowToClear).getName();
         expected = CategoryListFactory.makeDefaultCategoriesWithOneCleared(selectedCategory);
@@ -84,7 +84,7 @@ class CategoryEditorImplTest {
 
     @Test
     void clearNoGoalSelected() {
-        categoryEditor.userClearGoalAmount(-1);
+        categoryEditor.clearGoalAmount(-1);
 
         assertEquals(expected, categoryStore.getCategories(""));
     }
@@ -95,7 +95,7 @@ class CategoryEditorImplTest {
         categoryEditor.update();
         tableAutomator = categoryEditor.getTableTester();
 
-        categoryEditor.userDeleteCategory(3, new JFrame());
+        categoryEditor.deleteCategory(3, new JFrame());
 
         expected.remove(3);
         assertEquals(expected, categoryStore.getCategories(""));
@@ -106,7 +106,7 @@ class CategoryEditorImplTest {
         categoryEditor = new CategoryEditorNoDialog(categoryStore, true);
         tableAutomator = categoryEditor.getTableTester();
 
-        categoryEditor.userDeleteCategory(1, new JFrame());
+        categoryEditor.deleteCategory(1, new JFrame());
 
         assertEquals(expected, categoryStore.getCategories(""));
     }
@@ -116,7 +116,7 @@ class CategoryEditorImplTest {
         tableAutomator.setSelectedRow(1);
 
         categoryEditor = new CategoryEditorNoDialog(categoryStore, false);
-        categoryEditor.userDeleteCategory(1, new JFrame());
+        categoryEditor.deleteCategory(1, new JFrame());
 
         assertEquals(expected, categoryStore.getCategories(""));
     }
@@ -126,7 +126,7 @@ class CategoryEditorImplTest {
         int selectedRow = 1;
         tableAutomator.setSelectedRow(selectedRow);
 
-        categoryEditor.userEditsSelectedExcludes();
+        categoryEditor.editsSelectedExcludes();
 
         String selectedCategory = tableAutomator.getContents().get(selectedRow).getName();
         expected = CategoryListFactory.makeDefaultCategoriesWithOneExcludesChanged(selectedCategory, false);
@@ -141,7 +141,7 @@ class CategoryEditorImplTest {
 
         tableAutomator.editCellAt(selectedRow,1);
         tableAutomator.setEditorGoal(newAmount);
-        categoryEditor.UpdateSelectedGoalAmount();
+        categoryEditor.updateSelectedGoalAmount();
 
         String categorySelected = tableAutomator.getContents().get(selectedRow).getName();
         expected = CategoryListFactory.makeDefaultCategoriesWithOneAmountChanged(categorySelected, newAmount);
@@ -168,7 +168,7 @@ class CategoryEditorImplTest {
         tableAutomator.setSelectedRow(selectedRow);
         tableAutomator.editCellAt(selectedRow,0);
         tableAutomator.setEditorName(newName);
-        categoryEditor.userRenamedCategory(oldName);
+        categoryEditor.renamedCategory(oldName);
 
 
         expected = CategoryListFactory.makeDefaultCategoriesWithOneRenamed(oldName, newName);

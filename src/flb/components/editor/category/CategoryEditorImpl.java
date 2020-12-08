@@ -5,7 +5,6 @@ import java.util.*;
 import java.awt.*;
 
 import flb.components.editor.*;
-import flb.components.monthselector.MonthDisplay;
 import flb.listeners.*;
 import flb.components.menus.CategoryEditorMenuImpl;
 import flb.datastores.CategoryStore;
@@ -42,8 +41,6 @@ public class CategoryEditorImpl implements CategoryAdder, CategoryClearer, Categ
         addCategoryEditingListeners();
     }
 
-
-
     private void addCategoryEditingListeners() {
         categoryTable.addCategoryRenameListener(new UserRenamesCategoryListener(this));
         categoryTable.addGoalEditListener(new UserEditsDefaultGoalListener(this));
@@ -74,7 +71,7 @@ public class CategoryEditorImpl implements CategoryAdder, CategoryClearer, Categ
     }
 
     @Override
-    public void userAddCategory() {
+    public void addCategory() {
         String nameToAdd = nameFilter.getText();
         if (categoryNameAddable(nameToAdd)) {
             categoryStore.addCategory(nameToAdd);
@@ -87,7 +84,7 @@ public class CategoryEditorImpl implements CategoryAdder, CategoryClearer, Categ
     }
 
     @Override
-    public void userDeleteCategory(int row, Component component) {
+    public void deleteCategory(int row, Component component) {
         for (Category selectedCategory : categoryTable.getCategory(row)) {
             String categoryNameToDelete = selectedCategory.getName();
             int confirmation = getConfirmationFromDialog(categoryNameToDelete, component);
@@ -117,7 +114,7 @@ public class CategoryEditorImpl implements CategoryAdder, CategoryClearer, Categ
     }
 
     @Override
-    public void userClearGoalAmount(int row) {
+    public void clearGoalAmount(int row) {
         for (Category selectedCategory : categoryTable.getCategory(row)) {
             String categoryToClear = selectedCategory.getName();
             categoryStore.updateAmount(categoryToClear, Float.NaN);
@@ -125,7 +122,7 @@ public class CategoryEditorImpl implements CategoryAdder, CategoryClearer, Categ
     }
 
     @Override
-    public void userEditsSelectedExcludes() {
+    public void editsSelectedExcludes() {
         for (Category selectedCategory : categoryTable.getSelectedCategory()) {
             String selectedName = selectedCategory.getName();
             categoryStore.toggleExclusion(selectedName);
@@ -133,7 +130,7 @@ public class CategoryEditorImpl implements CategoryAdder, CategoryClearer, Categ
     }
 
     @Override
-    public void UpdateSelectedGoalAmount() {
+    public void updateSelectedGoalAmount() {
         for (Category selectedCategory : categoryTable.getSelectedCategory()) {
             String categoryToUpdate = selectedCategory.getName();
             for (float newAmount : selectedCategory.getDefaultGoal()) {
@@ -148,7 +145,7 @@ public class CategoryEditorImpl implements CategoryAdder, CategoryClearer, Categ
     }
 
     @Override
-    public void userRenamedCategory(String oldName) {
+    public void renamedCategory(String oldName) {
         for (Category selectedCategory : categoryTable.getSelectedCategory()) {
             String newName = selectedCategory.getName();
             categoryStore.renameCategory(oldName, newName);

@@ -16,6 +16,6 @@ public class UserCategorizesTransaction implements ActionListener {
         String[] elements = actionCommand.split(",");
         int row = Integer.parseInt(elements[0]);
         String categoryName = elements[1];
-        transactionCategorizer.userCategorizesTransaction(row, categoryName);
+        transactionCategorizer.categorizeTransaction(row, categoryName);
     }
 }

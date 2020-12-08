@@ -24,7 +24,7 @@ public class UserRenamesCategoryListener implements PropertyChangeListener {
                 }
             }
             else if (table.getEditingColumn() == 0) {
-                nameEditor.userRenamedCategory(oldName);
+                nameEditor.renamedCategory(oldName);
             }
         }
     }

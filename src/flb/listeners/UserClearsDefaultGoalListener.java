@@ -14,6 +14,6 @@ public class UserClearsDefaultGoalListener implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         int activeRow = Integer.parseInt(e.getActionCommand());
-        categoryClearer.userClearGoalAmount(activeRow);
+        categoryClearer.clearGoalAmount(activeRow);
     }
 }

@@ -17,6 +17,6 @@ public class UserEditsExcludesListener implements CellEditorListener {
 
     @Override
     public void editingStopped(ChangeEvent e) {
-        excludeEditor.userEditsSelectedExcludes();
+        excludeEditor.editsSelectedExcludes();
     }
 }

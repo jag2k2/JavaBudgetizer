@@ -17,6 +17,6 @@ public class UserDeletesCategoryListener implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         int activeRow = Integer.parseInt(e.getActionCommand());
-        categoryDeleter.userDeleteCategory(activeRow, component);
+        categoryDeleter.deleteCategory(activeRow, component);
     }
 }

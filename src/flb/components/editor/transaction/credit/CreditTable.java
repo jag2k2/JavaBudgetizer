@@ -1,6 +1,5 @@
 package flb.components.editor.transaction.credit;
 
-
 import flb.components.editor.transaction.TransactionTable;
 import flb.util.Transactions;
 import flb.tuples.*;

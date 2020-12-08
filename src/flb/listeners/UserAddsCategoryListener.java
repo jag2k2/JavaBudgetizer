@@ -13,7 +13,7 @@ public class UserAddsCategoryListener implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        categoryAdder.userAddCategory();
+        categoryAdder.addCategory();
     }
 }
 

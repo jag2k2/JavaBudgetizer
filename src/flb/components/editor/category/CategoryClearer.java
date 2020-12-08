@@ -1,5 +1,5 @@
 package flb.components.editor.category;
 
 public interface CategoryClearer {
-    void userClearGoalAmount(int row);
+    void clearGoalAmount(int row);
 }

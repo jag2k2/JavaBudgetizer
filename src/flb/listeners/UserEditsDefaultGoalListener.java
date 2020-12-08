@@ -13,7 +13,7 @@ public class UserEditsDefaultGoalListener implements TableModelListener {
     @Override
     public void tableChanged(TableModelEvent event) {
         if(event.getColumn() == 1) {
-            amountEditor.UpdateSelectedGoalAmount();
+            amountEditor.updateSelectedGoalAmount();
         }
     }
 }

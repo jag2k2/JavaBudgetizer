@@ -5,5 +5,5 @@ import flb.util.Maybe;
 
 public interface CategoryNameEditor {
     Maybe<Category> getSelectedCategory();
-    void userRenamedCategory(String oldName);
+    void renamedCategory(String oldName);
 }

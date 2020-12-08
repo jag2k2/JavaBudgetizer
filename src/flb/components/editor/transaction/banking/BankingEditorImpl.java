@@ -41,7 +41,7 @@ public class BankingEditorImpl implements TransactionCategorizer, ViewChangeObse
     }
 
     @Override
-    public void userCategorizesTransaction(int row, String categoryName) {
+    public void categorizeTransaction(int row, String categoryName) {
         for (Transaction transaction : bankingTable.getTransaction(row)) {
             transactionStore.categorizeTransaction(transaction, categoryName);
         }

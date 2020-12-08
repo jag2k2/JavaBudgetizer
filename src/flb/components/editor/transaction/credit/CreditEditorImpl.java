@@ -40,7 +40,7 @@ public class CreditEditorImpl implements TransactionCategorizer, TransactionGrou
     public CreditTableTester getTableAutomator() { return tableAutomator; }
 
     @Override
-    public void userCategorizesTransaction(int row, String categoryName){
+    public void categorizeTransaction(int row, String categoryName){
         for (Transaction transaction : creditTable.getTransaction(row)) {
             transactionStore.categorizeTransaction(transaction, categoryName);
         }
