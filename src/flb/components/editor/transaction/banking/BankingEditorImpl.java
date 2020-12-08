@@ -25,6 +25,11 @@ public class BankingEditorImpl implements TransactionCategorizer, ViewChangeObse
         BankingTableImpl bankingTableImpl = new BankingTableImpl(categoryMenu, summarySelector);
         this.bankingTable = bankingTableImpl;
         this.tableAutomator = bankingTableImpl;
+
+        transactionStore.addStoreChangeObserver(this);
+        categoryStore.addStoreChangeObserver(this);
+        monthDisplay.addViewChangeObserver(this);
+        summarySelector.addGoalSelectedObserver(this);
     }
 
     public JPanel getPanel() {

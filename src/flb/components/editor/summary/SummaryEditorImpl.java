@@ -20,7 +20,7 @@ public class SummaryEditorImpl implements MonthGoalEditor, MonthGoalClearer, Sum
     private final MonthDisplay monthDisplay;
     private final List<TableHighlighter> tableHighlighters;
 
-    public SummaryEditorImpl(TransactionStore transactionStore, GoalStore goalStore, MonthDisplay monthDisplay){
+    public SummaryEditorImpl(TransactionStore transactionStore, CategoryStore categoryStore, GoalStore goalStore, MonthDisplay monthDisplay){
         this.goalStore = goalStore;
         this.transactionStore = transactionStore;
         this.monthDisplay = monthDisplay;
@@ -28,6 +28,11 @@ public class SummaryEditorImpl implements MonthGoalEditor, MonthGoalClearer, Sum
         this.tableTester = goalTable;
         this.summaryTable = goalTable;
         this.tableHighlighters = new ArrayList<>();
+
+        transactionStore.addStoreChangeObserver(this);
+        categoryStore.addStoreChangeObserver(this);
+        goalStore.addStoreChangeObserver(this);
+        monthDisplay.addViewChangeObserver(this);
 
         addListeners();
     }

@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class SummaryTableImp implements SummaryTable, SummarySelector, SummaryTableTester {
+public class SummaryTableImp implements SummaryTable, SummaryTableTester {
     private final SummaryTableModelImp tableModel;
     private final JTable table;
     private final JScrollPane scrollPane;
@@ -92,7 +92,6 @@ public class SummaryTableImp implements SummaryTable, SummarySelector, SummaryTa
         return tableModel.getSummary(row);
     }
 
-    @Override
     public Maybe<String> getSelectedGoalName(){
         int selectedRow = table.getSelectedRow();
         return tableModel.getGoalName(selectedRow);

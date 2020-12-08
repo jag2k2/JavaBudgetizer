@@ -27,35 +27,12 @@ public class MainGUI {
     public MainGUI(TransactionStore transactionStore, CategoryStore categoryStore, GoalStore goalStore) {
         this.frame = new JFrame();
         this.monthSelector = new MonthSelectorImpl();
-        this.summaryEditor = new SummaryEditorImpl(transactionStore, goalStore, monthSelector);
+        this.summaryEditor = new SummaryEditorImpl(transactionStore, categoryStore, goalStore, monthSelector);
         this.categoryEditor = new CategoryEditorImpl(categoryStore);
         this.bankingEditor = new BankingEditorImpl(transactionStore, categoryStore, monthSelector, summaryEditor);
         this.creditEditor = new CreditEditorImpl(transactionStore, categoryStore, monthSelector, summaryEditor);
-        this.balanceDisplay = new BalanceDisplayImpl(categoryStore, monthSelector);
+        this.balanceDisplay = new BalanceDisplayImpl(transactionStore, categoryStore, goalStore, monthSelector);
         this.menuBar = new MenuBarImpl(transactionStore, goalStore, monthSelector);
-
-        transactionStore.addStoreChangeObserver(bankingEditor);
-        transactionStore.addStoreChangeObserver(creditEditor);
-        transactionStore.addStoreChangeObserver(summaryEditor);
-        transactionStore.addStoreChangeObserver(balanceDisplay);
-
-        categoryStore.addStoreChangeObserver(bankingEditor);
-        categoryStore.addStoreChangeObserver(creditEditor);
-        categoryStore.addStoreChangeObserver(summaryEditor);
-        categoryStore.addStoreChangeObserver(balanceDisplay);
-        categoryStore.addStoreChangeObserver(categoryEditor);
-
-        goalStore.addStoreChangeObserver(summaryEditor);
-        goalStore.addStoreChangeObserver(balanceDisplay);
-
-        monthSelector.addViewChangeObserver(bankingEditor);
-        monthSelector.addViewChangeObserver(creditEditor);
-        monthSelector.addViewChangeObserver(summaryEditor);
-        monthSelector.addViewChangeObserver(balanceDisplay);
-        monthSelector.addViewChangeObserver(categoryEditor);
-
-        summaryEditor.addGoalSelectedObserver(bankingEditor);
-        summaryEditor.addGoalSelectedObserver(creditEditor);
 
         layout();
     }
@@ -104,6 +81,7 @@ public class MainGUI {
 
     public void launch(){
         monthSelector.setToCurrentMonth();
+        categoryEditor.update();
         frame.setVisible(true);
     }
 }

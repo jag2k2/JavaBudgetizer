@@ -5,6 +5,7 @@ import java.util.*;
 import java.awt.*;
 
 import flb.components.editor.*;
+import flb.components.monthselector.MonthDisplay;
 import flb.listeners.*;
 import flb.components.menus.CategoryEditorMenuImpl;
 import flb.datastores.CategoryStore;
@@ -37,6 +38,7 @@ public class CategoryEditorImpl implements CategoryAdder, CategoryClearer, Categ
         panel.add(BorderLayout.NORTH, northCategoryPanel);
         panel.add(BorderLayout.CENTER, categoryTable.getPane());
 
+        categoryStore.addStoreChangeObserver(this);
         addCategoryEditingListeners();
     }
 

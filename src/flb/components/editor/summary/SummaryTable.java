@@ -8,7 +8,7 @@ import javax.swing.*;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelListener;
 
-public interface SummaryTable extends SummarySelector {
+public interface SummaryTable {
     JScrollPane getPane();
     void display(ArrayList<TransactionSummary> tableContents);
     void displayAndKeepSelection(ArrayList<TransactionSummary> tableContents);
@@ -17,4 +17,5 @@ public interface SummaryTable extends SummarySelector {
     Maybe<TransactionSummary> getSelectedSummary();
     Maybe<TransactionSummary> getSummary(int row);
     void addEditorMenu (MenuDisplayer menuDisplayer);
+    Maybe<String> getSelectedGoalName();
 }

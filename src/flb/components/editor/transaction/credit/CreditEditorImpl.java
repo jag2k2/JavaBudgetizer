@@ -28,6 +28,11 @@ public class CreditEditorImpl implements TransactionCategorizer, TransactionGrou
         CreditTableImpl creditTableImpl = new CreditTableImpl(categoryMenu, grouperMenu, summarySelector);
         this.creditTable = creditTableImpl;
         this.tableAutomator = creditTableImpl;
+
+        transactionStore.addStoreChangeObserver(this);
+        categoryStore.addStoreChangeObserver(this);
+        monthDisplay.addViewChangeObserver(this);
+        summarySelector.addGoalSelectedObserver(this);
     }
 
     public JPanel getPanel() { return creditTable.getPanel(); }

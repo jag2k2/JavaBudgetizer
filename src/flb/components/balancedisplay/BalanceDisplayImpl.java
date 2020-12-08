@@ -14,11 +14,16 @@ public class BalanceDisplayImpl implements ViewChangeObserver, StoreChangeObserv
     private final CategoryStore categoryStore;
     private final MonthDisplay monthDisplay;
 
-    public BalanceDisplayImpl(CategoryStore categoryStore, MonthDisplay monthDisplay){
+    public BalanceDisplayImpl(TransactionStore transactionStore, CategoryStore categoryStore, GoalStore goalStore, MonthDisplay monthDisplay){
         this.panel = new JPanel();
         this.categoryStore = categoryStore;
         this.monthDisplay = monthDisplay;
         this.balance = new JFormattedTextField(NumberFormat.getCurrencyInstance());
+
+        transactionStore.addStoreChangeObserver(this);
+        categoryStore.addStoreChangeObserver(this);
+        goalStore.addStoreChangeObserver(this);
+        monthDisplay.addViewChangeObserver(this);
 
         layout();
     }

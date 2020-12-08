@@ -27,10 +27,11 @@ class UserEditsSummaryGoalListenerTest {
         GoalStoreImpl goalStore = new GoalStoreImpl(database);
         goalStoreTester = goalStore;
         TransactionStore transactionStore = new TransactionStoreImp(database);
+        CategoryStore categoryStore = new CategoryStoreImpl(database);
         MonthSelectorImpl monthSelectorImpl = new MonthSelectorImpl();
         monthSelectorImpl.setYear(2020);
         monthSelectorImpl.setMonth(Calendar.OCTOBER);
-        SummaryEditorImpl summaryEditor = new SummaryEditorImpl(transactionStore, goalStore, monthSelectorImpl);
+        SummaryEditorImpl summaryEditor = new SummaryEditorImpl(transactionStore, categoryStore, goalStore, monthSelectorImpl);
         tableTester = summaryEditor.getTableTester();
         summaryEditor.updateAndKeepSelection();
         this.newGoal = 200F;
