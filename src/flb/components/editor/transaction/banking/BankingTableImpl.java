@@ -2,9 +2,7 @@ package flb.components.editor.transaction.banking;
 
 import flb.components.editor.SimpleDollarRenderer;
 import flb.components.editor.summary.SummarySelector;
-import flb.components.editor.transaction.HighlightableRowTable;
-import flb.components.editor.transaction.TransactionTable;
-import flb.components.editor.transaction.TransactionTableTester;
+import flb.components.editor.transaction.*;
 import flb.components.menus.*;
 import flb.listeners.*;
 import flb.tuples.*;
@@ -16,7 +14,7 @@ import java.util.List;
 import flb.util.*;
 import javax.swing.*;
 
-public class BankingTableImpl implements BankingTable, TransactionTableTester {
+public class BankingTableImpl implements BankingTable, TableHighlighter, TransactionTableTester {
     private final BankingTableModelImp tableModel;
     private final HighlightableRowTable table;
     private final JPanel panel;
@@ -33,6 +31,7 @@ public class BankingTableImpl implements BankingTable, TransactionTableTester {
         table.add(categorizeMenu.getPopup());
         List<Integer> validCategorizeColumns = new ArrayList<>(Collections.singletonList(2));
         table.addMouseListener(new UserRightClicksTableListener(categorizeMenu, validCategorizeColumns));
+        summarySelector.addGoalSelectedObserver(this);
 
         layout();
     }

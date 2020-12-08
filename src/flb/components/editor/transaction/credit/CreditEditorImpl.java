@@ -13,7 +13,7 @@ import javax.swing.*;
 import java.util.Calendar;
 
 public class CreditEditorImpl implements TransactionCategorizer, TransactionGrouper, ViewChangeObserver,
-        StoreChangeObserver, TableHighlighter {
+        StoreChangeObserver {
     private final TransactionStore transactionStore;
     private final CreditTable creditTable;
     private final CreditTableTester tableAutomator;
@@ -32,7 +32,6 @@ public class CreditEditorImpl implements TransactionCategorizer, TransactionGrou
         transactionStore.addStoreChangeObserver(this);
         categoryStore.addStoreChangeObserver(this);
         monthDisplay.addViewChangeObserver(this);
-        summarySelector.addGoalSelectedObserver(this);
     }
 
     public JPanel getPanel() { return creditTable.getPanel(); }
@@ -62,10 +61,5 @@ public class CreditEditorImpl implements TransactionCategorizer, TransactionGrou
     public void updateAndKeepSelection() {
         Transactions<CreditTransaction> creditTransactions = transactionStore.getCreditTransactions(monthDisplay.getMonth());
         creditTable.displayAndKeepSelection(creditTransactions);
-    }
-
-    @Override
-    public void highlightRows() {
-        creditTable.highlightRows();
     }
 }

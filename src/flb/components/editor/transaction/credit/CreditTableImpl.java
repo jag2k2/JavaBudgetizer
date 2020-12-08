@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.*;
 import javax.swing.*;
 
-public class CreditTableImpl implements CreditTable, CreditTableTester, StatusDisplayer {
+public class CreditTableImpl implements CreditTable, TableHighlighter, CreditTableTester, StatusDisplayer {
     private final CreditTableModelImpl tableModel;
     private final HighlightableRowTable table;
     private final JPanel panel;
@@ -34,6 +34,7 @@ public class CreditTableImpl implements CreditTable, CreditTableTester, StatusDi
         List<Integer> validGroupingColumns = new ArrayList<>(Arrays.asList(0,1,3,4));
         table.addMouseListener(new UserRightClicksTableListener(payGroupMenu, validGroupingColumns));
         table.getSelectionModel().addListSelectionListener(new UserSelectsTransactionsListener(this));
+        summarySelector.addGoalSelectedObserver(this);
 
         layout();
     }

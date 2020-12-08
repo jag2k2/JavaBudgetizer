@@ -11,7 +11,7 @@ import flb.util.Transactions;
 import javax.swing.*;
 
 public class BankingEditorImpl implements TransactionCategorizer, ViewChangeObserver,
-        StoreChangeObserver, TableHighlighter {
+        StoreChangeObserver {
     private final TransactionStore transactionStore;
     private final MonthDisplay monthDisplay;
     private final BankingTable bankingTable;
@@ -29,7 +29,6 @@ public class BankingEditorImpl implements TransactionCategorizer, ViewChangeObse
         transactionStore.addStoreChangeObserver(this);
         categoryStore.addStoreChangeObserver(this);
         monthDisplay.addViewChangeObserver(this);
-        summarySelector.addGoalSelectedObserver(this);
     }
 
     public JPanel getPanel() {
@@ -57,10 +56,5 @@ public class BankingEditorImpl implements TransactionCategorizer, ViewChangeObse
     public void updateAndKeepSelection() {
         Transactions<BankingTransaction> bankingTransactions = transactionStore.getBankingTransactions(monthDisplay.getMonth());
         bankingTable.display(bankingTransactions);
-    }
-
-    @Override
-    public void highlightRows() {
-        bankingTable.highlightRows();
     }
 }
