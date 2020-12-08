@@ -14,14 +14,14 @@ import java.util.List;
 import flb.util.*;
 import javax.swing.*;
 
-public class BankingTableImpl implements BankingTable, TableHighlighter, TransactionTableTester {
+public class BankingTableImpl implements BankingTable, TransactionTableTester {
     private final BankingTableModelImp tableModel;
-    private final HighlightableRowTable table;
+    private final HighlightingRowTable table;
     private final JPanel panel;
 
     public BankingTableImpl(MenuDisplayer categorizeMenu, SummarySelector summarySelector) {
         this.tableModel = new BankingTableModelImp();
-        this.table = new HighlightableRowTable(tableModel, 1, summarySelector);
+        this.table = new HighlightingRowTable(tableModel, 1, summarySelector);
         this.panel = new JPanel(new BorderLayout());
 
         table.setSelectionModel(new NullSelectionModel());
@@ -31,7 +31,6 @@ public class BankingTableImpl implements BankingTable, TableHighlighter, Transac
         table.add(categorizeMenu.getPopup());
         List<Integer> validCategorizeColumns = new ArrayList<>(Collections.singletonList(2));
         table.addMouseListener(new UserRightClicksTableListener(categorizeMenu, validCategorizeColumns));
-        summarySelector.addGoalSelectedObserver(this);
 
         layout();
     }
@@ -63,11 +62,6 @@ public class BankingTableImpl implements BankingTable, TableHighlighter, Transac
     @Override
     public void display(Transactions<BankingTransaction> tableContents){
         tableModel.updateTransactions(tableContents);
-    }
-
-    @Override
-    public void highlightRows(){
-        tableModel.fireTableDataChanged();
     }
 
     @Override

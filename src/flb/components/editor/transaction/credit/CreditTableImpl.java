@@ -12,15 +12,15 @@ import java.util.List;
 import java.util.*;
 import javax.swing.*;
 
-public class CreditTableImpl implements CreditTable, TableHighlighter, CreditTableTester, StatusDisplayer {
+public class CreditTableImpl implements CreditTable, CreditTableTester, StatusDisplayer {
     private final CreditTableModelImpl tableModel;
-    private final HighlightableRowTable table;
+    private final HighlightingRowTable table;
     private final JPanel panel;
     private final JTextField statusBar;
 
     public CreditTableImpl(MenuDisplayer categorizeMenu, MenuDisplayer payGroupMenu, SummarySelector summarySelector) {
         this.tableModel = new CreditTableModelImpl();
-        this.table = new HighlightableRowTable(tableModel, 1, summarySelector);
+        this.table = new HighlightingRowTable(tableModel, 1, summarySelector);
         this.panel = new JPanel(new BorderLayout());
         this.statusBar = new JTextField();
 
@@ -34,7 +34,6 @@ public class CreditTableImpl implements CreditTable, TableHighlighter, CreditTab
         List<Integer> validGroupingColumns = new ArrayList<>(Arrays.asList(0,1,3,4));
         table.addMouseListener(new UserRightClicksTableListener(payGroupMenu, validGroupingColumns));
         table.getSelectionModel().addListSelectionListener(new UserSelectsTransactionsListener(this));
-        summarySelector.addGoalSelectedObserver(this);
 
         layout();
     }
@@ -103,9 +102,6 @@ public class CreditTableImpl implements CreditTable, TableHighlighter, CreditTab
         }
         return sum;
     }
-
-    @Override
-    public void highlightRows() { tableModel.fireTableDataChanged(); }
 
     @Override
     public Maybe<CreditTransaction> getTransaction(int row){
