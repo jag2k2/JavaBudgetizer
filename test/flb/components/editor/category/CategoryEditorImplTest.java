@@ -20,7 +20,7 @@ class CategoryEditorImplTest {
     void setUp() {
         database = new TestDatabase();
         database.connect();
-        categoryStore = new CategoryStoreImpl(database);
+        categoryStore = new DataStoreImpl(database);
         categoryEditor = new CategoryEditorImpl(categoryStore);
         categoryStore.addStoreChangeObserver(categoryEditor);
         categoryEditor.update();

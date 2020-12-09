@@ -11,7 +11,7 @@ import flb.tuples.*;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-class TransactionStoreImpTest {
+class TransactionStoreTest {
     private TransactionStore transactionStore;
     private TestDatabase dataBase;
     private WhichMonth whichMonth;
@@ -21,7 +21,7 @@ class TransactionStoreImpTest {
     void setUp(){
         dataBase = new TestDatabase();
         dataBase.connect();
-        transactionStore = new TransactionStoreImp(dataBase);
+        transactionStore = new DataStoreImpl(dataBase);
         whichMonth = new WhichMonth(2020, Calendar.OCTOBER);
         date20201029 = new GregorianCalendar(2020, Calendar.OCTOBER, 29);
     }

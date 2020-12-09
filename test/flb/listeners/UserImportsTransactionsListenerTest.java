@@ -23,7 +23,7 @@ class UserImportsTransactionsListenerTest {
         testButton = new JButton();
         database = new TestDatabase();
         database.connect();
-        transactionStore = new TransactionStoreImp(database);
+        transactionStore = new DataStoreImpl(database);
     }
 
     @AfterEach

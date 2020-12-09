@@ -20,7 +20,7 @@ class UserClearsDefaultGoalListenerTest {
     void setUp() {
         database = new TestDatabase();
         database.connect();
-        categoryStore = new CategoryStoreImpl(database);
+        categoryStore = new DataStoreImpl(database);
         categoryEditor = new CategoryEditorImpl(categoryStore);
         categoryEditor.update();
 

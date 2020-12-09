@@ -21,7 +21,7 @@ class UserDeletesCategoryListenerTest {
     void setUp() {
         database = new TestDatabase();
         database.connect();
-        categoryStore = new CategoryStoreImpl(database);
+        categoryStore = new DataStoreImpl(database);
 
         testButton = new JButton();
 

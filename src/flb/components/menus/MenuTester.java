@@ -1,7 +1,7 @@
 package flb.components.menus;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public interface MenuTester {
-    ArrayList<String> toStringArray();
+    List<String> toStringArray();
 }

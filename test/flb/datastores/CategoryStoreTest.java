@@ -7,7 +7,7 @@ import flb.tuples.Category;
 import flb.util.WhichMonth;
 import java.util.*;
 
-class CategoryStoreImplTest {
+class CategoryStoreTest {
     private TestDatabase database;
     private CategoryStore categoryStore;
     List<Category> expected;
@@ -20,7 +20,7 @@ class CategoryStoreImplTest {
 
         database = new TestDatabase();
         database.connect();
-        categoryStore = new CategoryStoreImpl(database);
+        categoryStore = new DataStoreImpl(database);
     }
 
     @AfterEach

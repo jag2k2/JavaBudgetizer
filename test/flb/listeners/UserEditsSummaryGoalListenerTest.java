@@ -24,10 +24,11 @@ class UserEditsSummaryGoalListenerTest {
         selectedMonth = new WhichMonth(2020, Calendar.OCTOBER);
         database = new TestDatabase();
         database.connect();
-        GoalStoreImpl goalStore = new GoalStoreImpl(database);
-        goalStoreTester = goalStore;
-        TransactionStore transactionStore = new TransactionStoreImp(database);
-        CategoryStore categoryStore = new CategoryStoreImpl(database);
+        DataStoreImpl dataStoreImpl = new DataStoreImpl(database);
+        GoalStore goalStore = dataStoreImpl;
+        goalStoreTester = dataStoreImpl;
+        TransactionStore transactionStore = dataStoreImpl;
+        CategoryStore categoryStore = dataStoreImpl;
         MonthSelectorImpl monthSelectorImpl = new MonthSelectorImpl();
         monthSelectorImpl.setYear(2020);
         monthSelectorImpl.setMonth(Calendar.OCTOBER);

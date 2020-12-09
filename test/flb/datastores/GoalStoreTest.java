@@ -7,16 +7,19 @@ import flb.util.*;
 import flb.tuples.*;
 import java.util.*;
 
-class GoalStoreImplTest {
+class GoalStoreTest {
     private TestDatabase database;
-    private GoalStoreImpl goalStore;
+    private GoalStore goalStore;
+    private GoalStoreTester goalStoreTester;
     private WhichMonth whichMonth;
 
     @BeforeEach
     void setUp() {
         database = new TestDatabase();
         database.connect();
-        goalStore = new GoalStoreImpl(database);
+        DataStoreImpl dataStoreImpl = new DataStoreImpl(database);
+        goalStore = dataStoreImpl;
+        goalStoreTester = dataStoreImpl;
         whichMonth = new WhichMonth(2020, Calendar.OCTOBER);
     }
 
@@ -32,7 +35,7 @@ class GoalStoreImplTest {
         goalStore.createDefaultGoals(septemberDate);
 
         for (Category category : CategoryListFactory.makeDefaultCategories()){
-            assertEquals(category.getDefaultGoal(), goalStore.getGoal(septemberDate, category.getName()));
+            assertEquals(category.getDefaultGoal(), goalStoreTester.getGoal(septemberDate, category.getName()));
         }
     }
 
@@ -44,7 +47,7 @@ class GoalStoreImplTest {
         goalStore.deleteGoal(summaryWithoutGoal);
 
         Maybe<Float> expected = new Maybe<>();
-        assertEquals(expected, goalStore.getGoal(whichMonth, categoryWithoutGoal.getName()));
+        assertEquals(expected, goalStoreTester.getGoal(whichMonth, categoryWithoutGoal.getName()));
     }
 
     @Test
@@ -55,7 +58,7 @@ class GoalStoreImplTest {
         goalStore.deleteGoal(summaryWithGoal);
 
         Maybe<Float> expected = new Maybe<>();
-        assertEquals(expected, goalStore.getGoal(whichMonth, categoryWithGoal.getName()));
+        assertEquals(expected, goalStoreTester.getGoal(whichMonth, categoryWithGoal.getName()));
     }
 
     @Test
@@ -73,7 +76,7 @@ class GoalStoreImplTest {
     @Test
     void getGoal() {
         Maybe<Float> expected = new Maybe<>(1000F);
-        assertEquals(expected, goalStore.getGoal(whichMonth, "Income"));
+        assertEquals(expected, goalStoreTester.getGoal(whichMonth, "Income"));
     }
 
     @Test
@@ -86,7 +89,7 @@ class GoalStoreImplTest {
         goalStore.updateGoalAmount(summaryToUpdate);
 
         Maybe<Float> expected = new Maybe<>(newGoal);
-        assertEquals(expected, goalStore.getGoal(whichMonth, category.getName()));
+        assertEquals(expected, goalStoreTester.getGoal(whichMonth, category.getName()));
     }
 
     @Test
@@ -99,7 +102,7 @@ class GoalStoreImplTest {
         goalStore.addGoal(summaryToUpdate);
 
         Maybe<Float> expected = new Maybe<>(newGoal);
-        assertEquals(expected, goalStore.getGoal(whichMonth, categoryToAddTo.getName()));
+        assertEquals(expected, goalStoreTester.getGoal(whichMonth, categoryToAddTo.getName()));
     }
 
     @Test

@@ -7,7 +7,6 @@ import flb.importers.file.*;
 import flb.importers.QfxImporter;
 import flb.listeners.UserCreatesDefaultGoals;
 import flb.listeners.UserImportsTransactionsListener;
-
 import javax.swing.*;
 
 public class MenuBarImpl {

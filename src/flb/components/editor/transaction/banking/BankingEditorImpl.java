@@ -21,7 +21,7 @@ public class BankingEditorImpl implements TransactionCategorizer, ViewChangeObse
                              SummarySelector summarySelector) {
         this.transactionStore = transactionStore;
         this.monthDisplay = monthDisplay;
-        CategorizerMenuImpl categoryMenu = new CategorizerMenuImpl(categoryStore, this);
+        CategorizerMenuImpl categoryMenu = new CategorizerMenuImpl(categoryStore.getCategories(""), this);
         BankingTableImpl bankingTableImpl = new BankingTableImpl(categoryMenu, summarySelector);
         this.bankingTable = bankingTableImpl;
         this.tableAutomator = bankingTableImpl;

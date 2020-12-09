@@ -21,7 +21,7 @@ class UserFiltersCategoriesListenerTest {
     void setUp() {
         database = new TestDatabase();
         database.connect();
-        CategoryStore categoryStore = new CategoryStoreImpl(database);
+        CategoryStore categoryStore = new DataStoreImpl(database);
         categoryEditor = new CategoryEditorImpl(categoryStore);
         tableAutomator = categoryEditor.getTableTester();
 

@@ -1,21 +1,21 @@
 package flb.components.menus;
 
 import flb.listeners.UserCategorizesTransaction;
-import flb.datastores.CategoryStore;
 import flb.components.editor.transaction.TransactionCategorizer;
 import flb.tuples.*;
 import javax.swing.*;
 import java.awt.*;
-import java.util.*;
+import java.util.List;
+import java.util.ArrayList;
 
 public class CategorizerMenuImpl implements MenuDisplayer, MenuTester {
     private final JPopupMenu popupMenu;
-    private final CategoryStore categoryStore;
+    private final List<Category> categories;
     private final TransactionCategorizer transactionCategorizer;
 
-    public CategorizerMenuImpl(CategoryStore categoryStore, TransactionCategorizer transactionCategorizer) {
+    public CategorizerMenuImpl(List<Category> categories, TransactionCategorizer transactionCategorizer) {
         this.popupMenu = new JPopupMenu();
-        this.categoryStore = categoryStore;
+        this.categories = categories;
         this.transactionCategorizer = transactionCategorizer;
     }
 
@@ -32,7 +32,7 @@ public class CategorizerMenuImpl implements MenuDisplayer, MenuTester {
     protected void buildMenu(int activeRow) {
         popupMenu.removeAll();
         JMenu superCategory = new JMenu("");
-        for (Category category : categoryStore.getCategories("")){
+        for (Category category : categories){
             String categoryName = category.getName();
             JMenuItem categoryItem = new JMenuItem();
             categoryItem.addActionListener(new UserCategorizesTransaction(transactionCategorizer));
@@ -56,8 +56,8 @@ public class CategorizerMenuImpl implements MenuDisplayer, MenuTester {
         }
     }
 
-    public ArrayList<String> toStringArray() {
-        ArrayList<String> stringArray = new ArrayList<>();
+    public List<String> toStringArray() {
+        List<String> stringArray = new ArrayList<>();
         for (MenuElement menuElement : popupMenu.getSubElements()){
             if (menuElement instanceof JMenu){
                 JMenu superMenu = (JMenu) menuElement;

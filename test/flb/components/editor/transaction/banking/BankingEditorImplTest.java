@@ -24,12 +24,12 @@ class BankingEditorImplTest {
     void setUp() {
         database = new TestDatabase();
         database.connect();
-        TransactionStore transactionStore = new TransactionStoreImp(database);
+        DataStoreImpl dataStoreImpl = new DataStoreImpl(database);
         MonthSelectorImpl monthSelectorImpl = new MonthSelectorImpl();
         monthSetter = monthSelectorImpl;
         monthSetter.setYear(2020);
         monthSetter.setMonth(Calendar.OCTOBER);
-        bankingEditor = new BankingEditorImpl(transactionStore, new CategoryStoreImpl(database), monthSelectorImpl, new SummarySelectorMock());
+        bankingEditor = new BankingEditorImpl(dataStoreImpl, dataStoreImpl, monthSelectorImpl, new SummarySelectorMock());
         tableAutomator = bankingEditor.getTableTester();
 
         expected = DebitListFactory.makeDefaultTransactions();
