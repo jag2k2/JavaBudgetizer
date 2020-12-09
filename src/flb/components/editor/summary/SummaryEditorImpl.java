@@ -8,10 +8,13 @@ import flb.datastores.*;
 import flb.listeners.*;
 import flb.tuples.*;
 import flb.util.*;
+
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 import javax.swing.*;
 
-public class SummaryEditorImpl implements MonthGoalEditor, MonthGoalClearer, SummarySelector, ViewChangeObserver,
+public class SummaryEditorImpl extends JComponent implements MonthGoalEditor, MonthGoalClearer, SummarySelector, ViewChangeObserver,
         StoreChangeObserver, SummaryEditorTester, GoalSelectedNotifier{
     private final GoalStore goalStore;
     private final TransactionStore transactionStore;
@@ -24,9 +27,9 @@ public class SummaryEditorImpl implements MonthGoalEditor, MonthGoalClearer, Sum
         this.goalStore = goalStore;
         this.transactionStore = transactionStore;
         this.monthDisplay = monthDisplay;
-        SummaryTableImp goalTable = new SummaryTableImp();
-        this.tableTester = goalTable;
-        this.summaryTable = goalTable;
+        SummaryTableImp summaryTableImp = new SummaryTableImp();
+        this.tableTester = summaryTableImp;
+        this.summaryTable = summaryTableImp;
         this.tableHighlighters = new ArrayList<>();
 
         transactionStore.addStoreChangeObserver(this);
@@ -34,6 +37,8 @@ public class SummaryEditorImpl implements MonthGoalEditor, MonthGoalClearer, Sum
         goalStore.addStoreChangeObserver(this);
         monthDisplay.addViewChangeObserver(this);
 
+        this.setLayout(new BorderLayout());
+        this.add(summaryTableImp);
         addListeners();
     }
 
@@ -41,10 +46,6 @@ public class SummaryEditorImpl implements MonthGoalEditor, MonthGoalClearer, Sum
         summaryTable.addEditorMenu(new GoalEditorMenuImpl(this));
         summaryTable.addGoalEditedListener(new UserEditsSummaryGoalListener(this));
         summaryTable.addGoalSelectionListener(new UserSelectsGoalListener(this));
-    }
-
-    public JScrollPane getPane() {
-        return summaryTable.getPane();
     }
 
     @Override

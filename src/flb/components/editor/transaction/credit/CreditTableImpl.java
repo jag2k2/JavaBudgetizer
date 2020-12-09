@@ -12,16 +12,14 @@ import java.util.List;
 import java.util.*;
 import javax.swing.*;
 
-public class CreditTableImpl implements CreditTable, CreditTableTester, StatusDisplayer {
+public class CreditTableImpl extends JComponent implements CreditTable, CreditTableTester, StatusDisplayer {
     private final CreditTableModelImpl tableModel;
     private final HighlightingRowTable table;
-    private final JPanel panel;
     private final JTextField statusBar;
 
     public CreditTableImpl(MenuDisplayer categorizeMenu, MenuDisplayer payGroupMenu, SummarySelector summarySelector) {
         this.tableModel = new CreditTableModelImpl();
         this.table = new HighlightingRowTable(tableModel, 1, summarySelector);
-        this.panel = new JPanel(new BorderLayout());
         this.statusBar = new JTextField();
 
         SimpleDollarRenderer dollarRenderer = new SimpleDollarRenderer();
@@ -35,10 +33,6 @@ public class CreditTableImpl implements CreditTable, CreditTableTester, StatusDi
         table.addMouseListener(new UserRightClicksTableListener(payGroupMenu, validGroupingColumns));
         table.getSelectionModel().addListSelectionListener(new UserSelectsTransactionsListener(this));
 
-        layout();
-    }
-
-    protected void layout(){
         table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         table.setFillsViewportHeight(true);
         table.getTableHeader().setReorderingAllowed(false);
@@ -59,13 +53,9 @@ public class CreditTableImpl implements CreditTable, CreditTableTester, StatusDi
         statusBar.setHorizontalAlignment(SwingConstants.RIGHT);
         statusBar.setBackground(new Color(214, 217, 223));
 
-        panel.add(scrollPane, BorderLayout.CENTER);
-        panel.add(statusBar, BorderLayout.SOUTH);
-    }
-
-    @Override
-    public JPanel getPanel() {
-        return panel;
+        this.setLayout(new BorderLayout());
+        this.add(scrollPane, BorderLayout.CENTER);
+        this.add(statusBar, BorderLayout.SOUTH);
     }
 
     @Override

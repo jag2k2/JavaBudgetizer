@@ -13,7 +13,7 @@ import java.beans.*;
 import java.util.*;
 import java.util.List;
 
-public class CategoryTableImpl implements CategoryTable, CategoryTableTester {
+public class CategoryTableImpl extends JComponent implements CategoryTable, CategoryTableTester {
     private final CategoryTableModel tableModel;
     private final JTable table;
     private final JScrollPane scrollPane;
@@ -24,10 +24,6 @@ public class CategoryTableImpl implements CategoryTable, CategoryTableTester {
         this.table = new JTable(categoryTableModel);
         this.scrollPane = new JScrollPane(table);
 
-        layout();
-    }
-
-    protected void layout() {
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         table.setFillsViewportHeight(true);
         table.setRowSelectionAllowed(false);
@@ -45,11 +41,9 @@ public class CategoryTableImpl implements CategoryTable, CategoryTableTester {
 
         scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-    }
 
-    @Override
-    public JScrollPane getPane() {
-        return scrollPane;
+        this.setLayout(new BorderLayout());
+        this.add(scrollPane);
     }
 
     @Override

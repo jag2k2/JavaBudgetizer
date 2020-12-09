@@ -9,8 +9,9 @@ import flb.datastores.*;
 import flb.tuples.*;
 import flb.util.Transactions;
 import javax.swing.*;
+import java.awt.*;
 
-public class BankingEditorImpl implements TransactionCategorizer, ViewChangeObserver,
+public class BankingEditorImpl extends JComponent implements TransactionCategorizer, ViewChangeObserver,
         StoreChangeObserver {
     private final TransactionStore transactionStore;
     private final MonthDisplay monthDisplay;
@@ -25,14 +26,12 @@ public class BankingEditorImpl implements TransactionCategorizer, ViewChangeObse
         BankingTableImpl bankingTableImpl = new BankingTableImpl(categoryMenu, summarySelector);
         this.bankingTable = bankingTableImpl;
         this.tableAutomator = bankingTableImpl;
+        this.setLayout(new BorderLayout());
+        this.add(bankingTableImpl);
 
         transactionStore.addStoreChangeObserver(this);
         categoryStore.addStoreChangeObserver(this);
         monthDisplay.addViewChangeObserver(this);
-    }
-
-    public JPanel getPanel() {
-        return bankingTable.getPanel();
     }
 
     public TransactionTableTester getTableTester() {

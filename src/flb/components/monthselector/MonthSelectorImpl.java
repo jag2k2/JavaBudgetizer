@@ -12,9 +12,8 @@ import flb.components.monthselector.listeners.*;
 import flb.components.editor.*;
 import flb.util.*;
 
-public class MonthSelectorImpl implements ViewChangeNotifier, MonthDisplay, MonthSelector,
+public class MonthSelectorImpl extends JComponent implements ViewChangeNotifier, MonthDisplay, MonthSelector,
         ViewChangeObserver {
-    private final JPanel panel;
     private final MonthSelectorModelImpl monthModel;
     private final ArrayList<ViewChangeObserver> viewChangeObservers;
     private final JButton prev;
@@ -25,7 +24,6 @@ public class MonthSelectorImpl implements ViewChangeNotifier, MonthDisplay, Mont
     private final ItemListener userSelectsSpecificMonth;
 
     public MonthSelectorImpl() {
-        this.panel = new JPanel();
         this.viewChangeObservers = new ArrayList<>();
         this.prev = new JButton("Prev");
         this.month = new JComboBox<>(Months.values());
@@ -43,12 +41,12 @@ public class MonthSelectorImpl implements ViewChangeNotifier, MonthDisplay, Mont
     protected void arrange(){
         yearField.setPreferredSize(new Dimension(50,25));
 
-        panel.setBorder(new CompoundBorder(new LineBorder(Color.BLACK), new EmptyBorder(5,5,5,5)));
-        panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
-        panel.add(prev);
-        panel.add(month);
-        panel.add(yearField);
-        panel.add(next);
+        this.setBorder(new CompoundBorder(new LineBorder(Color.BLACK), new EmptyBorder(5,5,5,5)));
+        this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+        this.add(prev);
+        this.add(month);
+        this.add(yearField);
+        this.add(next);
 
         prev.setActionCommand("decrement");
         prev.addActionListener(new UserSpinsMonth(this));
@@ -60,10 +58,6 @@ public class MonthSelectorImpl implements ViewChangeNotifier, MonthDisplay, Mont
         yearField.addActionListener(new UserSelectsSpecificYear(this));
 
         addViewChangeObserver(this);
-    }
-
-    public JPanel getPanel(){
-        return panel;
     }
 
     @Override

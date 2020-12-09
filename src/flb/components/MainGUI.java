@@ -9,53 +9,43 @@ import flb.components.editor.transaction.credit.CreditEditorImpl;
 import flb.components.editor.summary.SummaryEditorImpl;
 import flb.components.menus.MenuBarImpl;
 import flb.components.monthselector.*;
+import flb.databases.AbstractDatabase;
 import flb.datastores.*;
-
 import java.awt.*;
 
 public class MainGUI {
     private final JFrame frame;
-    private final MenuBarImpl menuBar;
     private final MonthSelectorImpl monthSelector;
-    private final BalanceDisplayImpl balanceDisplay;
-
-    private final BankingEditorImpl bankingEditor;
-    private final CreditEditorImpl creditEditor;
     private final CategoryEditorImpl categoryEditor;
-    private final SummaryEditorImpl summaryEditor;
 
-    public MainGUI(TransactionStore transactionStore, CategoryStore categoryStore, GoalStore goalStore) {
+    public MainGUI(AbstractDatabase database) {
         this.frame = new JFrame();
         this.monthSelector = new MonthSelectorImpl();
-        this.summaryEditor = new SummaryEditorImpl(transactionStore, categoryStore, goalStore, monthSelector);
-        this.categoryEditor = new CategoryEditorImpl(categoryStore);
-        this.bankingEditor = new BankingEditorImpl(transactionStore, categoryStore, monthSelector, summaryEditor);
-        this.creditEditor = new CreditEditorImpl(transactionStore, categoryStore, monthSelector, summaryEditor);
-        this.balanceDisplay = new BalanceDisplayImpl(transactionStore, categoryStore, goalStore, monthSelector);
-        this.menuBar = new MenuBarImpl(transactionStore, goalStore, monthSelector);
 
-        layout();
-    }
-
-    protected void layout(){
-        Border greyBorder = new LineBorder(Color.LIGHT_GRAY);
+        DataStoreImpl dataStoreImpl = new DataStoreImpl(database);
+        this.categoryEditor = new CategoryEditorImpl(dataStoreImpl);
+        SummaryEditorImpl summaryEditor = new SummaryEditorImpl(dataStoreImpl, dataStoreImpl, dataStoreImpl, monthSelector);
+        BankingEditorImpl bankingEditor = new BankingEditorImpl(dataStoreImpl, dataStoreImpl, monthSelector, summaryEditor);
+        CreditEditorImpl creditEditor = new CreditEditorImpl(dataStoreImpl, dataStoreImpl, monthSelector, summaryEditor);
+        BalanceDisplayImpl balanceDisplay = new BalanceDisplayImpl(dataStoreImpl, dataStoreImpl, dataStoreImpl, monthSelector);
+        MenuBarImpl menuBar = new MenuBarImpl(dataStoreImpl, dataStoreImpl, monthSelector);
 
         JPanel northLeftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        northLeftPanel.add(monthSelector.getPanel());
+        northLeftPanel.add(monthSelector);
 
         JPanel northRightPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        northRightPanel.add(balanceDisplay.getPanel());
+        northRightPanel.add(balanceDisplay);
         northRightPanel.add(Box.createRigidArea(new Dimension(34,5)));
 
         JTabbedPane tabbedCategoryPane = new JTabbedPane();
-        tabbedCategoryPane.addTab(" Goals ", summaryEditor.getPane());
-        tabbedCategoryPane.addTab(" Categories ", categoryEditor.getPanel());
-        tabbedCategoryPane.setBorder(new CompoundBorder(greyBorder, BorderFactory.createEmptyBorder(2,5,5,5)));
+        tabbedCategoryPane.addTab(" Goals ", summaryEditor);
+        tabbedCategoryPane.addTab(" Categories ", categoryEditor);
+        tabbedCategoryPane.setBorder(new CompoundBorder(new LineBorder(Color.LIGHT_GRAY), BorderFactory.createEmptyBorder(2,5,5,5)));
 
         JTabbedPane tabbedTransactionPane = new JTabbedPane();
-        tabbedTransactionPane.addTab(" Banking ", bankingEditor.getPanel());
-        tabbedTransactionPane.addTab(" Credit ", creditEditor.getPanel());
-        tabbedTransactionPane.setBorder(new CompoundBorder(greyBorder, BorderFactory.createEmptyBorder(2,5,5,5)));
+        tabbedTransactionPane.addTab(" Banking ", bankingEditor);
+        tabbedTransactionPane.addTab(" Credit ", creditEditor);
+        tabbedTransactionPane.setBorder(new CompoundBorder(new LineBorder(Color.LIGHT_GRAY), BorderFactory.createEmptyBorder(2,5,5,5)));
 
         JPanel leftPane = new JPanel(new BorderLayout());
         leftPane.add(BorderLayout.NORTH, northLeftPanel);

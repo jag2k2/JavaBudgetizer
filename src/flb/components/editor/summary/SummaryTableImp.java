@@ -15,21 +15,16 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class SummaryTableImp implements SummaryTable, SummaryTableTester {
+public class SummaryTableImp extends JComponent implements SummaryTable, SummaryTableTester {
     private final SummaryTableModelImp tableModel;
     private final JTable table;
-    private final JScrollPane scrollPane;
 
 
     public SummaryTableImp() {
         this.tableModel = new SummaryTableModelImp();
         this.table = new GreenRowTable(tableModel, 3);
-        this.scrollPane = new JScrollPane(table);
+        JScrollPane scrollPane = new JScrollPane(table);
 
-        layout();
-    }
-
-    protected void layout() {
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         table.setFillsViewportHeight(true);
         table.getTableHeader().setReorderingAllowed(false);
@@ -52,6 +47,9 @@ public class SummaryTableImp implements SummaryTable, SummaryTableTester {
         scrollPane.setMaximumSize(new Dimension(10,10));
         scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+
+        this.setLayout(new BorderLayout());
+        this.add(scrollPane);
     }
 
     @Override
@@ -62,11 +60,6 @@ public class SummaryTableImp implements SummaryTable, SummaryTableTester {
     @Override
     public void addGoalEditedListener(TableModelListener tableModelListener) {
         tableModel.addTableModelListener(tableModelListener);
-    }
-
-    @Override
-    public JScrollPane getPane(){
-        return scrollPane;
     }
 
     @Override

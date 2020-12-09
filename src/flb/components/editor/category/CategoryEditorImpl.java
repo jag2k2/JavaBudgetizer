@@ -11,14 +11,13 @@ import flb.datastores.CategoryStore;
 import flb.util.*;
 import flb.tuples.*;
 
-public class CategoryEditorImpl implements CategoryAdder, CategoryClearer, CategoryDeleter, CategoryExcludeEditor,
+public class CategoryEditorImpl extends JComponent implements CategoryAdder, CategoryClearer, CategoryDeleter, CategoryExcludeEditor,
         CategoryGoalEditor, CategoryNameEditor, CategoryEditorTester, StoreChangeObserver, ViewChangeObserver {
     private final CategoryStore categoryStore;
     private final CategoryTable categoryTable;
     private final CategoryTableTester tableAutomator;
     private final JTextField nameFilter;
     private final JButton addButton;
-    private final JPanel panel;
 
     public CategoryEditorImpl(CategoryStore categoryStore){
         this.categoryStore = categoryStore;
@@ -27,15 +26,15 @@ public class CategoryEditorImpl implements CategoryAdder, CategoryClearer, Categ
         this.tableAutomator = categoryTableImpl;
         this.addButton = new JButton("Add");
         this.nameFilter = new JTextField();
-        this.panel = new JPanel(new BorderLayout());
 
         JPanel northCategoryPanel = new JPanel();
         northCategoryPanel.setLayout(new BoxLayout(northCategoryPanel, BoxLayout.X_AXIS));
         northCategoryPanel.add(nameFilter);
         northCategoryPanel.add(addButton);
 
-        panel.add(BorderLayout.NORTH, northCategoryPanel);
-        panel.add(BorderLayout.CENTER, categoryTable.getPane());
+        this.setLayout(new BorderLayout());
+        this.add(northCategoryPanel, BorderLayout.NORTH);
+        this.add(categoryTableImpl, BorderLayout.CENTER);
 
         categoryStore.addStoreChangeObserver(this);
         addCategoryEditingListeners();
@@ -48,10 +47,6 @@ public class CategoryEditorImpl implements CategoryAdder, CategoryClearer, Categ
         categoryTable.addEditorMenu(new CategoryEditorMenuImpl(this));
         addButton.addActionListener(new UserAddsCategoryListener(this));
         nameFilter.getDocument().addDocumentListener(new UserFiltersCategoriesListener(this));
-    }
-
-    public JPanel getPanel() {
-        return panel;
     }
 
     @Override

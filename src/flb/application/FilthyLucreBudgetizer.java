@@ -24,12 +24,8 @@ public class FilthyLucreBudgetizer {
         @Override
         public void run() {
             AbstractDatabase database = new ProductionDatabase();
-            TransactionStore transactionStore = new TransactionStoreImp(database);
-            CategoryStore categoryStore = new CategoryStoreImpl(database);
-            GoalStore goalStore = new GoalStoreImpl(database);
-            MainGUI mainGui = new MainGUI(transactionStore, categoryStore, goalStore);
-
             database.connect();
+            MainGUI mainGui = new MainGUI(database);
             mainGui.launch();
         }
     }

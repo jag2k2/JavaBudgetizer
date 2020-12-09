@@ -10,9 +10,10 @@ import flb.datastores.*;
 import flb.tuples.*;
 import flb.util.Transactions;
 import javax.swing.*;
+import java.awt.*;
 import java.util.Calendar;
 
-public class CreditEditorImpl implements TransactionCategorizer, TransactionGrouper, ViewChangeObserver,
+public class CreditEditorImpl extends JComponent implements TransactionCategorizer, TransactionGrouper, ViewChangeObserver,
         StoreChangeObserver {
     private final TransactionStore transactionStore;
     private final CreditTable creditTable;
@@ -23,18 +24,18 @@ public class CreditEditorImpl implements TransactionCategorizer, TransactionGrou
                             SummarySelector summarySelector){
         this.transactionStore = transactionStore;
         this.monthDisplay = monthDisplay;
-        CategorizerMenuImpl categoryMenu = new CategorizerMenuImpl(categoryStore, this);
+        CategorizerMenuImpl categoryMenu = new CategorizerMenuImpl(categoryStore.getCategories(""), this);
         GrouperMenuImpl grouperMenu = new GrouperMenuImpl(this);
         CreditTableImpl creditTableImpl = new CreditTableImpl(categoryMenu, grouperMenu, summarySelector);
         this.creditTable = creditTableImpl;
         this.tableAutomator = creditTableImpl;
+        this.setLayout(new BorderLayout());
+        this.add(creditTableImpl);
 
         transactionStore.addStoreChangeObserver(this);
         categoryStore.addStoreChangeObserver(this);
         monthDisplay.addViewChangeObserver(this);
     }
-
-    public JPanel getPanel() { return creditTable.getPanel(); }
 
     public CreditTableTester getTableAutomator() { return tableAutomator; }
 
