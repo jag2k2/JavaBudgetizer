@@ -146,9 +146,4 @@ class CategoryStoreTest {
         expected = CategoryListFactory.makeDefaultCategoriesWithOneRenamed(oldName, newName);
         assertEquals(expected, categoryStore.getCategories(""));
     }
-
-    @Test
-    void getBalance() {
-        assertEquals(930F, categoryStore.getBalance(new WhichMonth(2020, Calendar.OCTOBER)));
-    }
 }

@@ -24,17 +24,13 @@ class UserClearsSummaryGoalListenerTest {
         testButton = new JButton();
         database = new TestDatabase();
         database.connect();
-        DataStoreImpl dataStoreImpl = new DataStoreImpl(database);
-        TransactionStore transactionStore = dataStoreImpl;
-        CategoryStore categoryStore = dataStoreImpl;
+        this.goalStore = new DataStoreImpl(database);
 
         MonthSelectorImpl monthSelectorImpl = new MonthSelectorImpl();
         monthSelectorImpl.setYear(2020);
         monthSelectorImpl.setMonth(Calendar.OCTOBER);
 
-        goalStore = dataStoreImpl;
-
-        SummaryEditorImpl summaryEditor = new SummaryEditorImpl(transactionStore, categoryStore, goalStore, monthSelectorImpl);
+        SummaryEditorImpl summaryEditor = new SummaryEditorImpl(goalStore, monthSelectorImpl);
         summaryEditor.update();
 
         testButton.addActionListener(new UserClearsSummaryGoalListener(summaryEditor));

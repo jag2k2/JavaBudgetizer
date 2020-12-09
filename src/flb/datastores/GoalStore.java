@@ -2,10 +2,10 @@ package flb.datastores;
 
 import flb.util.*;
 import flb.tuples.*;
+import java.util.ArrayList;
 
-public interface GoalStore extends StoreChangeNotifier{
-    void createDefaultGoals(WhichMonth whichMonth);
-    int countGoals(WhichMonth selectedMonth);
+public interface GoalStore extends StoreChangeNotifier {
+    ArrayList<TransactionSummary> getTransactionSummaries (WhichMonth whichMonth);
     void addGoal(TransactionSummary summary);
     void deleteGoal(TransactionSummary summary);
     boolean goalExists(TransactionSummary summary);

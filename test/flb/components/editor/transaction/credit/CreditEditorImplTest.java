@@ -22,13 +22,12 @@ class CreditEditorImplTest {
     void setUp() {
         database = new TestDatabase();
         database.connect();
-        DataStoreImpl dataStoreImpl = new DataStoreImpl(database);
-        TransactionStore transactionStore = dataStoreImpl;
+        CreditStore creditStore = new DataStoreImpl(database);
         MonthSelectorImpl monthSelectorImpl = new MonthSelectorImpl();
         monthSetter = monthSelectorImpl;
 
-        creditEditor = new CreditEditorImpl(transactionStore, dataStoreImpl, monthSelectorImpl, new SummarySelectorMock());
-        transactionStore.addStoreChangeObserver(creditEditor);
+        creditEditor = new CreditEditorImpl(creditStore, monthSelectorImpl, new SummarySelectorMock());
+        creditStore.addStoreChangeObserver(creditEditor);
 
         tableTester = creditEditor.getTableAutomator();
 

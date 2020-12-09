@@ -8,7 +8,6 @@ import flb.datastores.*;
 import flb.listeners.*;
 import flb.tuples.*;
 import flb.util.*;
-
 import java.awt.*;
 import java.util.*;
 import java.util.List;
@@ -17,23 +16,19 @@ import javax.swing.*;
 public class SummaryEditorImpl extends JComponent implements MonthGoalEditor, MonthGoalClearer, SummarySelector, ViewChangeObserver,
         StoreChangeObserver, SummaryEditorTester, GoalSelectedNotifier{
     private final GoalStore goalStore;
-    private final TransactionStore transactionStore;
     private final SummaryTable summaryTable;
     private final SummaryTableTester tableTester;
     private final MonthDisplay monthDisplay;
     private final List<TableHighlighter> tableHighlighters;
 
-    public SummaryEditorImpl(TransactionStore transactionStore, CategoryStore categoryStore, GoalStore goalStore, MonthDisplay monthDisplay){
+    public SummaryEditorImpl(GoalStore goalStore, MonthDisplay monthDisplay){
         this.goalStore = goalStore;
-        this.transactionStore = transactionStore;
         this.monthDisplay = monthDisplay;
         SummaryTableImp summaryTableImp = new SummaryTableImp();
         this.tableTester = summaryTableImp;
         this.summaryTable = summaryTableImp;
         this.tableHighlighters = new ArrayList<>();
 
-        transactionStore.addStoreChangeObserver(this);
-        categoryStore.addStoreChangeObserver(this);
         goalStore.addStoreChangeObserver(this);
         monthDisplay.addViewChangeObserver(this);
 
@@ -62,13 +57,13 @@ public class SummaryEditorImpl extends JComponent implements MonthGoalEditor, Mo
 
     @Override
     public void update() {
-        ArrayList<TransactionSummary> transactionSummaries = transactionStore.getTransactionSummaries(monthDisplay.getMonth());
+        ArrayList<TransactionSummary> transactionSummaries = goalStore.getTransactionSummaries(monthDisplay.getMonth());
         summaryTable.display(transactionSummaries);
     }
 
     @Override
     public void updateAndKeepSelection() {
-        ArrayList<TransactionSummary> transactionSummaries = transactionStore.getTransactionSummaries(monthDisplay.getMonth());
+        ArrayList<TransactionSummary> transactionSummaries = goalStore.getTransactionSummaries(monthDisplay.getMonth());
         summaryTable.displayAndKeepSelection(transactionSummaries);
     }
 

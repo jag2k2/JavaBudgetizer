@@ -2,7 +2,6 @@ package flb.components.editor.transaction.credit;
 
 import flb.components.editor.*;
 import flb.components.editor.summary.SummarySelector;
-import flb.components.editor.transaction.TableHighlighter;
 import flb.components.editor.transaction.TransactionCategorizer;
 import flb.components.menus.*;
 import flb.components.monthselector.*;
@@ -15,16 +14,15 @@ import java.util.Calendar;
 
 public class CreditEditorImpl extends JComponent implements TransactionCategorizer, TransactionGrouper, ViewChangeObserver,
         StoreChangeObserver {
-    private final TransactionStore transactionStore;
+    private final CreditStore creditStore;
     private final CreditTable creditTable;
     private final CreditTableTester tableAutomator;
     private final MonthDisplay monthDisplay;
 
-    public CreditEditorImpl(TransactionStore transactionStore, CategoryStore categoryStore, MonthDisplay monthDisplay,
-                            SummarySelector summarySelector){
-        this.transactionStore = transactionStore;
+    public CreditEditorImpl(CreditStore creditStore, MonthDisplay monthDisplay, SummarySelector summarySelector){
+        this.creditStore = creditStore;
         this.monthDisplay = monthDisplay;
-        CategorizerMenuImpl categoryMenu = new CategorizerMenuImpl(categoryStore.getCategories(""), this);
+        CategorizerMenuImpl categoryMenu = new CategorizerMenuImpl(creditStore.getCategories(""), this);
         GrouperMenuImpl grouperMenu = new GrouperMenuImpl(this);
         CreditTableImpl creditTableImpl = new CreditTableImpl(categoryMenu, grouperMenu, summarySelector);
         this.creditTable = creditTableImpl;
@@ -32,8 +30,7 @@ public class CreditEditorImpl extends JComponent implements TransactionCategoriz
         this.setLayout(new BorderLayout());
         this.add(creditTableImpl);
 
-        transactionStore.addStoreChangeObserver(this);
-        categoryStore.addStoreChangeObserver(this);
+        creditStore.addStoreChangeObserver(this);
         monthDisplay.addViewChangeObserver(this);
     }
 
@@ -42,25 +39,25 @@ public class CreditEditorImpl extends JComponent implements TransactionCategoriz
     @Override
     public void categorizeTransaction(int row, String categoryName){
         for (Transaction transaction : creditTable.getTransaction(row)) {
-            transactionStore.categorizeTransaction(transaction, categoryName);
+            creditStore.categorizeTransaction(transaction, categoryName);
         }
     }
 
     @Override
     public void groupSelectedTransactions(Calendar date) {
         String groupName = GroupNameFactory.createGroupName(date, creditTable.getSelectedSum());
-        transactionStore.labelGroup(creditTable.getSelectedTransactions(), groupName);
+        creditStore.labelGroup(creditTable.getSelectedTransactions(), groupName);
     }
 
     @Override
     public void update() {
-        Transactions<CreditTransaction> creditTransactions = transactionStore.getCreditTransactions(monthDisplay.getMonth());
+        Transactions<CreditTransaction> creditTransactions = creditStore.getCreditTransactions(monthDisplay.getMonth());
         creditTable.display(creditTransactions);
     }
 
     @Override
     public void updateAndKeepSelection() {
-        Transactions<CreditTransaction> creditTransactions = transactionStore.getCreditTransactions(monthDisplay.getMonth());
+        Transactions<CreditTransaction> creditTransactions = creditStore.getCreditTransactions(monthDisplay.getMonth());
         creditTable.displayAndKeepSelection(creditTransactions);
     }
 }

@@ -5,29 +5,29 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import flb.components.monthselector.MonthDisplay;
-import flb.datastores.GoalStore;
+import flb.datastores.DefaultGoalStoreCreator;
 
 public class UserCreatesDefaultGoals implements ActionListener {
-    private final GoalStore goalStore;
+    private final DefaultGoalStoreCreator goalStoreCreator;
     private final MonthDisplay monthDisplay;
     private final Component component;
 
-    public UserCreatesDefaultGoals(GoalStore goalStore, MonthDisplay monthDisplay, Component component)  {
-        this.goalStore = goalStore;
+    public UserCreatesDefaultGoals(DefaultGoalStoreCreator goalStoreCreator, MonthDisplay monthDisplay, Component component)  {
+        this.goalStoreCreator = goalStoreCreator;
         this.monthDisplay = monthDisplay;
         this.component = component;
     }
     @Override
     public void actionPerformed(ActionEvent e) {
-        int goalCount = goalStore.countGoals(monthDisplay.getMonth());
+        int goalCount = goalStoreCreator.countGoals(monthDisplay.getMonth());
         if (goalCount > 0) {
             int confirmation = getConfirmationFromDialog(goalCount, component);
             if(confirmation == JOptionPane.YES_OPTION) {
-                goalStore.createDefaultGoals(monthDisplay.getMonth());
+                goalStoreCreator.createDefaultGoals(monthDisplay.getMonth());
             }
         }
         else {
-            goalStore.createDefaultGoals(monthDisplay.getMonth());
+            goalStoreCreator.createDefaultGoals(monthDisplay.getMonth());
         }
     }
 

@@ -16,14 +16,19 @@ import java.util.Calendar;
 class UserImportsTransactionsListenerTest {
     private JButton testButton;
     private TestDatabase database;
-    private TransactionStore transactionStore;
+    private TransactionStoreAdder storeAdder;
+    private BankingStore bankingStore;
+    private CreditStore creditStore;
 
     @BeforeEach
     void setUp() {
         testButton = new JButton();
         database = new TestDatabase();
         database.connect();
-        transactionStore = new DataStoreImpl(database);
+        DataStoreImpl dataStoreImpl = new DataStoreImpl(database);
+        storeAdder = dataStoreImpl;
+        bankingStore = dataStoreImpl;
+        creditStore = dataStoreImpl;
     }
 
     @AfterEach
@@ -38,11 +43,11 @@ class UserImportsTransactionsListenerTest {
 
         FileLoader fileLoader = new UserChoosesFileLoader(new JFileChooserMock(OfxParser.AccountType.CHECKING), new JFrame());
         TransactionImporter transactionImporter = new QfxImporter(fileLoader);
-        testButton.addActionListener(new UserImportsTransactionsListener(transactionStore, transactionImporter));
+        testButton.addActionListener(new UserImportsTransactionsListener(storeAdder, transactionImporter));
         testButton.doClick();
         testButton.doClick();
 
-        assertEquals(expected, transactionStore.getBankingTransactions(new WhichMonth(2020, Calendar.OCTOBER)));
+        assertEquals(expected, bankingStore.getBankingTransactions(new WhichMonth(2020, Calendar.OCTOBER)));
     }
 
     @Test
@@ -52,10 +57,10 @@ class UserImportsTransactionsListenerTest {
 
         FileLoader fileLoader = new UserChoosesFileLoader(new JFileChooserMock(OfxParser.AccountType.CREDIT), new JFrame());
         TransactionImporter transactionImporter = new QfxImporter(fileLoader);
-        testButton.addActionListener(new UserImportsTransactionsListener(transactionStore, transactionImporter));
+        testButton.addActionListener(new UserImportsTransactionsListener(storeAdder, transactionImporter));
         testButton.doClick();
         testButton.doClick();
 
-        assertEquals(expected, transactionStore.getCreditTransactions(new WhichMonth(2020, Calendar.OCTOBER)));
+        assertEquals(expected, creditStore.getCreditTransactions(new WhichMonth(2020, Calendar.OCTOBER)));
     }
 }

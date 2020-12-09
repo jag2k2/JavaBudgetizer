@@ -21,14 +21,12 @@ class CategorizerMenuImplTest {
     void setUp() {
         database = new TestDatabase();
         database.connect();
-        DataStoreImpl dataStoreImpl = new DataStoreImpl(database);
-        CategoryStore categoryStore = dataStoreImpl;
-        TransactionStore transactionStore = dataStoreImpl;
+        BankingStore bankingStore = new DataStoreImpl(database);
         MonthSelectorImpl monthSelectorImpl = new MonthSelectorImpl();
         monthSelectorImpl.setYear(2020);
         monthSelectorImpl.setMonth(Calendar.OCTOBER);
-        TransactionCategorizer bankingEditor = new BankingEditorImpl(transactionStore, categoryStore, monthSelectorImpl, new SummarySelectorMock());
-        categoryMenu = new CategorizerMenuImpl(categoryStore.getCategories(""), bankingEditor);
+        TransactionCategorizer bankingEditor = new BankingEditorImpl(bankingStore, monthSelectorImpl, new SummarySelectorMock());
+        categoryMenu = new CategorizerMenuImpl(bankingStore.getCategories(""), bankingEditor);
         menuTester = categoryMenu;
 
         expected = new ArrayList<>();

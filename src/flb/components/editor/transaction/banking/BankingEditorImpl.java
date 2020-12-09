@@ -13,24 +13,22 @@ import java.awt.*;
 
 public class BankingEditorImpl extends JComponent implements TransactionCategorizer, ViewChangeObserver,
         StoreChangeObserver {
-    private final TransactionStore transactionStore;
+    private final BankingStore bankingStore;
     private final MonthDisplay monthDisplay;
     private final BankingTable bankingTable;
     private final TransactionTableTester tableAutomator;
 
-    public BankingEditorImpl(TransactionStore transactionStore, CategoryStore categoryStore, MonthDisplay monthDisplay,
-                             SummarySelector summarySelector) {
-        this.transactionStore = transactionStore;
+    public BankingEditorImpl(BankingStore bankingStore, MonthDisplay monthDisplay, SummarySelector summarySelector) {
+        this.bankingStore = bankingStore;
         this.monthDisplay = monthDisplay;
-        CategorizerMenuImpl categoryMenu = new CategorizerMenuImpl(categoryStore.getCategories(""), this);
+        CategorizerMenuImpl categoryMenu = new CategorizerMenuImpl(bankingStore.getCategories(""), this);
         BankingTableImpl bankingTableImpl = new BankingTableImpl(categoryMenu, summarySelector);
         this.bankingTable = bankingTableImpl;
         this.tableAutomator = bankingTableImpl;
         this.setLayout(new BorderLayout());
         this.add(bankingTableImpl);
 
-        transactionStore.addStoreChangeObserver(this);
-        categoryStore.addStoreChangeObserver(this);
+        this.bankingStore.addStoreChangeObserver(this);
         monthDisplay.addViewChangeObserver(this);
     }
 
@@ -41,19 +39,19 @@ public class BankingEditorImpl extends JComponent implements TransactionCategori
     @Override
     public void categorizeTransaction(int row, String categoryName) {
         for (Transaction transaction : bankingTable.getTransaction(row)) {
-            transactionStore.categorizeTransaction(transaction, categoryName);
+            bankingStore.categorizeTransaction(transaction, categoryName);
         }
     }
 
     @Override
     public void update() {
-        Transactions<BankingTransaction> bankingTransactions = transactionStore.getBankingTransactions(monthDisplay.getMonth());
+        Transactions<BankingTransaction> bankingTransactions = bankingStore.getBankingTransactions(monthDisplay.getMonth());
         bankingTable.display(bankingTransactions);
     }
 
     @Override
     public void updateAndKeepSelection() {
-        Transactions<BankingTransaction> bankingTransactions = transactionStore.getBankingTransactions(monthDisplay.getMonth());
+        Transactions<BankingTransaction> bankingTransactions = bankingStore.getBankingTransactions(monthDisplay.getMonth());
         bankingTable.display(bankingTransactions);
     }
 }

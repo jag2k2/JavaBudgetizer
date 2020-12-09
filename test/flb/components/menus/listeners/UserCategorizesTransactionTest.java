@@ -26,15 +26,16 @@ class UserCategorizesTransactionTest {
     void setUp() {
         database = new TestDatabase();
         database.connect();
-        TransactionStore transactionStore = new DataStoreImpl(database);
-        CategoryStore categoryStore = new DataStoreImpl(database);
+        DataStoreImpl dataStoreImpl = new DataStoreImpl(database);
+        BankingStore bankingStore = dataStoreImpl;
+        CreditStore creditStore = dataStoreImpl;
         MonthSelectorImpl monthSelectorImpl = new MonthSelectorImpl();
         monthSelectorImpl.setYear(2020);
         monthSelectorImpl.setMonth(Calendar.OCTOBER);
-        bankingEditor = new BankingEditorImpl(transactionStore, categoryStore, monthSelectorImpl, new SummarySelectorMock());
-        creditEditor = new CreditEditorImpl(transactionStore, categoryStore, monthSelectorImpl, new SummarySelectorMock());
-        transactionStore.addStoreChangeObserver(bankingEditor);
-        transactionStore.addStoreChangeObserver(creditEditor);
+        bankingEditor = new BankingEditorImpl(bankingStore, monthSelectorImpl, new SummarySelectorMock());
+        creditEditor = new CreditEditorImpl(creditStore, monthSelectorImpl, new SummarySelectorMock());
+        creditStore.addStoreChangeObserver(bankingEditor);
+        creditStore.addStoreChangeObserver(creditEditor);
 
         testButton = new JButton();
         testButton.setActionCommand("0,Name2");

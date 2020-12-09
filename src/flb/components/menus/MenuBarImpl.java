@@ -1,8 +1,7 @@
 package flb.components.menus;
 
 import flb.components.monthselector.MonthDisplay;
-import flb.datastores.GoalStore;
-import flb.datastores.TransactionStore;
+import flb.datastores.*;
 import flb.importers.file.*;
 import flb.importers.QfxImporter;
 import flb.listeners.UserCreatesDefaultGoals;
@@ -11,14 +10,14 @@ import javax.swing.*;
 
 public class MenuBarImpl {
     private final JMenuBar menuBar;
-    private final TransactionStore transactionStore;
-    private final GoalStore goalStore;
+    private final TransactionStoreAdder storeAdder;
+    private final DefaultGoalStoreCreator goalStoreCreator;
     private final MonthDisplay monthDisplay;
 
-    public MenuBarImpl(TransactionStore transactionStore, GoalStore goalStore, MonthDisplay monthDisplay) {
+    public MenuBarImpl(TransactionStoreAdder storeAdder, DefaultGoalStoreCreator goalStoreCreator, MonthDisplay monthDisplay) {
         this.menuBar = new JMenuBar();
-        this.goalStore = goalStore;
-        this.transactionStore = transactionStore;
+        this.goalStoreCreator = goalStoreCreator;
+        this.storeAdder = storeAdder;
         this.monthDisplay = monthDisplay;
 
         layout();
@@ -30,14 +29,14 @@ public class MenuBarImpl {
         JFileChooser fileChooser = new JFileChooser();
         FileLoader fileLoader = new UserChoosesFileLoader(fileChooser, menuBar);
         QfxImporter qfxImporter = new QfxImporter(fileLoader);
-        importMenuItem.addActionListener(new UserImportsTransactionsListener(transactionStore, qfxImporter));
+        importMenuItem.addActionListener(new UserImportsTransactionsListener(storeAdder, qfxImporter));
         JMenuItem exitMenuItem = new JMenuItem("Exit");
         fileMenu.add(importMenuItem);
         fileMenu.add(exitMenuItem);
 
         JMenu budgetMenu = new JMenu("Budget");
         JMenuItem defaultGoalsMenuItem = new JMenuItem("Create Default Goals");
-        defaultGoalsMenuItem.addActionListener(new UserCreatesDefaultGoals(goalStore, monthDisplay, menuBar));
+        defaultGoalsMenuItem.addActionListener(new UserCreatesDefaultGoals(goalStoreCreator, monthDisplay, menuBar));
         budgetMenu.add(defaultGoalsMenuItem);
 
         menuBar.add(fileMenu);

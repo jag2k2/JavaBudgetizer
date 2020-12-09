@@ -10,6 +10,7 @@ import java.util.*;
 class GoalStoreTest {
     private TestDatabase database;
     private GoalStore goalStore;
+    private DefaultGoalStoreCreator goalStoreCreator;
     private GoalStoreTester goalStoreTester;
     private WhichMonth whichMonth;
 
@@ -19,6 +20,7 @@ class GoalStoreTest {
         database.connect();
         DataStoreImpl dataStoreImpl = new DataStoreImpl(database);
         goalStore = dataStoreImpl;
+        goalStoreCreator = dataStoreImpl;
         goalStoreTester = dataStoreImpl;
         whichMonth = new WhichMonth(2020, Calendar.OCTOBER);
     }
@@ -32,7 +34,7 @@ class GoalStoreTest {
     void createDefaultGoals() {
         WhichMonth septemberDate = new WhichMonth(2020, Calendar.SEPTEMBER);
 
-        goalStore.createDefaultGoals(septemberDate);
+        goalStoreCreator.createDefaultGoals(septemberDate);
 
         for (Category category : CategoryListFactory.makeDefaultCategories()){
             assertEquals(category.getDefaultGoal(), goalStoreTester.getGoal(septemberDate, category.getName()));
@@ -107,6 +109,6 @@ class GoalStoreTest {
 
     @Test
     void countCoals() {
-        assertEquals(3, goalStore.countGoals(whichMonth));
+        assertEquals(3, goalStoreCreator.countGoals(whichMonth));
     }
 }
