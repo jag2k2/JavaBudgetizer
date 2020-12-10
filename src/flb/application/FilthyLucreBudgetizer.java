@@ -2,7 +2,6 @@ package flb.application;
 
 import flb.components.MainGUI;
 import flb.databases.*;
-import flb.datastores.*;
 import javax.swing.*;
 
 public class FilthyLucreBudgetizer {
