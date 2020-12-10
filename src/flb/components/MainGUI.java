@@ -24,10 +24,10 @@ public class MainGUI {
 
         DataStoreImpl dataStoreImpl = new DataStoreImpl(database);
         this.categoryEditor = new CategoryEditorImpl(dataStoreImpl);
+        BalanceDisplayImpl balanceDisplay = new BalanceDisplayImpl(dataStoreImpl, monthSelector);
         SummaryEditorImpl summaryEditor = new SummaryEditorImpl(dataStoreImpl, monthSelector);
         BankingEditorImpl bankingEditor = new BankingEditorImpl(dataStoreImpl, monthSelector, summaryEditor);
         CreditEditorImpl creditEditor = new CreditEditorImpl(dataStoreImpl, monthSelector, summaryEditor);
-        BalanceDisplayImpl balanceDisplay = new BalanceDisplayImpl(dataStoreImpl, monthSelector);
         MenuBarImpl menuBar = new MenuBarImpl(dataStoreImpl, dataStoreImpl, monthSelector);
 
         JPanel northLeftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));

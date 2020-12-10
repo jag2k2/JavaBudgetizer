@@ -11,6 +11,7 @@ import java.awt.*;
 import java.util.List;
 import java.util.*;
 import javax.swing.*;
+import javax.swing.table.*;
 
 public class CreditTableImpl extends JComponent implements CreditTable, CreditTableTester, StatusDisplayer {
     private final CreditTableModelImpl tableModel;
@@ -22,9 +23,8 @@ public class CreditTableImpl extends JComponent implements CreditTable, CreditTa
         this.table = new HighlightingRowTable(tableModel, 1, summarySelector);
         this.statusBar = new JTextField();
 
-        SimpleDollarRenderer dollarRenderer = new SimpleDollarRenderer();
-        dollarRenderer.setHorizontalAlignment(JLabel.RIGHT);
-        table.getColumnModel().getColumn(1).setCellRenderer(dollarRenderer);
+        TableCellRenderer cellRenderer = new SimpleDollarRenderer(table.getDefaultRenderer(Float.class));
+        table.getColumnModel().getColumn(1).setCellRenderer(cellRenderer);
         table.add(categorizeMenu.getPopup());
         table.add(payGroupMenu.getPopup());
         List<Integer> validCategorizeColumns = new ArrayList<>(Collections.singletonList(2));

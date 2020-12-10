@@ -28,9 +28,8 @@ public class CategoryTableImpl extends JComponent implements CategoryTable, Cate
         table.setFillsViewportHeight(true);
         table.setRowSelectionAllowed(false);
         table.getTableHeader().setReorderingAllowed(false);
-        SimpleDollarRenderer dollarRenderer = new SimpleDollarRenderer();
-        dollarRenderer.setHorizontalAlignment(JLabel.RIGHT);
-        table.getColumnModel().getColumn(1).setCellRenderer(dollarRenderer);
+        TableCellRenderer cellRenderer = new SimpleDollarRenderer(table.getDefaultRenderer(Float.class));
+        table.getColumnModel().getColumn(1).setCellRenderer(cellRenderer);
         table.getColumnModel().getColumn(0).setMinWidth(220);
         table.getColumnModel().getColumn(0).setMaxWidth(220);
         table.getColumnModel().getColumn(1).setMinWidth(80);
