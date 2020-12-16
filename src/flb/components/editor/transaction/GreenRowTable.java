@@ -8,7 +8,6 @@ import java.awt.*;
 public class GreenRowTable extends JTable {
     private final TableModel tableModel;
     private final int columnToCheck;
-    private float amount = 0F;
 
     public GreenRowTable(TableModel tableModel, int columnToCheck){
         super(tableModel);
@@ -19,17 +18,10 @@ public class GreenRowTable extends JTable {
     @Override
     public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
         Component rendererComponent = super.prepareRenderer(renderer, row, column);
-        this.amount = (float) tableModel.getValueAt(row, columnToCheck);
+        float amount = (float) tableModel.getValueAt(row, columnToCheck);
         if(!super.isRowSelected(row)) {
-            rendererComponent.setBackground(getBackgroundColor());
+            rendererComponent.setBackground(CellColor.getBackgroundColor(amount));
         }
         return rendererComponent;
-    }
-
-    protected Color getBackgroundColor(){
-        if (this.amount > 0) {
-            return new Color(207, 255, 207);
-        }
-        else return null;
     }
 }

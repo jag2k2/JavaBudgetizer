@@ -13,7 +13,7 @@ import java.util.*;
 import javax.swing.*;
 import javax.swing.table.*;
 
-public class CreditTableImpl extends JComponent implements CreditTable, CreditTableTester, StatusDisplayer {
+public class CreditTableImpl extends JComponent implements CreditTable, CreditTableTester, StatusDisplayer, TableHighlighter {
     private final CreditTableModelImpl tableModel;
     private final HighlightingRowTable table;
     private final JTextField statusBar;
@@ -52,6 +52,8 @@ public class CreditTableImpl extends JComponent implements CreditTable, CreditTa
 
         statusBar.setHorizontalAlignment(SwingConstants.RIGHT);
         statusBar.setBackground(new Color(214, 217, 223));
+
+        summarySelector.addGoalSelectedObserver(this);
 
         this.setLayout(new BorderLayout());
         this.add(scrollPane, BorderLayout.CENTER);
@@ -129,5 +131,10 @@ public class CreditTableImpl extends JComponent implements CreditTable, CreditTa
     @Override
     public String getStatusText() {
         return statusBar.getText();
+    }
+
+    @Override
+    public void highlightRows() {
+        tableModel.fireTableDataChanged();
     }
 }
