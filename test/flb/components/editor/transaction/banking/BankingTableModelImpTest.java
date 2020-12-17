@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.*;
 import flb.databases.DebitListFactory;
 import flb.tuples.*;
-import flb.util.*;
 
 class BankingTableModelImpTest {
     private BankingTableModelImp tableModel;
@@ -39,12 +38,8 @@ class BankingTableModelImpTest {
 
     @Test
     void getTransaction() {
-        Maybe<BankingTransaction> expected = new Maybe<>(DebitListFactory.makeDefaultTransactions().get(0));
-        Maybe<BankingTransaction> actual = tableModel.getTransaction(0);
-        assertEquals(expected, actual);
-
-        expected = new Maybe<>();
-        actual = tableModel.getTransaction(-1);
+        BankingTransaction expected = DebitListFactory.makeDefaultTransactions().get(0);
+        BankingTransaction actual = tableModel.getTransaction(0);
         assertEquals(expected, actual);
     }
 }

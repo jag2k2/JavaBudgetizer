@@ -54,7 +54,7 @@ public class BankingTableImpl extends JComponent implements TransactionTable<Ban
     }
 
     @Override
-    public Maybe<BankingTransaction> getTransaction(int row){
+    public BankingTransaction getTransaction(int row){
         return tableModel.getTransaction(row);
     }
 

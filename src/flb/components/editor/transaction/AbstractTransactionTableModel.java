@@ -2,7 +2,6 @@ package flb.components.editor.transaction;
 
 import javax.swing.table.AbstractTableModel;
 import flb.tuples.Transaction;
-import flb.util.Maybe;
 import flb.util.Transactions;
 import flb.util.TransactionsImpl;
 
@@ -50,13 +49,8 @@ public abstract class AbstractTransactionTableModel<T extends Transaction> exten
     }
 
     @Override
-    public Maybe<T> getTransaction(int row) {
-        if (row >= 0 && row < getRowCount()) {
-            return new Maybe<>(tableContents.get(row));
-        }
-        else {
-            return new Maybe<>();
-        }
+    public T getTransaction(int row) {
+        return tableContents.get(row);
     }
 
     @Override

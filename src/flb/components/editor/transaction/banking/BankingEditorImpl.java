@@ -38,9 +38,8 @@ public class BankingEditorImpl extends JComponent implements TransactionCategori
 
     @Override
     public void categorizeTransaction(int row, String categoryName) {
-        for (Transaction transaction : bankingTable.getTransaction(row)) {
-            bankingStore.categorizeTransaction(transaction, categoryName);
-        }
+        Transaction transaction = bankingTable.getTransaction(row);
+        bankingStore.categorizeTransaction(transaction, categoryName);
     }
 
     @Override

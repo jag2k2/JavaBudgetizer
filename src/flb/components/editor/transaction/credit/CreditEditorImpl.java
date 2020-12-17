@@ -38,9 +38,8 @@ public class CreditEditorImpl extends JComponent implements TransactionCategoriz
 
     @Override
     public void categorizeTransaction(int row, String categoryName){
-        for (Transaction transaction : creditTable.getTransaction(row)) {
-            creditStore.categorizeTransaction(transaction, categoryName);
-        }
+        Transaction transaction = creditTable.getTransaction(row);
+        creditStore.categorizeTransaction(transaction, categoryName);
     }
 
     @Override

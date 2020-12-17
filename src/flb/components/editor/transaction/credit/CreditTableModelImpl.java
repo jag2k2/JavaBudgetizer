@@ -12,7 +12,7 @@ public class CreditTableModelImpl extends AbstractTransactionTableModel<CreditTr
     @Override
     public Object getValueAt(int row, int column) {
         if (column == 4) {
-            CreditTransaction creditTransaction = super.getTransaction(row).iterator().next();
+            CreditTransaction creditTransaction = super.getTransaction(row);
             return creditTransaction.getPayGroup();
         } else {
             return super.getValueAt(row, column);

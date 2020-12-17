@@ -82,21 +82,19 @@ public class CreditTableImpl extends JComponent implements CreditTable, CreditTa
     public float getSelectedSum(){
         float sum = Float.NaN;
         for (int selectedRow : table.getSelectedRows()) {
-            for (Transaction transaction : tableModel.getTransaction(selectedRow)){
-                if (Float.isNaN(sum)){
-                    sum = transaction.getAmount();
-                }
-                else {
-                    sum += transaction.getAmount();
-                }
-
+            Transaction transaction = tableModel.getTransaction(selectedRow);
+            if (Float.isNaN(sum)){
+                sum = transaction.getAmount();
+            }
+            else {
+                sum += transaction.getAmount();
             }
         }
         return sum;
     }
 
     @Override
-    public Maybe<CreditTransaction> getTransaction(int row){
+    public CreditTransaction getTransaction(int row){
         return tableModel.getTransaction(row);
     }
 
@@ -109,9 +107,8 @@ public class CreditTableImpl extends JComponent implements CreditTable, CreditTa
     public Transactions<CreditTransaction> getSelectedTransactions(){
         Transactions<CreditTransaction> selectedTransactions = new TransactionsImpl<>();
         for (int row : table.getSelectedRows()){
-            for (CreditTransaction transaction : tableModel.getTransaction(row)){
-                selectedTransactions.add(transaction);
-            }
+            CreditTransaction transaction = tableModel.getTransaction(row);
+            selectedTransactions.add(transaction);
         }
         return selectedTransactions;
     }
