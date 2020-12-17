@@ -5,14 +5,14 @@ import org.junit.jupiter.api.*;
 import flb.databases.DebitListFactory;
 import flb.util.Transactions;
 import flb.components.editor.summary.SummarySelectorMock;
-import flb.components.editor.transaction.TransactionTableTester;
+import flb.components.editor.transaction.*;
 import flb.components.menus.mock.*;
 import flb.util.TransactionsImpl;
 import flb.tuples.*;
 
 
 class BankingTableImplTest {
-    private BankingTable bankingTable;
+    private TransactionTable<BankingTransaction> bankingTable;
     private TransactionTableTester tableAutomator;
     private Transactions<BankingTransaction> expected;
 

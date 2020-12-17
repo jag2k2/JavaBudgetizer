@@ -13,7 +13,7 @@ import flb.util.*;
 import javax.swing.*;
 import javax.swing.table.*;
 
-public class BankingTableImpl extends JComponent implements BankingTable, TransactionTableTester, TableHighlighter {
+public class BankingTableImpl extends JComponent implements TransactionTable<BankingTransaction>, TransactionTableTester, TableHighlighter {
     private final BankingTableModelImp tableModel;
 
     public BankingTableImpl(MenuDisplayer categorizeMenu, SummarySelector summarySelector) {

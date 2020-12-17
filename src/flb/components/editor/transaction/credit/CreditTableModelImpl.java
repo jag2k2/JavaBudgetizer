@@ -2,14 +2,10 @@ package flb.components.editor.transaction.credit;
 
 import flb.components.editor.transaction.TransactionTableModel;
 import flb.tuples.*;
-import flb.util.Maybe;
-import flb.util.Transactions;
-import flb.util.TransactionsImpl;
-
+import flb.util.*;
 import javax.swing.table.*;
-import java.util.*;
 
-public class CreditTableModelImpl extends AbstractTableModel implements TransactionTableModel {
+public class CreditTableModelImpl extends AbstractTableModel implements TransactionTableModel<CreditTransaction> {
     private final String[] columnNames = {"Date", "Amount", "Category", "Description", "Group"};
     private Transactions<CreditTransaction> tableContents;
 
@@ -49,11 +45,6 @@ public class CreditTableModelImpl extends AbstractTableModel implements Transact
         return columnNames[column];
     }
 
-    public void updateTransactions(Transactions<CreditTransaction> tableContents) {
-        this.tableContents = tableContents;
-        fireTableDataChanged();
-    }
-
     @Override
     public Transactions<CreditTransaction> getTransactions(){
         return tableContents;
@@ -67,5 +58,10 @@ public class CreditTableModelImpl extends AbstractTableModel implements Transact
         else {
             return new Maybe<>();
         }
+    }
+
+    public void updateTransactions(Transactions<CreditTransaction> tableContents) {
+        this.tableContents = tableContents;
+        fireTableDataChanged();
     }
 }

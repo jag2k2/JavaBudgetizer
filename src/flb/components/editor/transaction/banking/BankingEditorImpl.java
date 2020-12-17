@@ -15,7 +15,7 @@ public class BankingEditorImpl extends JComponent implements TransactionCategori
         StoreChangeObserver {
     private final BankingStore bankingStore;
     private final MonthDisplay monthDisplay;
-    private final BankingTable bankingTable;
+    private final TransactionTable<BankingTransaction> bankingTable;
     private final TransactionTableTester tableAutomator;
 
     public BankingEditorImpl(BankingStore bankingStore, MonthDisplay monthDisplay, SummarySelector summarySelector) {

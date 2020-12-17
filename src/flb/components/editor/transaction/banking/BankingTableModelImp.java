@@ -4,10 +4,8 @@ import flb.components.editor.transaction.TransactionTableModel;
 import flb.tuples.*;
 import flb.util.*;
 import javax.swing.table.*;
-import java.util.*;
 
-public class BankingTableModelImp extends AbstractTableModel implements TransactionTableModel {
-
+public class BankingTableModelImp extends AbstractTableModel implements TransactionTableModel<BankingTransaction> {
     private final String[] columnNames = {"Date", "Amount", "Category", "Description"};
     private Transactions<BankingTransaction> tableContents;
 
@@ -27,7 +25,7 @@ public class BankingTableModelImp extends AbstractTableModel implements Transact
 
     @Override
     public Object getValueAt(int row, int column) {
-        if(column == 0){
+        if (column == 0){
             return tableContents.get(row).getDateString();
         } else if (column == 1) {
             return tableContents.get(row).getAmount();
@@ -46,6 +44,11 @@ public class BankingTableModelImp extends AbstractTableModel implements Transact
     }
 
     @Override
+    public Transactions<BankingTransaction> getTransactions(){
+        return tableContents;
+    }
+
+    @Override
     public Maybe<BankingTransaction> getTransaction(int row) {
         if (row >= 0 && row < getRowCount()) {
             return new Maybe<>(tableContents.get(row));
@@ -56,10 +59,6 @@ public class BankingTableModelImp extends AbstractTableModel implements Transact
     }
 
     @Override
-    public Transactions<BankingTransaction> getTransactions(){
-        return tableContents;
-    }
-
     public void updateTransactions(Transactions<BankingTransaction> tableContents) {
         this.tableContents = tableContents;
         fireTableDataChanged();
