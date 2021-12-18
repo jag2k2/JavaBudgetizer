@@ -22,7 +22,7 @@ public class FilthyLucreBudgetizer {
     static class InitializeJob implements Runnable {
         @Override
         public void run() {
-            AbstractDatabase database = new TestDatabase();
+            AbstractDatabase database = new ProductionDatabase();
             database.connect();
             MainGUI mainGui = new MainGUI(database);
             mainGui.launch();

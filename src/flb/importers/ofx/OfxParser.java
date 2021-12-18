@@ -34,14 +34,7 @@ public class OfxParser {
                     }
 
                     if(type == AccountType.CHECKING) {
-                        int locAmtDot = reference.indexOf('.');
-                        int startOffsetOfBalance = 10;
-                        if (transactionType.equals("CHECK")){
-                            String checkNum = transaction.getElementsByTagName("CHECKNUM").item(0).getTextContent();
-                            startOffsetOfBalance += checkNum.length();
-                        }
-                        float balance = Float.parseFloat(reference.substring(locAmtDot + startOffsetOfBalance));
-                        transactions.add(new BankingTransaction(reference, date, description, amount, "", balance));
+                        transactions.add(new BankingTransaction(reference, date, description, amount, "", -1));
                     }
                 }
             }

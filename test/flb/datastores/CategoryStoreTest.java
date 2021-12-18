@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.*;
 import flb.databases.*;
 import flb.tuples.Category;
-import flb.util.WhichMonth;
 import java.util.*;
 
 class CategoryStoreTest {

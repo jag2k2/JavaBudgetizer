@@ -26,7 +26,7 @@ public class DebitFactory {
     private static final String[] importDescriptions = {"Check 291", "Westgate Church DES:Westgate C I",
             "SPECTRUM 10/03 PURCHASE 855-707-", "H-E-B ONLINE 10/03 PURCHASE 800-"};
     private static final float[] importAmounts = {-2.64F, -780F, -18.08F, -167.25F};
-    private static final float[] importBalances = {13782.82F, 15917.16F, 16697.16F, 16715.24F};
+    private static final float[] importBalances = {-1, -1, -1, -1};
 
     public static String[] getDefaultRefs(){
         return refs;
