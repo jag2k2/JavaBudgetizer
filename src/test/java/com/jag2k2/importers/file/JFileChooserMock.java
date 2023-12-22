@@ -11,15 +11,14 @@ public class JFileChooserMock extends JFileChooser {
     public JFileChooserMock(AccountType accountType){
         this.accountType = accountType;
     }
-
     @Override
     public File getSelectedFile() {
         if(accountType == AccountType.CHECKING)
-            return new File(".\\test\\flb\\importers\\file\\test_debit_sgml.qfx");
+            return new File(".\\src\\test\\java\\com\\jag2k2\\importers\\file\\test_debit_sgml.qfx");
         if(accountType == AccountType.CREDIT)
-            return new File(".\\test\\flb\\importers\\file\\test_credit_sgml.qfx");
+            return new File(".\\src\\test\\java\\com\\jag2k2\\importers\\file\\test_credit_sgml.qfx");
         else
-            return new File(".\\test\\flb\\importers\\file\\test_debit_sgml.qfx");
+            return new File(".\\src\\test\\java\\com\\jag2k2\\test_debit_sgml.qfx");
     }
 
     @Override

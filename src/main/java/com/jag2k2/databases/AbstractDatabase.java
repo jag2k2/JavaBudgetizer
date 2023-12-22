@@ -5,7 +5,7 @@ import java.sql.*;
 public abstract class AbstractDatabase implements SQLExecutor {
 
     private Connection connection;
-    private String url = "jdbc:mysql://localhost/$name";
+    private String url = "jdbc:mysql://localhost:3306/$name";
     private final String user = "jag2k2";
     private final String password = "jeff1229";
 

@@ -17,8 +17,8 @@ class OfxParserTest {
     @BeforeEach
     void setUp() {
         try {
-            File debitFile = new File(".\\test\\flb\\importers\\file\\test_debit_xml.qfx");
-            File creditFile = new File(".\\test\\flb\\importers\\file\\test_credit_xml.qfx");
+            File debitFile = new File(".\\src\\test\\java\\com\\jag2k2\\importers\\file\\test_debit_xml.qfx");
+            File creditFile = new File(".\\src\\test\\java\\com\\jag2k2\\importers\\file\\test_credit_xml.qfx");
             DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             debitDocument = builder.parse(debitFile);
             creditDocument = builder.parse(creditFile);
