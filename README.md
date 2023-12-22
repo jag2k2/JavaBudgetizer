@@ -20,3 +20,7 @@
 - Password: <password>
 - Click Test to connect to MySQL and populate list of databases
 - Select `gringotts` database
+
+## Build and run application
+- mvn clean package
+- java -jar .\target\JavaBudgetizer-1.0-SNAPSHOT-jar-with-dependencies.jar
