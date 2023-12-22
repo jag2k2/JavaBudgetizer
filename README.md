@@ -9,11 +9,12 @@
 - `GRANT ALL ON *.* TO '<username>'@'localhost';`
 - go to http://localhost:81/phpmyadmin
 - Import database from backup location
+- Add `test` database
 - Install MySQL Connector / ODBC 8.20 (64 bit)
 - Navigate to control panel > administrative tools > ODBC Data Sources (64-bit)
 - Click "Add"
 - Select MySQL ODBC X.0 Unicode Driver
-- Data Source Name: `gringotts`
+- Data Source Name: `gringotts_dsn`
 - TCP/IP Server: `localhost`
 - Do not change port
 - User: <username>
