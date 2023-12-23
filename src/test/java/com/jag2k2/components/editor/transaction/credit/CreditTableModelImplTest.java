@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.*;
 import com.jag2k2.databases.*;
 import com.jag2k2.tuples.*;
-import com.jag2k2.util.*;
 
 
 class CreditTableModelImplTest {

@@ -1,6 +1,5 @@
 package com.jag2k2.components.editor.category;
 
-import com.jag2k2.components.editor.category.CategoryEditorImpl;
 import com.jag2k2.datastores.CategoryStore;
 import javax.swing.*;
 import java.awt.*;

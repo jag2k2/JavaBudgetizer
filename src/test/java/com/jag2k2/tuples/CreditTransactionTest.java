@@ -8,7 +8,6 @@ import java.util.*;
 
 class CreditTransactionTest {
     private CreditTransaction creditTransaction;
-    private Calendar date;
 
     @BeforeEach
     void setup() {

@@ -89,7 +89,7 @@ public class SgmlToXmlConverterTest {
 
     @Test
     public void sandbox(){
-        File debitFile = new File(".\\test\\flb\\importers\\file\\test_debit_sgml.qfx");
+        File debitFile = new File(".\\src\\test\\java\\com\\jag2k2\\importers\\file\\test_debit_sgml.qfx");
         StringBuilder contentsAsXML = new StringBuilder();
         try {
             FileReader fileReader = new FileReader(debitFile);

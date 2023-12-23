@@ -13,7 +13,6 @@ import java.util.GregorianCalendar;
 
 class CreditStoreTest {
     private BalanceStore balanceStore;
-    private CategoryStore categoryStore;
     private BankingStore bankingStore;
     private CreditStore creditStore;
     private TransactionStoreAdder storeAdder;
@@ -27,7 +26,6 @@ class CreditStoreTest {
         dataBase.connect();
         DataStoreImpl dataStoreImpl = new DataStoreImpl(dataBase);
         balanceStore = dataStoreImpl;
-        categoryStore = dataStoreImpl;
         bankingStore = dataStoreImpl;
         creditStore = dataStoreImpl;
         storeAdder = dataStoreImpl;
