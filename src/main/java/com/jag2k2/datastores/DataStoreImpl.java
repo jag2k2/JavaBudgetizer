@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-public class DataStoreImpl implements StoreChangeNotifier, BankingStore, CreditStore, CategoryStore, GoalStore,
+public class DataStoreImpl implements BankingStore, CreditStore, CategoryStore, GoalStore,
         DefaultGoalStoreCreator, BalanceStore, TransactionStoreAdder, GoalStoreTester {
     private final ArrayList<StoreChangeObserver> storeChangeObservers;
     private final SQLExecutor sqlExecutor;

@@ -14,7 +14,7 @@ import java.util.List;
 import javax.swing.*;
 
 public class SummaryEditorImpl extends JComponent implements MonthGoalEditor, MonthGoalClearer, SummarySelector, ViewChangeObserver,
-        StoreChangeObserver, SummaryEditorTester, GoalSelectedNotifier{
+        StoreChangeObserver, SummaryEditorTester {
     private final GoalStore goalStore;
     private final SummaryTable summaryTable;
     private final SummaryTableTester tableTester;

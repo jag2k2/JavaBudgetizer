@@ -25,6 +25,7 @@ public class XmlTransactionParser {
             while((line = reader.readLine()) != null) {
                 contentsAsXml.append(SgmlToXmlConverter.parseLine(line));
             }
+            reader.close();
         } catch (Exception ex) {ex.printStackTrace();}
         return contentsAsXml.toString();
     }

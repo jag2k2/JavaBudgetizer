@@ -1,7 +1,6 @@
 package com.jag2k2.datastores;
 
 import com.jag2k2.tuples.Category;
-import com.jag2k2.util.*;
 import java.util.ArrayList;
 
 public interface CategoryStore extends StoreChangeNotifier{

@@ -7,12 +7,11 @@ import java.text.*;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
 
-import com.jag2k2.components.*;
 import com.jag2k2.components.monthselector.listeners.*;
 import com.jag2k2.components.editor.*;
 import com.jag2k2.util.*;
 
-public class MonthSelectorImpl extends JComponent implements ViewChangeNotifier, MonthDisplay, MonthSelector,
+public class MonthSelectorImpl extends JComponent implements MonthDisplay, MonthSelector,
         ViewChangeObserver {
     private final MonthSelectorModelImpl monthModel;
     private final ArrayList<ViewChangeObserver> viewChangeObservers;

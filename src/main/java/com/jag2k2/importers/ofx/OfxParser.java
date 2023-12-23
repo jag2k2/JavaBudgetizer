@@ -27,7 +27,6 @@ public class OfxParser {
                     Calendar date = new GregorianCalendar(year, month, day);
                     float amount = Float.parseFloat(transaction.getElementsByTagName("TRNAMT").item(0).getTextContent());
                     String description = transaction.getElementsByTagName("NAME").item(0).getTextContent();
-                    String transactionType = transaction.getElementsByTagName("TRNTYPE").item(0).getTextContent();
 
                     if(type == AccountType.CREDIT){
                         transactions.add(new CreditTransaction(reference, date, description, amount, "", ""));
