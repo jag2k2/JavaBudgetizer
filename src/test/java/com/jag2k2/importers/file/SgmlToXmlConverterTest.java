@@ -2,7 +2,6 @@ package com.jag2k2.importers.file;
 
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.*;
-import java.io.*;
 
 public class SgmlToXmlConverterTest {
 
@@ -87,20 +86,20 @@ public class SgmlToXmlConverterTest {
         assertEquals("</Hello>\n", SgmlToXmlConverter.parseLine(testLine));
     }
 
-    @Test
-    public void sandbox(){
-        File debitFile = new File(".\\src\\test\\java\\com\\jag2k2\\importers\\file\\test_debit_sgml.qfx");
-        StringBuilder contentsAsXML = new StringBuilder();
-        try {
-            FileReader fileReader = new FileReader(debitFile);
-            BufferedReader reader = new BufferedReader(fileReader);
+    // @Test
+    // public void sandbox(){
+    //     File debitFile = new File(".\\src\\test\\java\\com\\jag2k2\\importers\\file\\test_debit_sgml.qfx");
+    //     StringBuilder contentsAsXML = new StringBuilder();
+    //     try {
+    //         FileReader fileReader = new FileReader(debitFile);
+    //         BufferedReader reader = new BufferedReader(fileReader);
 
-            String line;
-            while((line = reader.readLine()) != null) {
-                contentsAsXML.append(SgmlToXmlConverter.parseLine(line));
-            }
-            reader.close();
-        } catch (Exception ex) {ex.printStackTrace();}
-        System.out.println(contentsAsXML);
-    }
+    //         String line;
+    //         while((line = reader.readLine()) != null) {
+    //             contentsAsXML.append(SgmlToXmlConverter.parseLine(line));
+    //         }
+    //         reader.close();
+    //     } catch (Exception ex) {ex.printStackTrace();}
+    //     System.out.println(contentsAsXML);
+    // }
 }

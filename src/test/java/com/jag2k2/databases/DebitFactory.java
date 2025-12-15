@@ -17,8 +17,8 @@ public class DebitFactory {
     private static final float[] balances = {1000, 960, 930};
     private static final String[] categories = {"Test1::sub2", "Name2", ""};
 
-    private static final String[] importRefs = {"84892847712-2.64020100429113782.82", "00090257601-780.00020100515917.16",
-            "00090571004-18.08020100516697.16", "00090571004-167.25020100516715.24"};
+    private static final String[] importRefs = {"13782.82020100413782.82", "15917.16020100515917.16",
+            "16697.16020100516697.16", "16715.24020100516715.24"};
     private static final Calendar[] importDates = {new GregorianCalendar(2020, Calendar.OCTOBER, 4),
             new GregorianCalendar(2020, Calendar.OCTOBER, 5),
             new GregorianCalendar(2020, Calendar.OCTOBER, 5),

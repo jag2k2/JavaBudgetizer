@@ -30,11 +30,11 @@ public class XmlTransactionParser {
         return contentsAsXml.toString();
     }
 
-    static public Transactions<Transaction> parseTransactionsFromXml(String xmlString){
+    static public Transactions<Transaction> parseTransactions(String fileString){
         Transactions<Transaction> transactions = new TransactionsImpl<>();
         try{
             DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            Document xmlDocument = builder.parse(new InputSource(new StringReader(xmlString)));
+            Document xmlDocument = builder.parse(new InputSource(new StringReader(fileString)));
             transactions = OfxParser.parseTransactions(xmlDocument);
         } catch (Exception ex) {ex.printStackTrace();}
         return transactions;

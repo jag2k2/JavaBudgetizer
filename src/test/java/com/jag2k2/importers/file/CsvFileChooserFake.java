@@ -5,20 +5,20 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 
-public class JFileChooserMock extends JFileChooser {
+public class CsvFileChooserFake extends JFileChooser {
     private final AccountType accountType;
 
-    public JFileChooserMock(AccountType accountType){
+    public CsvFileChooserFake(AccountType accountType){
         this.accountType = accountType;
     }
     @Override
     public File getSelectedFile() {
         if(accountType == AccountType.CHECKING)
-            return new File(".\\src\\test\\java\\com\\jag2k2\\importers\\file\\test_debit_sgml.qfx");
+            return new File(".\\src\\test\\java\\com\\jag2k2\\importers\\file\\test_debit.csv");
         if(accountType == AccountType.CREDIT)
-            return new File(".\\src\\test\\java\\com\\jag2k2\\importers\\file\\test_credit_sgml.qfx");
+            return new File(".\\src\\test\\java\\com\\jag2k2\\importers\\file\\test_credit.csv");
         else
-            return new File(".\\src\\test\\java\\com\\jag2k2\\test_debit_sgml.qfx");
+            return new File(".\\src\\test\\java\\com\\jag2k2\\importers\\file\\test_debit.csv");
     }
 
     @Override

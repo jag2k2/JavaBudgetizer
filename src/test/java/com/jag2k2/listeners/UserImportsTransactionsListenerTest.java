@@ -41,7 +41,7 @@ class UserImportsTransactionsListenerTest {
         Transactions<BankingTransaction> expected = DebitListFactory.makeImportingTransactions();
         expected.addAll(DebitListFactory.makeDefaultTransactions());
 
-        FileLoader fileLoader = new UserChoosesFileLoader(new JFileChooserMock(OfxParser.AccountType.CHECKING), new JFrame());
+        FileLoader fileLoader = new UserChoosesFileLoader(new QfxFileChooserFake(OfxParser.AccountType.CHECKING), new JFrame());
         TransactionImporter transactionImporter = new QfxImporter(fileLoader);
         testButton.addActionListener(new UserImportsTransactionsListener(storeAdder, transactionImporter));
         testButton.doClick();
@@ -55,7 +55,7 @@ class UserImportsTransactionsListenerTest {
         Transactions<CreditTransaction> expected = CreditListFactory.makeImportingTransactions();
         expected.addAll(CreditListFactory.makeDefaultTransactions());
 
-        FileLoader fileLoader = new UserChoosesFileLoader(new JFileChooserMock(OfxParser.AccountType.CREDIT), new JFrame());
+        FileLoader fileLoader = new UserChoosesFileLoader(new QfxFileChooserFake(OfxParser.AccountType.CREDIT), new JFrame());
         TransactionImporter transactionImporter = new QfxImporter(fileLoader);
         testButton.addActionListener(new UserImportsTransactionsListener(storeAdder, transactionImporter));
         testButton.doClick();
