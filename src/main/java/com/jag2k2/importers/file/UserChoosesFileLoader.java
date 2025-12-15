@@ -17,7 +17,7 @@ public class UserChoosesFileLoader implements FileLoader {
         String userhome = System.getProperty("user.home");
         fileChooser.setCurrentDirectory(new File(userhome + "\\Downloads"));
         fileChooser.setAcceptAllFileFilterUsed(false);
-        fileChooser.setFileFilter(new FileFilterQFX());
+        fileChooser.setFileFilter(new FileFilterCSV());
         fileChooser.setDialogTitle("Import Transactions");
         fileChooser.getActionMap().get("viewTypeDetails").actionPerformed(null);
     }

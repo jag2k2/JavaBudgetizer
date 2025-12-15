@@ -6,6 +6,7 @@ import java.util.GregorianCalendar;
 
 import java.io.File;
 import java.io.FileReader;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -47,13 +48,12 @@ public class CsvTransactionParser {
     static public Transactions<Transaction> parseTransactions(AccountType accountType, String fileString){
         Transactions<Transaction> transactions = new TransactionsImpl<>();
         String[] allRows = fileString.split("\\r?\\n");
-        System.out.println(accountType);
         if (accountType == AccountType.CHECKING) {
-            String[] transactionRows = Arrays.copyOfRange(allRows, 7, allRows.length); // Skip header rows
+            String[] transactionRows = Arrays.copyOfRange(allRows, 8, allRows.length); // Skip header rows and "Beginning balance" row
             for (String transactionRow : transactionRows) {
-                List<String> transactionElements = Arrays.asList(transactionRow.split(","));
+                List<String> transactionElements = parseCsvLine(transactionRow);
 
-                String stringDate = transactionElements.get(0);
+                String stringDate = stripSurroundingQuotes(transactionElements.get(0));
                 String[] dateParts = stringDate.split("/");
                 String stringYear = dateParts[2];
                 String stringMonth = String.format("%02d", Integer.parseInt(dateParts[0]));
@@ -63,11 +63,11 @@ public class CsvTransactionParser {
                 int year = Integer.parseInt(stringYear);
                 Calendar calendarDate = new GregorianCalendar(year, month, day);
 
-                String description = transactionElements.get(1);
-                String stringAmount = transactionElements.get(2);
+                String description = stripSurroundingQuotes(transactionElements.get(1));
+                String stringAmount = stripSurroundingQuotes(transactionElements.get(2)).replace(",", "");
                 Float floatAmount = Float.parseFloat(stringAmount);
 
-                String stringBalance = transactionElements.get(3);
+                String stringBalance = stripSurroundingQuotes(transactionElements.get(3)).replace(",", "");
                 Float floatBalance = -1.0f;
 
                 String reference = stringBalance + stringYear.substring(1) + stringMonth + stringDay + stringBalance;
@@ -79,9 +79,9 @@ public class CsvTransactionParser {
         if (accountType == AccountType.CREDIT) {
             String[] transactionRows = Arrays.copyOfRange(allRows, 1, allRows.length); // Skip header row
             for (String transactionRow : transactionRows) {
-                List<String> transactionElements = Arrays.asList(transactionRow.split(","));
+                List<String> transactionElements = parseCsvLine(transactionRow);
 
-                String stringDate = transactionElements.get(0);
+                String stringDate = stripSurroundingQuotes(transactionElements.get(0));
                 String[] dateParts = stringDate.split("/");
                 String stringYear = dateParts[2];
                 String stringMonth = String.format("%02d", Integer.parseInt(dateParts[0]));
@@ -91,10 +91,10 @@ public class CsvTransactionParser {
                 int year = Integer.parseInt(stringYear);
                 Calendar calendarDate = new GregorianCalendar(year, month, day);
 
-                String reference = transactionElements.get(1);
-                String description = transactionElements.get(2);
-                // String address = transactionElements.get(3);
-                String stringAmount = transactionElements.get(4);
+                String reference = stripSurroundingQuotes(transactionElements.get(1));
+                String description = stripSurroundingQuotes(transactionElements.get(2));
+                // String address = stripSurroundingQuotes(transactionElements.get(3));
+                String stringAmount = stripSurroundingQuotes(transactionElements.get(4)).replace(",", "");
                 Float floatAmount = Float.parseFloat(stringAmount);
 
                 Transaction newTransaction = new CreditTransaction(reference, calendarDate, description, floatAmount, "", "");
@@ -102,5 +102,39 @@ public class CsvTransactionParser {
             }
         }
         return transactions;
-    }  
+    }
+
+    /**
+     * Parses a CSV line, properly handling commas inside quoted strings
+     */
+    private static List<String> parseCsvLine(String csvLine) {
+        List<String> result = new ArrayList<>();
+        boolean inQuotes = false;
+        StringBuilder currentField = new StringBuilder();
+        
+        for (int i = 0; i < csvLine.length(); i++) {
+            char c = csvLine.charAt(i);
+            
+            if (c == '"') {
+                inQuotes = !inQuotes;
+                currentField.append(c);
+            } else if (c == ',' && !inQuotes) {
+                result.add(currentField.toString());
+                currentField.setLength(0);
+            } else {
+                currentField.append(c);
+            }
+        }
+        
+        // Add the last field
+        result.add(currentField.toString());
+        return result;
+    }
+
+    public static String stripSurroundingQuotes(String input_string) {
+        if (input_string != null && input_string.length() >= 2 && input_string.startsWith("\"") && input_string.endsWith("\"")) {
+            return input_string.substring(1, input_string.length() - 1);
+        }
+        return input_string;
+    }
 }

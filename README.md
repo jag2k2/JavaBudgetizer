@@ -25,3 +25,6 @@
 ## Build and run application
 - mvn clean package
 - java -jar .\target\JavaBudgetizer-1.0-SNAPSHOT-jar-with-dependencies.jar
+
+## Run application from terminal
+- mvn clean compile exec:java
